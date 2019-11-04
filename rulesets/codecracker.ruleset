@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="CodeCracker Rules" Description="Customize CodeCracker Rules" ToolsVersion="14.0">
+  <Rules AnalyzerId="CodeCracker.CSharp" RuleNamespace="CodeCracker.CSharp">
+    <!-- var rules -->
+    <Rule Id="CC0001" Action="None" />
+    <Rule Id="CC0105" Action="None" />
+
+    <!-- nameof rule -->
+    <Rule Id="CC0021" Action="Info" />
+
+    <!-- force use of initializers -->
+    <Rule Id="CC0008" Action="Warning" />
+
+    <!-- missing parameters in comments -->
+    <Rule Id="CC0097" Action="Warning" />
+
+    <!-- Mark local variables as const whenever possible -->
+    <Rule Id="CC0030" Action="Warning" />
+
+    <!-- Use new formatted strings instead of string.format -->
+    <Rule Id="CC0048" Action="Warning" />
+
+    <!-- Use expression-bodied members -->
+    <Rule Id="CC0038" Action="Warning" />
+
+    <!-- Delete commented out code -->
+    <Rule Id="CC0037" Action="Warning" />
+
+    <!-- Convert lamba expression to method group, if possible -->
+    <Rule Id="CC0020" Action="Info" />
+
+    <!-- Convert If to Switch -->
+    <Rule Id="CC0019" Action="Warning" />
+
+    <!-- Use Existence operator when possible (?.) -->
+    <Rule Id="CC0018" Action="Warning" />
+
+    <!-- Use auto properties -->
+    <Rule Id="CC0017" Action="Warning" />
+
+    <!-- Use ForIn instead of For loop -->
+    <Rule Id="CC0006" Action="Warning" />
+
+    <!-- Call Extension Methods as Extensions -->
+    <Rule Id="CC0026" Action="Warning" />
+
+    <!-- Dispose of disposable fields -->
+    <Rule Id="CC0032" Action="Warning" />
+
+    <!-- Remove redundancy -->
+    <Rule Id="CC0034" Action="Warning" />
+    <Rule Id="CC0049" Action="Warning" />
+
+    <!-- force read-only fields -->
+    <Rule Id="CC0052" Action="Warning" />
+
+    <!-- Remove unused code -->
+    <Rule Id="CC0068" Action="Warning" />
+    <Rule Id="CC0089" Action="Warning" />
+
+    <!-- Methods which return Task should have suffix Async -->
+    <Rule Id="CC0061" Action="Info" />
+
+    <!-- Disposables Should Call Suppress Finalize -->
+    <Rule Id="CC0029" Action="Info" />
+
+    <!-- TODO: Remove this again -->
+    <Rule Id="CC0022" Action="None" />
+  </Rules>
+</RuleSet>

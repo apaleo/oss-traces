@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="System.Runtime.Analyzers" Description="System.Runtime.Analyzers Rules" ToolsVersion="14.0">
+  <Rules AnalyzerId="System.Runtime.Analyzers" RuleNamespace="System.Runtime.Analyzers">
+    <!-- Ignore disposable fields should be disposed since it doesn't work well with injected variables -->
+    <Rule Id="CA2213" Action="None" />
+  </Rules>
+</RuleSet>
