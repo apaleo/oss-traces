@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Traces.Data.Entities;
 
 namespace Traces.Core.Repositories
 {

@@ -13,6 +13,7 @@
     
     <ItemGroup>
       <ProjectReference Include="..\Traces.Common\Traces.Common.csproj" />
+      <ProjectReference Include="..\Traces.Data\Traces.Data.csproj" />
     </ItemGroup>
 
 </Project>
