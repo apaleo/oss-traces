@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Traces.Core.Repositories;
+using Traces.Core.Services;
 using Traces.Web.Data;
 
 namespace Traces.Web
@@ -29,6 +25,8 @@ namespace Traces.Web
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddScoped<ITraceRepository, TraceRepository>();
+            services.AddScoped<ITraceService, TraceService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

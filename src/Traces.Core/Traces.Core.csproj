@@ -5,5 +5,14 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.0</TargetFramework>
     </PropertyGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="NodaTime" Version="2.4.7" />
+      <PackageReference Include="Optional" Version="4.0.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Traces.Common\Traces.Common.csproj" />
+    </ItemGroup>
 
 </Project>
