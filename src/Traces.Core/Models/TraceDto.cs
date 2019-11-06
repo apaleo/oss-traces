@@ -1,5 +1,6 @@
 using System;
 using NodaTime;
+using Optional;
 using Traces.Common.Enums;
 
 namespace Traces.Core.Models
@@ -10,16 +11,16 @@ namespace Traces.Core.Models
 
         public string Title { get; set; }
 
-        public string Description { get; set; }
+        public Option<string> Description { get; set; }
 
         public ZonedDateTime DueDate { get; set; }
 
-        public TimeSpan DueTime { get; set; }
+        public Option<TimeSpan> DueTime { get; set; }
 
         public TaskStateEnum State { get; set; }
 
-        public string CompletedBy { get; set; }
+        public Option<string> CompletedBy { get; set; }
 
-        public ZonedDateTime CompletedDate { get; set; }
+        public Option<ZonedDateTime> CompletedDate { get; set; }
     }
 }

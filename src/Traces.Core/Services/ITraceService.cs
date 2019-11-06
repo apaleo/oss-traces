@@ -14,7 +14,7 @@ namespace Traces.Core.Services
 
         Task<Guid> CreateTraceAsync(CreateTraceDto createTraceDto);
 
-        Task<bool> ReplaceTraceAsync(ReplaceTraceDto replaceTraceDto);
+        Task<bool> ReplaceTraceAsync(Guid id, ReplaceTraceDto replaceTraceDto);
 
         Task<bool> CompleteTraceAsync(Guid id);
 

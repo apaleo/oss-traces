@@ -1,5 +1,6 @@
 using System;
 using NodaTime;
+using Optional;
 
 namespace Traces.Core.Models
 {
@@ -11,6 +12,6 @@ namespace Traces.Core.Models
 
         public ZonedDateTime DueDate { get; set; }
 
-        public TimeSpan? DueTime { get; set; }
+        public Option<TimeSpan> DueTime { get; set; }
     }
 }
