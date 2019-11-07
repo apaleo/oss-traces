@@ -12,11 +12,11 @@ namespace Traces.Core.Repositories
 
         Task<IReadOnlyList<Trace>> GetAllForTenantAsync();
 
-        Task<Trace> GetAsync(Guid id);
+        Task<Trace> GetAsync(int id);
 
         void Insert(Trace trace);
 
-        Task<bool> DeleteAsync(Guid id);
+        Task<bool> DeleteAsync(int id);
 
         Task SaveAsync();
     }

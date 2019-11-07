@@ -23,8 +23,8 @@ namespace Traces.Core.Repositories
 
         public async Task<IReadOnlyList<Trace>> GetAllForTenantAsync() => await _dbContext.Traces.ToListAsync();
 
-        public async Task<Trace> GetAsync(Guid id) =>
-            await _dbContext.Traces.FirstOrDefaultAsync(t => t.EntityId == id);
+        public async Task<Trace> GetAsync(int id) =>
+            await _dbContext.Traces.FirstOrDefaultAsync(t => t.Id == id);
 
         public void Insert(Trace trace)
         {
@@ -33,9 +33,9 @@ namespace Traces.Core.Repositories
             _dbContext.Add(trace);
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var entity = await _dbContext.Traces.FirstOrDefaultAsync(x => x.EntityId == id);
+            var entity = await _dbContext.Traces.FirstOrDefaultAsync(x => x.Id == id);
 
             if (entity == null)
             {

@@ -1,4 +1,3 @@
-using System;
 using NodaTime;
 using Optional;
 using Traces.Common.Enums;
@@ -7,7 +6,7 @@ namespace Traces.Core.Models
 {
     public class TraceDto
     {
-        public Guid EntityId { get; set; }
+        public int Id { get; set; }
 
         public string Title { get; set; }
 

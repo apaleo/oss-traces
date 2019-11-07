@@ -10,14 +10,14 @@ namespace Traces.Core.Services
     {
         Task<IReadOnlyList<TraceDto>> GetTracesAsync();
 
-        Task<Option<TraceDto>> GetTraceAsync(Guid id);
+        Task<Option<TraceDto>> GetTraceAsync(int id);
 
-        Task<Guid> CreateTraceAsync(CreateTraceDto createTraceDto);
+        Task<Option<TraceDto>> CreateTraceAsync(CreateTraceDto createTraceDto);
 
-        Task<bool> ReplaceTraceAsync(Guid id, ReplaceTraceDto replaceTraceDto);
+        Task<bool> ReplaceTraceAsync(int id, ReplaceTraceDto replaceTraceDto);
 
-        Task<bool> CompleteTraceAsync(Guid id);
+        Task<bool> CompleteTraceAsync(int id);
 
-        Task<bool> DeleteTraceAsync(Guid id);
+        Task<bool> DeleteTraceAsync(int id);
     }
 }

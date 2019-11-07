@@ -35,9 +35,9 @@ namespace Traces.Core.Services
             return ConvertToTraceDto(traces);
         }
 
-        public async Task<Option<TraceDto>> GetTraceAsync(Guid id)
+        public async Task<Option<TraceDto>> GetTraceAsync(int id)
         {
-            if (!await _traceRepository.ExistsAsync(t => t.EntityId == id))
+            if (!await _traceRepository.ExistsAsync(t => t.Id == id))
             {
                 return Option.None<TraceDto>();
             }
@@ -47,14 +47,14 @@ namespace Traces.Core.Services
             return TraceToDto(trace).Some();
         }
 
-        public async Task<Guid> CreateTraceAsync(CreateTraceDto createTraceDto)
+        public async Task<Option<TraceDto>> CreateTraceAsync(CreateTraceDto createTraceDto)
         {
             Check.NotNull(createTraceDto, nameof(createTraceDto));
 
             if (string.IsNullOrWhiteSpace(createTraceDto.Title) ||
                 createTraceDto.DueDate == ZonedDateTime.FromDateTimeOffset(DateTimeOffset.MinValue))
             {
-                return Guid.Empty;
+                return Option.None<TraceDto>();
             }
 
             var trace = new Trace
@@ -70,10 +70,10 @@ namespace Traces.Core.Services
 
             await _traceRepository.SaveAsync();
 
-            return trace.EntityId;
+            return TraceToDto(trace).Some();
         }
 
-        public async Task<bool> ReplaceTraceAsync(Guid id, ReplaceTraceDto replaceTraceDto)
+        public async Task<bool> ReplaceTraceAsync(int id, ReplaceTraceDto replaceTraceDto)
         {
             Check.NotNull(replaceTraceDto, nameof(replaceTraceDto));
 
@@ -83,7 +83,7 @@ namespace Traces.Core.Services
                 return false;
             }
 
-            if (!await _traceRepository.ExistsAsync(t => t.EntityId == id))
+            if (!await _traceRepository.ExistsAsync(t => t.Id == id))
             {
                 return false;
             }
@@ -100,9 +100,9 @@ namespace Traces.Core.Services
             return true;
         }
 
-        public async Task<bool> CompleteTraceAsync(Guid id)
+        public async Task<bool> CompleteTraceAsync(int id)
         {
-            if (!await _traceRepository.ExistsAsync(x => x.EntityId == id))
+            if (!await _traceRepository.ExistsAsync(x => x.Id == id))
             {
                 return false;
             }
@@ -118,9 +118,9 @@ namespace Traces.Core.Services
             return true;
         }
 
-        public async Task<bool> DeleteTraceAsync(Guid id)
+        public async Task<bool> DeleteTraceAsync(int id)
         {
-            if (!await _traceRepository.ExistsAsync(t => t.EntityId == id))
+            if (!await _traceRepository.ExistsAsync(t => t.Id == id))
             {
                 return false;
             }
@@ -150,7 +150,7 @@ namespace Traces.Core.Services
             CompletedDate = trace.CompletedUtc?.SomeNotNull().Map(x => x.InUtc()) ?? Option.None<ZonedDateTime>(),
             DueDate = trace.DueDateUtc.InUtc(),
             DueTime = trace.DueTime?.SomeNotNull() ?? Option.None<LocalTime>(),
-            EntityId = trace.EntityId
+            Id = trace.Id
         };
     }
 }

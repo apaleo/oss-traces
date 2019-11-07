@@ -25,21 +25,5 @@ namespace Traces.Data
                 optionsBuilder.UseNpgsql(string.Empty);
             }
         }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.HasPostgresExtension("uuid-ossp");
-
-            modelBuilder
-                .Entity<Trace>()
-                .HasIndex(x => new { x.EntityId, x.TenantId })
-                .IsUnique();
-
-            modelBuilder
-                .Entity<Trace>()
-                .Property(x => x.EntityId).HasDefaultValueSql("uuid_generate_v4()");
-
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }
