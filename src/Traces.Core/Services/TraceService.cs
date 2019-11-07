@@ -143,7 +143,7 @@ namespace Traces.Core.Services
             CompletedBy = trace.CompletedBy.SomeNotNull(),
             CompletedDate = trace.CompletedUtc?.SomeNotNull().Map(x => x.InUtc()) ?? Option.None<ZonedDateTime>(),
             DueDate = trace.DueDateUtc.InUtc(),
-            DueTime = trace.DueTime?.SomeNotNull() ?? Option.None<TimeSpan>(),
+            DueTime = trace.DueTime?.SomeNotNull() ?? Option.None<LocalTime>(),
             EntityId = trace.EntityId
         };
     }

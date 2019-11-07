@@ -15,7 +15,7 @@ namespace Traces.Core.Models
 
         public ZonedDateTime DueDate { get; set; }
 
-        public Option<TimeSpan> DueTime { get; set; }
+        public Option<LocalTime> DueTime { get; set; }
 
         public TaskStateEnum State { get; set; }
 
