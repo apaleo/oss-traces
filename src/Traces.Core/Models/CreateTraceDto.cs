@@ -8,7 +8,7 @@ namespace Traces.Core.Models
     {
         public string Title { get; set; }
 
-        public string Description { get; set; }
+        public Option<string> Description { get; set; }
 
         public ZonedDateTime DueDate { get; set; }
 

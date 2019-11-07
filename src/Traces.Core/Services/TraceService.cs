@@ -59,7 +59,7 @@ namespace Traces.Core.Services
 
             var trace = new Trace
             {
-                Description = createTraceDto.Description,
+                Description = createTraceDto.Description.ValueOrDefault(),
                 State = TaskStateEnum.Active,
                 Title = createTraceDto.Title,
                 DueDate = createTraceDto.DueDate.ToInstant(),
@@ -84,7 +84,7 @@ namespace Traces.Core.Services
 
             var trace = await _traceRepository.GetAsync(id);
 
-            trace.Description = replaceTraceDto.Description;
+            trace.Description = replaceTraceDto.Description.ValueOrDefault();
             trace.Title = replaceTraceDto.Title;
             trace.DueDate = replaceTraceDto.DueDate.ToInstant();
             trace.DueTime = replaceTraceDto.DueTime.ToNullable();
