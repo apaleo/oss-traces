@@ -15,7 +15,7 @@ namespace Traces.Data.Entities
         public string Description { get; set; }
 
         [Required]
-        public Instant DueDate { get; set; }
+        public Instant DueDateUtc { get; set; }
 
         public TimeSpan? DueTime { get; set; }
 
@@ -24,6 +24,6 @@ namespace Traces.Data.Entities
 
         public string CompletedBy { get; set; }
 
-        public Instant? CompletedDate { get; set; }
+        public Instant? CompletedUtc { get; set; }
     }
 }

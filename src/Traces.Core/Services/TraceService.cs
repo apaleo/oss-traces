@@ -62,7 +62,7 @@ namespace Traces.Core.Services
                 Description = createTraceDto.Description.ValueOrDefault(),
                 State = TaskStateEnum.Active,
                 Title = createTraceDto.Title,
-                DueDate = createTraceDto.DueDate.ToInstant(),
+                DueDateUtc = createTraceDto.DueDate.ToInstant(),
                 DueTime = createTraceDto.DueTime.ToNullable()
             };
 
@@ -86,7 +86,7 @@ namespace Traces.Core.Services
 
             trace.Description = replaceTraceDto.Description.ValueOrDefault();
             trace.Title = replaceTraceDto.Title;
-            trace.DueDate = replaceTraceDto.DueDate.ToInstant();
+            trace.DueDateUtc = replaceTraceDto.DueDate.ToInstant();
             trace.DueTime = replaceTraceDto.DueTime.ToNullable();
 
             await _traceRepository.SaveAsync();
@@ -103,7 +103,7 @@ namespace Traces.Core.Services
 
             var trace = await _traceRepository.GetAsync(id);
 
-            trace.CompletedDate = DateTime.UtcNow.ToInstant();
+            trace.CompletedUtc = DateTime.UtcNow.ToInstant();
             trace.CompletedBy = _requestContext.TenantId;
             trace.State = TaskStateEnum.Completed;
 
@@ -141,8 +141,8 @@ namespace Traces.Core.Services
             State = trace.State,
             Title = trace.Title,
             CompletedBy = trace.CompletedBy.SomeNotNull(),
-            CompletedDate = trace.CompletedDate?.SomeNotNull().Map(x => x.InUtc()) ?? Option.None<ZonedDateTime>(),
-            DueDate = trace.DueDate.InUtc(),
+            CompletedDate = trace.CompletedUtc?.SomeNotNull().Map(x => x.InUtc()) ?? Option.None<ZonedDateTime>(),
+            DueDate = trace.DueDateUtc.InUtc(),
             DueTime = trace.DueTime?.SomeNotNull() ?? Option.None<TimeSpan>(),
             EntityId = trace.EntityId
         };
