@@ -77,7 +77,7 @@ namespace Traces.Core.Tests.Services
                 State = TestObsoleteTraceState,
                 Title = TestObsoleteTraceTitle,
                 DueDateUtc = TestObsoleteTraceDueDate,
-                TenantId = "TEST"
+                TenantId = TestTenantId
             };
 
             var testCompletedTrace = new Trace
