@@ -22,7 +22,7 @@ namespace Traces.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseNpgsql("");
+                optionsBuilder.UseNpgsql(string.Empty);
             }
         }
 

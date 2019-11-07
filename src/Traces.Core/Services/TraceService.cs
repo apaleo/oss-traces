@@ -77,6 +77,12 @@ namespace Traces.Core.Services
         {
             Check.NotNull(replaceTraceDto, nameof(replaceTraceDto));
 
+            if (string.IsNullOrWhiteSpace(replaceTraceDto.Title) || replaceTraceDto.DueDate ==
+                ZonedDateTime.FromDateTimeOffset(DateTimeOffset.MinValue))
+            {
+                return false;
+            }
+
             if (!await _traceRepository.ExistsAsync(t => t.EntityId == id))
             {
                 return false;
