@@ -18,6 +18,8 @@ namespace Traces.Core.Services
 
         Task<bool> CompleteTraceAsync(int id);
 
+        Task<bool> RevertCompleteAsync(int id);
+
         Task<bool> DeleteTraceAsync(int id);
     }
 }

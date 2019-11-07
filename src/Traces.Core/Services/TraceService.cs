@@ -118,6 +118,24 @@ namespace Traces.Core.Services
             return true;
         }
 
+        public async Task<bool> RevertCompleteAsync(int id)
+        {
+            if (!await _traceRepository.ExistsAsync(x => x.Id == id))
+            {
+                return false;
+            }
+
+            var trace = await _traceRepository.GetAsync(id);
+
+            trace.CompletedUtc = null;
+            trace.CompletedBy = string.Empty;
+            trace.State = trace.DueDateUtc < DateTime.UtcNow.ToInstant() ? TaskStateEnum.Obsolete : TaskStateEnum.Active;
+
+            await _traceRepository.SaveAsync();
+
+            return true;
+        }
+
         public async Task<bool> DeleteTraceAsync(int id)
         {
             if (!await _traceRepository.ExistsAsync(t => t.Id == id))
