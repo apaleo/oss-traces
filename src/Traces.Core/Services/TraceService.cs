@@ -60,7 +60,7 @@ namespace Traces.Core.Services
             var trace = new Trace
             {
                 Description = createTraceDto.Description.ValueOrDefault(),
-                State = TaskStateEnum.Active,
+                State = TraceStateEnum.Active,
                 Title = createTraceDto.Title,
                 DueDateUtc = createTraceDto.DueDate.ToInstant(),
                 DueTime = createTraceDto.DueTime.ToNullable()
@@ -111,7 +111,7 @@ namespace Traces.Core.Services
 
             trace.CompletedUtc = DateTime.UtcNow.ToInstant();
             trace.CompletedBy = _requestContext.TenantId;
-            trace.State = TaskStateEnum.Completed;
+            trace.State = TraceStateEnum.Completed;
 
             await _traceRepository.SaveAsync();
 
@@ -129,7 +129,7 @@ namespace Traces.Core.Services
 
             trace.CompletedUtc = null;
             trace.CompletedBy = string.Empty;
-            trace.State = trace.DueDateUtc < DateTime.UtcNow.ToInstant() ? TaskStateEnum.Obsolete : TaskStateEnum.Active;
+            trace.State = trace.DueDateUtc < DateTime.UtcNow.ToInstant() ? TraceStateEnum.Obsolete : TraceStateEnum.Active;
 
             await _traceRepository.SaveAsync();
 

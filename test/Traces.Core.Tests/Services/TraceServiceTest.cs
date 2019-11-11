@@ -25,21 +25,21 @@ namespace Traces.Core.Tests.Services
         private const string TestActiveTraceDescription = "TestActiveDescription";
         private const string TestActiveTraceTitle = "TestActiveTitle";
         private const string TestTenantId = "TEST";
-        private const TaskStateEnum TestActiveTraceState = TaskStateEnum.Active;
+        private const TraceStateEnum TestActiveTraceState = TraceStateEnum.Active;
         private readonly Instant TestActiveTraceDueDate = DateTime.UtcNow.ToInstant();
         private readonly LocalTime TestActiveTraceDueTime = new LocalTime(13, 40, 00);
 
         private const int TestObsoleteTraceId = 2;
         private const string TestObsoleteTraceDescription = "TestObsoleteDescription";
         private const string TestObsoleteTraceTitle = "TestObsoleteTitle";
-        private const TaskStateEnum TestObsoleteTraceState = TaskStateEnum.Obsolete;
+        private const TraceStateEnum TestObsoleteTraceState = TraceStateEnum.Obsolete;
         private readonly Instant TestObsoleteTraceDueDate = DateTime.UtcNow.Subtract(TimeSpan.FromDays(1)).ToInstant();
 
         private const int TestCompletedTraceId = 3;
         private const string TestCompletedTraceDescription = "TestCompletedDescription";
         private const string TestCompletedTraceTitle = "TestCompletedTitle";
         private const string TestCompletedBy = "TestCompletedBy";
-        private const TaskStateEnum TestCompletedTraceState = TaskStateEnum.Completed;
+        private const TraceStateEnum TestCompletedTraceState = TraceStateEnum.Completed;
         private readonly Instant TestCompletedTraceDueDate = DateTime.UtcNow.Add(TimeSpan.FromHours(1)).ToInstant();
         private readonly Instant TestCompletedDate = DateTime.UtcNow.ToInstant();
 
@@ -157,7 +157,7 @@ namespace Traces.Core.Tests.Services
             {
                 Id = TestActiveTraceId,
                 Description = TestActiveTraceDescription,
-                State = TaskStateEnum.Active,
+                State = TraceStateEnum.Active,
                 Title = TestActiveTraceTitle,
                 DueDateUtc = TestActiveTraceDueDate,
                 TenantId = TestTenantId,
@@ -211,7 +211,7 @@ namespace Traces.Core.Tests.Services
                 It.Is<Trace>(t =>
                 t.Description == TestActiveTraceDescription &&
                 t.Title == TestActiveTraceTitle &&
-                t.State == TaskStateEnum.Active &&
+                t.State == TraceStateEnum.Active &&
                 t.DueDateUtc == TestActiveTraceDueDate &&
                 t.DueTime == TestActiveTraceDueTime)));
 
@@ -224,7 +224,7 @@ namespace Traces.Core.Tests.Services
 
             resultValue.Title.Should().Be(TestActiveTraceTitle);
             resultValue.Description.ValueOrFailure().Should().Be(TestActiveTraceDescription);
-            resultValue.State.Should().Be(TaskStateEnum.Active);
+            resultValue.State.Should().Be(TraceStateEnum.Active);
             resultValue.DueDate.Should().Be(TestActiveTraceDueDate.InUtc());
             resultValue.DueTime.ValueOrFailure().Should().Be(TestActiveTraceDueTime);
         }

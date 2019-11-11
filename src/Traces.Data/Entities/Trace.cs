@@ -17,7 +17,7 @@ namespace Traces.Data.Entities
         public LocalTime? DueTime { get; set; }
 
         [Required]
-        public TaskStateEnum State { get; set; }
+        public TraceStateEnum State { get; set; }
 
         public string CompletedBy { get; set; }
 

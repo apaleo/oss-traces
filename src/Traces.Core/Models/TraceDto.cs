@@ -16,7 +16,7 @@ namespace Traces.Core.Models
 
         public Option<LocalTime> DueTime { get; set; }
 
-        public TaskStateEnum State { get; set; }
+        public TraceStateEnum State { get; set; }
 
         public Option<string> CompletedBy { get; set; }
 
