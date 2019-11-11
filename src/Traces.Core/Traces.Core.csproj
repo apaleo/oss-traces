@@ -5,5 +5,9 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.0</TargetFramework>
     </PropertyGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Traces.Data\Traces.Data.csproj" />
+    </ItemGroup>
 
 </Project>

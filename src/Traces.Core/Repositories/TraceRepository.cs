@@ -1,41 +1,54 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Traces.Common.Utils;
+using Traces.Data;
+using Traces.Data.Entities;
 
 namespace Traces.Core.Repositories
 {
     public class TraceRepository : ITraceRepository
     {
-        public Task<bool> ExistsAsync(Expression<Func<Trace, bool>> predicate)
+        private readonly TracesDbContext _dbContext;
+
+        public TraceRepository(TracesDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
         }
 
-        public Task<IReadOnlyList<Trace>> GetAllForTenantAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<bool> ExistsAsync(Expression<Func<Trace, bool>> predicate) =>
+            await _dbContext.Traces.AnyAsync(predicate);
 
-        public Task<Trace> GetAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IReadOnlyList<Trace>> GetAllForTenantAsync() =>
+            await _dbContext.Traces.ToListAsync();
+
+        public async Task<Trace> GetAsync(int id) =>
+            await _dbContext.Traces.FirstOrDefaultAsync(t => t.Id == id);
 
         public void Insert(Trace trace)
         {
-            throw new NotImplementedException();
+            Check.NotNull(trace, nameof(trace));
+
+            _dbContext.Add(trace);
         }
 
-        public Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var entity = await _dbContext.Traces.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            _dbContext.Remove(entity);
+
+            return true;
         }
 
-        public Task SaveAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task SaveAsync() =>
+            await _dbContext.SaveChangesAsync();
     }
 }
