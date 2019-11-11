@@ -1,12 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Traces.Core.Repositories;
-using Traces.Core.Services;
-using Traces.Data;
 using Traces.Web.Data;
 
 namespace Traces.Web
@@ -27,14 +23,7 @@ namespace Traces.Web
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddDbContext<TracesDbContext>(
-                options => options.UseNpgsql(
-                    Configuration["ConnectionStrings:DefaultDatabase"],
-                    npgSqlOptions => npgSqlOptions.UseNodaTime()));
-
             services.AddSingleton<WeatherForecastService>();
-            services.AddScoped<ITraceRepository, TraceRepository>();
-            services.AddScoped<ITraceService, TraceService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
