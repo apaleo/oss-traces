@@ -18,8 +18,6 @@ namespace Traces.Core.Models
 
         public TraceStateEnum State { get; set; }
 
-        public Option<string> CompletedBy { get; set; }
-
         public Option<ZonedDateTime> CompletedDate { get; set; }
     }
 }

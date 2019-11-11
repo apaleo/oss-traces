@@ -19,8 +19,6 @@ namespace Traces.Data.Entities
         [Required]
         public TraceStateEnum State { get; set; }
 
-        public string CompletedBy { get; set; }
-
         public Instant? CompletedUtc { get; set; }
     }
 }
