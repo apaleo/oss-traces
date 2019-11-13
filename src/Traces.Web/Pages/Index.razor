@@ -1,5 +1,40 @@
 ﻿@page "/"
+@using System.Globalization
+@using Traces.Web.ViewModels
+@inject TracesViewModel TracesViewModel
 
-<h1>Hello, world!</h1>
+<div>
+    <h1>Traces</h1>
 
-Welcome to your new app.
+    <button class="btn btn-primary" @onclick="@TracesViewModel.AddItem">Add</button>
+
+    <div>
+        @if (TracesViewModel.Traces != null && TracesViewModel.Traces.Any())
+        {
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Due date</th>
+                    <th>Due time</th>
+                </tr>
+                @foreach (var trace in TracesViewModel.Traces)
+                {
+                    <tr>
+                        <td>@trace.Title</td>
+                        <td>@trace.Description</td>
+                        <td>@trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</td>
+                        <td>@trace.DueTime.ToString("HH:mm", CultureInfo.CurrentUICulture)</td>
+                        <td>
+                            <button class="btn btn-danger" @onclick="@(() => TracesViewModel.DeleteItem(trace.Id))">delete</button>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+
+    <DialogContainer ShowDialog="@TracesViewModel.ShowCreateTraceDialog">
+        <CreateTraceDialog OnClose="@TracesViewModel.CloseCreateDialog"/>
+    </DialogContainer>
+</div>
