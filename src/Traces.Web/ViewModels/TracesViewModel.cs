@@ -12,18 +12,34 @@ namespace Traces.Web.ViewModels
             Traces = new List<TraceItemModel>();
         }
 
+        public List<TraceItemModel> Traces { get; }
+
+        public TraceItemModel ConfiguringTrace { get; set; }
+
         public bool ShowCreateTraceDialog { get; set; }
 
-        public List<TraceItemModel> Traces { get; }
+        public bool ShowingUpdateTraceDialog { get; set; }
 
         public void AddItem()
         {
-            ToggleCreateTraceDialog(true);
+            ShowCreateTraceDialog = true;
+        }
+
+        public void ShowReplaceTraceDialog(TraceItemModel traceItemModel)
+        {
+            ConfiguringTrace = traceItemModel;
+
+            ShowingUpdateTraceDialog = true;
         }
 
         public void CloseCreateDialog()
         {
-            ToggleCreateTraceDialog(false);
+            ShowCreateTraceDialog = false;
+        }
+
+        public void HideUpdateTraceDialog()
+        {
+            ShowingUpdateTraceDialog = false;
         }
 
         public bool CreateTraceItem(CreateTraceItemModel createTraceItemModel)
@@ -53,6 +69,30 @@ namespace Traces.Web.ViewModels
             return true;
         }
 
+        public bool ReplaceTraceItem(ReplaceTraceItemModel replaceTraceItemModel)
+        {
+            if (replaceTraceItemModel == null ||
+                string.IsNullOrWhiteSpace(replaceTraceItemModel.Title) ||
+                replaceTraceItemModel.DueDate == LocalDate.MinIsoValue)
+            {
+                return false;
+            }
+
+            var trace = Traces.FirstOrDefault(t => t.Id == replaceTraceItemModel.Id);
+
+            if (trace == null)
+            {
+                return false;
+            }
+
+            trace.Title = replaceTraceItemModel.Title;
+            trace.Description = replaceTraceItemModel.Description;
+            trace.DueDate = replaceTraceItemModel.DueDate;
+            trace.DueTime = replaceTraceItemModel.DueTime;
+
+            return true;
+        }
+
         public void DeleteItem(int id)
         {
             var trace = Traces.FirstOrDefault(t => t.Id == id);
@@ -64,7 +104,5 @@ namespace Traces.Web.ViewModels
 
             Traces.Remove(trace);
         }
-
-        private void ToggleCreateTraceDialog(bool isVisible) => ShowCreateTraceDialog = isVisible;
     }
 }

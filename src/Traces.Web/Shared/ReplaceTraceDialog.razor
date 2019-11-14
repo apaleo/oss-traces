@@ -1,0 +1,96 @@
+@using NodaTimePicker
+@using NodaTime
+@using Traces.Web.Models
+@using Traces.Web.ViewModels
+@inject TracesViewModel TracesViewModel
+
+<div class="dialog-title">
+    <h2>Update new trace</h2>
+</div>
+<input type="text" placeholder="Title" @bind="@CurrentTrace.Title"/>
+<input type="text" placeholder="Description" @bind="@CurrentTrace.Description"/>
+<input type="text" @onfocus="@DatePickerFocused" placeholder="Due date" value="@CurrentTrace.DueDateString"/>
+<DatePicker Visible="@IsDatePickerVisible" ShowClose="true" OnSelected="@DatePickerOnSelected" MinDate="@MinDate"/>
+
+<input type="text" @onfocus="@TimePickerFocused" placeholder="Due time" value="@CurrentTrace.DueTimeString"/>
+<TimePicker Visible="@IsTimePickerVisible" OnSelectedTimeChanged="@TimePickerOnSelected" ShowClose="@true" CloseOnSelect="@true"/>
+
+<div class="dialog-buttons">
+    <button class="btn btn-secondary" @onclick="@OnClose">Close</button>
+    <button class="btn btn-primary" @onclick="@OnReplaceTraceButton">Update</button>
+</div>
+
+@code
+{
+
+
+    [Parameter] public EventCallback OnClose { get; set; }
+
+    public ReplaceTraceItemModel CurrentTrace { get; set; }
+
+    public bool IsDatePickerVisible { get; set; }
+
+    public bool IsTimePickerVisible { get; set; }
+
+    public LocalDate MinDate { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        if (TracesViewModel.ConfiguringTrace == null)
+        {
+            OnClose.InvokeAsync(null);
+        }
+        else
+        {
+            var configuringTrace = TracesViewModel.ConfiguringTrace;
+
+            CurrentTrace = new ReplaceTraceItemModel
+            {
+                Title = configuringTrace.Title,
+                Description = configuringTrace.Description,
+                DueDate = configuringTrace.DueDate,
+                DueTime = configuringTrace.DueTime,
+                Id = configuringTrace.Id
+            };
+        }
+    }
+
+    void DatePickerFocused()
+    {
+        IsDatePickerVisible = true;
+    }
+
+    void DatePickerOnSelected(LocalDate selectedDate)
+    {
+        IsDatePickerVisible = false;
+        CurrentTrace.DueDate = selectedDate;
+        StateHasChanged();
+    }
+
+    void TimePickerFocused()
+    {
+        IsTimePickerVisible = true;
+    }
+
+    void TimePickerOnSelected(LocalTime selectedTime)
+    {
+        CurrentTrace.DueTime = selectedTime;
+        StateHasChanged();
+    }
+
+    async Task OnReplaceTraceButton()
+    {
+        if (TracesViewModel.ReplaceTraceItem(CurrentTrace))
+        {
+            await OnClose.InvokeAsync(null);
+        }
+    }
+
+    public ReplaceTraceDialog()
+    {
+        MinDate = SystemClock.Instance.GetCurrentInstant().InUtc().Date;
+    }
+
+}

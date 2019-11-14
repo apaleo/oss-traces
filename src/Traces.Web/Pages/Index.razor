@@ -26,6 +26,9 @@
                         <td>@trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</td>
                         <td>@trace.DueTime.ToString("HH:mm", CultureInfo.CurrentUICulture)</td>
                         <td>
+                            <button class="btn btn-secondary" @onclick="@(() => TracesViewModel.ShowReplaceTraceDialog(trace))">edit</button>
+                        </td>
+                        <td>
                             <button class="btn btn-danger" @onclick="@(() => TracesViewModel.DeleteItem(trace.Id))">delete</button>
                         </td>
                     </tr>
@@ -36,5 +39,9 @@
 
     <DialogContainer ShowDialog="@TracesViewModel.ShowCreateTraceDialog">
         <CreateTraceDialog OnClose="@TracesViewModel.CloseCreateDialog"/>
+    </DialogContainer>
+
+    <DialogContainer ShowDialog="@TracesViewModel.ShowingUpdateTraceDialog">
+        <ReplaceTraceDialog OnClose="@TracesViewModel.HideUpdateTraceDialog"/>
     </DialogContainer>
 </div>
