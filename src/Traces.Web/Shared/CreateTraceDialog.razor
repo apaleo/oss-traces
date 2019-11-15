@@ -10,10 +10,10 @@
 </div>
 <input type="text" placeholder="Title" @bind="@CurrentTrace.Title"/>
 <input type="text" placeholder="Description" @bind="@CurrentTrace.Description"/>
-<input type="text" @onfocus="@DatePickerFocused" placeholder="Due date" value="@DueDateString"/>
+<input type="text" @onfocus="@DatePickerFocused" placeholder="Due date" value="@CurrentTrace.DueDateString"/>
 <DatePicker Visible="@IsDatePickerVisible" ShowClose="true" OnSelected="@DatePickerOnSelected" MinDate="@MinDate"/>
 
-<input type="text" @onfocus="@TimePickerFocused" placeholder="Due time" value="@DueTimeString"/>
+<input type="text" @onfocus="@TimePickerFocused" placeholder="Due time" value="@CurrentTrace.DueTimeString"/>
 <TimePicker Visible="@IsTimePickerVisible" OnSelectedTimeChanged="@TimePickerOnSelected" ShowClose="@true" CloseOnSelect="@true"/>
 
 <div class="dialog-buttons">
@@ -31,10 +31,6 @@
 
     public bool IsTimePickerVisible { get; set; }
 
-    public string DueDateString { get; set; }
-
-    public string DueTimeString { get; set; }
-
     public LocalDate MinDate { get; set; }
 
     void DatePickerFocused()
@@ -45,7 +41,6 @@
     void DatePickerOnSelected(LocalDate selectedDate)
     {
         IsDatePickerVisible = false;
-        DueDateString = selectedDate.ToString("dd/MM/yyyy", CultureInfo.CurrentCulture);
         CurrentTrace.DueDate = selectedDate;
         StateHasChanged();
     }
@@ -57,7 +52,6 @@
 
     void TimePickerOnSelected(LocalTime selectedTime)
     {
-        DueTimeString = selectedTime.ToString("HH:mm", CultureInfo.CurrentCulture);
         CurrentTrace.DueTime = selectedTime;
         StateHasChanged();
 
@@ -77,12 +71,9 @@
 
         CurrentTrace = new CreateTraceItemModel
         {
-            DueDate = systemClockCurrentInstantInUtc.Date,
-            DueTime = systemClockCurrentInstantInUtc.TimeOfDay
+            DueDate = systemClockCurrentInstantInUtc.Date
         };
 
-        DueDateString = systemClockCurrentInstantInUtc.Date.ToString("dd/MM/yyyy", CultureInfo.CurrentCulture);
-        DueTimeString = systemClockCurrentInstantInUtc.TimeOfDay.ToString("HH:mm", CultureInfo.CurrentCulture);
         MinDate = systemClockCurrentInstantInUtc.Date;
     }
 

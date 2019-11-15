@@ -24,7 +24,7 @@
                         <td>@trace.Title</td>
                         <td>@trace.Description</td>
                         <td>@trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</td>
-                        <td>@trace.DueTime.ToString("HH:mm", CultureInfo.CurrentUICulture)</td>
+                        <td>@(trace.DueTime == null ? string.Empty : trace.DueTime.Value.ToString("HH:mm", CultureInfo.CurrentUICulture))</td>
                         <td>
                             <button class="btn btn-secondary" @onclick="@(() => TracesViewModel.ShowReplaceTraceDialog(trace))">edit</button>
                         </td>
