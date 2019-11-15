@@ -32,6 +32,20 @@ namespace Traces.Web.ViewModels
             ShowingUpdateTraceDialog = true;
         }
 
+        public void CompleteTrace(int id)
+        {
+            var trace = Traces.FirstOrDefault(t => t.Id == id);
+
+            if (trace == null)
+            {
+                return;
+            }
+
+            trace.IsComplete = true;
+
+            Traces.Remove(trace);
+        }
+
         public void CloseCreateDialog()
         {
             ShowCreateTraceDialog = false;

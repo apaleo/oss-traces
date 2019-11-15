@@ -14,5 +14,7 @@ namespace Traces.Web.Models
         public LocalDate DueDate { get; set; }
 
         public LocalTime? DueTime { get; set; }
+
+        public bool IsComplete { get; set; }
     }
 }
