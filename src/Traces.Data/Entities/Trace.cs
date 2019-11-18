@@ -14,8 +14,6 @@ namespace Traces.Data.Entities
         [Required]
         public Instant DueDateUtc { get; set; }
 
-        public LocalTime? DueTime { get; set; }
-
         [Required]
         public TraceStateEnum State { get; set; }
 

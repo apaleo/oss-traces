@@ -17,7 +17,6 @@
                     <th>Title</th>
                     <th>Description</th>
                     <th>Due date</th>
-                    <th>Due time</th>
                 </tr>
                 @foreach (var trace in TracesViewModel.Traces)
                 {
@@ -25,7 +24,6 @@
                         <td>@trace.Title</td>
                         <td>@trace.Description</td>
                         <td>@trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</td>
-                        <td>@(trace.DueTime == null ? string.Empty : trace.DueTime.Value.ToString("HH:mm", CultureInfo.CurrentUICulture))</td>
                         <td>
                             <button class="btn btn-primary" @onclick="@(() => TracesViewModel.CompleteTrace(trace.Id))">complete</button>
                         </td>

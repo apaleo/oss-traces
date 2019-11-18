@@ -1,4 +1,3 @@
-@using NodaTimePicker
 @using NodaTime
 @using Traces.Web.Models
 @using Traces.Web.ViewModels
@@ -9,11 +8,7 @@
 </div>
 <input type="text" placeholder="Title" @bind="@CurrentTrace.Title"/>
 <input type="text" placeholder="Description" @bind="@CurrentTrace.Description"/>
-<input type="text" @onfocus="@DatePickerFocused" placeholder="Due date" value="@CurrentTrace.DueDateString"/>
-<DatePicker Visible="@IsDatePickerVisible" ShowClose="true" OnSelected="@DatePickerOnSelected" MinDate="@MinDate"/>
-
-<input type="text" @onfocus="@TimePickerFocused" placeholder="Due time" value="@CurrentTrace.DueTimeString"/>
-<TimePicker Visible="@IsTimePickerVisible" OnSelectedTimeChanged="@TimePickerOnSelected" ShowClose="@true" CloseOnSelect="@true"/>
+<input type="date" value="@CurrentTrace.DueDateString"/>
 
 <div class="dialog-buttons">
     <button class="btn btn-secondary" @onclick="@OnClose">Close</button>
@@ -27,10 +22,6 @@
     [Parameter] public EventCallback OnClose { get; set; }
 
     public ReplaceTraceItemModel CurrentTrace { get; set; }
-
-    public bool IsDatePickerVisible { get; set; }
-
-    public bool IsTimePickerVisible { get; set; }
 
     public LocalDate MinDate { get; set; }
 
@@ -51,33 +42,9 @@
                 Title = configuringTrace.Title,
                 Description = configuringTrace.Description,
                 DueDate = configuringTrace.DueDate,
-                DueTime = configuringTrace.DueTime,
                 Id = configuringTrace.Id
             };
         }
-    }
-
-    void DatePickerFocused()
-    {
-        IsDatePickerVisible = true;
-    }
-
-    void DatePickerOnSelected(LocalDate selectedDate)
-    {
-        IsDatePickerVisible = false;
-        CurrentTrace.DueDate = selectedDate;
-        StateHasChanged();
-    }
-
-    void TimePickerFocused()
-    {
-        IsTimePickerVisible = true;
-    }
-
-    void TimePickerOnSelected(LocalTime selectedTime)
-    {
-        CurrentTrace.DueTime = selectedTime;
-        StateHasChanged();
     }
 
     async Task OnReplaceTraceButton()

@@ -57,8 +57,7 @@ namespace Traces.Core.Services
                 Description = createTraceDto.Description.ValueOrDefault(),
                 State = TraceStateEnum.Active,
                 Title = createTraceDto.Title,
-                DueDateUtc = createTraceDto.DueDate.ToInstant(),
-                DueTime = createTraceDto.DueTime.ToNullable()
+                DueDateUtc = createTraceDto.DueDate.ToInstant()
             };
 
             _traceRepository.Insert(trace);
@@ -88,7 +87,6 @@ namespace Traces.Core.Services
             trace.Description = replaceTraceDto.Description.ValueOrDefault();
             trace.Title = replaceTraceDto.Title;
             trace.DueDateUtc = replaceTraceDto.DueDate.ToInstant();
-            trace.DueTime = replaceTraceDto.DueTime.ToNullable();
 
             await _traceRepository.SaveAsync();
 
@@ -159,7 +157,6 @@ namespace Traces.Core.Services
             Title = trace.Title,
             CompletedDate = trace.CompletedUtc?.SomeNotNull().Map(x => x.InUtc()) ?? Option.None<ZonedDateTime>(),
             DueDate = trace.DueDateUtc.InUtc(),
-            DueTime = trace.DueTime?.SomeNotNull() ?? Option.None<LocalTime>(),
             Id = trace.Id
         };
     }

@@ -74,8 +74,7 @@ namespace Traces.Web.ViewModels
                 Id = id,
                 Title = createTraceItemModel.Title,
                 Description = createTraceItemModel.Description,
-                DueDate = createTraceItemModel.DueDate,
-                DueTime = createTraceItemModel.DueTime
+                DueDate = createTraceItemModel.DueDate
             };
 
             Traces.Add(trace);
@@ -102,7 +101,6 @@ namespace Traces.Web.ViewModels
             trace.Title = replaceTraceItemModel.Title;
             trace.Description = replaceTraceItemModel.Description;
             trace.DueDate = replaceTraceItemModel.DueDate;
-            trace.DueTime = replaceTraceItemModel.DueTime;
 
             return true;
         }

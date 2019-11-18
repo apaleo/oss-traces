@@ -1,4 +1,3 @@
-using System;
 using NodaTime;
 
 namespace Traces.Web.Models
@@ -12,8 +11,6 @@ namespace Traces.Web.Models
         public string Description { get; set; }
 
         public LocalDate DueDate { get; set; }
-
-        public LocalTime? DueTime { get; set; }
 
         public bool IsComplete { get; set; }
     }
