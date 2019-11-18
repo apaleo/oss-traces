@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using NodaTime;
 using Traces.Web.Models;
 
 namespace Traces.Web.ViewModels
@@ -60,7 +60,7 @@ namespace Traces.Web.ViewModels
         {
             if (createTraceItemModel == null ||
                 string.IsNullOrWhiteSpace(createTraceItemModel.Title) ||
-                createTraceItemModel.DueDate == LocalDate.MinIsoValue)
+                createTraceItemModel.DueDate == DateTime.MinValue)
             {
                 return false;
             }
@@ -86,7 +86,7 @@ namespace Traces.Web.ViewModels
         {
             if (replaceTraceItemModel == null ||
                 string.IsNullOrWhiteSpace(replaceTraceItemModel.Title) ||
-                replaceTraceItemModel.DueDate == LocalDate.MinIsoValue)
+                replaceTraceItemModel.DueDate == DateTime.MinValue)
             {
                 return false;
             }

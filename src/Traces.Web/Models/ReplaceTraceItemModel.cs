@@ -1,4 +1,4 @@
-using NodaTime;
+using System;
 
 namespace Traces.Web.Models
 {
@@ -10,8 +10,6 @@ namespace Traces.Web.Models
 
         public string Description { get; set; }
 
-        public string DueDateString { get; private set; }
-
-        public LocalDate DueDate { get; set; }
+        public DateTime DueDate { get; set; }
     }
 }

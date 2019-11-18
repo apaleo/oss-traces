@@ -17,6 +17,7 @@
                     <th>Title</th>
                     <th>Description</th>
                     <th>Due date</th>
+                    <th>Actions</th>
                 </tr>
                 @foreach (var trace in TracesViewModel.Traces)
                 {
@@ -25,13 +26,11 @@
                         <td>@trace.Description</td>
                         <td>@trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</td>
                         <td>
-                            <button class="btn btn-primary" @onclick="@(() => TracesViewModel.CompleteTrace(trace.Id))">complete</button>
-                        </td>
-                        <td>
-                            <button class="btn btn-secondary" @onclick="@(() => TracesViewModel.ShowReplaceTraceDialog(trace))">edit</button>
-                        </td>
-                        <td>
-                            <button class="btn btn-danger" @onclick="@(() => TracesViewModel.DeleteItem(trace.Id))">delete</button>
+                            <div>
+                                <button class="btn btn-primary" @onclick="@(() => TracesViewModel.CompleteTrace(trace.Id))">complete</button>
+                                <button class="btn btn-secondary" @onclick="@(() => TracesViewModel.ShowReplaceTraceDialog(trace))">edit</button>
+                                <button class="btn btn-danger" @onclick="@(() => TracesViewModel.DeleteItem(trace.Id))">delete</button>
+                            </div>
                         </td>
                     </tr>
                 }
