@@ -14,8 +14,6 @@ namespace Traces.Core.Models
 
         public ZonedDateTime DueDate { get; set; }
 
-        public Option<LocalTime> DueTime { get; set; }
-
         public TraceStateEnum State { get; set; }
 
         public Option<ZonedDateTime> CompletedDate { get; set; }
