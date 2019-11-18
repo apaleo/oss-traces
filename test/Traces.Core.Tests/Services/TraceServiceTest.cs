@@ -25,7 +25,6 @@ namespace Traces.Core.Tests.Services
         private const string TestActiveTraceTitle = "TestActiveTitle";
         private const TraceStateEnum TestActiveTraceState = TraceStateEnum.Active;
         private readonly Instant TestActiveTraceDueDate = DateTime.UtcNow.ToInstant();
-        private readonly LocalTime TestActiveTraceDueTime = new LocalTime(13, 40, 00);
 
         private const int TestObsoleteTraceId = 2;
         private const string TestObsoleteTraceDescription = "TestObsoleteDescription";
