@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,7 +46,7 @@ namespace Traces.Core.Services
             Check.NotNull(createTraceDto, nameof(createTraceDto));
 
             if (string.IsNullOrWhiteSpace(createTraceDto.Title) ||
-                createTraceDto.DueDate == LocalDate.MinIsoValue)
+                createTraceDto.DueDate.ToDateTimeUnspecified() == DateTime.MinValue)
             {
                 return Option.None<int>();
             }
@@ -70,7 +71,7 @@ namespace Traces.Core.Services
             Check.NotNull(replaceTraceDto, nameof(replaceTraceDto));
 
             if (string.IsNullOrWhiteSpace(replaceTraceDto.Title) ||
-                replaceTraceDto.DueDate == LocalDate.MinIsoValue)
+                replaceTraceDto.DueDate.ToDateTimeUnspecified() == DateTime.MinValue)
             {
                 return false;
             }
@@ -153,7 +154,7 @@ namespace Traces.Core.Services
             Description = trace.Description.SomeNotNull(),
             State = trace.State,
             Title = trace.Title,
-            CompletedDate = trace.CompletedUtc?.Some() ?? LocalDate.MinIsoValue.Some(),
+            CompletedDate = trace.CompletedUtc?.Some() ?? Option.None<LocalDate>(),
             DueDate = trace.DueDateUtc,
             Id = trace.Id
         };
