@@ -14,4 +14,10 @@
         <PackageReference Include="coverlet.collector" Version="1.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Traces.Core\Traces.Core.csproj" />
+      <ProjectReference Include="..\..\src\Traces.Web\Traces.Web.csproj" />
+      <ProjectReference Include="..\..\tools\Traces.Testing\Traces.Testing.csproj" />
+    </ItemGroup>
+
 </Project>

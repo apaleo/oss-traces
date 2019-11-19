@@ -41,8 +41,6 @@ namespace Traces.Web.ViewModels
                 return;
             }
 
-            trace.IsComplete = true;
-
             Traces.Remove(trace);
         }
 

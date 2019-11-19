@@ -4,7 +4,7 @@ using Traces.Web.Models;
 
 namespace Traces.Web.Services
 {
-    public interface ITracesCollector
+    public interface ITracesCollectorService
     {
         Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesAsync();
     }
