@@ -9,6 +9,6 @@ namespace Traces.Core.Models
 
         public Option<string> Description { get; set; }
 
-        public ZonedDateTime DueDate { get; set; }
+        public LocalDate DueDate { get; set; }
     }
 }

@@ -12,10 +12,10 @@ namespace Traces.Core.Models
 
         public Option<string> Description { get; set; }
 
-        public ZonedDateTime DueDate { get; set; }
+        public LocalDate DueDate { get; set; }
 
         public TraceStateEnum State { get; set; }
 
-        public Option<ZonedDateTime> CompletedDate { get; set; }
+        public Option<LocalDate> CompletedDate { get; set; }
     }
 }

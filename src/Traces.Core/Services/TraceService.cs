@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NodaTime;
-using NodaTime.Extensions;
 using Optional;
 using Optional.Unsafe;
 using Traces.Common.Enums;
@@ -42,14 +40,14 @@ namespace Traces.Core.Services
             return TraceToDto(trace).Some();
         }
 
-        public async Task<Option<TraceDto>> CreateTraceAsync(CreateTraceDto createTraceDto)
+        public async Task<Option<int>> CreateTraceAsync(CreateTraceDto createTraceDto)
         {
             Check.NotNull(createTraceDto, nameof(createTraceDto));
 
             if (string.IsNullOrWhiteSpace(createTraceDto.Title) ||
-                createTraceDto.DueDate == ZonedDateTime.FromDateTimeOffset(DateTimeOffset.MinValue))
+                createTraceDto.DueDate == LocalDate.MinIsoValue)
             {
-                return Option.None<TraceDto>();
+                return Option.None<int>();
             }
 
             var trace = new Trace
@@ -57,22 +55,22 @@ namespace Traces.Core.Services
                 Description = createTraceDto.Description.ValueOrDefault(),
                 State = TraceStateEnum.Active,
                 Title = createTraceDto.Title,
-                DueDateUtc = createTraceDto.DueDate.ToInstant()
+                DueDateUtc = createTraceDto.DueDate
             };
 
             _traceRepository.Insert(trace);
 
             await _traceRepository.SaveAsync();
 
-            return TraceToDto(trace).Some();
+            return trace.Id.Some();
         }
 
         public async Task<bool> ReplaceTraceAsync(int id, ReplaceTraceDto replaceTraceDto)
         {
             Check.NotNull(replaceTraceDto, nameof(replaceTraceDto));
 
-            if (string.IsNullOrWhiteSpace(replaceTraceDto.Title) || replaceTraceDto.DueDate ==
-                ZonedDateTime.FromDateTimeOffset(DateTimeOffset.MinValue))
+            if (string.IsNullOrWhiteSpace(replaceTraceDto.Title) ||
+                replaceTraceDto.DueDate == LocalDate.MinIsoValue)
             {
                 return false;
             }
@@ -86,7 +84,7 @@ namespace Traces.Core.Services
 
             trace.Description = replaceTraceDto.Description.ValueOrDefault();
             trace.Title = replaceTraceDto.Title;
-            trace.DueDateUtc = replaceTraceDto.DueDate.ToInstant();
+            trace.DueDateUtc = replaceTraceDto.DueDate;
 
             await _traceRepository.SaveAsync();
 
@@ -102,7 +100,7 @@ namespace Traces.Core.Services
 
             var trace = await _traceRepository.GetAsync(id);
 
-            trace.CompletedUtc = DateTime.UtcNow.ToInstant();
+            trace.CompletedUtc = SystemClock.Instance.GetCurrentInstant().InUtc().Date;
             trace.State = TraceStateEnum.Completed;
 
             await _traceRepository.SaveAsync();
@@ -120,7 +118,7 @@ namespace Traces.Core.Services
             var trace = await _traceRepository.GetAsync(id);
 
             trace.CompletedUtc = null;
-            trace.State = trace.DueDateUtc < DateTime.UtcNow.ToInstant() ? TraceStateEnum.Obsolete : TraceStateEnum.Active;
+            trace.State = trace.DueDateUtc < SystemClock.Instance.GetCurrentInstant().InUtc().Date ? TraceStateEnum.Obsolete : TraceStateEnum.Active;
 
             await _traceRepository.SaveAsync();
 
@@ -155,8 +153,8 @@ namespace Traces.Core.Services
             Description = trace.Description.SomeNotNull(),
             State = trace.State,
             Title = trace.Title,
-            CompletedDate = trace.CompletedUtc?.SomeNotNull().Map(x => x.InUtc()) ?? Option.None<ZonedDateTime>(),
-            DueDate = trace.DueDateUtc.InUtc(),
+            CompletedDate = trace.CompletedUtc?.Some() ?? LocalDate.MinIsoValue.Some(),
+            DueDate = trace.DueDateUtc,
             Id = trace.Id
         };
     }
