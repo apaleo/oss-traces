@@ -1,7 +1,7 @@
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using NodaTime.Extensions;
 using Optional;
+using Traces.Common.Exceptions;
 using Traces.Common.Utils;
 using Traces.Core.Models;
 using Traces.Core.Services;
