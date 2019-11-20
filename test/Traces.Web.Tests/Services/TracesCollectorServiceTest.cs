@@ -8,6 +8,7 @@ using NodaTime.Extensions;
 using Optional;
 using Optional.Unsafe;
 using Traces.Common.Enums;
+using Traces.Common.Exceptions;
 using Traces.Core.Models;
 using Traces.Core.Services;
 using Traces.Testing;
@@ -82,6 +83,7 @@ namespace Traces.Web.Tests.Services
             result.Should().NotBeNull();
 
             result.Success.Should().BeTrue();
+            result.ErrorMessage.HasValue.Should().BeFalse();
 
             var resultTraces = result.Result.ValueOrFailure();
 
@@ -104,6 +106,25 @@ namespace Traces.Web.Tests.Services
             resultTraces[2].Description.Should().Be(ThirdTraceDescription);
             resultTraces[2].DueDate.Should().Be(ThirdTraceDueDate.ToDateTimeUnspecified());
             resultTraces[2].State.Should().Be(ThirdTraceState);
+        }
+
+        [Fact]
+        public async Task ShouldCatchValidationExceptionAndReturnUnsuccessfulResult()
+        {
+            const string exceptionMessage = "Traces do not exist";
+
+            _traceServiceMock.Setup(x => x.GetTracesAsync())
+                .ThrowsAsync(new ValidationException(exceptionMessage));
+
+            var collectorResult = await _tracesCollectorService.GetTracesAsync();
+
+            collectorResult.Success.Should().BeFalse();
+            collectorResult.Result.HasValue.Should().BeFalse();
+            collectorResult.ErrorMessage.HasValue.Should().BeTrue();
+
+            var errorMessage = collectorResult.ErrorMessage.ValueOrFailure();
+
+            errorMessage.Should().Be(exceptionMessage);
         }
     }
 }
