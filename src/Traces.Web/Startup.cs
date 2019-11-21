@@ -1,11 +1,13 @@
 using Blazored.Toast;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Traces.Core.Repositories;
 using Traces.Core.Services;
+using Traces.Data;
 using Traces.Web.Services;
 using Traces.Web.ViewModels;
 
@@ -26,6 +28,12 @@ namespace Traces.Web
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            services.AddDbContext<TracesDbContext>(
+                options => options.UseNpgsql(
+                    Configuration["ConnectionStrings:DefaultDatabase"],
+                    npgSqlOptions => npgSqlOptions.UseNodaTime()));
+
             services.AddBlazoredToast();
 
             services.AddScoped<ITraceRepository, TraceRepository>();
