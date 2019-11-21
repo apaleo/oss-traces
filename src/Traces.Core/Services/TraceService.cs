@@ -6,6 +6,7 @@ using NodaTime;
 using Optional;
 using Optional.Unsafe;
 using Traces.Common.Enums;
+using Traces.Common.Exceptions;
 using Traces.Common.Utils;
 using Traces.Core.Models;
 using Traces.Core.Repositories;
@@ -48,7 +49,7 @@ namespace Traces.Core.Services
             if (string.IsNullOrWhiteSpace(createTraceDto.Title) ||
                 createTraceDto.DueDate.ToDateTimeUnspecified() == DateTime.MinValue)
             {
-                return Option.None<int>();
+                throw new BusinessValidationException("The trace must have a title and a due date to be created.");
             }
 
             var trace = new Trace
@@ -73,7 +74,7 @@ namespace Traces.Core.Services
             if (string.IsNullOrWhiteSpace(replaceTraceDto.Title) ||
                 replaceTraceDto.DueDate.ToDateTimeUnspecified() == DateTime.MinValue)
             {
-                return false;
+                throw new BusinessValidationException($"Trace with id {id} cannot be updated, the replacement must have a title and a due date.");
             }
 
             if (!await _traceRepository.ExistsAsync(t => t.Id == id))
@@ -96,7 +97,7 @@ namespace Traces.Core.Services
         {
             if (!await _traceRepository.ExistsAsync(x => x.Id == id))
             {
-                return false;
+                throw new BusinessValidationException($"The trace with id {id} could not be found.");
             }
 
             var trace = await _traceRepository.GetAsync(id);
@@ -113,7 +114,7 @@ namespace Traces.Core.Services
         {
             if (!await _traceRepository.ExistsAsync(x => x.Id == id))
             {
-                return false;
+                throw new BusinessValidationException($"The trace with id {id} could not be found.");
             }
 
             var trace = await _traceRepository.GetAsync(id);
@@ -130,7 +131,7 @@ namespace Traces.Core.Services
         {
             if (!await _traceRepository.ExistsAsync(t => t.Id == id))
             {
-                return false;
+                throw new BusinessValidationException($"The trace with id {id} could not be found.");
             }
 
             var deleted = await _traceRepository.DeleteAsync(id);

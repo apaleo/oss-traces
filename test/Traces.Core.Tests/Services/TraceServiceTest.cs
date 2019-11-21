@@ -9,6 +9,7 @@ using NodaTime.Extensions;
 using Optional;
 using Optional.Unsafe;
 using Traces.Common.Enums;
+using Traces.Common.Exceptions;
 using Traces.Core.Models;
 using Traces.Core.Repositories;
 using Traces.Core.Services;
@@ -207,9 +208,9 @@ namespace Traces.Core.Tests.Services
                 Title = TestActiveTraceTitle
             };
 
-            var result = await _traceService.CreateTraceAsync(createTraceDto);
+            var result = await Assert.ThrowsAsync<BusinessValidationException>(() => _traceService.CreateTraceAsync(createTraceDto));
 
-            result.HasValue.Should().BeFalse();
+            result.Message.Should().Be("The trace must have a title and a due date to be created.");
         }
 
         [Fact]
@@ -221,9 +222,9 @@ namespace Traces.Core.Tests.Services
                 DueDate = TestActiveTraceDueDate
             };
 
-            var result = await _traceService.CreateTraceAsync(createTraceDto);
+            var result = await Assert.ThrowsAsync<BusinessValidationException>(() => _traceService.CreateTraceAsync(createTraceDto));
 
-            result.HasValue.Should().BeFalse();
+            result.Message.Should().Be("The trace must have a title and a due date to be created.");
         }
 
         [Fact]
@@ -264,9 +265,10 @@ namespace Traces.Core.Tests.Services
                 DueDate = TestObsoleteTraceDueDate
             };
 
-            var result = await _traceService.ReplaceTraceAsync(TestCompletedTraceId, replaceTraceDto);
+            var result = await Assert.ThrowsAsync<BusinessValidationException>(() =>
+                _traceService.ReplaceTraceAsync(TestCompletedTraceId, replaceTraceDto));
 
-            result.Should().BeFalse();
+            result.Message.Should().Be($"Trace with id {TestCompletedTraceId} cannot be updated, the replacement must have a title and a due date.");
         }
 
         [Fact]
@@ -278,9 +280,12 @@ namespace Traces.Core.Tests.Services
                 Description = TestObsoleteTraceDescription.Some()
             };
 
-            var result = await _traceService.ReplaceTraceAsync(TestObsoleteTraceId, replaceTraceDto);
+            var result = await Assert.ThrowsAsync<BusinessValidationException>(() =>
+                _traceService.ReplaceTraceAsync(TestObsoleteTraceId, replaceTraceDto));
 
-            result.Should().BeFalse();
+            result.Message.Should()
+                .Be(
+                    $"Trace with id {TestObsoleteTraceId} cannot be updated, the replacement must have a title and a due date.");
         }
 
         [Fact]
@@ -312,9 +317,11 @@ namespace Traces.Core.Tests.Services
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
                 .ReturnsAsync(false);
 
-            var result = await _traceService.CompleteTraceAsync(TestActiveTraceId);
+            var result =
+                await Assert.ThrowsAsync<BusinessValidationException>(() =>
+                    _traceService.CompleteTraceAsync(TestActiveTraceId));
 
-            result.Should().BeFalse();
+            result.Message.Should().Be($"The trace with id {TestActiveTraceId} could not be found.");
         }
 
         [Fact]
@@ -348,8 +355,8 @@ namespace Traces.Core.Tests.Services
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
                 .ReturnsAsync(false);
 
-            var result = await _traceService.RevertCompleteAsync(TestCompletedTraceId);
-            result.Should().BeFalse();
+            var result = await Assert.ThrowsAsync<BusinessValidationException>(() => _traceService.RevertCompleteAsync(TestCompletedTraceId));
+            result.Message.Should().Be($"The trace with id {TestCompletedTraceId} could not be found.");
         }
 
         [Fact]
@@ -374,9 +381,11 @@ namespace Traces.Core.Tests.Services
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
                 .ReturnsAsync(false);
 
-            var result = await _traceService.DeleteTraceAsync(TestObsoleteTraceId);
+            var result =
+                await Assert.ThrowsAsync<BusinessValidationException>(() =>
+                    _traceService.DeleteTraceAsync(TestObsoleteTraceId));
 
-            result.Should().BeFalse();
+            result.Message.Should().Be($"The trace with id {TestObsoleteTraceId} could not be found.");
         }
 
         [Fact]
