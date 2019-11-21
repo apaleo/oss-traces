@@ -59,7 +59,7 @@
 
     async Task OnReplaceTraceButton()
     {
-        if (TracesViewModel.ReplaceTraceItem(CurrentTrace))
+        if (await TracesViewModel.ReplaceTraceItem(CurrentTrace))
         {
             await OnClose.InvokeAsync(null);
         }

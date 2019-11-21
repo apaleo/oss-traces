@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using NodaTime.Extensions;
 using Optional;
+using Traces.Common.Enums;
 using Traces.Common.Exceptions;
 using Traces.Common.Utils;
 using Traces.Core.Models;
@@ -41,7 +42,7 @@ namespace Traces.Web.Services
             }
         }
 
-        public async Task<ResultModel<int>> CreateTraceAsync(CreateTraceItemModel createTraceItemModel)
+        public async Task<ResultModel<TraceItemModel>> CreateTraceAsync(CreateTraceItemModel createTraceItemModel)
         {
             try
             {
@@ -52,17 +53,26 @@ namespace Traces.Web.Services
                     DueDate = createTraceItemModel.DueDate.ToLocalDateTime().Date
                 };
 
-                var creationResult = await _traceService.CreateTraceAsync(createTraceDto);
+                var traceId = await _traceService.CreateTraceAsync(createTraceDto);
 
-                return new ResultModel<int>
+                var traceItemModel = new TraceItemModel
                 {
-                    Result = creationResult,
+                    Id = traceId,
+                    Title = createTraceItemModel.Title,
+                    Description = createTraceItemModel.Description,
+                    State = TraceStateEnum.Active,
+                    DueDate = createTraceItemModel.DueDate
+                };
+
+                return new ResultModel<TraceItemModel>
+                {
+                    Result = traceItemModel.Some(),
                     Success = true
                 };
             }
             catch (BusinessValidationException e)
             {
-                return new ResultModel<int>
+                return new ResultModel<TraceItemModel>
                 {
                     Success = false,
                     ErrorMessage = e.Message.Some()

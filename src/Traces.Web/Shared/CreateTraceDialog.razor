@@ -39,11 +39,11 @@
         CurrentTrace = new CreateTraceItemModel();
     }
 
-    void OnCreateButton()
+    async void OnCreateButton()
     {
-        if (TracesViewModel.CreateTraceItem(CurrentTrace))
+        if (await TracesViewModel.CreateTraceItemAsync(CurrentTrace))
         {
-            OnClose.InvokeAsync(null);
+            await OnClose.InvokeAsync(null);
         }
     }
 

@@ -4,6 +4,7 @@ using FluentAssertions;
 using Moq;
 using Optional;
 using Optional.Unsafe;
+using Traces.Common.Enums;
 using Traces.Common.Exceptions;
 using Traces.Core.Models;
 using Traces.Core.Services;
@@ -71,7 +72,7 @@ namespace Traces.Web.Tests.Services
             const int createdId = 100;
             const string testTraceTitle = "TestTitle";
             const string testTraceDescription = "TestDescription";
-            var testTraceDueDate = DateTime.Now.Add(TimeSpan.FromDays(2));
+            var testTraceDueDate = DateTime.Now.Add(TimeSpan.FromDays(2)).Date;
 
             var testCreateTrace = new CreateTraceItemModel
             {
@@ -84,8 +85,8 @@ namespace Traces.Web.Tests.Services
                 It.Is<CreateTraceDto>(v =>
                 v.Title == testTraceTitle &&
                 v.Description.ValueOrFailure() == testTraceDescription &&
-                v.DueDate.ToDateTimeUnspecified().Date == testTraceDueDate.Date)))
-                .ReturnsAsync(createdId.Some());
+                v.DueDate.ToDateTimeUnspecified().Date == testTraceDueDate)))
+                .ReturnsAsync(createdId);
 
             var creationResult = await _traceModifierService.CreateTraceAsync(testCreateTrace);
 
@@ -95,7 +96,12 @@ namespace Traces.Web.Tests.Services
             creationResult.Result.HasValue.Should().BeTrue();
 
             var result = creationResult.Result.ValueOrFailure();
-            result.Should().Be(createdId);
+            result.Should().NotBeNull();
+            result.Id.Should().Be(createdId);
+            result.Title.Should().Be(testTraceTitle);
+            result.Description.Should().Be(testTraceDescription);
+            result.State.Should().Be(TraceStateEnum.Active);
+            result.DueDate.Should().Be(testTraceDueDate);
         }
 
         [Fact]

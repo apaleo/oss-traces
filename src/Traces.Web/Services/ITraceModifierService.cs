@@ -7,7 +7,7 @@ namespace Traces.Web.Services
     {
         Task<ResultModel<bool>> MarkTraceAsCompleteAsync(int id);
 
-        Task<ResultModel<int>> CreateTraceAsync(CreateTraceItemModel createTraceItemModel);
+        Task<ResultModel<TraceItemModel>> CreateTraceAsync(CreateTraceItemModel createTraceItemModel);
 
         Task<ResultModel<bool>> ReplaceTraceAsync(ReplaceTraceItemModel replaceTraceItemModel);
 

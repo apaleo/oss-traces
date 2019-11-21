@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Optional;
+using Traces.Common.Exceptions;
 using Traces.Common.Utils;
 using Traces.Core.Models;
 using Traces.Core.Services;
@@ -33,7 +33,7 @@ namespace Traces.Web.Services
                     Result = traceModels.Some()
                 };
             }
-            catch (ValidationException e)
+            catch (BusinessValidationException e)
             {
                 return new ResultModel<IReadOnlyList<TraceItemModel>>
                 {

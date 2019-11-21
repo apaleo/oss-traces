@@ -196,7 +196,7 @@ namespace Traces.Core.Tests.Services
 
             var result = await _traceService.CreateTraceAsync(createTraceDto);
 
-            result.HasValue.Should().BeTrue();
+            result.Should().Be(0);
         }
 
         [Fact]

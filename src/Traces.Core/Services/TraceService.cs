@@ -42,7 +42,7 @@ namespace Traces.Core.Services
             return TraceToDto(trace).Some();
         }
 
-        public async Task<Option<int>> CreateTraceAsync(CreateTraceDto createTraceDto)
+        public async Task<int> CreateTraceAsync(CreateTraceDto createTraceDto)
         {
             Check.NotNull(createTraceDto, nameof(createTraceDto));
 
@@ -64,7 +64,7 @@ namespace Traces.Core.Services
 
             await _traceRepository.SaveAsync();
 
-            return trace.Id.Some();
+            return trace.Id;
         }
 
         public async Task<bool> ReplaceTraceAsync(int id, ReplaceTraceDto replaceTraceDto)
