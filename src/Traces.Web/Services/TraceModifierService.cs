@@ -30,7 +30,7 @@ namespace Traces.Web.Services
                     Success = true
                 };
             }
-            catch (ValidationException e)
+            catch (BusinessValidationException e)
             {
                 return new ResultModel<bool>
                 {
@@ -60,7 +60,7 @@ namespace Traces.Web.Services
                     Success = true
                 };
             }
-            catch (ValidationException e)
+            catch (BusinessValidationException e)
             {
                 return new ResultModel<int>
                 {
@@ -89,7 +89,7 @@ namespace Traces.Web.Services
                     Result = replaceResult.Some()
                 };
             }
-            catch (ValidationException e)
+            catch (BusinessValidationException e)
             {
                 return new ResultModel<bool>
                 {
@@ -111,7 +111,7 @@ namespace Traces.Web.Services
                     Success = true
                 };
             }
-            catch (ValidationException e)
+            catch (BusinessValidationException e)
             {
                 return new ResultModel<bool>
                 {

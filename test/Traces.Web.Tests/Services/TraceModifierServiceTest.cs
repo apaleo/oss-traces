@@ -52,7 +52,7 @@ namespace Traces.Web.Tests.Services
             const int testTraceId = 2;
 
             _traceServiceMock.Setup(x => x.CompleteTraceAsync(It.Is<int>(v => v == testTraceId)))
-                .ThrowsAsync(new ValidationException(exceptionMessage));
+                .ThrowsAsync(new BusinessValidationException(exceptionMessage));
 
             var completeResult = await _traceModifierService.MarkTraceAsCompleteAsync(testTraceId);
 
@@ -118,7 +118,7 @@ namespace Traces.Web.Tests.Services
                         v.Title == testTraceTitle &&
                         v.Description.ValueOrFailure() == testTraceDescription &&
                         v.DueDate.ToDateTimeUnspecified().Date == testTraceDueDate.Date)))
-                .ThrowsAsync(new ValidationException(exceptionMessage));
+                .ThrowsAsync(new BusinessValidationException(exceptionMessage));
 
             var notSuccessResult = await _traceModifierService.CreateTraceAsync(testCreateTrace);
 
@@ -186,7 +186,7 @@ namespace Traces.Web.Tests.Services
                     It.Is<ReplaceTraceDto>(v => v.Title == testReplaceTitle &&
                                                 v.Description.ValueOrFailure() == testReplaceDescription &&
                                                 v.DueDate.ToDateTimeUnspecified().Date == testReplaceDate.Date)))
-                .ThrowsAsync(new ValidationException(exceptionMessage));
+                .ThrowsAsync(new BusinessValidationException(exceptionMessage));
 
             var replaceResult = await _traceModifierService.ReplaceTraceAsync(testReplaceTrace);
 
@@ -225,7 +225,7 @@ namespace Traces.Web.Tests.Services
             const int testTraceId = 89;
 
             _traceServiceMock.Setup(x => x.DeleteTraceAsync(It.Is<int>(v => v == testTraceId)))
-                .ThrowsAsync(new ValidationException(exceptionMessage));
+                .ThrowsAsync(new BusinessValidationException(exceptionMessage));
 
             var deleteResult = await _traceModifierService.DeleteTraceAsync(testTraceId);
 

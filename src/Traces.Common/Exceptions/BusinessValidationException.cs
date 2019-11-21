@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Traces.Common.Exceptions
 {
-    public class ValidationException : Exception
+    public class BusinessValidationException : Exception
     {
-        public ValidationException(string message, Exception inner = null)
+        public BusinessValidationException(string message, Exception inner = null)
             : this(new[] { message }, inner)
         {
         }
 
-        public ValidationException(IEnumerable<string> messages, Exception inner = null)
+        public BusinessValidationException(IEnumerable<string> messages, Exception inner = null)
             : base(string.Join(" | ", messages), inner)
         {
         }

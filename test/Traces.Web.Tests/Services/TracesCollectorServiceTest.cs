@@ -114,7 +114,7 @@ namespace Traces.Web.Tests.Services
             const string exceptionMessage = "Traces do not exist";
 
             _traceServiceMock.Setup(x => x.GetTracesAsync())
-                .ThrowsAsync(new ValidationException(exceptionMessage));
+                .ThrowsAsync(new BusinessValidationException(exceptionMessage));
 
             var collectorResult = await _tracesCollectorService.GetTracesAsync();
 
