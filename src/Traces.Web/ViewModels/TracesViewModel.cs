@@ -24,16 +24,30 @@ namespace Traces.Web.ViewModels
             _traceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
             _toastService = Check.NotNull(toastService, nameof(toastService));
             Traces = new List<TraceItemModel>();
-            Task.Run(async () => { await LoadTracesAsync(); });
         }
 
         public List<TraceItemModel> Traces { get; }
 
-        public TraceItemModel ConfiguringTrace { get; set; }
+        public TraceItemModel ConfiguringTrace { get; private set; }
 
-        public bool ShowingCreateTraceDialog { get; set; }
+        public bool ShowingCreateTraceDialog { get; private set; }
 
-        public bool ShowingUpdateTraceDialog { get; set; }
+        public bool ShowingUpdateTraceDialog { get; private set; }
+
+        public async Task LoadTracesAsync()
+        {
+            var tracesResult = await _tracesCollectorService.GetTracesAsync();
+
+            if (tracesResult.Success)
+            {
+                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                foreach (var trace in traces)
+                {
+                    Traces.Add(trace);
+                }
+            }
+        }
 
         public void ShowCreateTraceDialog()
         {
@@ -62,7 +76,7 @@ namespace Traces.Web.ViewModels
 
                 Traces.Remove(trace);
 
-                ShowToastMessage(true, "Trace marked as completed successfully.", "Success");
+                ShowToastMessage(true, "Trace marked as completed successfully.");
             }
             else
             {
@@ -70,7 +84,7 @@ namespace Traces.Web.ViewModels
                     v => v,
                     () => throw new NotImplementedException());
 
-                ShowToastMessage(false, errorMessage, "Oops");
+                ShowToastMessage(false, errorMessage);
             }
         }
 
@@ -95,7 +109,7 @@ namespace Traces.Web.ViewModels
                     Traces.Add(v);
                 });
 
-                ShowToastMessage(true, "Trace added successfully", "Success");
+                ShowToastMessage(true, "Trace added successfully");
             }
             else
             {
@@ -103,7 +117,7 @@ namespace Traces.Web.ViewModels
                     v => v,
                     () => throw new NotImplementedException());
 
-                ShowToastMessage(false, errorMessage, "Oops");
+                ShowToastMessage(false, errorMessage);
             }
 
             return createResult.Success;
@@ -127,6 +141,8 @@ namespace Traces.Web.ViewModels
                     trace.Title = replaceTraceItemModel.Title;
                     trace.Description = replaceTraceItemModel.Description;
                     trace.DueDate = replaceTraceItemModel.DueDate;
+
+                    ShowToastMessage(true, "Trace updated successfully.");
                 });
             }
             else
@@ -135,7 +151,7 @@ namespace Traces.Web.ViewModels
                     v => v,
                     () => throw new NotImplementedException());
 
-                ShowToastMessage(false, errorMessage, "Oops");
+                ShowToastMessage(false, errorMessage);
             }
 
             return replaceResult.Success;
@@ -157,6 +173,8 @@ namespace Traces.Web.ViewModels
                     }
 
                     Traces.Remove(trace);
+
+                    ShowToastMessage(true, "Trace removed successfully.");
                 });
             }
             else
@@ -165,27 +183,14 @@ namespace Traces.Web.ViewModels
                     v => v,
                     () => throw new NotImplementedException());
 
-                ShowToastMessage(false, errorMessage, "Oops");
+                ShowToastMessage(false, errorMessage);
             }
         }
 
-        private async Task LoadTracesAsync()
+        private void ShowToastMessage(bool success, string message)
         {
-            var tracesResult = await _tracesCollectorService.GetTracesAsync();
+            var header = success ? "Success" : "Oops";
 
-            if (tracesResult.Success)
-            {
-                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
-
-                foreach (var trace in traces)
-                {
-                    Traces.Add(trace);
-                }
-            }
-        }
-
-        private void ShowToastMessage(bool success, string message, string header = "")
-        {
             if (success)
             {
                 _toastService.ShowSuccess(message, header);

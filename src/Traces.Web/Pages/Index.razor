@@ -46,3 +46,14 @@
         <ReplaceTraceDialog OnClose="@TracesViewModel.HideUpdateTraceDialog"/>
     </DialogContainer>
 </div>
+
+@code
+{
+
+    protected override async Task OnInitializedAsync()
+    {
+        await TracesViewModel.LoadTracesAsync();
+        await base.OnInitializedAsync();
+    }
+
+}
