@@ -54,9 +54,9 @@ namespace Traces.Core.Services
             Check.NotNull(createTraceDto, nameof(createTraceDto));
 
             if (string.IsNullOrWhiteSpace(createTraceDto.Title) ||
-                createTraceDto.DueDate.ToDateTimeUnspecified() == DateTime.MinValue)
+                createTraceDto.DueDate < LocalDate.FromDateTime(DateTime.Today))
             {
-                throw new BusinessValidationException("The trace must have a title and a due date to be created.");
+                throw new BusinessValidationException("The trace must have a title and a due date in the future to be created.");
             }
 
             var trace = new Trace
@@ -79,9 +79,9 @@ namespace Traces.Core.Services
             Check.NotNull(replaceTraceDto, nameof(replaceTraceDto));
 
             if (string.IsNullOrWhiteSpace(replaceTraceDto.Title) ||
-                replaceTraceDto.DueDate.ToDateTimeUnspecified() == DateTime.MinValue)
+                replaceTraceDto.DueDate < LocalDate.FromDateTime(DateTime.Today))
             {
-                throw new BusinessValidationException($"Trace with id {id} cannot be updated, the replacement must have a title and a due date.");
+                throw new BusinessValidationException($"Trace with id {id} cannot be updated, the replacement must have a title and a due date in the future.");
             }
 
             if (!await _traceRepository.ExistsAsync(t => t.Id == id))
@@ -127,7 +127,7 @@ namespace Traces.Core.Services
             var trace = await _traceRepository.GetAsync(id);
 
             trace.CompletedUtc = null;
-            trace.State = trace.DueDateUtc < SystemClock.Instance.GetCurrentInstant().InUtc().Date ? TraceStateEnum.Obsolete : TraceStateEnum.Active;
+            trace.State = trace.DueDateUtc < LocalDate.FromDateTime(DateTime.Today) ? TraceStateEnum.Obsolete : TraceStateEnum.Active;
 
             await _traceRepository.SaveAsync();
 

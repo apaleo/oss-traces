@@ -281,7 +281,7 @@ namespace Traces.Core.Tests.Services
 
             var result = await Assert.ThrowsAsync<BusinessValidationException>(() => _traceService.CreateTraceAsync(createTraceDto));
 
-            result.Message.Should().Be("The trace must have a title and a due date to be created.");
+            result.Message.Should().Be("The trace must have a title and a due date in the future to be created.");
         }
 
         [Fact]
@@ -295,7 +295,22 @@ namespace Traces.Core.Tests.Services
 
             var result = await Assert.ThrowsAsync<BusinessValidationException>(() => _traceService.CreateTraceAsync(createTraceDto));
 
-            result.Message.Should().Be("The trace must have a title and a due date to be created.");
+            result.Message.Should().Be("The trace must have a title and a due date in the future to be created.");
+        }
+
+        [Fact]
+        public async Task ShouldFailToCreateTraceWhenDueDateIsInThePastAsync()
+        {
+            var createTraceDto = new CreateTraceDto
+            {
+                Title = TestActiveTraceTitle,
+                Description = TestActiveTraceDescription.Some(),
+                DueDate = LocalDate.FromDateTime(DateTime.Today.AddDays(-1))
+            };
+
+            var result = await Assert.ThrowsAsync<BusinessValidationException>(() => _traceService.CreateTraceAsync(createTraceDto));
+
+            result.Message.Should().Be("The trace must have a title and a due date in the future to be created.");
         }
 
         [Fact]
@@ -305,7 +320,7 @@ namespace Traces.Core.Tests.Services
             {
                 Description = TestObsoleteTraceDescription.Some(),
                 Title = TestObsoleteTraceTitle,
-                DueDate = TestObsoleteTraceDueDate
+                DueDate = LocalDate.FromDateTime(DateTime.Today)
             };
 
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
@@ -339,7 +354,7 @@ namespace Traces.Core.Tests.Services
             var result = await Assert.ThrowsAsync<BusinessValidationException>(() =>
                 _traceService.ReplaceTraceAsync(TestCompletedTraceId, replaceTraceDto));
 
-            result.Message.Should().Be($"Trace with id {TestCompletedTraceId} cannot be updated, the replacement must have a title and a due date.");
+            result.Message.Should().Be($"Trace with id {TestCompletedTraceId} cannot be updated, the replacement must have a title and a due date in the future.");
         }
 
         [Fact]
@@ -356,7 +371,25 @@ namespace Traces.Core.Tests.Services
 
             result.Message.Should()
                 .Be(
-                    $"Trace with id {TestObsoleteTraceId} cannot be updated, the replacement must have a title and a due date.");
+                    $"Trace with id {TestObsoleteTraceId} cannot be updated, the replacement must have a title and a due date in the future.");
+        }
+
+        [Fact]
+        public async Task ShouldNotReplaceWhenDueDateIsInThePastAsync()
+        {
+            var replaceTraceDto = new ReplaceTraceDto
+            {
+                Title = TestActiveTraceTitle,
+                Description = TestObsoleteTraceDescription.Some(),
+                DueDate = LocalDate.FromDateTime(DateTime.Today.AddDays(-1))
+            };
+
+            var result = await Assert.ThrowsAsync<BusinessValidationException>(() =>
+                _traceService.ReplaceTraceAsync(TestObsoleteTraceId, replaceTraceDto));
+
+            result.Message.Should()
+                .Be(
+                    $"Trace with id {TestObsoleteTraceId} cannot be updated, the replacement must have a title and a due date in the future.");
         }
 
         [Fact]
