@@ -1,3 +1,4 @@
+using System;
 using Blazored.Toast;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -68,6 +69,17 @@ namespace Traces.Web
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                ExecuteDataMigrationsAndEnsureSeedData(serviceScope.ServiceProvider);
+            }
+        }
+
+        private static void ExecuteDataMigrationsAndEnsureSeedData(IServiceProvider serviceProvider)
+        {
+            var context = serviceProvider.GetService<TracesDbContext>();
+            context.Database.Migrate();
         }
     }
 }
