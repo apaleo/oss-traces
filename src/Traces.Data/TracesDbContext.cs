@@ -16,9 +16,19 @@ namespace Traces.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                // todo: Setup dbConnection string
-                optionsBuilder.UseNpgsql(string.Empty);
+                optionsBuilder.UseNpgsql(
+                    "Host=127.0.0.1;Database=Traces;Username=OpenTraces;Password=OpenTraces.2019",
+                    npgSqlOption => npgSqlOption.UseNodaTime());
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Trace>()
+                .Property(t => t.Id)
+                .UseHiLo();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
