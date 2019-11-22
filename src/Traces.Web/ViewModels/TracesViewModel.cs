@@ -31,13 +31,13 @@ namespace Traces.Web.ViewModels
 
         public TraceItemModel ConfiguringTrace { get; set; }
 
-        public bool ShowCreateTraceDialog { get; set; }
+        public bool ShowingCreateTraceDialog { get; set; }
 
         public bool ShowingUpdateTraceDialog { get; set; }
 
-        public void AddItem()
+        public void ShowCreateTraceDialog()
         {
-            ShowCreateTraceDialog = true;
+            ShowingCreateTraceDialog = true;
         }
 
         public void ShowReplaceTraceDialog(TraceItemModel traceItemModel)
@@ -47,21 +47,36 @@ namespace Traces.Web.ViewModels
             ShowingUpdateTraceDialog = true;
         }
 
-        public void CompleteTrace(int id)
+        public async Task CompleteTraceAsync(int id)
         {
-            var trace = Traces.FirstOrDefault(t => t.Id == id);
+            var completeResult = await _traceModifierService.MarkTraceAsCompleteAsync(id);
 
-            if (trace == null)
+            if (completeResult.Success)
             {
-                return;
-            }
+                var trace = Traces.FirstOrDefault(t => t.Id == id);
 
-            Traces.Remove(trace);
+                if (trace == null)
+                {
+                    return;
+                }
+
+                Traces.Remove(trace);
+
+                ShowToastMessage(true, "Trace marked as completed successfully.", "Success");
+            }
+            else
+            {
+                var errorMessage = completeResult.ErrorMessage.Match(
+                    v => v,
+                    () => throw new NotImplementedException());
+
+                ShowToastMessage(false, errorMessage, "Oops");
+            }
         }
 
-        public void CloseCreateDialog()
+        public void HideCreateTraceDialog()
         {
-            ShowCreateTraceDialog = false;
+            ShowingCreateTraceDialog = false;
         }
 
         public void HideUpdateTraceDialog()
@@ -94,7 +109,7 @@ namespace Traces.Web.ViewModels
             return createResult.Success;
         }
 
-        public async Task<bool> ReplaceTraceItem(ReplaceTraceItemModel replaceTraceItemModel)
+        public async Task<bool> ReplaceTraceItemAsync(ReplaceTraceItemModel replaceTraceItemModel)
         {
             var replaceResult = await _traceModifierService.ReplaceTraceAsync(replaceTraceItemModel);
 
@@ -126,7 +141,7 @@ namespace Traces.Web.ViewModels
             return replaceResult.Success;
         }
 
-        public async Task DeleteItem(int id)
+        public async Task DeleteItemAsync(int id)
         {
             var deleteResult = await _traceModifierService.DeleteTraceAsync(id);
 
