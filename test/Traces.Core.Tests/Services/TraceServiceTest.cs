@@ -121,6 +121,77 @@ namespace Traces.Core.Tests.Services
         }
 
         [Fact]
+        public async Task ShouldGetAllActiveTracesAsync()
+        {
+            var testActiveTrace = new Trace
+            {
+                Id = TestActiveTraceId,
+                Description = TestActiveTraceDescription,
+                State = TestActiveTraceState,
+                Title = TestActiveTraceTitle,
+                DueDateUtc = TestActiveTraceDueDate
+            };
+
+            var testObsoleteTrace = new Trace
+            {
+                Id = TestObsoleteTraceId,
+                Description = TestObsoleteTraceDescription,
+                State = TestActiveTraceState,
+                Title = TestObsoleteTraceTitle,
+                DueDateUtc = TestObsoleteTraceDueDate
+            };
+
+            var testCompletedTrace = new Trace
+            {
+                Id = TestCompletedTraceId,
+                Description = TestCompletedTraceDescription,
+                State = TestActiveTraceState,
+                Title = TestCompletedTraceTitle,
+                DueDateUtc = TestCompletedTraceDueDate,
+                CompletedUtc = TestCompletedDate
+            };
+
+            var testTraces = new List<Trace>
+            {
+                testActiveTrace,
+                testObsoleteTrace,
+                testCompletedTrace
+            };
+
+            _traceRepositoryMock.Setup(x => x.GetAllForTenantAsync())
+                .ReturnsAsync(testTraces);
+
+            var result = await _traceService.GetTracesAsync();
+
+            result.Should().NotBeEmpty();
+            result.Should().HaveCount(3);
+
+            // Test first element is equivalent to trace testActiveTrace
+            result[0].Id.Should().Be(TestActiveTraceId);
+            result[0].Title.Should().Be(TestActiveTraceTitle);
+            result[0].Description.ValueOrFailure().Should().Be(TestActiveTraceDescription);
+            result[0].State.Should().Be(TestActiveTraceState);
+            result[0].DueDate.Should().Be(TestActiveTraceDueDate);
+            result[0].CompletedDate.HasValue.Should().BeFalse();
+
+            // Test second element is equivalent to trace testObsoleteTrace
+            result[1].Id.Should().Be(TestObsoleteTraceId);
+            result[1].Title.Should().Be(TestObsoleteTraceTitle);
+            result[1].Description.ValueOrFailure().Should().Be(TestObsoleteTraceDescription);
+            result[1].State.Should().Be(TestActiveTraceState);
+            result[1].DueDate.Should().Be(TestObsoleteTraceDueDate);
+            result[1].CompletedDate.HasValue.Should().BeFalse();
+
+            // Test second element is equivalent to trace testCompletedTrace
+            result[2].Id.Should().Be(TestCompletedTraceId);
+            result[2].Title.Should().Be(TestCompletedTraceTitle);
+            result[2].Description.ValueOrFailure().Should().Be(TestCompletedTraceDescription);
+            result[2].State.Should().Be(TestActiveTraceState);
+            result[2].DueDate.Should().Be(TestCompletedTraceDueDate);
+            result[2].CompletedDate.ValueOrFailure().Should().Be(TestCompletedDate);
+        }
+
+        [Fact]
         public async Task ShouldGetEmptyListWhenNoTracesExistAsync()
         {
             _traceRepositoryMock.Setup(x => x.GetAllForTenantAsync())

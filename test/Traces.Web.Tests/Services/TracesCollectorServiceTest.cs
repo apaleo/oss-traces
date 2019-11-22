@@ -75,7 +75,7 @@ namespace Traces.Web.Tests.Services
                 }
             };
 
-            _traceServiceMock.Setup(x => x.GetTracesAsync())
+            _traceServiceMock.Setup(x => x.GetActiveTracesAsync())
                 .ReturnsAsync(testTraces);
 
             var result = await _tracesCollectorService.GetTracesAsync();
@@ -113,7 +113,7 @@ namespace Traces.Web.Tests.Services
         {
             const string exceptionMessage = "Traces do not exist";
 
-            _traceServiceMock.Setup(x => x.GetTracesAsync())
+            _traceServiceMock.Setup(x => x.GetActiveTracesAsync())
                 .ThrowsAsync(new BusinessValidationException(exceptionMessage));
 
             var collectorResult = await _tracesCollectorService.GetTracesAsync();

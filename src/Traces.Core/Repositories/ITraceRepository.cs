@@ -12,6 +12,8 @@ namespace Traces.Core.Repositories
 
         Task<IReadOnlyList<Trace>> GetAllForTenantAsync();
 
+        Task<IReadOnlyList<Trace>> GetAllTracesForTenantAsync(Expression<Func<Trace, bool>> expression);
+
         Task<Trace> GetAsync(int id);
 
         void Insert(Trace trace);

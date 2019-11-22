@@ -30,6 +30,13 @@ namespace Traces.Core.Services
             return ConvertToTraceDto(traces);
         }
 
+        public async Task<IReadOnlyList<TraceDto>> GetActiveTracesAsync()
+        {
+            var traces = await _traceRepository.GetAllTracesForTenantAsync(t => t.State == TraceStateEnum.Active);
+
+            return ConvertToTraceDto(traces);
+        }
+
         public async Task<Option<TraceDto>> GetTraceAsync(int id)
         {
             if (!await _traceRepository.ExistsAsync(t => t.Id == id))

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,9 @@ namespace Traces.Core.Repositories
 
         public async Task<IReadOnlyList<Trace>> GetAllForTenantAsync() =>
             await _dbContext.Traces.ToListAsync();
+
+        public async Task<IReadOnlyList<Trace>> GetAllTracesForTenantAsync(Expression<Func<Trace, bool>> expression) =>
+            await _dbContext.Traces.Where(expression).ToListAsync();
 
         public async Task<Trace> GetAsync(int id) =>
             await _dbContext.Traces.FirstOrDefaultAsync(t => t.Id == id);

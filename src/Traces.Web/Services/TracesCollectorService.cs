@@ -23,7 +23,7 @@ namespace Traces.Web.Services
         {
             try
             {
-                var traceDtos = await _traceService.GetTracesAsync();
+                var traceDtos = await _traceService.GetActiveTracesAsync();
 
                 var traceModels = TraceDtosToModels(traceDtos);
 
