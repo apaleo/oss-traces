@@ -1,28 +1,58 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Blazored.Toast.Services;
+using Traces.Common.Constants;
+using Traces.Common.Utils;
 using Traces.Web.Models;
+using Traces.Web.Services;
 
 namespace Traces.Web.ViewModels
 {
     public class TracesViewModel
     {
-        public TracesViewModel()
+        private readonly ITracesCollectorService _tracesCollectorService;
+        private readonly ITraceModifierService _traceModifierService;
+        private readonly IToastService _toastService;
+
+        public TracesViewModel(
+            ITracesCollectorService tracesCollectorService,
+            ITraceModifierService traceModifierService,
+            IToastService toastService)
         {
+            _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
+            _traceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
+            _toastService = Check.NotNull(toastService, nameof(toastService));
             Traces = new List<TraceItemModel>();
         }
 
         public List<TraceItemModel> Traces { get; }
 
-        public TraceItemModel ConfiguringTrace { get; set; }
+        public TraceItemModel ConfiguringTrace { get; private set; }
 
-        public bool ShowCreateTraceDialog { get; set; }
+        public bool ShowingCreateTraceDialog { get; private set; }
 
-        public bool ShowingUpdateTraceDialog { get; set; }
+        public bool ShowingUpdateTraceDialog { get; private set; }
 
-        public void AddItem()
+        public async Task LoadTracesAsync()
         {
-            ShowCreateTraceDialog = true;
+            var tracesResult = await _tracesCollectorService.GetTracesAsync();
+
+            if (tracesResult.Success)
+            {
+                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                foreach (var trace in traces)
+                {
+                    Traces.Add(trace);
+                }
+            }
+        }
+
+        public void ShowCreateTraceDialog()
+        {
+            ShowingCreateTraceDialog = true;
         }
 
         public void ShowReplaceTraceDialog(TraceItemModel traceItemModel)
@@ -32,23 +62,36 @@ namespace Traces.Web.ViewModels
             ShowingUpdateTraceDialog = true;
         }
 
-        public void CompleteTrace(int id)
+        public async Task CompleteTraceAsync(int id)
         {
-            var trace = Traces.FirstOrDefault(t => t.Id == id);
+            var completeResult = await _traceModifierService.MarkTraceAsCompleteAsync(id);
 
-            if (trace == null)
+            if (completeResult.Success)
             {
-                return;
+                var trace = Traces.FirstOrDefault(t => t.Id == id);
+
+                if (trace == null)
+                {
+                    return;
+                }
+
+                Traces.Remove(trace);
+
+                ShowToastMessage(true, TextConstants.TraceMarkedAsCompletedMessage);
             }
+            else
+            {
+                var errorMessage = completeResult.ErrorMessage.Match(
+                    v => v,
+                    () => throw new NotImplementedException());
 
-            trace.IsComplete = true;
-
-            Traces.Remove(trace);
+                ShowToastMessage(false, errorMessage);
+            }
         }
 
-        public void CloseCreateDialog()
+        public void HideCreateTraceDialog()
         {
-            ShowCreateTraceDialog = false;
+            ShowingCreateTraceDialog = false;
         }
 
         public void HideUpdateTraceDialog()
@@ -56,65 +99,107 @@ namespace Traces.Web.ViewModels
             ShowingUpdateTraceDialog = false;
         }
 
-        public bool CreateTraceItem(CreateTraceItemModel createTraceItemModel)
+        public async Task<bool> CreateTraceItemAsync(CreateTraceItemModel createTraceItemModel)
         {
-            if (createTraceItemModel == null ||
-                string.IsNullOrWhiteSpace(createTraceItemModel.Title) ||
-                createTraceItemModel.DueDate == DateTime.MinValue)
+            var createResult = await _traceModifierService.CreateTraceAsync(createTraceItemModel);
+
+            if (createResult.Success)
             {
-                return false;
+                createResult.Result.MatchSome(v =>
+                {
+                    Traces.Add(v);
+                });
+
+                ShowToastMessage(true, TextConstants.TraceCreatedSuccessfullyMessage);
+            }
+            else
+            {
+                var errorMessage = createResult.ErrorMessage.Match(
+                    v => v,
+                    () => throw new NotImplementedException());
+
+                ShowToastMessage(false, errorMessage);
             }
 
-            var lastTrace = Traces.LastOrDefault();
-
-            var id = lastTrace == null ? 0 : ++lastTrace.Id;
-
-            var trace = new TraceItemModel
-            {
-                Id = id,
-                Title = createTraceItemModel.Title,
-                Description = createTraceItemModel.Description,
-                DueDate = createTraceItemModel.DueDate
-            };
-
-            Traces.Add(trace);
-
-            return true;
+            return createResult.Success;
         }
 
-        public bool ReplaceTraceItem(ReplaceTraceItemModel replaceTraceItemModel)
+        public async Task<bool> ReplaceTraceItemAsync(ReplaceTraceItemModel replaceTraceItemModel)
         {
-            if (replaceTraceItemModel == null ||
-                string.IsNullOrWhiteSpace(replaceTraceItemModel.Title) ||
-                replaceTraceItemModel.DueDate == DateTime.MinValue)
+            var replaceResult = await _traceModifierService.ReplaceTraceAsync(replaceTraceItemModel);
+
+            if (replaceResult.Success)
             {
-                return false;
+                replaceResult.Result.MatchSome(v =>
+                {
+                    var trace = Traces.FirstOrDefault(x => x.Id == replaceTraceItemModel.Id);
+
+                    if (trace == null)
+                    {
+                        return;
+                    }
+
+                    trace.Title = replaceTraceItemModel.Title;
+                    trace.Description = replaceTraceItemModel.Description;
+                    trace.DueDate = replaceTraceItemModel.DueDate;
+
+                    ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
+                });
+            }
+            else
+            {
+                var errorMessage = replaceResult.ErrorMessage.Match(
+                    v => v,
+                    () => throw new NotImplementedException());
+
+                ShowToastMessage(false, errorMessage);
             }
 
-            var trace = Traces.FirstOrDefault(t => t.Id == replaceTraceItemModel.Id);
-
-            if (trace == null)
-            {
-                return false;
-            }
-
-            trace.Title = replaceTraceItemModel.Title;
-            trace.Description = replaceTraceItemModel.Description;
-            trace.DueDate = replaceTraceItemModel.DueDate;
-
-            return true;
+            return replaceResult.Success;
         }
 
-        public void DeleteItem(int id)
+        public async Task DeleteItemAsync(int id)
         {
-            var trace = Traces.FirstOrDefault(t => t.Id == id);
+            var deleteResult = await _traceModifierService.DeleteTraceAsync(id);
 
-            if (trace == null)
+            if (deleteResult.Success)
             {
-                return;
-            }
+                deleteResult.Result.MatchSome(v =>
+                {
+                    var trace = Traces.FirstOrDefault(t => t.Id == id);
 
-            Traces.Remove(trace);
+                    if (trace == null)
+                    {
+                        return;
+                    }
+
+                    Traces.Remove(trace);
+
+                    ShowToastMessage(true, TextConstants.TraceDeletedSuccessfullyMessage);
+                });
+            }
+            else
+            {
+                var errorMessage = deleteResult.ErrorMessage.Match(
+                    v => v,
+                    () => throw new NotImplementedException());
+
+                ShowToastMessage(false, errorMessage);
+            }
+        }
+
+        private void ShowToastMessage(bool success, string message)
+        {
+            var header = success ? TextConstants.SuccessHeaderText : TextConstants.ErrorHeaderText;
+
+            if (success)
+            {
+                _toastService.ShowSuccess(message, header);
+            }
+            else
+            {
+                _toastService.ShowError(message, header);
+            }
         }
     }
 }

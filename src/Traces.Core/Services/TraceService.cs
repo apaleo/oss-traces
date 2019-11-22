@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NodaTime;
-using NodaTime.Extensions;
 using Optional;
 using Optional.Unsafe;
+using Traces.Common.Constants;
 using Traces.Common.Enums;
+using Traces.Common.Exceptions;
 using Traces.Common.Utils;
 using Traces.Core.Models;
 using Traces.Core.Repositories;
@@ -30,6 +31,13 @@ namespace Traces.Core.Services
             return ConvertToTraceDto(traces);
         }
 
+        public async Task<IReadOnlyList<TraceDto>> GetActiveTracesAsync()
+        {
+            var traces = await _traceRepository.GetAllTracesForTenantAsync(t => t.State == TraceStateEnum.Active);
+
+            return ConvertToTraceDto(traces);
+        }
+
         public async Task<Option<TraceDto>> GetTraceAsync(int id)
         {
             if (!await _traceRepository.ExistsAsync(t => t.Id == id))
@@ -42,14 +50,14 @@ namespace Traces.Core.Services
             return TraceToDto(trace).Some();
         }
 
-        public async Task<Option<TraceDto>> CreateTraceAsync(CreateTraceDto createTraceDto)
+        public async Task<int> CreateTraceAsync(CreateTraceDto createTraceDto)
         {
             Check.NotNull(createTraceDto, nameof(createTraceDto));
 
             if (string.IsNullOrWhiteSpace(createTraceDto.Title) ||
-                createTraceDto.DueDate == ZonedDateTime.FromDateTimeOffset(DateTimeOffset.MinValue))
+                createTraceDto.DueDate < LocalDate.FromDateTime(DateTime.Today))
             {
-                return Option.None<TraceDto>();
+                throw new BusinessValidationException(TextConstants.CreateTraceWithoutTitleOrFutureDateErrorMessage);
             }
 
             var trace = new Trace
@@ -57,24 +65,25 @@ namespace Traces.Core.Services
                 Description = createTraceDto.Description.ValueOrDefault(),
                 State = TraceStateEnum.Active,
                 Title = createTraceDto.Title,
-                DueDateUtc = createTraceDto.DueDate.ToInstant()
+                DueDate = createTraceDto.DueDate
             };
 
             _traceRepository.Insert(trace);
 
             await _traceRepository.SaveAsync();
 
-            return TraceToDto(trace).Some();
+            return trace.Id;
         }
 
         public async Task<bool> ReplaceTraceAsync(int id, ReplaceTraceDto replaceTraceDto)
         {
             Check.NotNull(replaceTraceDto, nameof(replaceTraceDto));
 
-            if (string.IsNullOrWhiteSpace(replaceTraceDto.Title) || replaceTraceDto.DueDate ==
-                ZonedDateTime.FromDateTimeOffset(DateTimeOffset.MinValue))
+            if (string.IsNullOrWhiteSpace(replaceTraceDto.Title) ||
+                replaceTraceDto.DueDate < LocalDate.FromDateTime(DateTime.Today))
             {
-                return false;
+                throw new BusinessValidationException(
+                    string.Format(TextConstants.UpdateTraceWithoutTitleOrFutureDateErrorMessageFormat, id));
             }
 
             if (!await _traceRepository.ExistsAsync(t => t.Id == id))
@@ -86,7 +95,7 @@ namespace Traces.Core.Services
 
             trace.Description = replaceTraceDto.Description.ValueOrDefault();
             trace.Title = replaceTraceDto.Title;
-            trace.DueDateUtc = replaceTraceDto.DueDate.ToInstant();
+            trace.DueDate = replaceTraceDto.DueDate;
 
             await _traceRepository.SaveAsync();
 
@@ -97,12 +106,12 @@ namespace Traces.Core.Services
         {
             if (!await _traceRepository.ExistsAsync(x => x.Id == id))
             {
-                return false;
+                throw new BusinessValidationException(string.Format(TextConstants.TraceCouldNotBeFoundErrorMessageFormat, id));
             }
 
             var trace = await _traceRepository.GetAsync(id);
 
-            trace.CompletedUtc = DateTime.UtcNow.ToInstant();
+            trace.CompletedDate = SystemClock.Instance.GetCurrentInstant().InUtc().Date;
             trace.State = TraceStateEnum.Completed;
 
             await _traceRepository.SaveAsync();
@@ -114,13 +123,13 @@ namespace Traces.Core.Services
         {
             if (!await _traceRepository.ExistsAsync(x => x.Id == id))
             {
-                return false;
+                throw new BusinessValidationException(string.Format(TextConstants.TraceCouldNotBeFoundErrorMessageFormat, id));
             }
 
             var trace = await _traceRepository.GetAsync(id);
 
-            trace.CompletedUtc = null;
-            trace.State = trace.DueDateUtc < DateTime.UtcNow.ToInstant() ? TraceStateEnum.Obsolete : TraceStateEnum.Active;
+            trace.CompletedDate = null;
+            trace.State = trace.DueDate < LocalDate.FromDateTime(DateTime.Today) ? TraceStateEnum.Obsolete : TraceStateEnum.Active;
 
             await _traceRepository.SaveAsync();
 
@@ -131,7 +140,7 @@ namespace Traces.Core.Services
         {
             if (!await _traceRepository.ExistsAsync(t => t.Id == id))
             {
-                return false;
+                throw new BusinessValidationException(string.Format(TextConstants.TraceCouldNotBeFoundErrorMessageFormat, id));
             }
 
             var deleted = await _traceRepository.DeleteAsync(id);
@@ -155,8 +164,8 @@ namespace Traces.Core.Services
             Description = trace.Description.SomeNotNull(),
             State = trace.State,
             Title = trace.Title,
-            CompletedDate = trace.CompletedUtc?.SomeNotNull().Map(x => x.InUtc()) ?? Option.None<ZonedDateTime>(),
-            DueDate = trace.DueDateUtc.InUtc(),
+            CompletedDate = trace.CompletedDate?.Some() ?? Option.None<LocalDate>(),
+            DueDate = trace.DueDate,
             Id = trace.Id
         };
     }

@@ -1,4 +1,5 @@
 using System;
+using Traces.Common.Enums;
 
 namespace Traces.Web.Models
 {
@@ -10,8 +11,8 @@ namespace Traces.Web.Models
 
         public string Description { get; set; }
 
-        public DateTime DueDate { get; set; }
+        public TraceStateEnum State { get; set; }
 
-        public bool IsComplete { get; set; }
+        public DateTime DueDate { get; set; }
     }
 }

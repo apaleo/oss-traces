@@ -9,9 +9,11 @@ namespace Traces.Core.Services
     {
         Task<IReadOnlyList<TraceDto>> GetTracesAsync();
 
+        Task<IReadOnlyList<TraceDto>> GetActiveTracesAsync();
+
         Task<Option<TraceDto>> GetTraceAsync(int id);
 
-        Task<Option<TraceDto>> CreateTraceAsync(CreateTraceDto createTraceDto);
+        Task<int> CreateTraceAsync(CreateTraceDto createTraceDto);
 
         Task<bool> ReplaceTraceAsync(int id, ReplaceTraceDto replaceTraceDto);
 

@@ -6,7 +6,7 @@
 <div>
     <h1>Traces</h1>
 
-    <button class="btn btn-primary" @onclick="@TracesViewModel.AddItem">Add</button>
+    <button class="btn btn-primary" @onclick="@TracesViewModel.ShowCreateTraceDialog">Add</button>
 
     <div>
         @if (TracesViewModel.Traces != null && TracesViewModel.Traces.Any())
@@ -27,9 +27,9 @@
                         <td>@trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</td>
                         <td>
                             <div>
-                                <button class="btn btn-primary" @onclick="@(() => TracesViewModel.CompleteTrace(trace.Id))">complete</button>
+                                <button class="btn btn-primary" @onclick="@(() => TracesViewModel.CompleteTraceAsync(trace.Id))">complete</button>
                                 <button class="btn btn-secondary" @onclick="@(() => TracesViewModel.ShowReplaceTraceDialog(trace))">edit</button>
-                                <button class="btn btn-danger" @onclick="@(() => TracesViewModel.DeleteItem(trace.Id))">delete</button>
+                                <button class="btn btn-danger" @onclick="@(() => TracesViewModel.DeleteItemAsync(trace.Id))">delete</button>
                             </div>
                         </td>
                     </tr>
@@ -38,11 +38,22 @@
         }
     </div>
 
-    <DialogContainer ShowDialog="@TracesViewModel.ShowCreateTraceDialog">
-        <CreateTraceDialog OnClose="@TracesViewModel.CloseCreateDialog"/>
+    <DialogContainer ShowDialog="@TracesViewModel.ShowingCreateTraceDialog">
+        <CreateTraceDialog OnClose="@TracesViewModel.HideCreateTraceDialog"/>
     </DialogContainer>
 
     <DialogContainer ShowDialog="@TracesViewModel.ShowingUpdateTraceDialog">
         <ReplaceTraceDialog OnClose="@TracesViewModel.HideUpdateTraceDialog"/>
     </DialogContainer>
 </div>
+
+@code
+{
+
+    protected override async Task OnInitializedAsync()
+    {
+        await TracesViewModel.LoadTracesAsync();
+        await base.OnInitializedAsync();
+    }
+
+}
