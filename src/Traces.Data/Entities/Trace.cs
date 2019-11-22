@@ -12,11 +12,11 @@ namespace Traces.Data.Entities
         public string Description { get; set; }
 
         [Required]
-        public LocalDate DueDateUtc { get; set; }
+        public LocalDate DueDate { get; set; }
 
         [Required]
         public TraceStateEnum State { get; set; }
 
-        public LocalDate? CompletedUtc { get; set; }
+        public LocalDate? CompletedDate { get; set; }
     }
 }

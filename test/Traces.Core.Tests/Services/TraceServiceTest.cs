@@ -58,7 +58,7 @@ namespace Traces.Core.Tests.Services
                 Description = TestActiveTraceDescription,
                 State = TestActiveTraceState,
                 Title = TestActiveTraceTitle,
-                DueDateUtc = TestActiveTraceDueDate
+                DueDate = TestActiveTraceDueDate
             };
 
             var testObsoleteTrace = new Trace
@@ -67,7 +67,7 @@ namespace Traces.Core.Tests.Services
                 Description = TestObsoleteTraceDescription,
                 State = TestObsoleteTraceState,
                 Title = TestObsoleteTraceTitle,
-                DueDateUtc = TestObsoleteTraceDueDate
+                DueDate = TestObsoleteTraceDueDate
             };
 
             var testCompletedTrace = new Trace
@@ -76,8 +76,8 @@ namespace Traces.Core.Tests.Services
                 Description = TestCompletedTraceDescription,
                 State = TestCompletedTraceState,
                 Title = TestCompletedTraceTitle,
-                DueDateUtc = TestCompletedTraceDueDate,
-                CompletedUtc = TestCompletedDate
+                DueDate = TestCompletedTraceDueDate,
+                CompletedDate = TestCompletedDate
             };
 
             var testTraces = new List<Trace>
@@ -129,7 +129,7 @@ namespace Traces.Core.Tests.Services
                 Description = TestActiveTraceDescription,
                 State = TestActiveTraceState,
                 Title = TestActiveTraceTitle,
-                DueDateUtc = TestActiveTraceDueDate
+                DueDate = TestActiveTraceDueDate
             };
 
             var testObsoleteTrace = new Trace
@@ -138,7 +138,7 @@ namespace Traces.Core.Tests.Services
                 Description = TestObsoleteTraceDescription,
                 State = TestActiveTraceState,
                 Title = TestObsoleteTraceTitle,
-                DueDateUtc = TestObsoleteTraceDueDate
+                DueDate = TestObsoleteTraceDueDate
             };
 
             var testCompletedTrace = new Trace
@@ -147,8 +147,8 @@ namespace Traces.Core.Tests.Services
                 Description = TestCompletedTraceDescription,
                 State = TestActiveTraceState,
                 Title = TestCompletedTraceTitle,
-                DueDateUtc = TestCompletedTraceDueDate,
-                CompletedUtc = TestCompletedDate
+                DueDate = TestCompletedTraceDueDate,
+                CompletedDate = TestCompletedDate
             };
 
             var testTraces = new List<Trace>
@@ -212,7 +212,7 @@ namespace Traces.Core.Tests.Services
                 Description = TestActiveTraceDescription,
                 State = TraceStateEnum.Active,
                 Title = TestActiveTraceTitle,
-                DueDateUtc = TestActiveTraceDueDate
+                DueDate = TestActiveTraceDueDate
             };
 
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
@@ -260,7 +260,7 @@ namespace Traces.Core.Tests.Services
                     t.Description == TestActiveTraceDescription &&
                     t.Title == TestActiveTraceTitle &&
                     t.State == TraceStateEnum.Active &&
-                    t.DueDateUtc == TestActiveTraceDueDate)));
+                    t.DueDate == TestActiveTraceDueDate)));
 
                 _traceRepositoryMock.Setup(x => x.SaveAsync())
                 .Returns(Task.CompletedTask);
@@ -330,7 +330,7 @@ namespace Traces.Core.Tests.Services
                 .ReturnsAsync(new Trace
                 {
                     Title = TestActiveTraceTitle,
-                    DueDateUtc = TestActiveTraceDueDate,
+                    DueDate = TestActiveTraceDueDate,
                     Description = TestActiveTraceDescription
                 });
 
@@ -405,7 +405,7 @@ namespace Traces.Core.Tests.Services
                     Description = TestActiveTraceDescription,
                     Id = TestActiveTraceId,
                     State = TestActiveTraceState,
-                    DueDateUtc = TestActiveTraceDueDate
+                    DueDate = TestActiveTraceDueDate
                 });
 
             _traceRepositoryMock.Setup(x => x.SaveAsync())
@@ -441,8 +441,8 @@ namespace Traces.Core.Tests.Services
                     Description = TestCompletedTraceDescription,
                     Id = TestCompletedTraceId,
                     State = TestCompletedTraceState,
-                    DueDateUtc = TestCompletedTraceDueDate,
-                    CompletedUtc = TestCompletedDate
+                    DueDate = TestCompletedTraceDueDate,
+                    CompletedDate = TestCompletedDate
                 });
 
             _traceRepositoryMock.Setup(x => x.SaveAsync())

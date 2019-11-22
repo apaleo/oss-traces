@@ -64,7 +64,7 @@ namespace Traces.Core.Services
                 Description = createTraceDto.Description.ValueOrDefault(),
                 State = TraceStateEnum.Active,
                 Title = createTraceDto.Title,
-                DueDateUtc = createTraceDto.DueDate
+                DueDate = createTraceDto.DueDate
             };
 
             _traceRepository.Insert(trace);
@@ -93,7 +93,7 @@ namespace Traces.Core.Services
 
             trace.Description = replaceTraceDto.Description.ValueOrDefault();
             trace.Title = replaceTraceDto.Title;
-            trace.DueDateUtc = replaceTraceDto.DueDate;
+            trace.DueDate = replaceTraceDto.DueDate;
 
             await _traceRepository.SaveAsync();
 
@@ -109,7 +109,7 @@ namespace Traces.Core.Services
 
             var trace = await _traceRepository.GetAsync(id);
 
-            trace.CompletedUtc = SystemClock.Instance.GetCurrentInstant().InUtc().Date;
+            trace.CompletedDate = SystemClock.Instance.GetCurrentInstant().InUtc().Date;
             trace.State = TraceStateEnum.Completed;
 
             await _traceRepository.SaveAsync();
@@ -126,8 +126,8 @@ namespace Traces.Core.Services
 
             var trace = await _traceRepository.GetAsync(id);
 
-            trace.CompletedUtc = null;
-            trace.State = trace.DueDateUtc < LocalDate.FromDateTime(DateTime.Today) ? TraceStateEnum.Obsolete : TraceStateEnum.Active;
+            trace.CompletedDate = null;
+            trace.State = trace.DueDate < LocalDate.FromDateTime(DateTime.Today) ? TraceStateEnum.Obsolete : TraceStateEnum.Active;
 
             await _traceRepository.SaveAsync();
 
@@ -162,8 +162,8 @@ namespace Traces.Core.Services
             Description = trace.Description.SomeNotNull(),
             State = trace.State,
             Title = trace.Title,
-            CompletedDate = trace.CompletedUtc?.Some() ?? Option.None<LocalDate>(),
-            DueDate = trace.DueDateUtc,
+            CompletedDate = trace.CompletedDate?.Some() ?? Option.None<LocalDate>(),
+            DueDate = trace.DueDate,
             Id = trace.Id
         };
     }
