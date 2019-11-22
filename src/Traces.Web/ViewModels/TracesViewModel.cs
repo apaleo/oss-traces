@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blazored.Toast.Services;
+using Traces.Common.Constants;
 using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
@@ -76,7 +77,7 @@ namespace Traces.Web.ViewModels
 
                 Traces.Remove(trace);
 
-                ShowToastMessage(true, "Trace marked as completed successfully.");
+                ShowToastMessage(true, TextConstants.TraceMarkedAsCompletedMessage);
             }
             else
             {
@@ -109,7 +110,7 @@ namespace Traces.Web.ViewModels
                     Traces.Add(v);
                 });
 
-                ShowToastMessage(true, "Trace added successfully");
+                ShowToastMessage(true, TextConstants.TraceCreatedSuccessfullyMessage);
             }
             else
             {
@@ -142,7 +143,7 @@ namespace Traces.Web.ViewModels
                     trace.Description = replaceTraceItemModel.Description;
                     trace.DueDate = replaceTraceItemModel.DueDate;
 
-                    ShowToastMessage(true, "Trace updated successfully.");
+                    ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
                 });
             }
             else
@@ -174,7 +175,7 @@ namespace Traces.Web.ViewModels
 
                     Traces.Remove(trace);
 
-                    ShowToastMessage(true, "Trace removed successfully.");
+                    ShowToastMessage(true, TextConstants.TraceDeletedSuccessfullyMessage);
                 });
             }
             else
@@ -189,7 +190,7 @@ namespace Traces.Web.ViewModels
 
         private void ShowToastMessage(bool success, string message)
         {
-            var header = success ? "Success" : "Oops";
+            var header = success ? TextConstants.SuccessHeaderText : TextConstants.ErrorHeaderText;
 
             if (success)
             {

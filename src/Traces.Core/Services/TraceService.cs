@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using NodaTime;
 using Optional;
 using Optional.Unsafe;
+using Traces.Common.Constants;
 using Traces.Common.Enums;
 using Traces.Common.Exceptions;
 using Traces.Common.Utils;
@@ -56,7 +57,7 @@ namespace Traces.Core.Services
             if (string.IsNullOrWhiteSpace(createTraceDto.Title) ||
                 createTraceDto.DueDate < LocalDate.FromDateTime(DateTime.Today))
             {
-                throw new BusinessValidationException("The trace must have a title and a due date in the future to be created.");
+                throw new BusinessValidationException(TextConstants.CreateTraceWithoutTitleOrFutureDateErrorMessage);
             }
 
             var trace = new Trace
@@ -81,7 +82,8 @@ namespace Traces.Core.Services
             if (string.IsNullOrWhiteSpace(replaceTraceDto.Title) ||
                 replaceTraceDto.DueDate < LocalDate.FromDateTime(DateTime.Today))
             {
-                throw new BusinessValidationException($"Trace with id {id} cannot be updated, the replacement must have a title and a due date in the future.");
+                throw new BusinessValidationException(
+                    string.Format(TextConstants.UpdateTraceWithoutTitleOrFutureDateErrorMessageFormat, id));
             }
 
             if (!await _traceRepository.ExistsAsync(t => t.Id == id))
@@ -104,7 +106,7 @@ namespace Traces.Core.Services
         {
             if (!await _traceRepository.ExistsAsync(x => x.Id == id))
             {
-                throw new BusinessValidationException($"The trace with id {id} could not be found.");
+                throw new BusinessValidationException(string.Format(TextConstants.TraceCouldNotBeFoundErrorMessageFormat, id));
             }
 
             var trace = await _traceRepository.GetAsync(id);
@@ -121,7 +123,7 @@ namespace Traces.Core.Services
         {
             if (!await _traceRepository.ExistsAsync(x => x.Id == id))
             {
-                throw new BusinessValidationException($"The trace with id {id} could not be found.");
+                throw new BusinessValidationException(string.Format(TextConstants.TraceCouldNotBeFoundErrorMessageFormat, id));
             }
 
             var trace = await _traceRepository.GetAsync(id);
@@ -138,7 +140,7 @@ namespace Traces.Core.Services
         {
             if (!await _traceRepository.ExistsAsync(t => t.Id == id))
             {
-                throw new BusinessValidationException($"The trace with id {id} could not be found.");
+                throw new BusinessValidationException(string.Format(TextConstants.TraceCouldNotBeFoundErrorMessageFormat, id));
             }
 
             var deleted = await _traceRepository.DeleteAsync(id);
