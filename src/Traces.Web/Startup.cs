@@ -10,6 +10,7 @@ using Traces.Common;
 using Traces.Core.Repositories;
 using Traces.Core.Services;
 using Traces.Data;
+using Traces.Web.Helpers;
 using Traces.Web.Services;
 using Traces.Web.ViewModels;
 
@@ -28,7 +29,9 @@ namespace Traces.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddMvcOptions(options => options.Filters.Add(typeof(ContextFilter)));
+
             services.AddServerSideBlazor();
 
             services.AddDbContext<TracesDbContext>(
