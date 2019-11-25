@@ -12,16 +12,6 @@ namespace Traces.Data
 
         public DbSet<Trace> Trace { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseNpgsql(
-                    "Host=127.0.0.1;Database=Traces;Username=OpenTraces;Password=OpenTraces.2019",
-                    npgSqlOption => npgSqlOption.UseNodaTime());
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Trace>()
