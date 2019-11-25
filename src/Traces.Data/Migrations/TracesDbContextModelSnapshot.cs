@@ -53,7 +53,7 @@ namespace Traces.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Traces");
+                    b.ToTable("Trace");
                 });
 #pragma warning restore 612, 618
         }

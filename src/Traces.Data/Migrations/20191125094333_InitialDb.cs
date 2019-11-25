@@ -13,7 +13,7 @@ namespace Traces.Data.Migrations
                 incrementBy: 10);
 
             migrationBuilder.CreateTable(
-                name: "Traces",
+                name: "Trace",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -28,14 +28,14 @@ namespace Traces.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Traces", x => x.Id);
+                    table.PrimaryKey("PK_Trace", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Traces");
+                name: "Trace");
 
             migrationBuilder.DropSequence(
                 name: "EntityFrameworkHiLoSequence");

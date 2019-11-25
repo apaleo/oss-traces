@@ -11,7 +11,7 @@ using Traces.Data;
 namespace Traces.Data.Migrations
 {
     [DbContext(typeof(TracesDbContext))]
-    [Migration("20191122154400_InitialDb")]
+    [Migration("20191125094333_InitialDb")]
     partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,7 +55,7 @@ namespace Traces.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Traces");
+                    b.ToTable("Trace");
                 });
 #pragma warning restore 612, 618
         }

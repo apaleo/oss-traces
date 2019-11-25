@@ -10,7 +10,7 @@ namespace Traces.Data
         {
         }
 
-        public DbSet<Trace> Traces { get; set; }
+        public DbSet<Trace> Trace { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
