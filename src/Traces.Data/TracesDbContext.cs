@@ -10,15 +10,15 @@ namespace Traces.Data
         {
         }
 
-        public DbSet<Trace> Traces { get; set; }
+        public DbSet<Trace> Trace { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                // todo: Setup dbConnection string
-                optionsBuilder.UseNpgsql(string.Empty);
-            }
+            modelBuilder.Entity<Trace>()
+                .Property(t => t.Id)
+                .UseHiLo();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

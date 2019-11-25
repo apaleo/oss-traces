@@ -20,16 +20,16 @@ namespace Traces.Core.Repositories
         }
 
         public async Task<bool> ExistsAsync(Expression<Func<Trace, bool>> predicate) =>
-            await _dbContext.Traces.AnyAsync(predicate);
+            await _dbContext.Trace.AnyAsync(predicate);
 
         public async Task<IReadOnlyList<Trace>> GetAllForTenantAsync() =>
-            await _dbContext.Traces.ToListAsync();
+            await _dbContext.Trace.ToListAsync();
 
         public async Task<IReadOnlyList<Trace>> GetAllTracesForTenantAsync(Expression<Func<Trace, bool>> expression) =>
-            await _dbContext.Traces.Where(expression).ToListAsync();
+            await _dbContext.Trace.Where(expression).ToListAsync();
 
         public async Task<Trace> GetAsync(int id) =>
-            await _dbContext.Traces.FirstOrDefaultAsync(t => t.Id == id);
+            await _dbContext.Trace.FirstOrDefaultAsync(t => t.Id == id);
 
         public void Insert(Trace trace)
         {
@@ -40,7 +40,7 @@ namespace Traces.Core.Repositories
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var entity = await _dbContext.Traces.FirstOrDefaultAsync(x => x.Id == id);
+            var entity = await _dbContext.Trace.FirstOrDefaultAsync(x => x.Id == id);
 
             if (entity == null)
             {

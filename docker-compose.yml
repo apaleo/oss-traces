@@ -1,0 +1,10 @@
+version: "3"
+services:
+  db:
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=OpenTraces
+      - POSTGRES_PASSWORD=OpenTraces.2019
+    ports:
+      - "5432:5432"
