@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Traces.Common;
 using Traces.Core.Repositories;
 using Traces.Core.Services;
 using Traces.Data;
@@ -37,6 +38,7 @@ namespace Traces.Web
 
             services.AddBlazoredToast();
 
+            services.AddScoped<IRequestContext, RequestContext>();
             services.AddScoped<ITraceRepository, TraceRepository>();
             services.AddScoped<ITraceService, TraceService>();
             services.AddScoped<ITraceModifierService, TraceModifierService>();
