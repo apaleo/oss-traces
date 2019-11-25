@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Traces.Common;
 using Traces.Data.Entities;
 
 namespace Traces.Data
@@ -7,6 +8,11 @@ namespace Traces.Data
     {
         public TracesDbContext(DbContextOptions options)
             : base(options)
+        {
+        }
+
+        public TracesDbContext(DbContextOptions options, IRequestContext requestContext)
+            : base(options, requestContext)
         {
         }
 
