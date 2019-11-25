@@ -1,15 +1,20 @@
 using System;
 using Blazored.Toast;
+using IdentityModel;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Traces.Common;
 using Traces.Core.Repositories;
 using Traces.Core.Services;
 using Traces.Data;
+using Traces.Web.AutoRefresh;
 using Traces.Web.Helpers;
 using Traces.Web.Services;
 using Traces.Web.ViewModels;
@@ -33,6 +38,48 @@ namespace Traces.Web
                 .AddMvcOptions(options => options.Filters.Add(typeof(ContextFilter)));
 
             services.AddServerSideBlazor();
+
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = "apaleo";
+                })
+                .AddCookie(options =>
+                {
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                    options.Cookie.Name = "apaleoautorefresh";
+                })
+                .AddAutomaticTokenRefresh()
+                .AddOpenIdConnect("apaleo", options =>
+                {
+                    options.Authority = "https://identity.apaleo.com/";
+
+                    options.ClientSecret = Configuration["Apaleo:ClientSecret"];
+                    options.ClientId = Configuration["Apaleo:ClientId"];
+                    options.CallbackPath = "/signin-apaleo";
+
+                    options.ResponseType = "code id_token";
+
+                    options.Scope.Clear();
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    options.Scope.Add("offline_access");
+                    foreach (var scope1 in Configuration["Apaleo:Scope"].Split(','))
+                    {
+                        options.Scope.Add(scope1);
+                    }
+
+                    options.ClaimActions.MapAllExcept("iss", "nbf", "exp", "aud", "nonce", "iat", "c_hash");
+
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.SaveTokens = true;
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = JwtClaimTypes.Name,
+                        RoleClaimType = JwtClaimTypes.Role,
+                    };
+                });
 
             services.AddDbContext<TracesDbContext>(
                 options => options.UseNpgsql(
