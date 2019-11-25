@@ -13,5 +13,8 @@ namespace Traces.Data.Entities
 
         [Required]
         public Instant UpdatedUtc { get; set; }
+
+        [Required]
+        public string TenantId { get; set; }
     }
 }
