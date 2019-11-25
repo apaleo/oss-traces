@@ -38,7 +38,6 @@ namespace Traces.Web.AutoRefresh
             _httpClientFactory = httpClientFactory;
             _logger = logger;
             _clock = clock;
-
         }
 
         // important: this is just a POC at this point - it misses any thread synchronization. Will

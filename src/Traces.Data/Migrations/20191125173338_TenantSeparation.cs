@@ -14,8 +14,7 @@ namespace Traces.Data.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "TenantId",
                 table: "Trace",
-                nullable: false,
-                defaultValue: "");
+                nullable: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
