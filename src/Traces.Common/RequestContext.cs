@@ -8,12 +8,15 @@ namespace Traces.Common
         private bool _isInitialized;
         private string _accessToken;
         private string _tenantId;
+        private string _subjectId;
 
         public string TenantId => CheckInitializedAndReturn(_tenantId);
 
+        public string SubjectId => CheckInitializedAndReturn(_subjectId);
+
         public string AccessToken => CheckInitializedAndReturn(_accessToken);
 
-        public void Initialize(string tenantId, string accessToken)
+        public void Initialize(string tenantId, string accessToken, string subjectId)
         {
             if (_isInitialized)
             {
@@ -23,6 +26,7 @@ namespace Traces.Common
             _isInitialized = true;
             _tenantId = Check.NotEmpty(tenantId, nameof(tenantId));
             _accessToken = Check.NotEmpty(accessToken, nameof(accessToken));
+            _subjectId = Check.NotEmpty(subjectId, nameof(subjectId));
         }
 
         private T CheckInitializedAndReturn<T>(T val)

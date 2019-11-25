@@ -188,7 +188,9 @@ namespace Traces.Data
 
             public string TenantId => throw new InvalidOperationException("No Request Context has been initialized");
 
-            public void Initialize(string tenantId, string accessToken) => throw new NotImplementedException();
+            public string SubjectId => throw new InvalidOperationException("No Request Context has been initialized");
+
+            public void Initialize(string tenantId, string accessToken, string subjectId) => throw new NotImplementedException();
         }
     }
 }

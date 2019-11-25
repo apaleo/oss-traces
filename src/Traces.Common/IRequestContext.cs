@@ -6,6 +6,8 @@ namespace Traces.Common
 
         string TenantId { get; }
 
-        void Initialize(string tenantId, string accessToken);
+        string SubjectId { get; }
+
+        void Initialize(string tenantId, string accessToken, string subjectId);
     }
 }
