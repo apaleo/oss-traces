@@ -18,5 +18,7 @@ namespace Traces.Data.Entities
         public TraceStateEnum State { get; set; }
 
         public LocalDate? CompletedDate { get; set; }
+
+        public string CompletedBy { get; set; }
     }
 }

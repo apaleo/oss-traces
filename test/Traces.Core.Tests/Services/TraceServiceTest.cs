@@ -8,6 +8,7 @@ using NodaTime;
 using NodaTime.Extensions;
 using Optional;
 using Optional.Unsafe;
+using Traces.Common;
 using Traces.Common.Enums;
 using Traces.Common.Exceptions;
 using Traces.Core.Models;
@@ -21,6 +22,7 @@ namespace Traces.Core.Tests.Services
 {
     public class TraceServiceTest : BaseTest
     {
+        private const string TestSubjectId = "TEST";
         private const int TestActiveTraceId = 1;
         private const string TestActiveTraceDescription = "TestActiveDescription";
         private const string TestActiveTraceTitle = "TestActiveTitle";
@@ -41,12 +43,14 @@ namespace Traces.Core.Tests.Services
         private readonly LocalDate TestCompletedDate = DateTime.UtcNow.ToLocalDateTime().Date;
 
         private readonly Mock<ITraceRepository> _traceRepositoryMock;
+        private readonly Mock<IRequestContext> _requestContextMock;
         private readonly ITraceService _traceService;
 
         public TraceServiceTest()
         {
             _traceRepositoryMock = MockRepository.Create<ITraceRepository>();
-            _traceService = new TraceService(_traceRepositoryMock.Object);
+            _requestContextMock = MockRepository.Create<IRequestContext>();
+            _traceService = new TraceService(_traceRepositoryMock.Object, _requestContextMock.Object);
         }
 
         [Fact]
@@ -397,6 +401,9 @@ namespace Traces.Core.Tests.Services
         {
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
                 .ReturnsAsync(true);
+
+            _requestContextMock.SetupGet(x => x.SubjectId)
+                .Returns(TestSubjectId);
 
             _traceRepositoryMock.Setup(x => x.GetAsync(It.Is<int>(t => t == TestActiveTraceId)))
                 .ReturnsAsync(new Trace
