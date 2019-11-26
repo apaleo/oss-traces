@@ -15,7 +15,7 @@ namespace Traces.Web.AutoRefresh
 
         public void Configure(CookieAuthenticationOptions options)
         {
-            // Just copy/paste
+            // No-op or no name provided
         }
 
         public void Configure(string name, CookieAuthenticationOptions options)
