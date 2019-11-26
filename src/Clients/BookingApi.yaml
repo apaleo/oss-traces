@@ -1,5 +1,0 @@
-input-file: ./booking.json    # or download another
-csharp:
-  namespace: Traces.ApaleoClients.Booking
-  output-folder: ./
-  override-client-name: BookingApi
