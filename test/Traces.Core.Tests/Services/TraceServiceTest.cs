@@ -27,20 +27,21 @@ namespace Traces.Core.Tests.Services
         private const string TestActiveTraceDescription = "TestActiveDescription";
         private const string TestActiveTraceTitle = "TestActiveTitle";
         private const TraceStateEnum TestActiveTraceState = TraceStateEnum.Active;
-        private readonly LocalDate TestActiveTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
 
         private const int TestObsoleteTraceId = 2;
         private const string TestObsoleteTraceDescription = "TestObsoleteDescription";
         private const string TestObsoleteTraceTitle = "TestObsoleteTitle";
         private const TraceStateEnum TestObsoleteTraceState = TraceStateEnum.Obsolete;
-        private readonly LocalDate TestObsoleteTraceDueDate = DateTime.UtcNow.Subtract(TimeSpan.FromDays(1)).ToLocalDateTime().Date;
 
         private const int TestCompletedTraceId = 3;
         private const string TestCompletedTraceDescription = "TestCompletedDescription";
         private const string TestCompletedTraceTitle = "TestCompletedTitle";
         private const TraceStateEnum TestCompletedTraceState = TraceStateEnum.Completed;
-        private readonly LocalDate TestCompletedTraceDueDate = DateTime.UtcNow.Add(TimeSpan.FromHours(1)).ToLocalDateTime().Date;
-        private readonly LocalDate TestCompletedDate = DateTime.UtcNow.ToLocalDateTime().Date;
+
+        private readonly LocalDate _testActiveTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
+        private readonly LocalDate _testObsoleteTraceDueDate = DateTime.UtcNow.Subtract(TimeSpan.FromDays(1)).ToLocalDateTime().Date;
+        private readonly LocalDate _testCompletedTraceDueDate = DateTime.UtcNow.Add(TimeSpan.FromHours(1)).ToLocalDateTime().Date;
+        private readonly LocalDate _testCompletedDate = DateTime.UtcNow.ToLocalDateTime().Date;
 
         private readonly Mock<ITraceRepository> _traceRepositoryMock;
         private readonly Mock<IRequestContext> _requestContextMock;
@@ -62,7 +63,7 @@ namespace Traces.Core.Tests.Services
                 Description = TestActiveTraceDescription,
                 State = TestActiveTraceState,
                 Title = TestActiveTraceTitle,
-                DueDate = TestActiveTraceDueDate
+                DueDate = _testActiveTraceDueDate
             };
 
             var testObsoleteTrace = new Trace
@@ -71,7 +72,7 @@ namespace Traces.Core.Tests.Services
                 Description = TestObsoleteTraceDescription,
                 State = TestObsoleteTraceState,
                 Title = TestObsoleteTraceTitle,
-                DueDate = TestObsoleteTraceDueDate
+                DueDate = _testObsoleteTraceDueDate
             };
 
             var testCompletedTrace = new Trace
@@ -80,8 +81,8 @@ namespace Traces.Core.Tests.Services
                 Description = TestCompletedTraceDescription,
                 State = TestCompletedTraceState,
                 Title = TestCompletedTraceTitle,
-                DueDate = TestCompletedTraceDueDate,
-                CompletedDate = TestCompletedDate
+                DueDate = _testCompletedTraceDueDate,
+                CompletedDate = _testCompletedDate
             };
 
             var testTraces = new List<Trace>
@@ -104,7 +105,7 @@ namespace Traces.Core.Tests.Services
             result[0].Title.Should().Be(TestActiveTraceTitle);
             result[0].Description.ValueOrFailure().Should().Be(TestActiveTraceDescription);
             result[0].State.Should().Be(TestActiveTraceState);
-            result[0].DueDate.Should().Be(TestActiveTraceDueDate);
+            result[0].DueDate.Should().Be(_testActiveTraceDueDate);
             result[0].CompletedDate.HasValue.Should().BeFalse();
 
             // Test second element is equivalent to trace testObsoleteTrace
@@ -112,7 +113,7 @@ namespace Traces.Core.Tests.Services
             result[1].Title.Should().Be(TestObsoleteTraceTitle);
             result[1].Description.ValueOrFailure().Should().Be(TestObsoleteTraceDescription);
             result[1].State.Should().Be(TestObsoleteTraceState);
-            result[1].DueDate.Should().Be(TestObsoleteTraceDueDate);
+            result[1].DueDate.Should().Be(_testObsoleteTraceDueDate);
             result[1].CompletedDate.HasValue.Should().BeFalse();
 
             // Test second element is equivalent to trace testCompletedTrace
@@ -120,8 +121,8 @@ namespace Traces.Core.Tests.Services
             result[2].Title.Should().Be(TestCompletedTraceTitle);
             result[2].Description.ValueOrFailure().Should().Be(TestCompletedTraceDescription);
             result[2].State.Should().Be(TestCompletedTraceState);
-            result[2].DueDate.Should().Be(TestCompletedTraceDueDate);
-            result[2].CompletedDate.ValueOrFailure().Should().Be(TestCompletedDate);
+            result[2].DueDate.Should().Be(_testCompletedTraceDueDate);
+            result[2].CompletedDate.ValueOrFailure().Should().Be(_testCompletedDate);
         }
 
         [Fact]
@@ -133,7 +134,7 @@ namespace Traces.Core.Tests.Services
                 Description = TestActiveTraceDescription,
                 State = TestActiveTraceState,
                 Title = TestActiveTraceTitle,
-                DueDate = TestActiveTraceDueDate
+                DueDate = _testActiveTraceDueDate
             };
 
             var testObsoleteTrace = new Trace
@@ -142,7 +143,7 @@ namespace Traces.Core.Tests.Services
                 Description = TestObsoleteTraceDescription,
                 State = TestActiveTraceState,
                 Title = TestObsoleteTraceTitle,
-                DueDate = TestObsoleteTraceDueDate
+                DueDate = _testObsoleteTraceDueDate
             };
 
             var testCompletedTrace = new Trace
@@ -151,8 +152,8 @@ namespace Traces.Core.Tests.Services
                 Description = TestCompletedTraceDescription,
                 State = TestActiveTraceState,
                 Title = TestCompletedTraceTitle,
-                DueDate = TestCompletedTraceDueDate,
-                CompletedDate = TestCompletedDate
+                DueDate = _testCompletedTraceDueDate,
+                CompletedDate = _testCompletedDate
             };
 
             var testTraces = new List<Trace>
@@ -175,7 +176,7 @@ namespace Traces.Core.Tests.Services
             result[0].Title.Should().Be(TestActiveTraceTitle);
             result[0].Description.ValueOrFailure().Should().Be(TestActiveTraceDescription);
             result[0].State.Should().Be(TestActiveTraceState);
-            result[0].DueDate.Should().Be(TestActiveTraceDueDate);
+            result[0].DueDate.Should().Be(_testActiveTraceDueDate);
             result[0].CompletedDate.HasValue.Should().BeFalse();
 
             // Test second element is equivalent to trace testObsoleteTrace
@@ -183,7 +184,7 @@ namespace Traces.Core.Tests.Services
             result[1].Title.Should().Be(TestObsoleteTraceTitle);
             result[1].Description.ValueOrFailure().Should().Be(TestObsoleteTraceDescription);
             result[1].State.Should().Be(TestActiveTraceState);
-            result[1].DueDate.Should().Be(TestObsoleteTraceDueDate);
+            result[1].DueDate.Should().Be(_testObsoleteTraceDueDate);
             result[1].CompletedDate.HasValue.Should().BeFalse();
 
             // Test second element is equivalent to trace testCompletedTrace
@@ -191,8 +192,8 @@ namespace Traces.Core.Tests.Services
             result[2].Title.Should().Be(TestCompletedTraceTitle);
             result[2].Description.ValueOrFailure().Should().Be(TestCompletedTraceDescription);
             result[2].State.Should().Be(TestActiveTraceState);
-            result[2].DueDate.Should().Be(TestCompletedTraceDueDate);
-            result[2].CompletedDate.ValueOrFailure().Should().Be(TestCompletedDate);
+            result[2].DueDate.Should().Be(_testCompletedTraceDueDate);
+            result[2].CompletedDate.ValueOrFailure().Should().Be(_testCompletedDate);
         }
 
         [Fact]
@@ -216,7 +217,7 @@ namespace Traces.Core.Tests.Services
                 Description = TestActiveTraceDescription,
                 State = TraceStateEnum.Active,
                 Title = TestActiveTraceTitle,
-                DueDate = TestActiveTraceDueDate
+                DueDate = _testActiveTraceDueDate
             };
 
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
@@ -234,7 +235,7 @@ namespace Traces.Core.Tests.Services
             resultDto.Title.Should().Be(TestActiveTraceTitle);
             resultDto.Description.ValueOrFailure().Should().Be(TestActiveTraceDescription);
             resultDto.State.Should().Be(TestActiveTraceState);
-            resultDto.DueDate.Should().Be(TestActiveTraceDueDate);
+            resultDto.DueDate.Should().Be(_testActiveTraceDueDate);
             resultDto.CompletedDate.HasValue.Should().BeFalse();
         }
 
@@ -256,7 +257,7 @@ namespace Traces.Core.Tests.Services
             {
                 Description = TestActiveTraceDescription.Some(),
                 Title = TestActiveTraceTitle,
-                DueDate = TestActiveTraceDueDate
+                DueDate = _testActiveTraceDueDate
             };
 
             _traceRepositoryMock.Setup(x => x.Insert(
@@ -264,9 +265,9 @@ namespace Traces.Core.Tests.Services
                     t.Description == TestActiveTraceDescription &&
                     t.Title == TestActiveTraceTitle &&
                     t.State == TraceStateEnum.Active &&
-                    t.DueDate == TestActiveTraceDueDate)));
+                    t.DueDate == _testActiveTraceDueDate)));
 
-                _traceRepositoryMock.Setup(x => x.SaveAsync())
+            _traceRepositoryMock.Setup(x => x.SaveAsync())
                 .Returns(Task.CompletedTask);
 
             var result = await _traceService.CreateTraceAsync(createTraceDto);
@@ -294,7 +295,7 @@ namespace Traces.Core.Tests.Services
             var createTraceDto = new CreateTraceDto
             {
                 Description = TestActiveTraceDescription.Some(),
-                DueDate = TestActiveTraceDueDate
+                DueDate = _testActiveTraceDueDate
             };
 
             var result = await Assert.ThrowsAsync<BusinessValidationException>(() => _traceService.CreateTraceAsync(createTraceDto));
@@ -334,7 +335,7 @@ namespace Traces.Core.Tests.Services
                 .ReturnsAsync(new Trace
                 {
                     Title = TestActiveTraceTitle,
-                    DueDate = TestActiveTraceDueDate,
+                    DueDate = _testActiveTraceDueDate,
                     Description = TestActiveTraceDescription
                 });
 
@@ -352,7 +353,7 @@ namespace Traces.Core.Tests.Services
             var replaceTraceDto = new ReplaceTraceDto
             {
                 Description = TestObsoleteTraceDescription.Some(),
-                DueDate = TestObsoleteTraceDueDate
+                DueDate = _testObsoleteTraceDueDate
             };
 
             var result = await Assert.ThrowsAsync<BusinessValidationException>(() =>
@@ -412,7 +413,7 @@ namespace Traces.Core.Tests.Services
                     Description = TestActiveTraceDescription,
                     Id = TestActiveTraceId,
                     State = TestActiveTraceState,
-                    DueDate = TestActiveTraceDueDate
+                    DueDate = _testActiveTraceDueDate
                 });
 
             _traceRepositoryMock.Setup(x => x.SaveAsync())
@@ -448,8 +449,8 @@ namespace Traces.Core.Tests.Services
                     Description = TestCompletedTraceDescription,
                     Id = TestCompletedTraceId,
                     State = TestCompletedTraceState,
-                    DueDate = TestCompletedTraceDueDate,
-                    CompletedDate = TestCompletedDate
+                    DueDate = _testCompletedTraceDueDate,
+                    CompletedDate = _testCompletedDate
                 });
 
             _traceRepositoryMock.Setup(x => x.SaveAsync())
