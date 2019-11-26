@@ -1,6 +1,9 @@
 using System;
 using System.Net.Http;
 using Blazored.Toast;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -42,6 +45,10 @@ namespace Traces.Web
                 .AddMvcOptions(options => options.Filters.Add(typeof(ContextFilter)));
 
             services.AddServerSideBlazor();
+
+            services.AddBlazorise()
+                .AddBootstrapProviders()
+                .AddFontAwesomeIcons();
 
             services.AddScoped<IApaleoClientFactory, ApaleoClientFactory>();
 
@@ -136,6 +143,10 @@ namespace Traces.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.ApplicationServices
+                .UseBootstrapProviders()
+                .UseFontAwesomeIcons();
 
             app.UseEndpoints(endpoints =>
             {
