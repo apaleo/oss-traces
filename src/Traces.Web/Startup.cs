@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Polly;
 using Traces.Common;
+using Traces.Core.ClientFactories;
 using Traces.Core.Repositories;
 using Traces.Core.Services;
 using Traces.Data;
@@ -38,6 +40,11 @@ namespace Traces.Web
                 .AddMvcOptions(options => options.Filters.Add(typeof(ContextFilter)));
 
             services.AddServerSideBlazor();
+
+            services.AddScoped<IApaleoClientFactory, ApaleoClientFactory>();
+            services.AddHttpClient<IApaleoClientFactory, ApaleoClientFactory>(client =>
+                    client.BaseAddress = new Uri(Configuration["apaleo:ServiceUri"]))
+                .AddTransientHttpErrorPolicy(p => p.RetryAsync(3));
 
             services.AddAuthentication(options =>
                 {

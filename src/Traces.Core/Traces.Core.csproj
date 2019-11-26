@@ -7,10 +7,12 @@
     </PropertyGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\Clients\Traces.ApaleoClients\Traces.ApaleoClients.csproj" />
       <ProjectReference Include="..\Traces.Data\Traces.Data.csproj" />
     </ItemGroup>
     
     <ItemGroup>
+      <PackageReference Include="IdentityModel" Version="4.1.1" />
       <PackageReference Include="Optional" Version="4.0.0" />
     </ItemGroup>
 
