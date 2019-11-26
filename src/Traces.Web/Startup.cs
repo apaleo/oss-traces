@@ -54,8 +54,8 @@ namespace Traces.Web
                 {
                     options.Authority = "https://identity.apaleo.com/";
 
-                    options.ClientSecret = Configuration["Apaleo:ClientSecret"];
-                    options.ClientId = Configuration["Apaleo:ClientId"];
+                    options.ClientSecret = Configuration["apaleo:ClientSecret"];
+                    options.ClientId = Configuration["apaleo:ClientId"];
                     options.CallbackPath = "/signin-apaleo";
 
                     options.ResponseType = "code id_token";
@@ -64,7 +64,7 @@ namespace Traces.Web
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.Scope.Add("offline_access");
-                    foreach (var scope1 in Configuration["Apaleo:Scope"].Split(','))
+                    foreach (var scope1 in Configuration["apaleo:Scope"].Split(','))
                     {
                         options.Scope.Add(scope1);
                     }
