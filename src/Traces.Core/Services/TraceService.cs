@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using NodaTime;
 using Optional;
 using Optional.Unsafe;
+using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Enums;
 using Traces.Common.Exceptions;
@@ -18,10 +19,12 @@ namespace Traces.Core.Services
     public class TraceService : ITraceService
     {
         private readonly ITraceRepository _traceRepository;
+        private readonly IRequestContext _requestContext;
 
-        public TraceService(ITraceRepository traceRepository)
+        public TraceService(ITraceRepository traceRepository, IRequestContext requestContext)
         {
             _traceRepository = Check.NotNull(traceRepository, nameof(traceRepository));
+            _requestContext = Check.NotNull(requestContext, nameof(requestContext));
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetTracesAsync()
@@ -110,9 +113,11 @@ namespace Traces.Core.Services
             }
 
             var trace = await _traceRepository.GetAsync(id);
+            var currentSubjectId = _requestContext.SubjectId;
 
             trace.CompletedDate = SystemClock.Instance.GetCurrentInstant().InUtc().Date;
             trace.State = TraceStateEnum.Completed;
+            trace.CompletedBy = currentSubjectId;
 
             await _traceRepository.SaveAsync();
 

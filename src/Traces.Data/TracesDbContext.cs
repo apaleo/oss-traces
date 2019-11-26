@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using Traces.Common;
 using Traces.Data.Entities;
 
 namespace Traces.Data
 {
     public class TracesDbContext : BaseContext
     {
-        public TracesDbContext(DbContextOptions options)
-            : base(options)
+        public TracesDbContext(DbContextOptions options, IRequestContext requestContext)
+            : base(options, requestContext)
         {
         }
 

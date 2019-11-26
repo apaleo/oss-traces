@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Traces.Common.Utils
 {
+    /// <summary>
+    /// This code is based on <see cref="https://github.com/aspnet/EntityFrameworkCore/blob/master/src/Shared/Check.cs"/>
+    /// </summary>
     public static class Check
     {
         public static T NotNull<T>(T value, string parameterName)
