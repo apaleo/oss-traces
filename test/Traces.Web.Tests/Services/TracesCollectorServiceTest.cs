@@ -23,18 +23,19 @@ namespace Traces.Web.Tests.Services
         private const string FirstTraceTitle = "FirstTraceTitle";
         private const string FirstTraceDescription = "FirstTraceDescription";
         private const TraceStateEnum FirstTraceState = TraceStateEnum.Active;
-        private readonly LocalDate FirstTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
 
         private const int SecondTraceId = 2;
         private const string SecondTraceTitle = "SecondTraceTitle";
         private const TraceStateEnum SecondTraceState = TraceStateEnum.Active;
-        private readonly LocalDate SecondTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
 
         private const int ThirdTraceId = 3;
         private const string ThirdTraceTitle = "ThirdTraceTitle";
         private const string ThirdTraceDescription = "ThirdTraceDescription";
         private const TraceStateEnum ThirdTraceState = TraceStateEnum.Obsolete;
-        private readonly LocalDate ThirdTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
+
+        private readonly LocalDate _firstTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
+        private readonly LocalDate _secondTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
+        private readonly LocalDate _thirdTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
 
         private readonly Mock<ITraceService> _traceServiceMock;
         private readonly ITracesCollectorService _tracesCollectorService;
@@ -56,14 +57,14 @@ namespace Traces.Web.Tests.Services
                     Title = FirstTraceTitle,
                     Description = FirstTraceDescription.Some(),
                     State = FirstTraceState,
-                    DueDate = FirstTraceDueDate
+                    DueDate = _firstTraceDueDate
                 },
                 new TraceDto
                 {
                     Id = SecondTraceId,
                     Title = SecondTraceTitle,
                     State = SecondTraceState,
-                    DueDate = SecondTraceDueDate
+                    DueDate = _secondTraceDueDate
                 },
                 new TraceDto
                 {
@@ -71,7 +72,7 @@ namespace Traces.Web.Tests.Services
                     Title = ThirdTraceTitle,
                     Description = ThirdTraceDescription.Some(),
                     State = ThirdTraceState,
-                    DueDate = ThirdTraceDueDate
+                    DueDate = _thirdTraceDueDate
                 }
             };
 
@@ -92,19 +93,19 @@ namespace Traces.Web.Tests.Services
             resultTraces[0].Id.Should().Be(FirstTraceId);
             resultTraces[0].Title.Should().Be(FirstTraceTitle);
             resultTraces[0].Description.Should().Be(FirstTraceDescription);
-            resultTraces[0].DueDate.Should().Be(FirstTraceDueDate.ToDateTimeUnspecified());
+            resultTraces[0].DueDate.Should().Be(_firstTraceDueDate.ToDateTimeUnspecified());
             resultTraces[0].State.Should().Be(FirstTraceState);
 
             resultTraces[1].Id.Should().Be(SecondTraceId);
             resultTraces[1].Title.Should().Be(SecondTraceTitle);
             resultTraces[1].Description.Should().BeEmpty();
-            resultTraces[1].DueDate.Should().Be(SecondTraceDueDate.ToDateTimeUnspecified());
+            resultTraces[1].DueDate.Should().Be(_secondTraceDueDate.ToDateTimeUnspecified());
             resultTraces[1].State.Should().Be(SecondTraceState);
 
             resultTraces[2].Id.Should().Be(ThirdTraceId);
             resultTraces[2].Title.Should().Be(ThirdTraceTitle);
             resultTraces[2].Description.Should().Be(ThirdTraceDescription);
-            resultTraces[2].DueDate.Should().Be(ThirdTraceDueDate.ToDateTimeUnspecified());
+            resultTraces[2].DueDate.Should().Be(_thirdTraceDueDate.ToDateTimeUnspecified());
             resultTraces[2].State.Should().Be(ThirdTraceState);
         }
 
