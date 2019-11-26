@@ -1,5 +1,7 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Traces.Common;
 
 namespace Traces.Data
 {
@@ -12,7 +14,18 @@ namespace Traces.Data
                 "Host=127.0.0.1;Database=Traces;Username=OpenTraces;Password=OpenTraces.2019",
                 npgSqlOptions => npgSqlOptions.UseNodaTime());
 
-            return new TracesDbContext(optionsBuilder.Options);
+            return new TracesDbContext(optionsBuilder.Options, new NoRequestContext());
+        }
+
+        private class NoRequestContext : IRequestContext
+        {
+            public string AccessToken => throw new InvalidOperationException("No Request Context has been initialized");
+
+            public string TenantId => throw new InvalidOperationException("No Request Context has been initialized");
+
+            public string SubjectId => throw new InvalidOperationException("No Request Context has been initialized");
+
+            public void Initialize(string tenantId, string accessToken, string subjectId) => throw new NotImplementedException();
         }
     }
 }

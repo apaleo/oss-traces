@@ -27,17 +27,6 @@ namespace Traces.Data
 
         private readonly IRequestContext _requestContext;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RequestContext"/> class. Should only be
-        /// used for ef migrations.
-        /// </summary>
-        /// <param name="options">Pass through dependency on DbContextOptions.</param>
-        protected BaseContext(DbContextOptions options)
-            : base(options)
-        {
-            _requestContext = new NoRequestContext();
-        }
-
         protected BaseContext(DbContextOptions options, IRequestContext requestContext)
             : base(options)
         {
@@ -181,16 +170,5 @@ namespace Traces.Data
         private void SetAccountFilter<T>(ModelBuilder modelBuilder)
             where T : BaseEntity =>
             modelBuilder.Entity<T>().HasQueryFilter(q => q.TenantId == _requestContext.TenantId);
-
-        private class NoRequestContext : IRequestContext
-        {
-            public string AccessToken => throw new InvalidOperationException("No Request Context has been initialized");
-
-            public string TenantId => throw new InvalidOperationException("No Request Context has been initialized");
-
-            public string SubjectId => throw new InvalidOperationException("No Request Context has been initialized");
-
-            public void Initialize(string tenantId, string accessToken, string subjectId) => throw new NotImplementedException();
-        }
     }
 }
