@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -57,7 +58,7 @@ namespace Traces.Web.Helpers
             }
 
             var accountCode = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ApaleoClaims.AccountCode);
-            var subjectId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ApaleoClaims.SubjectId);
+            var subjectId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Subject);
 
             _context.Initialize(
                 tenantId: accountCode?.Value,
