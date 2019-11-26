@@ -14,7 +14,9 @@ namespace Traces.Data.Entities
         [Required]
         public Instant UpdatedUtc { get; set; }
 
-        // This is referent to the account_code from the JWT
+        /// <summary>
+        /// This refers to the account_code from the JWT
+        /// </summary>
         [Required]
         public string TenantId { get; set; }
     }
