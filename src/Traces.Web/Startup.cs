@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using Polly;
 using Polly.Extensions.Http;
 using Traces.Common;
+using Traces.Common.Utils;
 using Traces.Core.ClientFactories;
 using Traces.Core.Repositories;
 using Traces.Core.Services;
@@ -111,7 +112,7 @@ namespace Traces.Web
 
             services.AddDbContext<TracesDbContext>(
                 options => options.UseNpgsql(
-                    Configuration["ConnectionStrings:DefaultDatabase"],
+                    HerokuUtils.ConvertConnectionStringIfSet(Configuration["DATABASE_URL"]) ?? Configuration["ConnectionStrings:DefaultDatabase"],
                     npgSqlOptions => npgSqlOptions.UseNodaTime()));
 
             services.AddBlazoredToast();
