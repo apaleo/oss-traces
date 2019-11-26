@@ -18,7 +18,7 @@ namespace Traces.Web.Tests.Services
     public class TraceModifierServiceTest : BaseTest
     {
         private readonly Mock<ITraceService> _traceServiceMock;
-        private ITraceModifierService _traceModifierService;
+        private readonly ITraceModifierService _traceModifierService;
 
         public TraceModifierServiceTest()
         {
