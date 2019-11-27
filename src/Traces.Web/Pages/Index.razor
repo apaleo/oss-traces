@@ -6,7 +6,7 @@
 <div>
     <h1>Traces</h1>
 
-    <button class="btn btn-primary" @onclick="@TracesViewModel.ShowCreateTraceDialog">Add</button>
+    <button class="btn btn-primary" @onclick="@TracesViewModel.ShowCreateTraceModal">Add</button>
 
     <div>
         @if (TracesViewModel.Traces != null && TracesViewModel.Traces.Any())
@@ -28,7 +28,7 @@
                         <td>
                             <div>
                                 <button class="btn btn-primary" @onclick="@(() => TracesViewModel.CompleteTraceAsync(trace.Id))">complete</button>
-                                <button class="btn btn-secondary" @onclick="@(() => TracesViewModel.ShowReplaceTraceDialog(trace))">edit</button>
+                                <button class="btn btn-secondary" @onclick="@(() => TracesViewModel.ShowReplaceTraceModal(trace))">edit</button>
                                 <button class="btn btn-danger" @onclick="@(() => TracesViewModel.DeleteItemAsync(trace.Id))">delete</button>
                             </div>
                         </td>
@@ -38,13 +38,18 @@
         }
     </div>
 
-    <DialogContainer ShowDialog="@TracesViewModel.ShowingCreateTraceDialog">
-        <CreateTraceDialog OnClose="@TracesViewModel.HideCreateTraceDialog"/>
-    </DialogContainer>
-
-    <DialogContainer ShowDialog="@TracesViewModel.ShowingUpdateTraceDialog">
-        <ReplaceTraceDialog OnClose="@TracesViewModel.HideUpdateTraceDialog"/>
-    </DialogContainer>
+    <Modal @ref="@TracesViewModel.CreateTraceModalRef">
+        <ModalBackdrop />
+        <ModalContent IsCentered="true" Size="ModalSize.Large">
+            <ModalHeader>
+                <ModalTitle>@TracesViewModel.EditTraceModificationModel.ModalTitle</ModalTitle>
+                <CloseButton Clicked="@TracesViewModel.HideCreateTraceModal"/>
+            </ModalHeader>
+            <ModalBody>
+                <EditTraceDialog OnClose="@TracesViewModel.HideCreateTraceModal"/>
+            </ModalBody>
+        </ModalContent>
+    </Modal>
 </div>
 
 @code

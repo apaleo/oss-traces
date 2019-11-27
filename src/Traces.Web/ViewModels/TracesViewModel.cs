@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blazored.Toast.Services;
+using Blazorise;
 using Traces.Common.Constants;
 using Traces.Common.Utils;
 using Traces.Web.Models;
@@ -25,15 +26,14 @@ namespace Traces.Web.ViewModels
             _traceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
             _toastService = Check.NotNull(toastService, nameof(toastService));
             Traces = new List<TraceItemModel>();
+            EditTraceModificationModel = new EditTraceDialogViewModel();
         }
 
         public List<TraceItemModel> Traces { get; }
 
-        public TraceItemModel ConfiguringTrace { get; private set; }
+        public EditTraceDialogViewModel EditTraceModificationModel { get; }
 
-        public bool ShowingCreateTraceDialog { get; private set; }
-
-        public bool ShowingUpdateTraceDialog { get; private set; }
+        public Modal CreateTraceModalRef { get; set; }
 
         public async Task LoadTracesAsync()
         {
@@ -50,16 +50,31 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        public void ShowCreateTraceDialog()
+        public void ShowCreateTraceModal()
         {
-            ShowingCreateTraceDialog = true;
+            EditTraceModificationModel.ClearCurrentState();
+            EditTraceModificationModel.IsReplace = false;
+
+            CreateTraceModalRef?.Show();
         }
 
-        public void ShowReplaceTraceDialog(TraceItemModel traceItemModel)
+        public void HideCreateTraceModal()
         {
-            ConfiguringTrace = traceItemModel;
+            EditTraceModificationModel.ClearCurrentState();
+            CreateTraceModalRef?.Hide();
+        }
 
-            ShowingUpdateTraceDialog = true;
+        public void ShowReplaceTraceModal(TraceItemModel traceItemModel)
+        {
+            EditTraceModificationModel.ClearCurrentState();
+
+            EditTraceModificationModel.IsReplace = true;
+            EditTraceModificationModel.Id = traceItemModel.Id;
+            EditTraceModificationModel.Title = traceItemModel.Title;
+            EditTraceModificationModel.Description = traceItemModel.Description;
+            EditTraceModificationModel.DueDate = traceItemModel.DueDate;
+
+            CreateTraceModalRef?.Show();
         }
 
         public async Task CompleteTraceAsync(int id)
@@ -89,26 +104,14 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        public void HideCreateTraceDialog()
+        public async Task<bool> CreateTraceItemAsync()
         {
-            ShowingCreateTraceDialog = false;
-        }
-
-        public void HideUpdateTraceDialog()
-        {
-            ShowingUpdateTraceDialog = false;
-        }
-
-        public async Task<bool> CreateTraceItemAsync(CreateTraceItemModel createTraceItemModel)
-        {
+            var createTraceItemModel = EditTraceModificationModel.GetCreateTraceItemModel();
             var createResult = await _traceModifierService.CreateTraceAsync(createTraceItemModel);
 
             if (createResult.Success)
             {
-                createResult.Result.MatchSome(v =>
-                {
-                    Traces.Add(v);
-                });
+                createResult.Result.MatchSome(Traces.Add);
 
                 ShowToastMessage(true, TextConstants.TraceCreatedSuccessfullyMessage);
             }
@@ -124,8 +127,9 @@ namespace Traces.Web.ViewModels
             return createResult.Success;
         }
 
-        public async Task<bool> ReplaceTraceItemAsync(ReplaceTraceItemModel replaceTraceItemModel)
+        public async Task<bool> ReplaceTraceItemAsync()
         {
+            var replaceTraceItemModel = EditTraceModificationModel.GetReplaceTraceItemModel();
             var replaceResult = await _traceModifierService.ReplaceTraceAsync(replaceTraceItemModel);
 
             if (replaceResult.Success)
