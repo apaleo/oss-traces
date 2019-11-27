@@ -64,6 +64,9 @@
     <!-- Disposables Should Call Suppress Finalize -->
     <Rule Id="CC0029" Action="Info" />
 
+    <!-- PropertyChangedEventArgsUnnecessaryAllocation -->
+    <Rule Id="CC0106" Action="None"/>
+
     <!-- TODO: Remove this again -->
     <Rule Id="CC0022" Action="None" />
     <Rule Id="CC0091" Action="None"/>
