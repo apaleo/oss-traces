@@ -19,6 +19,7 @@ jobs:
     - name: Test with dotnet
       run: dotnet test ./Traces.sln --configuration Release
     - name: Deploy to heroku
+      if: github.ref == 'refs/heads/master'
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
         APP_NAME: ${{ 'traces-staging' }}
