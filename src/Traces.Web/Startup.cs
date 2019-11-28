@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,6 +61,13 @@ namespace Traces.Web
                     samplingDuration: TimeSpan.FromSeconds(10),
                     minimumThroughput: 8,
                     durationOfBreak: TimeSpan.FromSeconds(30)));
+            services.AddResponseCompression(options => { options.EnableForHttps = true; });
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+                options.ForwardedHeaders = ForwardedHeaders.All;
+            });
 
             services.AddAuthentication(options =>
                 {
