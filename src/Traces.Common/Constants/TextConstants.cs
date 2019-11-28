@@ -21,5 +21,13 @@ namespace Traces.Common.Constants
         public const string SuccessHeaderText = "Success";
 
         public const string ErrorHeaderText = "Oops";
+
+        public const string CreateTraceModalTitle = "Create trace";
+
+        public const string ReplaceTraceModalTitle = "Update trace";
+
+        public const string CreateTraceButtonText = "Create";
+
+        public const string ReplaceTraceButtonText = "Update";
     }
 }
