@@ -20,9 +20,9 @@ jobs:
       run: dotnet test ./Traces.sln --configuration Release
     - name: Deploy to heroku
       env:
-        HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN }}
+        HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
         APP_NAME: ${{ 'traces-staging' }}
       run: |
-        docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com
+        docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
         heroku container:push web -a $APP_NAME
         heroku container:release web -a $APP_NAME
