@@ -1,6 +1,9 @@
 using System;
 using System.Net.Http;
 using Blazored.Toast;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -44,7 +47,9 @@ namespace Traces.Web
 
             services.AddServerSideBlazor();
 
-            services.AddScoped<IApaleoClientFactory, ApaleoClientFactory>();
+            services.AddBlazorise()
+                .AddBootstrapProviders()
+                .AddFontAwesomeIcons();
 
             // Here we have a retry policy only for read-only requests such as GET or HEAD
             // In addition there is a waiting time for the circuit breaker to avoid too many requests per second to the apaleo api
@@ -137,6 +142,10 @@ namespace Traces.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.ApplicationServices
+                .UseBootstrapProviders()
+                .UseFontAwesomeIcons();
 
             app.UseEndpoints(endpoints =>
             {
