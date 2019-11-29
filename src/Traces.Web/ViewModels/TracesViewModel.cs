@@ -4,6 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blazored.Toast.Services;
 using Blazorise;
+using IdentityModel;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Utils;
 using Traces.Web.Models;
@@ -16,15 +20,22 @@ namespace Traces.Web.ViewModels
         private readonly ITracesCollectorService _tracesCollectorService;
         private readonly ITraceModifierService _traceModifierService;
         private readonly IToastService _toastService;
+        private readonly IRequestContext _requestContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private bool _isInitialized;
 
         public TracesViewModel(
             ITracesCollectorService tracesCollectorService,
             ITraceModifierService traceModifierService,
-            IToastService toastService)
+            IToastService toastService,
+            IRequestContext requestContext,
+            IHttpContextAccessor httpContextAccessor)
         {
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
             _traceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
             _toastService = Check.NotNull(toastService, nameof(toastService));
+            _requestContext = Check.NotNull(requestContext, nameof(requestContext));
+            _httpContextAccessor = Check.NotNull(httpContextAccessor, nameof(httpContextAccessor));
             Traces = new List<TraceItemModel>();
             EditTraceModificationModel = new EditTraceDialogViewModel();
         }
@@ -35,7 +46,15 @@ namespace Traces.Web.ViewModels
 
         public Modal CreateTraceModalRef { get; set; }
 
-        public async Task LoadTracesAsync()
+        public async Task LoadAsync()
+        {
+            if (await InitializeContextAsync())
+            {
+                await LoadTracesAsync();
+            }
+        }
+
+        private async Task LoadTracesAsync()
         {
             var tracesResult = await _tracesCollectorService.GetTracesAsync();
 
@@ -190,6 +209,23 @@ namespace Traces.Web.ViewModels
 
                 ShowToastMessage(false, errorMessage);
             }
+        }
+
+        private async Task<bool> InitializeContextAsync()
+        {
+            var httpContextUser = _httpContextAccessor.HttpContext.User;
+            if (_isInitialized || !httpContextUser.Identity.IsAuthenticated)
+            {
+                return _isInitialized;
+            }
+
+            var tenantId = httpContextUser.Claims.FirstOrDefault(c => c.Type == ApaleoClaims.AccountCode);
+            var subjectId = httpContextUser.Claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Subject);
+            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync(SecurityConstants.AccessToken);
+            _requestContext.Initialize(tenantId?.Value, accessToken, subjectId?.Value);
+
+            _isInitialized = true;
+            return true;
         }
 
         private void ShowToastMessage(bool success, string message)
