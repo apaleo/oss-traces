@@ -54,21 +54,6 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        private async Task LoadTracesAsync()
-        {
-            var tracesResult = await _tracesCollectorService.GetTracesAsync();
-
-            if (tracesResult.Success)
-            {
-                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
-
-                foreach (var trace in traces)
-                {
-                    Traces.Add(trace);
-                }
-            }
-        }
-
         public void ShowCreateTraceModal()
         {
             EditTraceModificationModel.ClearCurrentState();
@@ -208,6 +193,21 @@ namespace Traces.Web.ViewModels
                     () => throw new NotImplementedException());
 
                 ShowToastMessage(false, errorMessage);
+            }
+        }
+
+        private async Task LoadTracesAsync()
+        {
+            var tracesResult = await _tracesCollectorService.GetTracesAsync();
+
+            if (tracesResult.Success)
+            {
+                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                foreach (var trace in traces)
+                {
+                    Traces.Add(trace);
+                }
             }
         }
 
