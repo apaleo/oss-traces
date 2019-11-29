@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -85,7 +86,8 @@ namespace Traces.Web
                 .AddCookie(options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-                    options.Cookie.Name = "apaleoautorefresh";
+                    options.Cookie.Name = "apaleo_auth";
+                    options.Cookie.SameSite = SameSiteMode.None;
                 })
                 .AddAutomaticTokenRefresh()
                 .AddOpenIdConnect("apaleo", options =>
