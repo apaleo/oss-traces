@@ -149,6 +149,7 @@ namespace Traces.Web
                 app.UseForwardedHeaders();
             }
 
+            app.UseResponseCompression();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
