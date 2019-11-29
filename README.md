@@ -22,7 +22,7 @@ While in the root directory of the project
 
 ### Build and run with your IDE of preference or command line
 
-**For this step you must have .Net Core 3.0 installed [Install .Net Core 3.0](https://dotnet.microsoft.com/download/dotnet-core/3.0)**
+**For this step you must have .Net Core 3.0 installed ([Install .Net Core 3.0](https://dotnet.microsoft.com/download/dotnet-core/3.0))**
 
 1. You must have already followed the steps to spin up the database container explained above.
 
