@@ -24,6 +24,7 @@ using Traces.Core.Repositories;
 using Traces.Core.Services;
 using Traces.Data;
 using Traces.Web.AutoRefresh;
+using Traces.Web.Middlewares;
 using Traces.Web.Services;
 using Traces.Web.ViewModels;
 
@@ -152,6 +153,7 @@ namespace Traces.Web
             app.UseResponseCompression();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseRouting();
 
