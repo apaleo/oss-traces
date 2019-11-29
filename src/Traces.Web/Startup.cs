@@ -84,7 +84,8 @@ namespace Traces.Web
                 .AddCookie(options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-                    options.Cookie.Name = "apaleoautorefresh";
+                    options.Cookie.Name = "apaleo_auth";
+                    options.Cookie.SameSite = SameSiteMode.None;
                 })
                 .AddAutomaticTokenRefresh()
                 .AddOpenIdConnect("apaleo", options =>
