@@ -1,2 +1,48 @@
 # oss-traces
-An amazing new blueprint for apaleo apps will be created here, completely in the open ...
+This is an open source blueprint for a Traces/To-Do application to be coupled with apaleo UI via apaleo One integrations.
+
+## Prerequisites
+
+- You need to have Docker installed
+- For deployment you need to have heroku cli
+    - [how to install heroku cli](https://devcenter.heroku.com/articles/heroku-cli)
+
+## Testing locally
+
+### Run postgres container
+
+**This step should not be skipped as it is required for the project database**
+
+While in the root directory of the project
+
+- `docker-compose up -d` will spin up the postgres container.
+- `docker-compose down` will remove all containers and all the data.
+- `docker-compose stop` will only stop the container without deleting data.
+- `docker-compose start` will spin up the containers in case they have been stopped.
+
+### Build and run with your IDE of preference or command line
+
+**For this step you must have .Net Core 3.0 installed ([Install .Net Core 3.0](https://dotnet.microsoft.com/download/dotnet-core/3.0))**
+
+1. You must have already followed the steps to spin up the database container explained above.
+
+1. You will need to override the ClientId and ClientSecret variables in the appsettings.json in `/src/Traces.Web/appsettings.json` file with your apaleo client information **You should NEVER post your credentials publicly on Github or any public repository**.
+    - To achieve this you must define two environment variables `APALEO__CLIENTID` and `APALEO__CLIENTSECRET`.
+    - The value of such variables should be your respective `apaleo client id` and your `apaleo client secret`
+    - Again remember that these values should stay always private.
+
+1. Run the project in your IDE of preference or command line.
+
+1. Navigate to `https://localhost:5021`
+
+## Deploying
+
+1. Make sure to have the heroku cli installed
+
+1. You should login with the following command `heroku login` and `heroku container:login`.
+
+1. Run `heroku container:push web -a ReplaceThisWithYourAppName` this will run the Dockerfile and push the resulting image to heroku
+
+1. Run `heroku container:release web -a ReplaceThisWithYourAppName` this will release the most recent pushed image to your heroku app.
+
+1. Now you can navigate to your app's URL `ReplaceThisWithYourAppName.herokuapp.com` or your already setup URL for your app.
