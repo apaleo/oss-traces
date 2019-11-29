@@ -68,6 +68,7 @@ namespace Traces.Web
                     durationOfBreak: TimeSpan.FromSeconds(30)));
 
             services.AddResponseCompression(options => { options.EnableForHttps = true; });
+            services.AddHttpsRedirection(options => { options.HttpsPort = 443; });
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.KnownNetworks.Clear();
@@ -148,6 +149,7 @@ namespace Traces.Web
                 app.UseForwardedHeaders();
             }
 
+            app.UseResponseCompression();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
