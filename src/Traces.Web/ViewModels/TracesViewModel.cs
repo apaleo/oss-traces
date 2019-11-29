@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blazored.Toast.Services;
 using Blazorise;
+using Microsoft.AspNetCore.Http;
+using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Utils;
 using Traces.Web.Models;
@@ -11,7 +13,7 @@ using Traces.Web.Services;
 
 namespace Traces.Web.ViewModels
 {
-    public class TracesViewModel
+    public class TracesViewModel : BaseViewModel
     {
         private readonly ITracesCollectorService _tracesCollectorService;
         private readonly ITraceModifierService _traceModifierService;
@@ -20,7 +22,10 @@ namespace Traces.Web.ViewModels
         public TracesViewModel(
             ITracesCollectorService tracesCollectorService,
             ITraceModifierService traceModifierService,
-            IToastService toastService)
+            IToastService toastService,
+            IRequestContext requestContext,
+            IHttpContextAccessor httpContextAccessor)
+        : base(httpContextAccessor, requestContext)
         {
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
             _traceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
@@ -35,18 +40,11 @@ namespace Traces.Web.ViewModels
 
         public Modal CreateTraceModalRef { get; set; }
 
-        public async Task LoadTracesAsync()
+        public async Task LoadAsync()
         {
-            var tracesResult = await _tracesCollectorService.GetTracesAsync();
-
-            if (tracesResult.Success)
+            if (await InitializeContextAsync())
             {
-                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
-
-                foreach (var trace in traces)
-                {
-                    Traces.Add(trace);
-                }
+                await LoadTracesAsync();
             }
         }
 
@@ -189,6 +187,21 @@ namespace Traces.Web.ViewModels
                     () => throw new NotImplementedException());
 
                 ShowToastMessage(false, errorMessage);
+            }
+        }
+
+        private async Task LoadTracesAsync()
+        {
+            var tracesResult = await _tracesCollectorService.GetTracesAsync();
+
+            if (tracesResult.Success)
+            {
+                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                foreach (var trace in traces)
+                {
+                    Traces.Add(trace);
+                }
             }
         }
 
