@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +23,7 @@ using Traces.Core.Repositories;
 using Traces.Core.Services;
 using Traces.Data;
 using Traces.Web.AutoRefresh;
+using Traces.Web.Helpers;
 using Traces.Web.Services;
 using Traces.Web.ViewModels;
 
@@ -42,15 +42,14 @@ namespace Traces.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages(options => options.Conventions.AuthorizeFolder("/"));
+            services.AddRazorPages()
+                .AddMvcOptions(options => options.Filters.Add(typeof(ContextFilter)));
 
             services.AddServerSideBlazor();
 
             services.AddBlazorise()
                 .AddBootstrapProviders()
                 .AddFontAwesomeIcons();
-
-            services.AddHttpContextAccessor();
 
             // Here we have a retry policy only for read-only requests such as GET or HEAD
             // In addition there is a waiting time for the circuit breaker to avoid too many requests per second to the apaleo api
@@ -66,13 +65,6 @@ namespace Traces.Web
                     samplingDuration: TimeSpan.FromSeconds(10),
                     minimumThroughput: 8,
                     durationOfBreak: TimeSpan.FromSeconds(30)));
-            services.AddResponseCompression(options => { options.EnableForHttps = true; });
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.KnownNetworks.Clear();
-                options.KnownProxies.Clear();
-                options.ForwardedHeaders = ForwardedHeaders.All;
-            });
 
             services.AddAuthentication(options =>
                 {
@@ -93,7 +85,7 @@ namespace Traces.Web
                     options.ClientId = Configuration["apaleo:ClientId"];
                     options.CallbackPath = "/signin-apaleo";
 
-                    options.ResponseType = "code";
+                    options.ResponseType = "code id_token";
 
                     options.Scope.Clear();
                     options.Scope.Add("openid");
@@ -144,7 +136,6 @@ namespace Traces.Web
 
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-                app.UseForwardedHeaders();
             }
 
             app.UseHttpsRedirection();
@@ -152,12 +143,10 @@ namespace Traces.Web
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-
             app.ApplicationServices
                 .UseBootstrapProviders()
                 .UseFontAwesomeIcons();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
