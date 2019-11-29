@@ -31,7 +31,7 @@ While in the root directory of the project
     - The value of such variables should be your respective `apaleo client id` and your `apaleo client secret`
     - Again remember that these values should stay always private.
 
-1. Run the project in your IDE of preference or console.
+1. Run the project in your IDE of preference or command line.
 
 1. Navigate to `https://localhost:5021`
 
