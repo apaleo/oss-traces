@@ -1,14 +1,4 @@
 
-a, .btn-link {
-    color: #0366d6;
-}
-
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
-
 .nav-item.active {
     border-bottom: 3px solid #F19722;
 } 
@@ -27,6 +17,10 @@ a, .btn-link {
 
 .table .icon-header-cell {
     width: 36px;
+}
+
+.dropdown-item:active {
+    background-color: #f0f0f0 !important;
 }
 
 .table td.fit,
