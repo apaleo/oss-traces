@@ -1,10 +1,23 @@
 ﻿@inherits LayoutComponentBase
 @using Blazored.Toast.Configuration
 
-<BlazoredToasts Position="ToastPosition.BottomCenter" Timeout="10"/>
-
 <div class="main">
-    <div class="content px-4">
+    <header class="page-header">
+        <h1>Traces</h1>
+        <nav class="navbar navbar-expand-sm navbar-light">
+            <div>
+                <div class="navbar-nav">
+                    <NavLink class="nav-item nav-link" href="" Match="NavLinkMatch.All">
+                        Pending traces
+                    </NavLink>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="page-content">
         @Body
-    </div>
+    </section>
 </div>
+
+<BlazoredToasts Position="ToastPosition.BottomCenter" Timeout="10"/>

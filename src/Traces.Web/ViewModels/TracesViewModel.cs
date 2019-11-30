@@ -196,6 +196,7 @@ namespace Traces.Web.ViewModels
 
             if (tracesResult.Success)
             {
+                Traces.Clear();
                 var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
 
                 foreach (var trace in traces)
