@@ -25,6 +25,12 @@ a, .btn-link {
     color: red;
 }
 
-.table .status-header-cell {
+.table .icon-header-cell {
     width: 36px;
+}
+
+.table td.fit,
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
 }

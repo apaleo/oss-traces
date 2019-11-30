@@ -4,48 +4,55 @@
 @inject TracesViewModel TracesViewModel
 
 <div class="content-actions">
-<button class="btn btn-outline-primary" @onclick="@TracesViewModel.ShowCreateTraceModal">
-    <i class="fa fa-plus pr-2"></i>Add
-</button>
+    <button class="btn btn-outline-primary" @onclick="@TracesViewModel.ShowCreateTraceModal"><i class="fa fa-plus pr-2"></i>Add</button>
 </div>
 
-@if (TracesViewModel.Traces != null && TracesViewModel.Traces.Any())
-{
-    <Table IsHoverable="true">
-        <TableHeader>
-            <TableRow>
-                <TableHeaderCell class="status-header-cell"></TableHeaderCell>
-                <TableHeaderCell>Title</TableHeaderCell>
-                <TableHeaderCell>Description</TableHeaderCell>
-                <TableHeaderCell>Due date</TableHeaderCell>
-                <TableHeaderCell>Actions</TableHeaderCell>
-            </TableRow>
-        </TableHeader>
-        <TableBody>
-            @foreach (var trace in TracesViewModel.Traces)
-            {
-                <TableRow>
-                    <TableRowCell><CheckEdit Checked="false" CheckedChanged="@(() => TracesViewModel.CompleteTraceAsync(trace.Id))"></CheckEdit></TableRowCell>
-                    <TableRowCell>@trace.Title</TableRowCell>
-                    <TableRowCell>@trace.Description</TableRowCell>
-                    <TableRowCell>@trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</TableRowCell>
-                    <TableRowCell>
-                        <Buttons>
-                            <Button Color="Color.Secondary" Clicked="@(() => TracesViewModel.ShowReplaceTraceModal(trace))">Edit</Button>
-                            <Button Color="Color.Danger" Clicked="@(() => TracesViewModel.DeleteItemAsync(trace.Id))">Delete</Button>
-                        </Buttons>
-                    </TableRowCell>
-                </TableRow>
-            }
-        </TableBody>
-    </Table>
-}
-else
-{
-    <div class="pt-2">
-        <span><i class="fa fa-info-circle pt-3 pr-2"></i>We couldn't find any pending traces.</span>
-    </div>
-}
+<table class="table">
+    <thead>
+    <tr>
+        <th class="icon-header-cell"></th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Due date</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (TracesViewModel.Traces != null && TracesViewModel.Traces.Any())
+    {
+        @foreach (var trace in TracesViewModel.Traces)
+        {
+            <tr>
+                <td>
+                    <CheckEdit Checked="false" CheckedChanged="@(() => TracesViewModel.CompleteTraceAsync(trace.Id))"></CheckEdit>
+                </td>
+                <td>@trace.Title</td>
+                <td>@trace.Description</td>
+                <td>@trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</td>
+                <td class="fit text-right">
+                    <button class="btn btn-default pr-2" @onclick="@(() => TracesViewModel.ShowReplaceTraceModal(trace))">
+                        <i class="fa fa-pen"></i>
+                    </button>
+                    <div class="btn-group">
+                        <button class="btn btn-default" data-toggle="dropdown">
+                            <i class="fa fa-ellipsis-v"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="text-danger dropdown-item" @onclick="@(() => TracesViewModel.DeleteItemAsync(trace.Id))">Delete</a>                    
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="5">We couldn't find any pending traces.</td>
+        </tr>
+    }
+    </tbody>
+</table>
 
 <Modal @ref="@TracesViewModel.CreateTraceModalRef">
     <ModalBackdrop/>
