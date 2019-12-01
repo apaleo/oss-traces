@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,7 @@ using Traces.Core.Repositories;
 using Traces.Core.Services;
 using Traces.Data;
 using Traces.Web.AutoRefresh;
+using Traces.Web.Middlewares;
 using Traces.Web.Services;
 using Traces.Web.ViewModels;
 
@@ -68,6 +70,7 @@ namespace Traces.Web
                     durationOfBreak: TimeSpan.FromSeconds(30)));
 
             services.AddResponseCompression(options => { options.EnableForHttps = true; });
+            services.AddHttpsRedirection(options => { options.HttpsPort = 443; });
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.KnownNetworks.Clear();
@@ -83,7 +86,8 @@ namespace Traces.Web
                 .AddCookie(options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-                    options.Cookie.Name = "apaleoautorefresh";
+                    options.Cookie.Name = "apaleo_auth";
+                    options.Cookie.SameSite = SameSiteMode.None;
                 })
                 .AddAutomaticTokenRefresh()
                 .AddOpenIdConnect("apaleo", options =>
@@ -148,8 +152,10 @@ namespace Traces.Web
                 app.UseForwardedHeaders();
             }
 
+            app.UseResponseCompression();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseRouting();
 
