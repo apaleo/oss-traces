@@ -1,6 +1,7 @@
 using System.Net.Http;
 using IdentityModel.Client;
 using Traces.ApaleoClients.Booking;
+using Traces.ApaleoClients.Integration;
 using Traces.ApaleoClients.Inventory;
 using Traces.Common;
 using Traces.Common.Utils;
@@ -34,6 +35,16 @@ namespace Traces.Core.ClientFactories
         public IInventoryApi CreateInventoryApi()
         {
             IInventoryApi api = new InventoryApi(GetHttpClient(), false)
+            {
+                BaseUri = _httpClient.BaseAddress
+            };
+
+            return api;
+        }
+
+        public IIntegrationApi CreateIntegrationApi()
+        {
+            IIntegrationApi api = new IntegrationApi(GetHttpClient(), false)
             {
                 BaseUri = _httpClient.BaseAddress
             };
