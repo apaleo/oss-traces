@@ -69,6 +69,19 @@ namespace Traces.Web
                     minimumThroughput: 8,
                     durationOfBreak: TimeSpan.FromSeconds(30)));
 
+            services.AddHttpClient<IApaleoIntegrationClientFactory, ApaleoIntegrationClientFactory>(client =>
+                    client.BaseAddress = new Uri(Configuration["apaleo:IntegrationServiceUri"]))
+                .AddPolicyHandler(request =>
+                    IsReadOnlyRequest(request)
+                        ? HttpPolicyExtensions.HandleTransientHttpError()
+                            .WaitAndRetryAsync(3, t => TimeSpan.FromSeconds(Math.Pow(2, t)))
+                        : (IAsyncPolicy<HttpResponseMessage>)Policy.NoOpAsync<HttpResponseMessage>())
+                .AddTransientHttpErrorPolicy(policy => policy.AdvancedCircuitBreakerAsync(
+                    failureThreshold: 0.5,
+                    samplingDuration: TimeSpan.FromSeconds(10),
+                    minimumThroughput: 8,
+                    durationOfBreak: TimeSpan.FromSeconds(30)));
+
             services.AddResponseCompression(options => { options.EnableForHttps = true; });
             services.AddHttpsRedirection(options => { options.HttpsPort = 443; });
             services.Configure<ForwardedHeadersOptions>(options =>

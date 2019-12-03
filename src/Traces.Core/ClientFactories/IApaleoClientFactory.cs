@@ -1,5 +1,4 @@
 using Traces.ApaleoClients.Booking;
-using Traces.ApaleoClients.Integration;
 using Traces.ApaleoClients.Inventory;
 
 namespace Traces.Core.ClientFactories
@@ -9,7 +8,5 @@ namespace Traces.Core.ClientFactories
         IBookingApi CreateBookingApi();
 
         IInventoryApi CreateInventoryApi();
-
-        IIntegrationApi CreateIntegrationApi();
     }
 }
