@@ -54,6 +54,8 @@ namespace Traces.Web
 
             services.AddHttpContextAccessor();
 
+            services.Configure<IntegrationConfig>(Configuration.GetSection("apaleo:IntegrationConfig"));
+
             // Here we have a retry policy only for read-only requests such as GET or HEAD
             // In addition there is a waiting time for the circuit breaker to avoid too many requests per second to the apaleo api
             services.AddHttpClient<IApaleoClientFactory, ApaleoClientFactory>(client =>

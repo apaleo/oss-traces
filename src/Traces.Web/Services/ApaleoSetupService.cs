@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Traces.ApaleoClients.Integration.Models;
+using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Enums;
 using Traces.Common.Utils;
@@ -13,6 +15,7 @@ namespace Traces.Web.Services
     internal class ApaleoSetupService : IApaleoSetupService
     {
         private readonly IApaleoIntegrationClientFactory _apaleoIntegrationClientFactory;
+        private readonly IOptions<IntegrationConfig> _integrationConfig;
 
         private readonly Dictionary<string, ApaleoIntegrationTargetsEnum> apaleoIntegrationTargetDictionary =
             new Dictionary<string, ApaleoIntegrationTargetsEnum>
@@ -22,8 +25,9 @@ namespace Traces.Web.Services
                 { ApaleoOneConstants.ReservationDetailsTabIntegrationCode, ApaleoIntegrationTargetsEnum.ReservationDetailsTab }
             };
 
-        public ApaleoSetupService(IApaleoIntegrationClientFactory apaleoIntegrationClientFactory)
+        public ApaleoSetupService(IApaleoIntegrationClientFactory apaleoIntegrationClientFactory, IOptions<IntegrationConfig> integrationConfig)
         {
+            _integrationConfig = Check.NotNull(integrationConfig, nameof(integrationConfig));
             _apaleoIntegrationClientFactory = Check.NotNull(apaleoIntegrationClientFactory, nameof(apaleoIntegrationClientFactory));
         }
 
@@ -86,12 +90,15 @@ namespace Traces.Web.Services
             var createUiIntegrationModel = new CreateUiIntegrationModel
             {
                 Code = integrationCode,
-
+                Label = _integrationConfig.Value.IntegrationLabel,
+                IconSource = _integrationConfig.Value.IntegrationIconUrl,
+                SourceType = ApaleoOneConstants.IntegrationSourceType,
+                SourceUrl = _integrationConfig.Value.IntegrationUrl
             };
 
-            using (var response = await integrationApi.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(integrationTarget))
+            using (var response = await integrationApi.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(integrationTarget, createUiIntegrationModel))
             {
-
+                // TODO
             }
         }
     }

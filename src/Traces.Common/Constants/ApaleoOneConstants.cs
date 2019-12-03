@@ -9,5 +9,7 @@ namespace Traces.Common.Constants
         public const string PropertyMenuAppsIntegrationCode = "TracesProperyMenuAppsCode";
 
         public const string ReservationDetailsTabIntegrationCode = "TracesReservationTabCode";
+
+        public const string IntegrationSourceType = "Public";
     }
 }
