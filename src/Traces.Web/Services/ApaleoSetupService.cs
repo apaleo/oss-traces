@@ -71,14 +71,16 @@ namespace Traces.Web.Services
             {
                 if (apaleoIntegrationTargetDictionary.ContainsKey(integrationKey))
                 {
-                    await CreateApaleoIntegrationAsync(integrationKey,
-                        apaleoIntegrationTargetDictionary[integrationKey]);
+                    tasks.Add(CreateApaleoIntegrationAsync(integrationKey,
+                        apaleoIntegrationTargetDictionary[integrationKey]));
                 }
                 else
                 {
                     throw new InvalidOperationException($"Integration key: {integrationKey} does not exist in the list of due integrations to create");
                 }
             }
+
+            await Task.WhenAll(tasks);
         }
 
         private async Task CreateApaleoIntegrationAsync(string integrationCode, ApaleoIntegrationTargetsEnum integrationTargetEnum)
