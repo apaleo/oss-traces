@@ -19,7 +19,7 @@
         @foreach (var trace in Traces)
         {
             
-            <EditableTraceRowTemplate Trace="trace"></EditableTraceRowTemplate>
+            <EditableTraceRowTemplate @key="trace.Id" Trace="trace"></EditableTraceRowTemplate>
         }
     }
     else

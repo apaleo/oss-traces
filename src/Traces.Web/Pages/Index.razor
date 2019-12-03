@@ -3,6 +3,7 @@
 @using Traces.Web.Models
 @using Traces.Web.ViewModels
 @inject TracesViewModel TracesViewModel
+@implements IDisposable
 
 <div class="content-actions">
     <Button class="btn btn-outline-primary" Clicked="@TracesViewModel.ShowCreateTraceModal"><i class="fa fa-plus pr-2"></i>Add</Button>
@@ -31,12 +32,23 @@
 {
     protected override void OnInitialized()
     {
-        TracesViewModel.RefreshRequested += StateHasChanged;
+        TracesViewModel.RefreshRequested += OnRefresh;
     }
-    
+
     protected override async Task OnInitializedAsync()
     {
         await TracesViewModel.LoadAsync();
         await base.OnInitializedAsync();
     }
+
+    public void Dispose()
+    {
+        TracesViewModel.RefreshRequested -= OnRefresh;
+    }
+
+    private void OnRefresh()
+    {
+        StateHasChanged();
+    }
+
 }

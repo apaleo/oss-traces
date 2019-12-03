@@ -262,7 +262,7 @@ namespace Traces.Web.ViewModels
                 date = date.AddDays(-(date.Day - 1));
                 if (!TracesDateMapping.ContainsKey(date))
                 {
-                    TracesDateMapping.Add(date, new List<TraceItemModel> { trace });
+                    TracesDateMapping.Add(date, new List<TraceItemModel>());
                 }
             }
 

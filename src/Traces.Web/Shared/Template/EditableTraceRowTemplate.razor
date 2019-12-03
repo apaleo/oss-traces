@@ -1,5 +1,6 @@
 @using Traces.Web.Models;
 @using System.Globalization
+@using Traces.Common.Enums
 @using Traces.Web.ViewModels
 @inject TracesViewModel TracesViewModel
 
@@ -29,4 +30,5 @@
 {
     [Parameter]
     public TraceItemModel Trace { get; set; }
+
 }
