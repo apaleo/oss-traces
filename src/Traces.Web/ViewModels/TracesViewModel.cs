@@ -13,7 +13,7 @@ using Traces.Web.Services;
 
 namespace Traces.Web.ViewModels
 {
-    public class TracesViewModel
+    public class TracesViewModel : BaseViewModel
     {
         private readonly ITracesCollectorService _tracesCollectorService;
         private readonly ITraceModifierService _traceModifierService;
@@ -22,7 +22,10 @@ namespace Traces.Web.ViewModels
         public TracesViewModel(
             ITracesCollectorService tracesCollectorService,
             ITraceModifierService traceModifierService,
-            IToastService toastService)
+            IToastService toastService,
+            IRequestContext requestContext,
+            IHttpContextAccessor httpContextAccessor)
+            : base(requestContext, httpContextAccessor)
         {
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
             _traceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
@@ -39,7 +42,10 @@ namespace Traces.Web.ViewModels
 
         public async Task LoadAsync()
         {
-            await LoadTracesAsync();
+            if (await InitializeContextAsync())
+            {
+                await LoadTracesAsync();
+            }
         }
 
         public void ShowCreateTraceModal()
