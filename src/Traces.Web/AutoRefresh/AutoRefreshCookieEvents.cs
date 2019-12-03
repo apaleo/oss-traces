@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using IdentityModel;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -11,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Traces.Common;
 using Traces.Common.Constants;
 
 namespace Traces.Web.AutoRefresh
@@ -23,12 +27,14 @@ namespace Traces.Web.AutoRefresh
         private readonly IOptionsSnapshot<OpenIdConnectOptions> _oidcOptions;
         private readonly AutoRefreshOptions _refreshOptions;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
+        private readonly IRequestContext _requestContext;
 
         public AutoRefreshCookieEvents(
             IOptions<AutoRefreshOptions> refreshOptions,
             IOptionsSnapshot<OpenIdConnectOptions> oidcOptions,
             IAuthenticationSchemeProvider schemeProvider,
             IHttpClientFactory httpClientFactory,
+            IRequestContext requestContext,
             ILogger<AutoRefreshCookieEvents> logger,
             ISystemClock clock)
         {
@@ -38,6 +44,7 @@ namespace Traces.Web.AutoRefresh
             _httpClientFactory = httpClientFactory;
             _logger = logger;
             _clock = clock;
+            _requestContext = requestContext;
         }
 
         // important: this is just a POC at this point - it misses any thread synchronization. Will
@@ -100,6 +107,8 @@ namespace Traces.Web.AutoRefresh
 
                 await context.HttpContext.SignInAsync(context.Principal, context.Properties);
             }
+
+            InitializeRequestContext(context.Principal, context.Properties.GetTokens());
         }
 
         private async Task<OpenIdConnectOptions> GetOidcOptionsAsync()
@@ -113,6 +122,23 @@ namespace Traces.Web.AutoRefresh
             {
                 return _oidcOptions.Get(_refreshOptions.Scheme);
             }
+        }
+
+        private void InitializeRequestContext(ClaimsPrincipal claimsPrincipal, IEnumerable<AuthenticationToken> authenticationToken)
+        {
+            var accessToken = authenticationToken.FirstOrDefault(t => t.Name == SecurityConstants.AccessToken);
+
+            _requestContext.InitializeOrUpdateAccessToken(accessToken.Value);
+
+            if (_requestContext.IsInitialized || !claimsPrincipal.Identity.IsAuthenticated)
+            {
+                return;
+            }
+
+            var tenantId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ApaleoClaims.AccountCode);
+            var subjectId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Subject);
+
+            _requestContext.Initialize(tenantId?.Value, subjectId?.Value);
         }
     }
 }

@@ -8,6 +8,10 @@ namespace Traces.Common
 
         string SubjectId { get; }
 
-        void Initialize(string tenantId, string accessToken, string subjectId);
+        bool IsInitialized { get; }
+
+        void Initialize(string tenantId, string subjectId);
+
+        void InitializeOrUpdateAccessToken(string accessToken);
     }
 }
