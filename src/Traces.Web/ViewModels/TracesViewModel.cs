@@ -25,7 +25,7 @@ namespace Traces.Web.ViewModels
             IToastService toastService,
             IRequestContext requestContext,
             IHttpContextAccessor httpContextAccessor)
-            : base(requestContext, httpContextAccessor)
+            : base(httpContextAccessor, requestContext)
         {
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
             _traceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
