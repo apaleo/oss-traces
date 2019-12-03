@@ -1,0 +1,41 @@
+@using Traces.Web.Models;
+@using System.Globalization
+
+<h2>@Date</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th class="icon-header-cell"></th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Due date</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (Traces != null && Traces.Any())
+    {
+        @foreach (var trace in Traces)
+        {
+            
+            <EditableTraceRowTemplate Trace="trace"></EditableTraceRowTemplate>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="5">We couldn't find any upcoming traces.</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code
+{
+    [Parameter]
+    public DateTime Date { get; set; }
+    
+    [Parameter]
+    public IList<TraceItemModel> Traces { get; set; }
+}

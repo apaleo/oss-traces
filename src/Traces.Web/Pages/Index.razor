@@ -1,58 +1,18 @@
 ﻿@page "/"
-@using System.Globalization
+@using Traces.ApaleoClients.Booking.Models
+@using Traces.Web.Models
 @using Traces.Web.ViewModels
 @inject TracesViewModel TracesViewModel
 
 <div class="content-actions">
-    <button class="btn btn-outline-primary" @onclick="@TracesViewModel.ShowCreateTraceModal"><i class="fa fa-plus pr-2"></i>Add</button>
+    <Button class="btn btn-outline-primary" Clicked="@TracesViewModel.ShowCreateTraceModal"><i class="fa fa-plus pr-2"></i>Add</Button>
 </div>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th class="icon-header-cell"></th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Due date</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    @if (TracesViewModel.Traces != null && TracesViewModel.Traces.Any())
-    {
-        @foreach (var trace in TracesViewModel.Traces)
-        {
-            <tr>
-                <td>
-                    <CheckEdit Checked="false" CheckedChanged="@(() => TracesViewModel.CompleteTraceAsync(trace.Id))"></CheckEdit>
-                </td>
-                <td>@trace.Title</td>
-                <td>@trace.Description</td>
-                <td>@trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</td>
-                <td class="fit text-right">
-                    <button class="btn btn-default pr-2" @onclick="@(() => TracesViewModel.ShowReplaceTraceModal(trace))">
-                        <i class="fa fa-pen"></i>
-                    </button>
-                    <div class="btn-group">
-                        <button class="btn btn-default" data-toggle="dropdown">
-                            <i class="fa fa-ellipsis-v"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="text-danger dropdown-item" @onclick="@(() => TracesViewModel.DeleteItemAsync(trace.Id))">Delete</a>                    
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        }
-    }
-    else
-    {
-        <tr>
-            <td colspan="5">We couldn't find any upcoming traces.</td>
-        </tr>
-    }
-    </tbody>
-</table>
+@foreach (var date in TracesViewModel.SortedDates)
+{
+    <TraceGroupTemplate Traces="@TracesViewModel.TracesDateMapping[date]" Date="@date"></TraceGroupTemplate>
+}
+
 
 <Modal @ref="@TracesViewModel.CreateTraceModalRef">
     <ModalBackdrop/>
@@ -69,11 +29,14 @@
 
 @code
 {
-
+    protected override void OnInitialized()
+    {
+        TracesViewModel.RefreshRequested += StateHasChanged;
+    }
+    
     protected override async Task OnInitializedAsync()
     {
         await TracesViewModel.LoadAsync();
         await base.OnInitializedAsync();
     }
-
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Blazored.Toast.Services;
 using Blazorise;
@@ -18,6 +19,7 @@ namespace Traces.Web.ViewModels
         private readonly ITracesCollectorService _tracesCollectorService;
         private readonly ITraceModifierService _traceModifierService;
         private readonly IToastService _toastService;
+        private readonly IList<DateTime> _dates;
 
         public TracesViewModel(
             ITracesCollectorService tracesCollectorService,
@@ -25,20 +27,38 @@ namespace Traces.Web.ViewModels
             IToastService toastService,
             IRequestContext requestContext,
             IHttpContextAccessor httpContextAccessor)
-        : base(httpContextAccessor, requestContext)
+            : base(httpContextAccessor, requestContext)
         {
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
             _traceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
             _toastService = Check.NotNull(toastService, nameof(toastService));
+            _dates = Enumerable.Range(0, 7)
+                .Select(offset => DateTime.Today.AddDays(offset).Date).ToArray();
+
             Traces = new List<TraceItemModel>();
+            TracesDateMapping = new Dictionary<DateTime, IList<TraceItemModel>>();
             EditTraceModificationModel = new EditTraceDialogViewModel();
         }
+
+        public event Action RefreshRequested;
 
         public List<TraceItemModel> Traces { get; }
 
         public EditTraceDialogViewModel EditTraceModificationModel { get; }
 
         public Modal CreateTraceModalRef { get; set; }
+
+        public IDictionary<DateTime, IList<TraceItemModel>> TracesDateMapping { get; }
+
+        public List<DateTime> SortedDates
+        {
+            get
+            {
+                var dates = TracesDateMapping.Keys.ToList();
+                dates.Sort();
+                return dates;
+            }
+        }
 
         public async Task LoadAsync()
         {
@@ -52,6 +72,9 @@ namespace Traces.Web.ViewModels
         {
             EditTraceModificationModel.ClearCurrentState();
             EditTraceModificationModel.IsReplace = false;
+
+            EditTraceModificationModel.Title = "a";
+            EditTraceModificationModel.DueDate = DateTime.Today;
 
             CreateTraceModalRef?.Show();
         }
@@ -88,7 +111,7 @@ namespace Traces.Web.ViewModels
                     return;
                 }
 
-                Traces.Remove(trace);
+                RemoveTrace(trace);
 
                 ShowToastMessage(true, TextConstants.TraceMarkedAsCompletedMessage);
             }
@@ -109,7 +132,7 @@ namespace Traces.Web.ViewModels
 
             if (createResult.Success)
             {
-                createResult.Result.MatchSome(Traces.Add);
+                createResult.Result.MatchSome(trace => AddTrace(trace));
 
                 ShowToastMessage(true, TextConstants.TraceCreatedSuccessfullyMessage);
             }
@@ -175,7 +198,7 @@ namespace Traces.Web.ViewModels
                         return;
                     }
 
-                    Traces.Remove(trace);
+                    RemoveTrace(trace);
 
                     ShowToastMessage(true, TextConstants.TraceDeletedSuccessfullyMessage);
                 });
@@ -197,12 +220,21 @@ namespace Traces.Web.ViewModels
             if (tracesResult.Success)
             {
                 Traces.Clear();
+                TracesDateMapping.Clear();
+
+                foreach (var dateTime in _dates)
+                {
+                    TracesDateMapping.Add(dateTime, new List<TraceItemModel>());
+                }
+
                 var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
 
                 foreach (var trace in traces)
                 {
-                    Traces.Add(trace);
+                    AddTrace(trace, false);
                 }
+
+                RefreshRequested?.Invoke();
             }
         }
 
@@ -218,6 +250,43 @@ namespace Traces.Web.ViewModels
             {
                 _toastService.ShowError(message, header);
             }
+        }
+
+        private void AddTrace(TraceItemModel trace, bool refresh = true)
+        {
+            Traces.Add(trace);
+
+            var date = trace.DueDate.Date;
+            if (!TracesDateMapping.ContainsKey(date))
+            {
+                date = date.AddDays(-(date.Day - 1));
+                if (!TracesDateMapping.ContainsKey(date))
+                {
+                    TracesDateMapping.Add(date, new List<TraceItemModel> { trace });
+                }
+            }
+
+            TracesDateMapping[date].Add(trace);
+
+            if (refresh)
+            {
+                RefreshRequested?.Invoke();
+            }
+        }
+
+        private void RemoveTrace(TraceItemModel trace)
+        {
+            Traces.Remove(trace);
+
+            var date = trace.DueDate.Date;
+
+            if (!TracesDateMapping.ContainsKey(date))
+            {
+                date = date.AddDays(-(date.Day - 1));
+            }
+
+            TracesDateMapping[date].Remove(trace);
+            RefreshRequested?.Invoke();
         }
     }
 }
