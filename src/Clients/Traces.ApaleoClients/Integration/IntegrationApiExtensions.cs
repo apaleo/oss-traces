@@ -133,7 +133,7 @@ namespace Traces.ApaleoClients.Integration
             /// </param>
             /// <param name='createUiIntegrationModel'>
             /// </param>
-            public static MessageItemCollection IntegrationUiIntegrationsByTargetPost(this IIntegrationApi operations, string target, CreateUiIntegrationModel createUiIntegrationModel)
+            public static object IntegrationUiIntegrationsByTargetPost(this IIntegrationApi operations, string target, CreateUiIntegrationModel createUiIntegrationModel)
             {
                 return operations.IntegrationUiIntegrationsByTargetPostAsync(target, createUiIntegrationModel).GetAwaiter().GetResult();
             }
@@ -154,7 +154,7 @@ namespace Traces.ApaleoClients.Integration
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<MessageItemCollection> IntegrationUiIntegrationsByTargetPostAsync(this IIntegrationApi operations, string target, CreateUiIntegrationModel createUiIntegrationModel, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> IntegrationUiIntegrationsByTargetPostAsync(this IIntegrationApi operations, string target, CreateUiIntegrationModel createUiIntegrationModel, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(target, createUiIntegrationModel, null, cancellationToken).ConfigureAwait(false))
                 {

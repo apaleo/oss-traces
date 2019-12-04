@@ -97,7 +97,7 @@ namespace Traces.ApaleoClients.Integration
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(string target, CreateUiIntegrationModel createUiIntegrationModel, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(string target, CreateUiIntegrationModel createUiIntegrationModel, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
