@@ -6,7 +6,7 @@ namespace Traces.Common.Constants
     {
         public const string AccountMenuAppsIntegrationCode = "TracesAccountMenuAppsCode";
 
-        public const string PropertyMenuAppsIntegrationCode = "TracesProperyMenuAppsCode";
+        public const string PropertyMenuAppsIntegrationCode = "TracesPropertyMenuAppsCode";
 
         public const string ReservationDetailsTabIntegrationCode = "TracesReservationTabCode";
 
