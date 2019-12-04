@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Traces.Common;
@@ -27,7 +29,7 @@ namespace Traces.Data
 
             public bool IsInitialized => throw new InvalidOperationException("No Request Context has been initialized");
 
-            public void Initialize(string tenantId, string subjectId) => throw new NotImplementedException();
+            public void InitializeFromClaims(IReadOnlyList<Claim> claimsPrincipal) => throw new NotImplementedException();
 
             public void InitializeOrUpdateAccessToken(string accessToken) => throw new NotImplementedException();
         }

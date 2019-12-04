@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Threading.Tasks;
-using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Traces.Common;
@@ -32,11 +31,9 @@ namespace Traces.Web.ViewModels
                 return _isInitialized;
             }
 
-            var tenantId = httpContextUser.Claims.FirstOrDefault(c => c.Type == ApaleoClaims.AccountCode);
-            var subjectId = httpContextUser.Claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Subject);
             var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync(SecurityConstants.AccessToken);
             _requestContext.InitializeOrUpdateAccessToken(accessToken);
-            _requestContext.Initialize(tenantId?.Value, subjectId?.Value);
+            _requestContext.InitializeFromClaims(httpContextUser.Claims.ToList());
 
             _isInitialized = true;
             return true;

@@ -135,10 +135,7 @@ namespace Traces.Web.AutoRefresh
                 return;
             }
 
-            var tenantId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ApaleoClaims.AccountCode);
-            var subjectId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Subject);
-
-            _requestContext.Initialize(tenantId?.Value, subjectId?.Value);
+            _requestContext.InitializeFromClaims(claimsPrincipal.Claims.ToList());
         }
     }
 }
