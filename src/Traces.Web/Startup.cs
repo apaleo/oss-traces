@@ -143,7 +143,7 @@ namespace Traces.Web
 
             services.AddBlazoredToast();
 
-            services.AddSingleton<IRequestContext, RequestContext>();
+            services.AddScoped<IRequestContext, RequestContext>();
             services.AddScoped<ITraceRepository, TraceRepository>();
             services.AddScoped<ITraceService, TraceService>();
             services.AddScoped<ITraceModifierService, TraceModifierService>();
