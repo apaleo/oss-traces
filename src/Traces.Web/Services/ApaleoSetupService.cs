@@ -31,7 +31,6 @@ namespace Traces.Web.Services
             _apaleoIntegrationClientFactory = Check.NotNull(apaleoIntegrationClientFactory, nameof(apaleoIntegrationClientFactory));
         }
 
-
         public async Task<bool> SetupApaleoUiIntegrationsAsync()
         {
             var nonExistentTargetKeys = await GetMissingIntegrationTargetsAsync();
@@ -47,16 +46,22 @@ namespace Traces.Web.Services
 
             using (var requestResult = await integrationApi.IntegrationUiIntegrationsGetWithHttpMessagesAsync())
             {
-                requestResult.Response.EnsureSuccessStatusCode();
-
-                if (requestResult.Body?.UiIntegrations == null)
+                if (requestResult.Response.IsSuccessStatusCode)
                 {
+                    // should be logged as an error. Will be updated when adding logging to the project.
                     return new List<string>();
                 }
 
-                var existingIntegrationCodes = requestResult.Body.UiIntegrations.Select(x => x.Code).ToList();
+                if (requestResult.Body?.UiIntegrations == null)
+                {
+                    return apaleoIntegrationTargetDictionary.Keys.ToList();
+                }
 
-                var nonExistentIntegrationCodes = apaleoIntegrationTargetDictionary.Keys.ToList()
+                // Get all the existing integrations codes in uppercase invariant for comparison,
+                // as when received from Integration Api they are all in uppercase
+                var existingIntegrationCodes = requestResult.Body.UiIntegrations.Select(x => x.Code.ToUpperInvariant()).ToList();
+
+                var nonExistentIntegrationCodes = apaleoIntegrationTargetDictionary.Keys.Select(k => k.ToUpperInvariant())
                     .Except(existingIntegrationCodes).ToList();
 
                 return nonExistentIntegrationCodes;
@@ -71,7 +76,8 @@ namespace Traces.Web.Services
             {
                 if (apaleoIntegrationTargetDictionary.ContainsKey(integrationKey))
                 {
-                    tasks.Add(CreateApaleoIntegrationAsync(integrationKey,
+                    tasks.Add(CreateApaleoIntegrationAsync(
+                        integrationKey,
                         apaleoIntegrationTargetDictionary[integrationKey]));
                 }
                 else
@@ -98,9 +104,9 @@ namespace Traces.Web.Services
                 SourceUrl = _integrationConfig.Value.IntegrationUrl
             };
 
-            using (var response = await integrationApi.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(integrationTarget, createUiIntegrationModel))
+            using (var responseResult = await integrationApi.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(integrationTarget, createUiIntegrationModel))
             {
-                // TODO
+                responseResult.Response.EnsureSuccessStatusCode();
             }
         }
     }

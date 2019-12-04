@@ -16,6 +16,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Traces.Common;
 using Traces.Common.Constants;
+using Traces.Web.Services;
 
 namespace Traces.Web.AutoRefresh
 {
@@ -28,6 +29,7 @@ namespace Traces.Web.AutoRefresh
         private readonly AutoRefreshOptions _refreshOptions;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IRequestContext _requestContext;
+        private readonly IApaleoSetupService _apaleoSetupService;
 
         public AutoRefreshCookieEvents(
             IOptions<AutoRefreshOptions> refreshOptions,
@@ -35,6 +37,7 @@ namespace Traces.Web.AutoRefresh
             IAuthenticationSchemeProvider schemeProvider,
             IHttpClientFactory httpClientFactory,
             IRequestContext requestContext,
+            IApaleoSetupService apaleoSetupService,
             ILogger<AutoRefreshCookieEvents> logger,
             ISystemClock clock)
         {
@@ -45,6 +48,7 @@ namespace Traces.Web.AutoRefresh
             _logger = logger;
             _clock = clock;
             _requestContext = requestContext;
+            _apaleoSetupService = apaleoSetupService;
         }
 
         // important: this is just a POC at this point - it misses any thread synchronization. Will
@@ -109,6 +113,8 @@ namespace Traces.Web.AutoRefresh
             }
 
             InitializeRequestContext(context.Principal, context.Properties.GetTokens());
+
+            await _apaleoSetupService.SetupApaleoUiIntegrationsAsync();
         }
 
         private async Task<OpenIdConnectOptions> GetOidcOptionsAsync()
