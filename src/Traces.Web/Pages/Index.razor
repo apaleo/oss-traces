@@ -14,7 +14,7 @@
             }
             else
             {
-                <Button IsBlock="true" Color="Color.Primary" IsDisabled="@IndexViewModel.IsLoading" IsLoading="@IndexViewModel.IsLoading">@IndexViewModel.ButtonText</Button>
+                <Button IsBlock="true" Color="Color.Primary" IsDisabled="@IndexViewModel.IsLoading" IsLoading="@IndexViewModel.IsLoading" Clicked="@(() => IndexViewModel.TriggerSetupAsync())">@IndexViewModel.ButtonText</Button>
             }
         </CardBody>
     </Card>
