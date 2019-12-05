@@ -12,7 +12,6 @@ namespace Traces.Web.ViewModels
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRequestContext _requestContext;
-        private bool _isInitialized;
 
         protected BaseViewModel(IHttpContextAccessor httpContextAccessor, IRequestContext requestContext)
         {
@@ -26,16 +25,14 @@ namespace Traces.Web.ViewModels
         protected async Task<bool> InitializeContextAsync()
         {
             var httpContextUser = _httpContextAccessor.HttpContext.User;
-            if (_isInitialized || !httpContextUser.Identity.IsAuthenticated)
+            if (_requestContext.IsInitialized || !httpContextUser.Identity.IsAuthenticated)
             {
-                return _isInitialized;
+                return true;
             }
 
             var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync(SecurityConstants.AccessToken);
-            _requestContext.InitializeOrUpdateAccessToken(accessToken);
-            _requestContext.InitializeFromClaims(httpContextUser.Claims.ToList());
+            _requestContext.Initialize(httpContextUser.Claims.ToList(), accessToken);
 
-            _isInitialized = true;
             return true;
         }
     }

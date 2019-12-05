@@ -23,7 +23,7 @@ namespace Traces.Web.Services
 
         public string AccessToken => CheckInitializedAndReturn(_accessToken);
 
-        public void InitializeFromClaims(IReadOnlyList<Claim> claims)
+        public void Initialize(IReadOnlyList<Claim> claims, string accessToken)
         {
             if (IsInitialized)
             {
@@ -38,10 +38,8 @@ namespace Traces.Web.Services
 
             _tenantId = Check.NotEmpty(tenantId?.Value, nameof(tenantId));
             _subjectId = Check.NotEmpty(subjectId?.Value, nameof(subjectId));
+            _accessToken = Check.NotNull(accessToken, nameof(accessToken));
         }
-
-        public void InitializeOrUpdateAccessToken(string accessToken) =>
-            _accessToken = Check.NotEmpty(accessToken, nameof(accessToken));
 
         private T CheckInitializedAndReturn<T>(T val)
         {

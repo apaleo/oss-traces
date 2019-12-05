@@ -13,8 +13,6 @@ namespace Traces.Common
 
         bool IsInitialized { get; }
 
-        void InitializeFromClaims(IReadOnlyList<Claim> claimsPrincipal);
-
-        void InitializeOrUpdateAccessToken(string accessToken);
+        void Initialize(IReadOnlyList<Claim> claims, string accessToken);
     }
 }

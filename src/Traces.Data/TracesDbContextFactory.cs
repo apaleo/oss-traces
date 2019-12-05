@@ -29,9 +29,7 @@ namespace Traces.Data
 
             public bool IsInitialized => throw new InvalidOperationException("No Request Context has been initialized");
 
-            public void InitializeFromClaims(IReadOnlyList<Claim> claimsPrincipal) => throw new NotImplementedException();
-
-            public void InitializeOrUpdateAccessToken(string accessToken) => throw new NotImplementedException();
+            public void Initialize(IReadOnlyList<Claim> claims, string accessToken) => throw new NotImplementedException();
         }
     }
 }
