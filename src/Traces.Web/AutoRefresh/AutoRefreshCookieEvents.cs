@@ -28,16 +28,12 @@ namespace Traces.Web.AutoRefresh
         private readonly IOptionsSnapshot<OpenIdConnectOptions> _oidcOptions;
         private readonly AutoRefreshOptions _refreshOptions;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
-        private readonly IRequestContext _requestContext;
-        private readonly IApaleoSetupService _apaleoSetupService;
 
         public AutoRefreshCookieEvents(
             IOptions<AutoRefreshOptions> refreshOptions,
             IOptionsSnapshot<OpenIdConnectOptions> oidcOptions,
             IAuthenticationSchemeProvider schemeProvider,
             IHttpClientFactory httpClientFactory,
-            IRequestContext requestContext,
-            IApaleoSetupService apaleoSetupService,
             ILogger<AutoRefreshCookieEvents> logger,
             ISystemClock clock)
         {
@@ -47,8 +43,6 @@ namespace Traces.Web.AutoRefresh
             _httpClientFactory = httpClientFactory;
             _logger = logger;
             _clock = clock;
-            _requestContext = requestContext;
-            _apaleoSetupService = apaleoSetupService;
         }
 
         // important: this is just a POC at this point - it misses any thread synchronization. Will
@@ -111,10 +105,6 @@ namespace Traces.Web.AutoRefresh
 
                 await context.HttpContext.SignInAsync(context.Principal, context.Properties);
             }
-
-            InitializeRequestContext(context.Principal, context.Properties.GetTokens());
-
-            await _apaleoSetupService.SetupApaleoUiIntegrationsAsync();
         }
 
         private async Task<OpenIdConnectOptions> GetOidcOptionsAsync()
@@ -128,20 +118,6 @@ namespace Traces.Web.AutoRefresh
             {
                 return _oidcOptions.Get(_refreshOptions.Scheme);
             }
-        }
-
-        private void InitializeRequestContext(ClaimsPrincipal claimsPrincipal, IEnumerable<AuthenticationToken> authenticationToken)
-        {
-            var accessToken = authenticationToken.FirstOrDefault(t => t.Name == SecurityConstants.AccessToken);
-
-            _requestContext.InitializeOrUpdateAccessToken(accessToken.Value);
-
-            if (_requestContext.IsInitialized || !claimsPrincipal.Identity.IsAuthenticated)
-            {
-                return;
-            }
-
-            _requestContext.InitializeFromClaims(claimsPrincipal.Claims.ToList());
         }
     }
 }
