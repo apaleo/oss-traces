@@ -1,59 +1,23 @@
 ﻿@page "/"
-@using System.Globalization
 @using Traces.Web.ViewModels
-@inject TracesViewModel TracesViewModel
+@inject IndexViewModel IndexViewModel
 
 <div>
-    <h1>Traces</h1>
-
-    <button class="btn btn-primary" @onclick="@TracesViewModel.ShowCreateTraceModal">Add</button>
-
-    <div>
-        @if (TracesViewModel.Traces != null && TracesViewModel.Traces.Any())
-        {
-            <h2>Pending traces</h2>
-            <Table>
-                <TableHeader>
-                        <TableRow>
-                            <TableHeaderCell>Title</TableHeaderCell>
-                            <TableHeaderCell>Description</TableHeaderCell>
-                            <TableHeaderCell>Due date</TableHeaderCell>
-                            <TableHeaderCell>Actions</TableHeaderCell>
-                        </TableRow>
-                </TableHeader>
-                <TableBody>
-                    @foreach (var trace in TracesViewModel.Traces)
-                    {
-                        <TableRow>
-                            <TableRowCell>@trace.Title</TableRowCell>
-                            <TableRowCell>@trace.Description</TableRowCell>
-                            <TableRowCell>@trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</TableRowCell>
-                            <TableRowCell>
-                                <Buttons>
-                                    <Button Color="Color.Primary" Clicked="@(() => TracesViewModel.CompleteTraceAsync(trace.Id))">Complete</Button>
-                                    <Button Color="Color.Secondary" Clicked="@(() => TracesViewModel.ShowReplaceTraceModal(trace))">Edit</Button>
-                                    <Button Color="Color.Danger" Clicked="@(() => TracesViewModel.DeleteItemAsync(trace.Id))">Delete</Button>
-                                </Buttons>
-                            </TableRowCell>
-                        </TableRow>
-                    }
-                </TableBody>
-            </Table>
-        }
-    </div>
-
-    <Modal @ref="@TracesViewModel.CreateTraceModalRef">
-        <ModalBackdrop />
-        <ModalContent IsCentered="true" Size="ModalSize.Large">
-            <ModalHeader>
-                <ModalTitle>@TracesViewModel.EditTraceModificationModel.ModalTitle</ModalTitle>
-                <CloseButton Clicked="@TracesViewModel.HideCreateTraceModal"/>
-            </ModalHeader>
-            <ModalBody>
-                <EditTraceDialog OnClose="@TracesViewModel.HideCreateTraceModal"/>
-            </ModalBody>
-        </ModalContent>
-    </Modal>
+    <Card>
+        <CardBody>
+            <CardTitle Size="2">@IndexViewModel.Title</CardTitle>
+            <CardText>@IndexViewModel.Message</CardText>
+            @if (IndexViewModel.IsSuccess)
+            {
+                <!--This is not a Blazorise Button because we need to navigate outside of the application and Blazor intersects all navigations, but anchors with target="_blank"-->
+                <a href="https://app.apaleo.com" target="_blank" class="btn btn-success btn-block" role="button" aria-pressed="true">@IndexViewModel.ButtonText</a>
+            }
+            else
+            {
+                <Button IsBlock="true" Color="Color.Primary" IsDisabled="@IndexViewModel.IsLoading" IsLoading="@IndexViewModel.IsLoading">@IndexViewModel.ButtonText</Button>
+            }
+        </CardBody>
+    </Card>
 </div>
 
 @code
@@ -61,7 +25,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await TracesViewModel.LoadAsync();
+        await IndexViewModel.TriggerSetupAsync();
         await base.OnInitializedAsync();
     }
 

@@ -149,6 +149,7 @@ namespace Traces.Web
             services.AddScoped<ITraceModifierService, TraceModifierService>();
             services.AddScoped<ITracesCollectorService, TracesCollectorService>();
             services.AddScoped<IApaleoSetupService, ApaleoSetupService>();
+            services.AddScoped<IndexViewModel>();
             services.AddScoped<TracesViewModel>();
         }
 

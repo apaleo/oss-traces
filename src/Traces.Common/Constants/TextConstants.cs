@@ -29,5 +29,25 @@ namespace Traces.Common.Constants
         public const string CreateTraceButtonText = "Create";
 
         public const string ReplaceTraceButtonText = "Update";
+
+        public const string ApaleoSetupLoadingText = "Loading...";
+
+        public const string ApaleoSetupLoadingTitle = "Setting things up...";
+
+        public const string ApaleoSetupLoadingMessage = "We are getting everything ready for you. This will only take a few seconds...";
+
+        public const string ApaleoSetupErrorTitle = "Oops... That should not have happened.";
+
+        public const string ApaleoSetupErrorMessage =
+            "We apologize but we experienced an issue while trying to create your integrations, we have already been notified and one of our lions is looking into it. You can wait for a minute and try to set them up again by clicking the button below.";
+
+        public const string ApaleoSetupSuccessTitle = "All set up";
+
+        public const string ApaleoSetupSuccessMessage =
+            "Everything is ready for you to start using the app. To start you can go to the apaleo page by clicking the button below.";
+
+        public const string ApaleoSetupButtonNavigateToApaleoText = "Go to apaleo app";
+
+        public const string ApaleoSetupButtonTryAgainText = "Try again";
     }
 }
