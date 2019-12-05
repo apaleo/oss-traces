@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using IdentityModel;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -14,9 +11,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Traces.Common;
 using Traces.Common.Constants;
-using Traces.Web.Services;
 
 namespace Traces.Web.AutoRefresh
 {
