@@ -43,12 +43,14 @@ namespace Traces.Web.ViewModels
             {
                 if (await _apaleoSetupService.SetupApaleoUiIntegrationsAsync())
                 {
+                    IsSuccess = true;
                     Title = TextConstants.ApaleoSetupSuccessTitle;
                     Message = TextConstants.ApaleoSetupSuccessMessage;
                     ButtonText = TextConstants.ApaleoSetupButtonNavigateToApaleoText;
                 }
                 else
                 {
+                    IsSuccess = false;
                     Title = TextConstants.ApaleoSetupErrorTitle;
                     Message = TextConstants.ApaleoSetupErrorMessage;
                     ButtonText = TextConstants.ApaleoSetupButtonTryAgainText;
