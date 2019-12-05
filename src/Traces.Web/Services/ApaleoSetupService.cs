@@ -7,6 +7,7 @@ using Traces.ApaleoClients.Integration.Models;
 using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Enums;
+using Traces.Common.Exceptions;
 using Traces.Common.Utils;
 using Traces.Core.ClientFactories;
 
@@ -48,8 +49,7 @@ namespace Traces.Web.Services
             {
                 if (requestResult.Response.IsSuccessStatusCode)
                 {
-                    // should be logged as an error. Will be updated when adding logging to the project.
-                    return new List<string>();
+                    throw new BusinessValidationException($"Request to get Integrations {nameof(integrationApi.IntegrationUiIntegrationsGetWithHttpMessagesAsync)} failed with status code: {requestResult.Response.StatusCode}");
                 }
 
                 if (requestResult.Body?.UiIntegrations == null)
@@ -106,7 +106,12 @@ namespace Traces.Web.Services
 
             using (var responseResult = await integrationApi.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(integrationTarget, createUiIntegrationModel))
             {
-                responseResult.Response.EnsureSuccessStatusCode();
+                if (!responseResult.Response.IsSuccessStatusCode)
+                {
+                    var content = await responseResult.Response.Content.ReadAsStringAsync();
+                    throw new BusinessValidationException(
+                        $"Failed to create integration with {nameof(integrationApi.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync)} with status code: {responseResult.Response.StatusCode} and content: {content}");
+                }
             }
         }
     }
