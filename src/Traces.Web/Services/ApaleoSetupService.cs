@@ -95,6 +95,21 @@ namespace Traces.Web.Services
 
             var integrationTarget = integrationTargetEnum.ToString("G");
 
+            var integrationUrl = _integrationConfig.Value.IntegrationUrl;
+
+            var integrationIconUrl = _integrationConfig.Value.IntegrationIconUrl;
+
+            if (!Uri.IsWellFormedUriString(integrationUrl, UriKind.Absolute))
+            {
+                throw new BusinessValidationException($"Cannot create integration with invalid Url {integrationUrl}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(integrationIconUrl) &&
+                !Uri.IsWellFormedUriString(integrationIconUrl, UriKind.Absolute))
+            {
+                throw new BusinessValidationException($"Cannot create integration with invalid icon url {integrationIconUrl}");
+            }
+
             var createUiIntegrationModel = new CreateUiIntegrationModel
             {
                 Code = integrationCode,
