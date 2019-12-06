@@ -42,31 +42,11 @@ namespace Traces.Web.Services
             };
         }
 
-        public async Task<bool> SetupApaleoUiIntegrationsAsync()
+        public async Task SetupApaleoUiIntegrationsAsync()
         {
-            var currentTryCount = 0;
-            var allIntegrationsCreated = false;
+            var nonExistentTargetKeys = await GetMissingIntegrationTargetsAsync();
 
-            do
-            {
-                ++currentTryCount;
-
-                var nonExistentTargetKeys = await GetMissingIntegrationTargetsAsync();
-
-                await CreateApaleoIntegrationsAsync(nonExistentTargetKeys);
-
-                nonExistentTargetKeys = await GetMissingIntegrationTargetsAsync();
-
-                allIntegrationsCreated = nonExistentTargetKeys.Count == 0;
-
-                if (!allIntegrationsCreated)
-                {
-                    await Task.Delay(500);
-                }
-            }
-            while (currentTryCount < MaxRetryCount && !allIntegrationsCreated);
-
-            return allIntegrationsCreated;
+            await CreateApaleoIntegrationsAsync(nonExistentTargetKeys);
         }
 
         private async Task<IReadOnlyList<ApaleoIntegrationTargetsEnum>> GetMissingIntegrationTargetsAsync()

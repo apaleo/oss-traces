@@ -43,26 +43,18 @@ namespace Traces.Web.ViewModels
 
             try
             {
-                if (await _apaleoSetupService.SetupApaleoUiIntegrationsAsync())
-                {
-                    IsSuccess = true;
-                    Title = TextConstants.ApaleoSetupSuccessTitle;
-                    Message = TextConstants.ApaleoSetupSuccessMessage;
-                    ButtonText = TextConstants.ApaleoSetupButtonNavigateToApaleoText;
-                }
-                else
-                {
-                    IsSuccess = false;
-                    Title = TextConstants.ApaleoSetupErrorTitle;
-                    Message = TextConstants.ApaleoSetupErrorMessage;
-                    ButtonText = TextConstants.ApaleoSetupButtonTryAgainText;
-                }
+                await _apaleoSetupService.SetupApaleoUiIntegrationsAsync();
+                IsSuccess = true;
+                Title = TextConstants.ApaleoSetupSuccessTitle;
+                Message = TextConstants.ApaleoSetupSuccessMessage;
+                ButtonText = TextConstants.ApaleoSetupButtonNavigateToApaleoText;
             }
             catch (BusinessValidationException)
             {
                 IsSuccess = false;
                 Title = TextConstants.ApaleoSetupErrorTitle;
                 Message = TextConstants.ApaleoSetupErrorMessage;
+                ButtonText = TextConstants.ApaleoSetupButtonTryAgainText;
             }
 
             IsLoading = false;
