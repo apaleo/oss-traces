@@ -19,25 +19,25 @@ namespace Traces.Web.Services
         private readonly IApaleoIntegrationClientFactory _apaleoIntegrationClientFactory;
         private readonly IOptions<IntegrationConfig> _integrationConfig;
 
-        private readonly Dictionary<ApaleoIntegrationTargetsEnum, string> _apaleoIntegrationTargetsUrlDictionary;
+        private readonly Dictionary<ApaleoIntegrationTargetsEnum, Uri> _apaleoIntegrationTargetsUrlDictionary;
 
         public ApaleoSetupService(IApaleoIntegrationClientFactory apaleoIntegrationClientFactory, IOptions<IntegrationConfig> integrationConfig)
         {
             _integrationConfig = Check.NotNull(integrationConfig, nameof(integrationConfig));
             _apaleoIntegrationClientFactory = Check.NotNull(apaleoIntegrationClientFactory, nameof(apaleoIntegrationClientFactory));
-            _apaleoIntegrationTargetsUrlDictionary = new Dictionary<ApaleoIntegrationTargetsEnum, string>
+            _apaleoIntegrationTargetsUrlDictionary = new Dictionary<ApaleoIntegrationTargetsEnum, Uri>
             {
                 {
                     ApaleoIntegrationTargetsEnum.AccountMenuApps,
-                    $"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.AccountLevelRelativeUrl}"
+                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.AccountLevelRelativeUrl}")
                 },
                 {
                     ApaleoIntegrationTargetsEnum.PropertyMenuApps,
-                    $"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.PropertyLevelRelativeUrl}"
+                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.PropertyLevelRelativeUrl}")
                 },
                 {
                     ApaleoIntegrationTargetsEnum.ReservationDetailsTab,
-                    $"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.ReservationLevelRelativeUrl}"
+                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.ReservationLevelRelativeUrl}")
                 }
             };
         }
@@ -90,26 +90,18 @@ namespace Traces.Web.Services
 
             var integrationTarget = integrationTargetEnum.ToString("G");
 
-            var integrationUrl = _apaleoIntegrationTargetsUrlDictionary[integrationTargetEnum];
+            var integrationUrl = _apaleoIntegrationTargetsUrlDictionary[integrationTargetEnum].ToString();
 
-            var integrationIconUrl = _integrationConfig.Value.IntegrationIconUrl;
-
-            if (!Uri.IsWellFormedUriString(integrationUrl, UriKind.Absolute))
-            {
-                throw new BusinessValidationException($"Cannot create integration with invalid Url {integrationUrl}");
-            }
-
-            if (!string.IsNullOrWhiteSpace(integrationIconUrl) &&
-                !Uri.IsWellFormedUriString(integrationIconUrl, UriKind.Absolute))
-            {
-                throw new BusinessValidationException($"Cannot create integration with invalid icon url {integrationIconUrl}");
-            }
+            var integrationIconUrl =
+                _integrationConfig.Value.IntegrationIconUri.Match(
+                    v => v.ToString(),
+                    () => string.Empty);
 
             var createUiIntegrationModel = new CreateUiIntegrationModel
             {
                 Code = _integrationConfig.Value.DefaultIntegrationCode,
                 Label = _integrationConfig.Value.IntegrationLabel,
-                IconSource = _integrationConfig.Value.IntegrationIconUrl,
+                IconSource = integrationIconUrl,
                 SourceType = ApaleoOneConstants.IntegrationSourceType,
                 SourceUrl = integrationUrl
             };
