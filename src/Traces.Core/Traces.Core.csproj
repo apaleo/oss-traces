@@ -13,6 +13,8 @@
     
     <ItemGroup>
       <PackageReference Include="IdentityModel" Version="4.1.1" />
+      <PackageReference Include="NLog" Version="4.6.8" />
+      <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
       <PackageReference Include="Optional" Version="4.0.0" />
     </ItemGroup>
 

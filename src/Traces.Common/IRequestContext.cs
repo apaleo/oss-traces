@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Security.Claims;
+
 namespace Traces.Common
 {
     public interface IRequestContext
@@ -8,6 +11,8 @@ namespace Traces.Common
 
         string SubjectId { get; }
 
-        void Initialize(string tenantId, string accessToken, string subjectId);
+        bool IsInitialized { get; }
+
+        void Initialize(IReadOnlyList<Claim> claims, string accessToken);
     }
 }
