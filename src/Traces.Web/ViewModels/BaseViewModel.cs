@@ -22,18 +22,16 @@ namespace Traces.Web.ViewModels
         /// <summary>
         /// This initialization of the context is required for server side Blazor.
         /// </summary>
-        protected async Task<bool> InitializeContextAsync()
+        protected async Task InitializeContextAsync()
         {
             var httpContextUser = _httpContextAccessor.HttpContext.User;
             if (_requestContext.IsInitialized || !httpContextUser.Identity.IsAuthenticated)
             {
-                return true;
+                return;
             }
 
             var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync(SecurityConstants.AccessToken);
             _requestContext.Initialize(httpContextUser.Claims.ToList(), accessToken);
-
-            return true;
         }
     }
 }
