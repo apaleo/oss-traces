@@ -18,18 +18,27 @@ namespace Traces.Web.Services
         private readonly IApaleoIntegrationClientFactory _apaleoIntegrationClientFactory;
         private readonly IOptions<IntegrationConfig> _integrationConfig;
 
-        private readonly IReadOnlyList<ApaleoIntegrationTargetsEnum> _apaleoIntegrationTargetsEnums
-            = new List<ApaleoIntegrationTargetsEnum>
-            {
-                ApaleoIntegrationTargetsEnum.AccountMenuApps,
-                ApaleoIntegrationTargetsEnum.PropertyMenuApps,
-                ApaleoIntegrationTargetsEnum.ReservationDetailsTab
-            };
+        private readonly Dictionary<ApaleoIntegrationTargetsEnum, string> _apaleoIntegrationTargetsUrlDictionary;
 
         public ApaleoSetupService(IApaleoIntegrationClientFactory apaleoIntegrationClientFactory, IOptions<IntegrationConfig> integrationConfig)
         {
             _integrationConfig = Check.NotNull(integrationConfig, nameof(integrationConfig));
             _apaleoIntegrationClientFactory = Check.NotNull(apaleoIntegrationClientFactory, nameof(apaleoIntegrationClientFactory));
+            _apaleoIntegrationTargetsUrlDictionary = new Dictionary<ApaleoIntegrationTargetsEnum, string>
+            {
+                {
+                    ApaleoIntegrationTargetsEnum.AccountMenuApps,
+                    $"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.AccountLevelRelativeUrl}"
+                },
+                {
+                    ApaleoIntegrationTargetsEnum.PropertyMenuApps,
+                    $"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.PropertyLevelRelativeUrl}"
+                },
+                {
+                    ApaleoIntegrationTargetsEnum.ReservationDetailsTab,
+                    $"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.ReservationLevelRelativeUrl}"
+                }
+            };
         }
 
         public async Task<bool> SetupApaleoUiIntegrationsAsync()
@@ -52,16 +61,18 @@ namespace Traces.Web.Services
                     throw new BusinessValidationException($"Request to get Integrations {nameof(integrationApi.IntegrationUiIntegrationsGetWithHttpMessagesAsync)} failed with status code: {requestResult.Response.StatusCode}");
                 }
 
+                var expectedTargets = _apaleoIntegrationTargetsUrlDictionary.Keys.ToList();
+
                 if (requestResult.Body?.UiIntegrations == null)
                 {
-                    return _apaleoIntegrationTargetsEnums;
+                    return expectedTargets;
                 }
 
                 // Get all the existing integrations codes in uppercase invariant for comparison,
                 // as when received from Integration Api they are all in uppercase
                 var existingIntegrationTargets = requestResult.Body.UiIntegrations.Where(x => x.Code == _integrationConfig.Value.DefaultIntegrationCode.ToUpperInvariant()).Select(x => x.Target).ToList();
 
-                var nonExistentIntegrationCodes = _apaleoIntegrationTargetsEnums.Where(target => !existingIntegrationTargets.Exists(t => t == target.ToString("G"))).ToList();
+                var nonExistentIntegrationCodes = expectedTargets.Where(target => !existingIntegrationTargets.Exists(t => t == target.ToString("G"))).ToList();
 
                 return nonExistentIntegrationCodes;
             }
@@ -80,7 +91,7 @@ namespace Traces.Web.Services
 
             var integrationTarget = integrationTargetEnum.ToString("G");
 
-            var integrationUrl = _integrationConfig.Value.IntegrationUrl;
+            var integrationUrl = _apaleoIntegrationTargetsUrlDictionary[integrationTargetEnum];
 
             var integrationIconUrl = _integrationConfig.Value.IntegrationIconUrl;
 
@@ -101,7 +112,7 @@ namespace Traces.Web.Services
                 Label = _integrationConfig.Value.IntegrationLabel,
                 IconSource = _integrationConfig.Value.IntegrationIconUrl,
                 SourceType = ApaleoOneConstants.IntegrationSourceType,
-                SourceUrl = _integrationConfig.Value.IntegrationUrl
+                SourceUrl = integrationUrl
             };
 
             using (var responseResult = await integrationApi.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(integrationTarget, createUiIntegrationModel))
