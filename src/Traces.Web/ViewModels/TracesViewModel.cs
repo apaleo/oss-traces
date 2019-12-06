@@ -7,6 +7,7 @@ using Blazorise;
 using Microsoft.AspNetCore.Http;
 using Traces.Common;
 using Traces.Common.Constants;
+using Traces.Common.Enums;
 using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
@@ -40,10 +41,14 @@ namespace Traces.Web.ViewModels
 
         public Modal CreateTraceModalRef { get; set; }
 
-        public async Task LoadAsync()
+        public string CurrentPropertyId { get; set; }
+
+        public string CurrentReservationId { get; set; }
+
+        public async Task LoadAsync(TracesPageTypeEnum pageType)
         {
             await InitializeContextAsync();
-            await LoadTracesAsync();
+            await LoadTracesAsync(pageType);
         }
 
         public void ShowCreateTraceModal()
@@ -188,9 +193,15 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        private async Task LoadTracesAsync()
+        private async Task LoadTracesAsync(TracesPageTypeEnum tracesPageTypeEnum)
         {
-            var tracesResult = await _tracesCollectorService.GetTracesAsync();
+            var tracesResult = tracesPageTypeEnum switch
+            {
+                TracesPageTypeEnum.Account => await _tracesCollectorService.GetTracesAsync(),
+                TracesPageTypeEnum.Property => await _tracesCollectorService.GetTracesForPropertyAsync(CurrentPropertyId),
+                TracesPageTypeEnum.Reservation => await _tracesCollectorService.GetTracesForReservationAsync(CurrentReservationId),
+                _ => throw new Exception("Unexpected Case")
+            };
 
             if (tracesResult.Success)
             {

@@ -1,4 +1,4 @@
-@page "/traces/account"
+@page "/traces/property/{PropertyId}"
 @using Traces.Common.Constants
 @using Traces.Common.Enums
 @using Traces.Web.ViewModels
@@ -64,9 +64,11 @@
 @code
 {
 
+    [Parameter]public string PropertyId { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        await TracesViewModel.LoadAsync(TracesPageTypeEnum.Account);
+        await TracesViewModel.LoadAsync(TracesPageTypeEnum.Property);
         await base.OnInitializedAsync();
     }
 

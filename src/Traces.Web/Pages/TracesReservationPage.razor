@@ -1,4 +1,4 @@
-@page "/traces/account"
+@page "/traces/reservation"
 @using Traces.Common.Constants
 @using Traces.Common.Enums
 @using Traces.Web.ViewModels
@@ -66,8 +66,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await TracesViewModel.LoadAsync(TracesPageTypeEnum.Account);
+        await TracesViewModel.LoadAsync(TracesPageTypeEnum.Reservation);
         await base.OnInitializedAsync();
     }
+
+
 
 }
