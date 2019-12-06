@@ -6,6 +6,8 @@ namespace Traces.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("DELETE FROM \"Trace\"");
+
             migrationBuilder.AddColumn<string>(
                 name: "PropertyId",
                 table: "Trace",
