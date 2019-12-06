@@ -26,7 +26,7 @@ namespace Traces.Core.ClientFactories
 
         public IIntegrationApi CreateIntegrationApi()
         {
-            IIntegrationApi api = new IntegrationApi(GetHttpClient(), false)
+            var api = new IntegrationApi(GetHttpClient(), false)
             {
                 BaseUri = _httpClient.BaseAddress
             };

@@ -1,13 +1,17 @@
 using System.Net.Http;
 using IdentityModel.Client;
-using Traces.ApaleoClients.Booking;
-using Traces.ApaleoClients.Inventory;
+using Traces.ApaleoClients.Identity;
+using Traces.ApaleoClients.Integration;
 using Traces.Common;
 using Traces.Common.Utils;
 
 namespace Traces.Core.ClientFactories
 {
-    public class ApaleoClientFactory : IApaleoClientFactory
+    /// <summary>
+    /// This is a separate factory because it is pointing to a separate base address.
+    /// Further clean up will be performed with: https://github.com/apaleo/oss-traces/issues/27
+    /// </summary>
+    public class ApaleoIdentityClientFactory : IApaleoIdentityClientFactory
     {
         private readonly IRequestContext _requestContext;
         private readonly HttpClient _httpClient;
@@ -15,25 +19,15 @@ namespace Traces.Core.ClientFactories
 
         private bool _httpClientIsInitialized;
 
-        public ApaleoClientFactory(IRequestContext requestContext, HttpClient httpClient)
+        public ApaleoIdentityClientFactory(HttpClient httpClient, IRequestContext requestContext)
         {
-            _requestContext = Check.NotNull(requestContext, nameof(requestContext));
             _httpClient = Check.NotNull(httpClient, nameof(httpClient));
+            _requestContext = Check.NotNull(requestContext, nameof(requestContext));
         }
 
-        public IBookingApi CreateBookingApi()
+        public IIdentityApi CreateIdentityApi()
         {
-            var api = new BookingApi(GetHttpClient(), false)
-            {
-                BaseUri = _httpClient.BaseAddress
-            };
-
-            return api;
-        }
-
-        public IInventoryApi CreateInventoryApi()
-        {
-            var api = new InventoryApi(GetHttpClient(), false)
+            var api = new IdentityApi(GetHttpClient(), false)
             {
                 BaseUri = _httpClient.BaseAddress
             };
