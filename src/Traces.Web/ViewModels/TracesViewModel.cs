@@ -25,7 +25,7 @@ namespace Traces.Web.ViewModels
             IToastService toastService,
             IRequestContext requestContext,
             IHttpContextAccessor httpContextAccessor)
-        : base(httpContextAccessor, requestContext)
+            : base(httpContextAccessor, requestContext)
         {
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
             _traceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
@@ -42,10 +42,8 @@ namespace Traces.Web.ViewModels
 
         public async Task LoadAsync()
         {
-            if (await InitializeContextAsync())
-            {
-                await LoadTracesAsync();
-            }
+            await InitializeContextAsync();
+            await LoadTracesAsync();
         }
 
         public void ShowCreateTraceModal()
