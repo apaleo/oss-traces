@@ -18,12 +18,12 @@ namespace Traces.Web.Services
         private readonly IApaleoIntegrationClientFactory _apaleoIntegrationClientFactory;
         private readonly IOptions<IntegrationConfig> _integrationConfig;
 
-        private readonly Dictionary<string, ApaleoIntegrationTargetsEnum> apaleoIntegrationTargetDictionary =
-            new Dictionary<string, ApaleoIntegrationTargetsEnum>
+        private readonly IReadOnlyList<ApaleoIntegrationTargetsEnum> _apaleoIntegrationTargetsEnums
+            = new List<ApaleoIntegrationTargetsEnum>
             {
-                { ApaleoOneConstants.AccountMenuAppsIntegrationCode, ApaleoIntegrationTargetsEnum.AccountMenuApps },
-                { ApaleoOneConstants.PropertyMenuAppsIntegrationCode, ApaleoIntegrationTargetsEnum.PropertyMenuApps },
-                { ApaleoOneConstants.ReservationDetailsTabIntegrationCode, ApaleoIntegrationTargetsEnum.ReservationDetailsTab }
+                ApaleoIntegrationTargetsEnum.AccountMenuApps,
+                ApaleoIntegrationTargetsEnum.PropertyMenuApps,
+                ApaleoIntegrationTargetsEnum.ReservationDetailsTab
             };
 
         public ApaleoSetupService(IApaleoIntegrationClientFactory apaleoIntegrationClientFactory, IOptions<IntegrationConfig> integrationConfig)
@@ -41,7 +41,7 @@ namespace Traces.Web.Services
             return true;
         }
 
-        private async Task<IReadOnlyList<string>> GetMissingIntegrationTargetsAsync()
+        private async Task<IReadOnlyList<ApaleoIntegrationTargetsEnum>> GetMissingIntegrationTargetsAsync()
         {
             var integrationApi = _apaleoIntegrationClientFactory.CreateIntegrationApi();
 
@@ -54,42 +54,27 @@ namespace Traces.Web.Services
 
                 if (requestResult.Body?.UiIntegrations == null)
                 {
-                    return apaleoIntegrationTargetDictionary.Keys.ToList();
+                    return _apaleoIntegrationTargetsEnums;
                 }
 
                 // Get all the existing integrations codes in uppercase invariant for comparison,
                 // as when received from Integration Api they are all in uppercase
-                var existingIntegrationCodes = requestResult.Body.UiIntegrations.Select(x => x.Code.ToUpperInvariant()).ToList();
+                var existingIntegrationTargets = requestResult.Body.UiIntegrations.Where(x => x.Code == _integrationConfig.Value.DefaultIntegrationCode.ToUpperInvariant()).Select(x => x.Target).ToList();
 
-                var nonExistentIntegrationCodes = apaleoIntegrationTargetDictionary.Keys.Select(k => k.ToUpperInvariant())
-                    .Except(existingIntegrationCodes).ToList();
+                var nonExistentIntegrationCodes = _apaleoIntegrationTargetsEnums.Where(target => !existingIntegrationTargets.Exists(t => t == target.ToString("G"))).ToList();
 
                 return nonExistentIntegrationCodes;
             }
         }
 
-        private async Task CreateApaleoIntegrationsAsync(IReadOnlyList<string> integrationKeys)
+        private async Task CreateApaleoIntegrationsAsync(IReadOnlyList<ApaleoIntegrationTargetsEnum> integrationTargets)
         {
-            var tasks = new List<Task>();
-
-            foreach (var integrationKey in integrationKeys)
-            {
-                if (apaleoIntegrationTargetDictionary.ContainsKey(integrationKey))
-                {
-                    tasks.Add(CreateApaleoIntegrationAsync(
-                        integrationKey,
-                        apaleoIntegrationTargetDictionary[integrationKey]));
-                }
-                else
-                {
-                    throw new InvalidOperationException($"Integration key: {integrationKey} does not exist in the list of due integrations to create");
-                }
-            }
+            var tasks = integrationTargets.Select(CreateApaleoIntegrationAsync).ToList();
 
             await Task.WhenAll(tasks);
         }
 
-        private async Task CreateApaleoIntegrationAsync(string integrationCode, ApaleoIntegrationTargetsEnum integrationTargetEnum)
+        private async Task CreateApaleoIntegrationAsync(ApaleoIntegrationTargetsEnum integrationTargetEnum)
         {
             var integrationApi = _apaleoIntegrationClientFactory.CreateIntegrationApi();
 
@@ -112,7 +97,7 @@ namespace Traces.Web.Services
 
             var createUiIntegrationModel = new CreateUiIntegrationModel
             {
-                Code = integrationCode,
+                Code = _integrationConfig.Value.DefaultIntegrationCode,
                 Label = _integrationConfig.Value.IntegrationLabel,
                 IconSource = _integrationConfig.Value.IntegrationIconUrl,
                 SourceType = ApaleoOneConstants.IntegrationSourceType,

@@ -7,5 +7,7 @@ namespace Traces.Common
         public string IntegrationIconUrl { get; set; }
 
         public string IntegrationLabel { get; set; }
+
+        public string DefaultIntegrationCode { get; set; }
     }
 }
