@@ -10,7 +10,6 @@ namespace Traces.Web
     {
         public static void Main(string[] args)
         {
-            var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
             {
                 CreateHostBuilder(args).Build().Run();
@@ -18,7 +17,7 @@ namespace Traces.Web
             catch (Exception ex)
             {
                 // NLog: catch setup errors
-                logger.Error(ex, "Stopped program because of exception");
+                Console.Error.WriteLine($"Stopped program because of exception: {ex}");
                 throw;
             }
             finally
@@ -31,10 +30,13 @@ namespace Traces.Web
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
-                .ConfigureLogging(logging =>
+                .ConfigureLogging((hostingContext, logging) =>
                 {
                     logging.ClearProviders();
-                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                    logging.SetMinimumLevel(LogLevel.Trace);
+
+                    var envName = hostingContext.HostingEnvironment.EnvironmentName;
+                    NLogBuilder.ConfigureNLog($"nlog.{envName}.config");
                 })
                 .UseNLog();
     }
