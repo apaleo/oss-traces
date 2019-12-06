@@ -51,7 +51,7 @@ While in the root directory of the project
 
 1. You'll need to collect your logs somewhere. You can pick one of https://elements.heroku.com/addons#logging - but you don't necessarily need to get it through heroku. 
 
-1. Make sure log4net (or your custom logger) can log to the service. Either via HTTP or via custom libraries.
+1. Make sure nlog (or any other logger) can log to the service. Either via HTTP or via custom libraries.
 
 1. Add a drain to your app, to also recieve logs from heroku. This is done via `heroku drain:add --app [YOUR_APP_NAME] [URL_WHERE_HEROKU_SENDS_LOGS]`
 
