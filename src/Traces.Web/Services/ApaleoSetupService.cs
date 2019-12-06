@@ -118,11 +118,21 @@ namespace Traces.Web.Services
             {
                 if (!responseResult.Response.IsSuccessStatusCode)
                 {
-                    var content = await responseResult.Response.Content.ReadAsStringAsync();
-                    throw new BusinessValidationException(
-                        $"Failed to create integration with {nameof(integrationApi.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync)} with status code: {responseResult.Response.StatusCode} and content: {content}");
+                    if (!await IntegrationExistsAsync(integrationTargetEnum))
+                    {
+                        var content = await responseResult.Response.Content.ReadAsStringAsync();
+                        throw new BusinessValidationException(
+                            $"Failed to create integration with {nameof(integrationApi.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync)} with status code: {responseResult.Response.StatusCode} and content: {content}");
+                    }
                 }
             }
+        }
+
+        private async Task<bool> IntegrationExistsAsync(ApaleoIntegrationTargetsEnum target)
+        {
+            var nonExistingIntegrations = await GetMissingIntegrationTargetsAsync();
+
+            return !nonExistingIntegrations.Contains(target);
         }
     }
 }
