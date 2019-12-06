@@ -1,24 +1,25 @@
 @page "/traces"
 @using System.Globalization
+@using Traces.Common.Constants
 @using Traces.Web.ViewModels
 @inject TracesViewModel TracesViewModel
 
 <div>
     <h1>Traces</h1>
 
-    <button class="btn btn-primary" @onclick="@TracesViewModel.ShowCreateTraceModal">Add</button>
+    <Button Color="Color.Primary" Clicked="@TracesViewModel.ShowCreateTraceModal">@TextConstants.TracesAddButtonText</Button>
 
     <div>
+        <h2>@TextConstants.UpcomingTracesText</h2>
         @if (TracesViewModel.Traces != null && TracesViewModel.Traces.Any())
         {
-            <h2>Pending traces</h2>
             <Table>
                 <TableHeader>
                         <TableRow>
-                            <TableHeaderCell>Title</TableHeaderCell>
-                            <TableHeaderCell>Description</TableHeaderCell>
-                            <TableHeaderCell>Due date</TableHeaderCell>
-                            <TableHeaderCell>Actions</TableHeaderCell>
+                            <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
+                            <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
+                            <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
+                            <TableHeaderCell>@TextConstants.TracesTableActionsText</TableHeaderCell>
                         </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -27,7 +28,7 @@
                         <TableRow>
                             <TableRowCell>@trace.Title</TableRowCell>
                             <TableRowCell>@trace.Description</TableRowCell>
-                            <TableRowCell>@trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</TableRowCell>
+                            <TableRowCell>@trace.DueDate.ToShortDateString()</TableRowCell>
                             <TableRowCell>
                                 <Buttons>
                                     <Button Color="Color.Primary" Clicked="@(() => TracesViewModel.CompleteTraceAsync(trace.Id))">Complete</Button>
@@ -39,6 +40,10 @@
                     }
                 </TableBody>
             </Table>
+        }
+        else
+        {
+          <p>@TextConstants.UpcomingTracesEmptyText</p>
         }
     </div>
 

@@ -30,6 +30,20 @@ namespace Traces.Common.Constants
 
         public const string ReplaceTraceButtonText = "Update";
 
+        public const string UpcomingTracesText = "Upcoming tasks";
+
+        public const string TracesAddButtonText = "Add";
+
+        public const string UpcomingTracesEmptyText = "There are currently no upcoming tasks. You can create new ones with the Add button.";
+
+        public const string TracesTableTitleText = "Title";
+
+        public const string TracesTableDescriptionText = "Description";
+
+        public const string TracesTableDueDateText = "Due date";
+
+        public const string TracesTableActionsText = "Actions";
+
         public const string ApaleoSetupLoadingText = "Loading...";
 
         public const string ApaleoSetupLoadingTitle = "Setting things up...";

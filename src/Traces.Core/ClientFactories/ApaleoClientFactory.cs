@@ -1,7 +1,6 @@
 using System.Net.Http;
 using IdentityModel.Client;
 using Traces.ApaleoClients.Booking;
-using Traces.ApaleoClients.Integration;
 using Traces.ApaleoClients.Inventory;
 using Traces.Common;
 using Traces.Common.Utils;

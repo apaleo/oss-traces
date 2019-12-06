@@ -47,7 +47,7 @@ namespace Traces.Web.Services
 
             using (var requestResult = await integrationApi.IntegrationUiIntegrationsGetWithHttpMessagesAsync())
             {
-                if (requestResult.Response.IsSuccessStatusCode)
+                if (!requestResult.Response.IsSuccessStatusCode)
                 {
                     throw new BusinessValidationException($"Request to get Integrations {nameof(integrationApi.IntegrationUiIntegrationsGetWithHttpMessagesAsync)} failed with status code: {requestResult.Response.StatusCode}");
                 }
