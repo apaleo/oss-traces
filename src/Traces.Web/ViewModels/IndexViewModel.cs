@@ -39,6 +39,8 @@ namespace Traces.Web.ViewModels
             Title = TextConstants.ApaleoSetupLoadingTitle;
             Message = TextConstants.ApaleoSetupLoadingMessage;
 
+            await InitializeContextAsync();
+
             try
             {
                 if (await _apaleoSetupService.SetupApaleoUiIntegrationsAsync())
