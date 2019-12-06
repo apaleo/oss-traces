@@ -46,3 +46,13 @@ While in the root directory of the project
 1. Run `heroku container:release web -a ReplaceThisWithYourAppName` this will release the most recent pushed image to your heroku app.
 
 1. Now you can navigate to your app's URL `ReplaceThisWithYourAppName.herokuapp.com` or your already setup URL for your app.
+
+## Going Live
+
+1. You'll need to collect your logs somewhere. You can pick one of https://elements.heroku.com/addons#logging - but you don't necessarily need to get it through heroku. 
+
+1. Make sure log4net (or your custom logger) can log to the service. Either via HTTP or via custom libraries.
+
+1. Add a drain to your app, to also recieve logs from heroku. This is done via `heroku drain:add --app [YOUR_APP_NAME] [URL_WHERE_HEROKU_SENDS_LOGS]`
+
+1. Bonus points if you add a dedicated service for error handling for instance one of these: https://elements.heroku.com/addons#errors-exceptions (again, you don't need to get it through heroku, it's just a nice list to start with)
