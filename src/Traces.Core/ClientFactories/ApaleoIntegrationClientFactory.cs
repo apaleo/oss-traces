@@ -6,6 +6,10 @@ using Traces.Common.Utils;
 
 namespace Traces.Core.ClientFactories
 {
+    /// <summary>
+    /// This is a separate factory because it is pointing to a separate base address.
+    /// Further clean up will be performed with: https://github.com/apaleo/oss-traces/issues/27
+    /// </summary>
     public class ApaleoIntegrationClientFactory : IApaleoIntegrationClientFactory
     {
         private readonly IRequestContext _requestContext;
