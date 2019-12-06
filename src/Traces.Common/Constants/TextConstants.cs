@@ -63,5 +63,8 @@ namespace Traces.Common.Constants
         public const string ApaleoSetupButtonNavigateToApaleoText = "Go to apaleo app";
 
         public const string ApaleoSetupButtonTryAgainText = "Try again";
+
+        public const string RequestPropertyIdFromApaleoErrorMessage =
+            "There was an issue creating this trace. You can try again in a few seconds.";
     }
 }
