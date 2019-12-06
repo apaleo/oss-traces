@@ -15,6 +15,7 @@ namespace Traces.Web.Services
 {
     internal class ApaleoSetupService : IApaleoSetupService
     {
+        private const int MaxRetryCount = 3;
         private readonly IApaleoIntegrationClientFactory _apaleoIntegrationClientFactory;
         private readonly IOptions<IntegrationConfig> _integrationConfig;
 
@@ -43,11 +44,29 @@ namespace Traces.Web.Services
 
         public async Task<bool> SetupApaleoUiIntegrationsAsync()
         {
-            var nonExistentTargetKeys = await GetMissingIntegrationTargetsAsync();
+            var currentTryCount = 0;
+            var allIntegrationsCreated = false;
 
-            await CreateApaleoIntegrationsAsync(nonExistentTargetKeys);
+            do
+            {
+                ++currentTryCount;
 
-            return true;
+                var nonExistentTargetKeys = await GetMissingIntegrationTargetsAsync();
+
+                await CreateApaleoIntegrationsAsync(nonExistentTargetKeys);
+
+                nonExistentTargetKeys = await GetMissingIntegrationTargetsAsync();
+
+                allIntegrationsCreated = nonExistentTargetKeys.Count == 0;
+
+                if (!allIntegrationsCreated)
+                {
+                    await Task.Delay(500);
+                }
+            }
+            while (currentTryCount < MaxRetryCount && !allIntegrationsCreated);
+
+            return allIntegrationsCreated;
         }
 
         private async Task<IReadOnlyList<ApaleoIntegrationTargetsEnum>> GetMissingIntegrationTargetsAsync()
