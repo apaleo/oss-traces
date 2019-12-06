@@ -7,8 +7,6 @@
 <div>
     <h1>Traces</h1>
 
-    <Button Color="Color.Primary" Clicked="@TracesViewModel.ShowCreateTraceModal">@TextConstants.TracesAddButtonText</Button>
-
     <div>
         <h2>@TextConstants.UpcomingTracesText</h2>
         @if (TracesViewModel.Traces != null && TracesViewModel.Traces.Any())
@@ -66,7 +64,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await TracesViewModel.LoadAsync(TracesPageTypeEnum.Account);
+        await TracesViewModel.LoadAsync();
         await base.OnInitializedAsync();
     }
 

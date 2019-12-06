@@ -151,6 +151,8 @@ namespace Traces.Web
             services.AddScoped<IApaleoSetupService, ApaleoSetupService>();
             services.AddScoped<IndexViewModel>();
             services.AddScoped<TracesViewModel>();
+            services.AddScoped<TracesReservationViewModel>();
+            services.AddScoped<TracesPropertyViewModel>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

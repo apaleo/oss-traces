@@ -9,6 +9,8 @@ namespace Traces.Web.Services
 
         Task<ResultModel<TraceItemModel>> CreateTraceAsync(CreateTraceItemModel createTraceItemModel);
 
+        Task<ResultModel<TraceItemModel>> CreateTraceWithReservationIdAsync(CreateTraceItemModel createTraceItemModel);
+
         Task<ResultModel<bool>> ReplaceTraceAsync(ReplaceTraceItemModel replaceTraceItemModel);
 
         Task<ResultModel<bool>> DeleteTraceAsync(int id);
