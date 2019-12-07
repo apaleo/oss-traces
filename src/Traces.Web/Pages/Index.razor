@@ -9,13 +9,12 @@
     <Button class="btn btn-outline-primary" Clicked="@(() => TracesViewModel.ShowCreateTraceModal())"><i class="fa fa-plus mr-2"></i>Add</Button>
 </div>
 
-@foreach (var date in TracesViewModel.SortedDates)
+@foreach (var date in TracesViewModel.TracesGroupModel.SortedDayDateTimes)
 {
     <section class="pb-4">
-        <TraceGroupTemplate Traces="@TracesViewModel.TracesDateMapping[date]" Date="@date"></TraceGroupTemplate>
+        <TraceGroupTemplate Traces="@TracesViewModel.TracesGroupModel.DayItems[date]" Date="@date"></TraceGroupTemplate>
     </section>
 }
-
 
 <Modal @ref="@TracesViewModel.CreateTraceModalRef">
     <ModalBackdrop/>

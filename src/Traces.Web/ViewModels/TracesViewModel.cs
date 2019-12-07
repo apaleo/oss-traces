@@ -20,7 +20,6 @@ namespace Traces.Web.ViewModels
         private readonly ITracesCollectorService _tracesCollectorService;
         private readonly ITraceModifierService _traceModifierService;
         private readonly IToastService _toastService;
-        private readonly IList<DateTime> _dates;
 
         public TracesViewModel(
             ITracesCollectorService tracesCollectorService,
@@ -33,33 +32,18 @@ namespace Traces.Web.ViewModels
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
             _traceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
             _toastService = Check.NotNull(toastService, nameof(toastService));
-            _dates = Enumerable.Range(0, 7)
-                .Select(offset => DateTime.Today.AddDays(offset).Date).ToArray();
 
-            Traces = new List<TraceItemModel>();
-            TracesDateMapping = new Dictionary<DateTime, IList<TraceItemModel>>();
+            TracesGroupModel = new TracesGroupModel();
             EditTraceModificationModel = new EditTraceDialogViewModel();
         }
 
         public event Action RefreshRequested;
 
-        public List<TraceItemModel> Traces { get; }
+        public TracesGroupModel TracesGroupModel { get; }
 
         public EditTraceDialogViewModel EditTraceModificationModel { get; }
 
         public Modal CreateTraceModalRef { get; set; }
-
-        public IDictionary<DateTime, IList<TraceItemModel>> TracesDateMapping { get; }
-
-        public List<DateTime> SortedDates
-        {
-            get
-            {
-                var dates = TracesDateMapping.Keys.ToList();
-                dates.Sort();
-                return dates;
-            }
-        }
 
         public async Task LoadAsync()
         {
@@ -110,14 +94,15 @@ namespace Traces.Web.ViewModels
 
             if (completeResult.Success)
             {
-                var trace = Traces.FirstOrDefault(t => t.Id == id);
+                var trace = TracesGroupModel.Traces.FirstOrDefault(t => t.Id == id);
 
                 if (trace == null)
                 {
                     return;
                 }
 
-                RemoveTrace(trace);
+                TracesGroupModel.Remove(trace);
+                RefreshRequested?.Invoke();
 
                 ShowToastMessage(true, TextConstants.TraceMarkedAsCompletedMessage);
             }
@@ -138,7 +123,9 @@ namespace Traces.Web.ViewModels
 
             if (createResult.Success)
             {
-                createResult.Result.MatchSome(trace => AddTrace(trace));
+                createResult.Result.MatchSome(TracesGroupModel.Add);
+
+                RefreshRequested?.Invoke();
 
                 ShowToastMessage(true, TextConstants.TraceCreatedSuccessfullyMessage);
             }
@@ -163,7 +150,7 @@ namespace Traces.Web.ViewModels
             {
                 replaceResult.Result.MatchSome(v =>
                 {
-                    var trace = Traces.FirstOrDefault(x => x.Id == replaceTraceItemModel.Id);
+                    var trace = TracesGroupModel.Traces.FirstOrDefault(x => x.Id == replaceTraceItemModel.Id);
 
                     if (trace == null)
                     {
@@ -197,14 +184,15 @@ namespace Traces.Web.ViewModels
             {
                 deleteResult.Result.MatchSome(v =>
                 {
-                    var trace = Traces.FirstOrDefault(t => t.Id == id);
+                    var trace = TracesGroupModel.Traces.FirstOrDefault(t => t.Id == id);
 
                     if (trace == null)
                     {
                         return;
                     }
 
-                    RemoveTrace(trace);
+                    TracesGroupModel.Remove(trace);
+                    RefreshRequested?.Invoke();
 
                     ShowToastMessage(true, TextConstants.TraceDeletedSuccessfullyMessage);
                 });
@@ -225,19 +213,13 @@ namespace Traces.Web.ViewModels
 
             if (tracesResult.Success)
             {
-                Traces.Clear();
-                TracesDateMapping.Clear();
-
-                foreach (var dateTime in _dates)
-                {
-                    TracesDateMapping.Add(dateTime, new List<TraceItemModel>());
-                }
+                TracesGroupModel.Clear();
 
                 var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
 
                 foreach (var trace in traces)
                 {
-                    AddTrace(trace, false);
+                    TracesGroupModel.Add(trace);
                 }
 
                 RefreshRequested?.Invoke();
@@ -256,43 +238,6 @@ namespace Traces.Web.ViewModels
             {
                 _toastService.ShowError(message, header);
             }
-        }
-
-        private void AddTrace(TraceItemModel trace, bool refresh = true)
-        {
-            Traces.Add(trace);
-
-            var date = trace.DueDate.Date;
-            if (!TracesDateMapping.ContainsKey(date))
-            {
-                date = date.AddDays(-(date.Day - 1));
-                if (!TracesDateMapping.ContainsKey(date))
-                {
-                    TracesDateMapping.Add(date, new List<TraceItemModel>());
-                }
-            }
-
-            TracesDateMapping[date].Add(trace);
-
-            if (refresh)
-            {
-                RefreshRequested?.Invoke();
-            }
-        }
-
-        private void RemoveTrace(TraceItemModel trace)
-        {
-            Traces.Remove(trace);
-
-            var date = trace.DueDate.Date;
-
-            if (!TracesDateMapping.ContainsKey(date))
-            {
-                date = date.AddDays(-(date.Day - 1));
-            }
-
-            TracesDateMapping[date].Remove(trace);
-            RefreshRequested?.Invoke();
         }
     }
 }
