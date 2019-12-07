@@ -157,9 +157,8 @@ namespace Traces.Web.ViewModels
                         return;
                     }
 
-                    trace.Title = replaceTraceItemModel.Title;
-                    trace.Description = replaceTraceItemModel.Description;
-                    trace.DueDate = replaceTraceItemModel.DueDate;
+                    TracesGroupModel.Replace(trace, replaceTraceItemModel);
+                    RefreshRequested?.Invoke();
 
                     ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
                 });

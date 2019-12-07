@@ -1,0 +1,8 @@
+.date-hint {
+    font-size: 0.9rem;
+    color: gray;
+}
+
+.daily-table > .row:first-child {
+    border-top: none !important;
+}

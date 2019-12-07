@@ -52,6 +52,19 @@ namespace Traces.Web.Models
             GetCorrectGroupList(trace.DueDate).Remove(trace);
         }
 
+        public void Replace(TraceItemModel trace, ReplaceTraceItemModel replaceTraceItemModel)
+        {
+            if (trace.DueDate != replaceTraceItemModel.DueDate)
+            {
+                GetCorrectGroupList(trace.DueDate).Remove(trace);
+                GetCorrectGroupList(replaceTraceItemModel.DueDate).Add(trace);
+            }
+
+            trace.Title = replaceTraceItemModel.Title;
+            trace.Description = replaceTraceItemModel.Description;
+            trace.DueDate = replaceTraceItemModel.DueDate;
+        }
+
         public void Clear()
         {
             _traces.Clear();

@@ -1,6 +1,5 @@
 @using Traces.Web.Models;
 @using System.Globalization
-@using Traces.Common.Enums
 @using Traces.Web.ViewModels
 @inject TracesViewModel TracesViewModel
 
@@ -11,17 +10,18 @@
     <TableRowCell>@Trace.Title</TableRowCell>
     <TableRowCell>@Trace.Description</TableRowCell>
     <TableRowCell>@Trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</TableRowCell>
-    <TableRowCell class="fit text-right">
-        <Button class="mr-2" Clicked="@(() => TracesViewModel.ShowReplaceTraceModal(Trace))">
-            <i class="fa fa-pen"></i>
-        </Button>
-        <div class="btn-group">
-            <button class="btn" data-toggle="dropdown">
-                <i class="fa fa-ellipsis-v"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <Button class="text-danger dropdown-item" Clicked="@(() => TracesViewModel.DeleteItemAsync(Trace.Id))">Delete</Button>
-            </div>
+    <TableRowCell class="fit">
+        <div class="d-flex align-items-start">
+            <Button class="mr-2" Clicked="@(() => TracesViewModel.ShowReplaceTraceModal(Trace))">
+                <i class="fa fa-pen"></i>
+            </Button>
+            <Dropdown IsRightAligned="true">
+                <DropdownToggle>
+                </DropdownToggle>
+                <DropdownMenu IsRightAligned="true">
+                    <DropdownItem class="text-danger" Clicked="@(() => TracesViewModel.DeleteItemAsync(Trace.Id))">Delete</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
         </div>
     </TableRowCell>
 </TableRow>

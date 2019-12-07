@@ -1,6 +1,4 @@
 ﻿@page "/"
-@using Traces.ApaleoClients.Booking.Models
-@using Traces.Web.Models
 @using Traces.Web.ViewModels
 @inject TracesViewModel TracesViewModel
 @implements IDisposable
@@ -22,32 +20,37 @@
 @foreach (var date in SortedDayDateTimes)
 {
     <section class="pb-4">
-        <CascadingValue Value="@TracesViewModel.TracesGroupModel.DayItems[date]">
-            <TraceGroupTemplate Date="@date"></TraceGroupTemplate>
-        </CascadingValue>
+        <TracesDailyTable Traces="@TracesViewModel.TracesGroupModel.DayItems[date]" Date="@date"></TracesDailyTable>
     </section>
 }
 
 @if (IsMonthViewAvailable)
 {
-    <hr/>
-    @for (int i = 0; i <= CurrentMonthIndex; i++)
-    {
-        var month = i;
-        <section>
-            <CascadingValue Value="@TracesViewModel.TracesGroupModel.MonthItems[SortedMonthDateTimes[month]]">
-                <TracesMonthTable Date="@SortedMonthDateTimes[month]"></TracesMonthTable>
-            </CascadingValue>
-        </section>
-    }
+    <div class="mt-2">
+        @for (int i = 0; i <= CurrentMonthIndex; i++)
+        {
+            var month = i;
+            <section>
+                <CascadingValue Value="@TracesViewModel.TracesGroupModel.MonthItems[SortedMonthDateTimes[month]]">
+                    <TracesMonthTable Date="@SortedMonthDateTimes[month]"></TracesMonthTable>
+                </CascadingValue>
+            </section>
+        }
 
-    @if (!IsLastMonth)
-    {
-        <div class="py-2">
-            <Button class="mr-2" Color="Color.Primary" Clicked="@ShowAllMonths">Show all months</Button>
-            <Button Color="Color.Primary" Clicked="@NextMonth">Show next month</Button>
-        </div>
-    }
+        @if (!IsLastMonth)
+        {
+            <div class="py-2">
+                <Button class="mr-2" Color="Color.Primary" Clicked="@NextMonth">
+                    <i class="fa fa-angle-right mr-2"></i>
+                    Show next month
+                </Button>
+                <Button Color="Color.Primary" Clicked="@ShowAllMonths">
+                    <i class="fa fa-angle-double-right mr-2"></i>
+                    Show all months
+                </Button>
+            </div>
+        }
+    </div>
 }
 
 
@@ -116,3 +119,4 @@
         SortedMonthDateTimes.Sort();
     }
 }
+
