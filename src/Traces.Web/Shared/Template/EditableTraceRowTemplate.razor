@@ -4,27 +4,27 @@
 @using Traces.Web.ViewModels
 @inject TracesViewModel TracesViewModel
 
-<tr>
-    <td>
+<TableRow>
+    <TableRowCell>
         <CheckEdit Checked="false" CheckedChanged="@(() => TracesViewModel.CompleteTraceAsync(Trace.Id))"></CheckEdit>
-    </td>
-    <td>@Trace.Title</td>
-    <td>@Trace.Description</td>
-    <td>@Trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</td>
-    <td class="fit text-right">
-        <Button class="btn btn-default pr-2" Clicked="@(() => TracesViewModel.ShowReplaceTraceModal(Trace))">
+    </TableRowCell>
+    <TableRowCell>@Trace.Title</TableRowCell>
+    <TableRowCell>@Trace.Description</TableRowCell>
+    <TableRowCell>@Trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</TableRowCell>
+    <TableRowCell class="fit text-right">
+        <Button class="mr-2" Clicked="@(() => TracesViewModel.ShowReplaceTraceModal(Trace))">
             <i class="fa fa-pen"></i>
         </Button>
         <div class="btn-group">
-            <button class="btn btn-default" data-toggle="dropdown">
+            <button class="btn" data-toggle="dropdown">
                 <i class="fa fa-ellipsis-v"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right">
                 <Button class="text-danger dropdown-item" Clicked="@(() => TracesViewModel.DeleteItemAsync(Trace.Id))">Delete</Button>
             </div>
         </div>
-    </td>
-</tr>
+    </TableRowCell>
+</TableRow>
 
 @code
 {

@@ -5,13 +5,15 @@
 @inject TracesViewModel TracesViewModel
 @implements IDisposable
 
-<div class="content-actions">
-    <Button class="btn btn-outline-primary" Clicked="@TracesViewModel.ShowCreateTraceModal"><i class="fa fa-plus pr-2"></i>Add</Button>
+<div class="mb-3">
+    <Button class="btn btn-outline-primary" Clicked="@(() => TracesViewModel.ShowCreateTraceModal())"><i class="fa fa-plus mr-2"></i>Add</Button>
 </div>
 
 @foreach (var date in TracesViewModel.SortedDates)
 {
-    <TraceGroupTemplate Traces="@TracesViewModel.TracesDateMapping[date]" Date="@date"></TraceGroupTemplate>
+    <section class="pb-4">
+        <TraceGroupTemplate Traces="@TracesViewModel.TracesDateMapping[date]" Date="@date"></TraceGroupTemplate>
+    </section>
 }
 
 
@@ -52,3 +54,4 @@
     }
 
 }
+

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Blazored.Toast.Services;
 using Blazorise;
 using Microsoft.AspNetCore.Http;
+using Microsoft.VisualBasic;
 using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Utils;
@@ -70,11 +71,16 @@ namespace Traces.Web.ViewModels
 
         public void ShowCreateTraceModal()
         {
+            ShowCreateTraceModal(DateTime.Today);
+        }
+
+        public void ShowCreateTraceModal(DateTime dueDate)
+        {
             EditTraceModificationModel.ClearCurrentState();
             EditTraceModificationModel.IsReplace = false;
 
             EditTraceModificationModel.Title = "a";
-            EditTraceModificationModel.DueDate = DateTime.Today;
+            EditTraceModificationModel.DueDate = dueDate;
 
             CreateTraceModalRef?.Show();
         }

@@ -1,41 +1,45 @@
 @using Traces.Web.Models;
 @using System.Globalization
+@using Traces.Web.ViewModels
+@inject TracesViewModel TracesViewModel
 
-<h2>@Date</h2>
+<h3>
+    @Date.ToString("dddd", CultureInfo.InstalledUICulture)
+    <span class="date-hint">@Date.ToString("dd.MM.yyyy", CultureInfo.InstalledUICulture)</span>
+</h3>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th class="icon-header-cell"></th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Due date</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    @if (Traces != null && Traces.Any())
-    {
-        @foreach (var trace in Traces)
-        {
-            
-            <EditableTraceRowTemplate @key="trace.Id" Trace="trace"></EditableTraceRowTemplate>
-        }
-    }
-    else
-    {
-        <tr>
-            <td colspan="5">We couldn't find any upcoming traces.</td>
-        </tr>
-    }
-    </tbody>
-</table>
+<section class="mb-3">
+    <Button class="text-primary" Clicked="@(() => TracesViewModel.ShowCreateTraceModal(Date))"><i class="fa fa-plus mr-2"></i>Add new entry</Button>
+</section>
+
+@if (Traces != null && Traces.Any())
+{
+    <Table class="">
+        <TableHeader>
+            <TableRow>
+                <TableHeaderCell class="icon-header-cell"></TableHeaderCell>
+                <TableHeaderCell>Title</TableHeaderCell>
+                <TableHeaderCell>Description</TableHeaderCell>
+                <TableHeaderCell>Due date</TableHeaderCell>
+                <TableHeaderCell></TableHeaderCell>
+            </TableRow>
+        </TableHeader>
+        <TableBody>
+
+            @foreach (var trace in Traces)
+            {
+                <EditableTraceRowTemplate @key="trace.Id" Trace="trace"></EditableTraceRowTemplate>
+            }
+        </TableBody>
+    </Table>
+}
 
 @code
 {
     [Parameter]
     public DateTime Date { get; set; }
-    
+
     [Parameter]
     public IList<TraceItemModel> Traces { get; set; }
 }
+
