@@ -1,0 +1,32 @@
+@using System.Collections.ObjectModel
+@using Traces.Web.Models;
+@using Traces.Web.ViewModels
+@inject TracesViewModel TracesViewModel
+
+@if (Traces != null && Traces.Any())
+{
+    <Table class="">
+        <TableHeader>
+            <TableRow>
+                <TableHeaderCell class="icon-header-cell"></TableHeaderCell>
+                <TableHeaderCell>Title</TableHeaderCell>
+                <TableHeaderCell>Description</TableHeaderCell>
+                <TableHeaderCell>Due date</TableHeaderCell>
+                <TableHeaderCell></TableHeaderCell>
+            </TableRow>
+        </TableHeader>
+        <TableBody>
+
+            @foreach (var trace in Traces)
+            {
+                <EditableTraceRowTemplate @key="trace.Id" Trace="trace"></EditableTraceRowTemplate>
+            }
+        </TableBody>
+    </Table>
+}
+
+@code
+{
+    [CascadingParameter]
+    public ReadOnlyCollection<TraceItemModel> Traces { get; set; }
+}

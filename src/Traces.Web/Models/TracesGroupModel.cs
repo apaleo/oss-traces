@@ -28,35 +28,15 @@ namespace Traces.Web.Models
             _monthItems = new Dictionary<DateTime, List<TraceItemModel>>();
         }
 
-        public IReadOnlyList<TraceItemModel> Traces => _traces;
+        public ReadOnlyCollection<TraceItemModel> Traces => _traces.AsReadOnly();
 
-        public IReadOnlyList<TraceItemModel> OverdueItems => _overdueItems;
+        public ReadOnlyCollection<TraceItemModel> OverdueItems => _overdueItems.AsReadOnly();
 
         public IReadOnlyDictionary<DateTime, ReadOnlyCollection<TraceItemModel>> DayItems =>
             _dayItems.ToDictionary(k => k.Key, v => v.Value.AsReadOnly());
 
         public IReadOnlyDictionary<DateTime, ReadOnlyCollection<TraceItemModel>> MonthItems =>
             _monthItems.ToDictionary(k => k.Key, v => v.Value.AsReadOnly());
-
-        public IReadOnlyList<DateTime> SortedDayDateTimes
-        {
-            get
-            {
-                var dates = DayItems.Keys.ToList();
-                dates.Sort();
-                return dates;
-            }
-        }
-
-        public IList<DateTime> SortedMonthDateTimes
-        {
-            get
-            {
-                var dates = MonthItems.Keys.ToList();
-                dates.Sort();
-                return dates;
-            }
-        }
 
         public void Add(TraceItemModel trace)
         {

@@ -9,12 +9,47 @@
     <Button class="btn btn-outline-primary" Clicked="@(() => TracesViewModel.ShowCreateTraceModal())"><i class="fa fa-plus mr-2"></i>Add</Button>
 </div>
 
-@foreach (var date in TracesViewModel.TracesGroupModel.SortedDayDateTimes)
+@if (TracesViewModel.TracesGroupModel.OverdueItems.Any())
 {
     <section class="pb-4">
-        <TraceGroupTemplate Traces="@TracesViewModel.TracesGroupModel.DayItems[date]" Date="@date"></TraceGroupTemplate>
+        <CascadingValue Value="@TracesViewModel.TracesGroupModel.OverdueItems">
+            <TracesOverdueTable></TracesOverdueTable>
+        </CascadingValue>
     </section>
 }
+
+
+@foreach (var date in SortedDayDateTimes)
+{
+    <section class="pb-4">
+        <CascadingValue Value="@TracesViewModel.TracesGroupModel.DayItems[date]">
+            <TraceGroupTemplate Date="@date"></TraceGroupTemplate>
+        </CascadingValue>
+    </section>
+}
+
+@if (IsMonthViewAvailable)
+{
+    <hr/>
+    @for (int i = 0; i <= CurrentMonthIndex; i++)
+    {
+        var month = i;
+        <section>
+            <CascadingValue Value="@TracesViewModel.TracesGroupModel.MonthItems[SortedMonthDateTimes[month]]">
+                <TracesMonthTable Date="@SortedMonthDateTimes[month]"></TracesMonthTable>
+            </CascadingValue>
+        </section>
+    }
+
+    @if (!IsLastMonth)
+    {
+        <div class="py-2">
+            <Button class="mr-2" Color="Color.Primary" Clicked="@ShowAllMonths">Show all months</Button>
+            <Button Color="Color.Primary" Clicked="@NextMonth">Show next month</Button>
+        </div>
+    }
+}
+
 
 <Modal @ref="@TracesViewModel.CreateTraceModalRef">
     <ModalBackdrop/>
@@ -31,6 +66,30 @@
 
 @code
 {
+    private List<DateTime> SortedDayDateTimes { get; set; } = new List<DateTime>();
+    private List<DateTime> SortedMonthDateTimes { get; set; } = new List<DateTime>();
+    private bool IsMonthViewAvailable => SortedMonthDateTimes.Count > 0;
+    private bool IsLastMonth => CurrentMonthIndex == SortedMonthDateTimes.Count - 1;
+    private int CurrentMonthIndex { get; set; } = -1;
+
+    public void NextMonth()
+    {
+        if (CurrentMonthIndex + 1 < SortedMonthDateTimes.Count)
+        {
+            CurrentMonthIndex++;
+        }
+    }
+
+    public void ShowAllMonths()
+    {
+        CurrentMonthIndex = SortedMonthDateTimes.Count - 1;
+    }
+
+    public void Dispose()
+    {
+        TracesViewModel.RefreshRequested -= OnRefresh;
+    }
+
     protected override void OnInitialized()
     {
         TracesViewModel.RefreshRequested += OnRefresh;
@@ -42,15 +101,18 @@
         await base.OnInitializedAsync();
     }
 
-    public void Dispose()
-    {
-        TracesViewModel.RefreshRequested -= OnRefresh;
-    }
-
     private void OnRefresh()
     {
+        RefreshDates();
         StateHasChanged();
     }
 
-}
+    private void RefreshDates()
+    {
+        SortedDayDateTimes = TracesViewModel.TracesGroupModel.DayItems.Keys.ToList();
+        SortedDayDateTimes.Sort();
 
+        SortedMonthDateTimes = TracesViewModel.TracesGroupModel.MonthItems.Keys.ToList();
+        SortedMonthDateTimes.Sort();
+    }
+}
