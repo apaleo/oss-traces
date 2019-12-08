@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Threading.Tasks;
-using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Traces.Common;
@@ -13,7 +12,6 @@ namespace Traces.Web.ViewModels
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRequestContext _requestContext;
-        private bool _isInitialized;
 
         protected BaseViewModel(IHttpContextAccessor httpContextAccessor, IRequestContext requestContext)
         {
@@ -24,21 +22,16 @@ namespace Traces.Web.ViewModels
         /// <summary>
         /// This initialization of the context is required for server side Blazor.
         /// </summary>
-        protected async Task<bool> InitializeContextAsync()
+        protected async Task InitializeContextAsync()
         {
             var httpContextUser = _httpContextAccessor.HttpContext.User;
-            if (_isInitialized || !httpContextUser.Identity.IsAuthenticated)
+            if (_requestContext.IsInitialized || !httpContextUser.Identity.IsAuthenticated)
             {
-                return _isInitialized;
+                return;
             }
 
-            var tenantId = httpContextUser.Claims.FirstOrDefault(c => c.Type == ApaleoClaims.AccountCode);
-            var subjectId = httpContextUser.Claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Subject);
             var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync(SecurityConstants.AccessToken);
-            _requestContext.Initialize(tenantId?.Value, accessToken, subjectId?.Value);
-
-            _isInitialized = true;
-            return true;
+            _requestContext.Initialize(httpContextUser.Claims.ToList(), accessToken);
         }
     }
 }

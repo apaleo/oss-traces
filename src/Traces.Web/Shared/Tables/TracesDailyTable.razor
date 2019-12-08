@@ -1,17 +1,17 @@
 @using System.Collections.ObjectModel
-@using System.Diagnostics
 @using System.Globalization
+@using Traces.Common.Constants
 @using Traces.Web.Models
 @using Traces.Web.ViewModels
 @inject TracesViewModel TracesViewModel
 
 <h3>
     @Date.ToString("dddd", CultureInfo.InstalledUICulture)
-    <span class="date-hint">@Date.ToString("dd.MM.yyyy", CultureInfo.InstalledUICulture)</span>
+    <span class="date-hint">@Date.ToShortDateString()</span>
 </h3>
 
 <section class="mb-1">
-    <Button class="text-primary" Clicked="@(() => TracesViewModel.ShowCreateTraceModal(Date))"><i class="fa fa-plus mr-2"></i>Add new trace</Button>
+    <Button class="text-primary" Clicked="@(() => TracesViewModel.ShowCreateTraceModal(Date))"><i class="fa fa-plus mr-2"></i>@TextConstants.TracesAddButtonText</Button>
 </section>
 
 @if (Traces != null && Traces.Any())
@@ -35,7 +35,7 @@
                         <DropdownToggle>
                         </DropdownToggle>
                         <DropdownMenu IsRightAligned="true">
-                            <DropdownItem class="text-danger" Clicked="@(() => TracesViewModel.DeleteItemAsync(trace.Id))">Delete</DropdownItem>
+                            <DropdownItem class="text-danger" Clicked="@(() => TracesViewModel.DeleteItemAsync(trace.Id))">@TextConstants.TracesDeleteButtonText</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </div>

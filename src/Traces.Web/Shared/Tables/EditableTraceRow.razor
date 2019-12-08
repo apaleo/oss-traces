@@ -1,5 +1,4 @@
 @using Traces.Web.Models;
-@using System.Globalization
 @using Traces.Web.ViewModels
 @inject TracesViewModel TracesViewModel
 
@@ -9,7 +8,7 @@
     </TableRowCell>
     <TableRowCell>@Trace.Title</TableRowCell>
     <TableRowCell>@Trace.Description</TableRowCell>
-    <TableRowCell>@Trace.DueDate.ToString("dd/MM/yyyy", CultureInfo.InstalledUICulture)</TableRowCell>
+    <TableRowCell>@Trace.DueDate.ToShortDateString()</TableRowCell>
     <TableRowCell class="fit">
         <div class="d-flex align-items-start">
             <Button class="mr-2" Clicked="@(() => TracesViewModel.ShowReplaceTraceModal(Trace))">

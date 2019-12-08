@@ -54,10 +54,38 @@ namespace Traces.Web
 
             services.AddHttpContextAccessor();
 
+            services.Configure<IntegrationConfig>(Configuration.GetSection("apaleo:IntegrationConfig"));
+
             // Here we have a retry policy only for read-only requests such as GET or HEAD
             // In addition there is a waiting time for the circuit breaker to avoid too many requests per second to the apaleo api
             services.AddHttpClient<IApaleoClientFactory, ApaleoClientFactory>(client =>
                     client.BaseAddress = new Uri(Configuration["apaleo:ServiceUri"]))
+                .AddPolicyHandler(request =>
+                    IsReadOnlyRequest(request)
+                        ? HttpPolicyExtensions.HandleTransientHttpError()
+                            .WaitAndRetryAsync(3, t => TimeSpan.FromSeconds(Math.Pow(2, t)))
+                        : (IAsyncPolicy<HttpResponseMessage>)Policy.NoOpAsync<HttpResponseMessage>())
+                .AddTransientHttpErrorPolicy(policy => policy.AdvancedCircuitBreakerAsync(
+                    failureThreshold: 0.5,
+                    samplingDuration: TimeSpan.FromSeconds(10),
+                    minimumThroughput: 8,
+                    durationOfBreak: TimeSpan.FromSeconds(30)));
+
+            services.AddHttpClient<IApaleoIntegrationClientFactory, ApaleoIntegrationClientFactory>(client =>
+                    client.BaseAddress = new Uri(Configuration["apaleo:IntegrationServiceUri"]))
+                .AddPolicyHandler(request =>
+                    IsReadOnlyRequest(request)
+                        ? HttpPolicyExtensions.HandleTransientHttpError()
+                            .WaitAndRetryAsync(3, t => TimeSpan.FromSeconds(Math.Pow(2, t)))
+                        : (IAsyncPolicy<HttpResponseMessage>)Policy.NoOpAsync<HttpResponseMessage>())
+                .AddTransientHttpErrorPolicy(policy => policy.AdvancedCircuitBreakerAsync(
+                    failureThreshold: 0.5,
+                    samplingDuration: TimeSpan.FromSeconds(10),
+                    minimumThroughput: 8,
+                    durationOfBreak: TimeSpan.FromSeconds(30)));
+
+            services.AddHttpClient<IApaleoIdentityClientFactory, ApaleoIdentityClientFactory>(client =>
+                    client.BaseAddress = new Uri(Configuration["apaleo:IdentityServiceUri"]))
                 .AddPolicyHandler(request =>
                     IsReadOnlyRequest(request)
                         ? HttpPolicyExtensions.HandleTransientHttpError()
@@ -133,6 +161,8 @@ namespace Traces.Web
             services.AddScoped<ITraceService, TraceService>();
             services.AddScoped<ITraceModifierService, TraceModifierService>();
             services.AddScoped<ITracesCollectorService, TracesCollectorService>();
+            services.AddScoped<IApaleoSetupService, ApaleoSetupService>();
+            services.AddScoped<IndexViewModel>();
             services.AddScoped<TracesViewModel>();
         }
 

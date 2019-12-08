@@ -23,7 +23,7 @@ namespace Traces.Core.ClientFactories
 
         public IBookingApi CreateBookingApi()
         {
-            IBookingApi api = new BookingApi(GetHttpClient(), false)
+            var api = new BookingApi(GetHttpClient(), false)
             {
                 BaseUri = _httpClient.BaseAddress
             };
@@ -33,7 +33,7 @@ namespace Traces.Core.ClientFactories
 
         public IInventoryApi CreateInventoryApi()
         {
-            IInventoryApi api = new InventoryApi(GetHttpClient(), false)
+            var api = new InventoryApi(GetHttpClient(), false)
             {
                 BaseUri = _httpClient.BaseAddress
             };

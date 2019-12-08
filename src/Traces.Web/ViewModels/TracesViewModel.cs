@@ -47,10 +47,8 @@ namespace Traces.Web.ViewModels
 
         public async Task LoadAsync()
         {
-            if (await InitializeContextAsync())
-            {
-                await LoadTracesAsync();
-            }
+            await InitializeContextAsync();
+            await LoadTracesAsync();
         }
 
         public void ShowCreateTraceModal()

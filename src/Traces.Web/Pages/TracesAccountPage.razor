@@ -1,0 +1,123 @@
+@page "/traces/account"
+@using Microsoft.VisualBasic
+@using Traces.Common.Constants
+@using Traces.Web.ViewModels
+@inject TracesViewModel TracesViewModel
+@implements IDisposable
+
+<div class="mb-3">
+    <Button class="btn btn-outline-primary" Clicked="@(() => TracesViewModel.ShowCreateTraceModal())"><i class="fa fa-plus mr-2"></i>@TextConstants.TracesAddButtonText</Button>
+</div>
+
+@if (TracesViewModel.TracesGroupModel.OverdueItems.Any())
+{
+    <section class="pb-4">
+        <CascadingValue Value="@TracesViewModel.TracesGroupModel.OverdueItems">
+            <TracesOverdueTable></TracesOverdueTable>
+        </CascadingValue>
+    </section>
+}
+
+
+@foreach (var date in SortedDayDateTimes)
+{
+    <section class="pb-4">
+        <TracesDailyTable Traces="@TracesViewModel.TracesGroupModel.DayItems[date]" Date="@date"></TracesDailyTable>
+    </section>
+}
+
+@if (IsMonthViewAvailable)
+{
+    <div class="mt-2">
+        @for (int i = 0; i <= CurrentMonthIndex; i++)
+        {
+            var month = i;
+            <section>
+                <CascadingValue Value="@TracesViewModel.TracesGroupModel.MonthItems[SortedMonthDateTimes[month]]">
+                    <TracesMonthTable Date="@SortedMonthDateTimes[month]"></TracesMonthTable>
+                </CascadingValue>
+            </section>
+        }
+
+        @if (!IsLastMonth)
+        {
+            <div class="py-2">
+                <Button class="mr-2" Color="Color.Primary" Clicked="@NextMonth">
+                    <i class="fa fa-angle-right mr-2"></i>
+                    Show next month
+                </Button>
+                <Button Color="Color.Primary" Clicked="@ShowAllMonths">
+                    <i class="fa fa-angle-double-right mr-2"></i>
+                    Show all months
+                </Button>
+            </div>
+        }
+    </div>
+}
+
+<Modal @ref="@TracesViewModel.CreateTraceModalRef">
+    <ModalBackdrop/>
+    <ModalContent IsCentered="true" Size="ModalSize.Large">
+        <ModalHeader>
+            <ModalTitle>@TracesViewModel.EditTraceModificationModel.ModalTitle</ModalTitle>
+            <CloseButton Clicked="@TracesViewModel.HideCreateTraceModal"/>
+        </ModalHeader>
+        <ModalBody>
+            <EditTraceDialog OnClose="@TracesViewModel.HideCreateTraceModal"/>
+        </ModalBody>
+    </ModalContent>
+</Modal>
+
+
+@code
+{
+    private List<DateTime> SortedDayDateTimes { get; set; } = new List<DateTime>();
+    private List<DateTime> SortedMonthDateTimes { get; set; } = new List<DateTime>();
+    private bool IsMonthViewAvailable => SortedMonthDateTimes.Count > 0;
+    private bool IsLastMonth => CurrentMonthIndex == SortedMonthDateTimes.Count - 1;
+    private int CurrentMonthIndex { get; set; } = -1;
+
+    public void NextMonth()
+    {
+        if (CurrentMonthIndex + 1 < SortedMonthDateTimes.Count)
+        {
+            CurrentMonthIndex++;
+        }
+    }
+
+    public void ShowAllMonths()
+    {
+        CurrentMonthIndex = SortedMonthDateTimes.Count - 1;
+    }
+
+    public void Dispose()
+    {
+        TracesViewModel.RefreshRequested -= OnRefresh;
+    }
+
+    protected override void OnInitialized()
+    {
+        TracesViewModel.RefreshRequested += OnRefresh;
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await TracesViewModel.LoadAsync();
+        await base.OnInitializedAsync();
+    }
+
+    private void OnRefresh()
+    {
+        RefreshDates();
+        StateHasChanged();
+    }
+
+    private void RefreshDates()
+    {
+        SortedDayDateTimes = TracesViewModel.TracesGroupModel.DayItems.Keys.ToList();
+        SortedDayDateTimes.Sort();
+
+        SortedMonthDateTimes = TracesViewModel.TracesGroupModel.MonthItems.Keys.ToList();
+        SortedMonthDateTimes.Sort();
+    }
+}
