@@ -1,0 +1,1175 @@
+{
+  "definitions": {
+    "AccountUserModel": {
+      "properties": {
+        "email": {
+          "description": "Email address, used as the login",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "If set to {false}, the user is disabled for this account and cannot log in",
+          "type": "boolean"
+        },
+        "firstName": {
+          "description": "First name",
+          "type": "string"
+        },
+        "lastName": {
+          "description": "Last name",
+          "type": "string"
+        },
+        "properties": {
+          "description": "Properties that user has access to",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "role": {
+          "description": "Role assigned to the user",
+          "enum": [
+            "AccountAdmin",
+            "PropertyAdmin",
+            "FinanceManager",
+            "RevenueManager",
+            "ReservationOffice",
+            "FrontOffice",
+            "Housekeeping"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "firstName",
+        "lastName",
+        "email",
+        "role"
+      ],
+      "type": "object"
+    },
+    "AccountUsersListModel": {
+      "properties": {
+        "accountUsers": {
+          "description": "A collection of users that have access to the current account",
+          "items": {
+            "$ref": "#/definitions/AccountUserModel"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "accountUsers"
+      ],
+      "type": "object"
+    },
+    "CreateInvitationModel": {
+      "properties": {
+        "email": {
+          "description": "Email address, used as the login",
+          "type": "string"
+        },
+        "isAccountAdmin": {
+          "description": "If set to {true}, user has full access to all properties. Defaults to false.",
+          "type": "boolean"
+        },
+        "properties": {
+          "description": "Properties that user has access to. If the user is invited as account admin, this will be ignored.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "role": {
+          "description": "The role to be assigned to the user. If you specfiy this and 'Roles', the combination of both will be used.\r\nIf the user is invited as account admin, this will be ignored.",
+          "enum": [
+            "AccountAdmin",
+            "PropertyAdmin",
+            "FinanceManager",
+            "RevenueManager",
+            "ReservationOffice",
+            "FrontOffice",
+            "Housekeeping"
+          ],
+          "type": "string"
+        },
+        "roles": {
+          "description": "Roles that user has access to. If the user is invited as account admin, this will be ignored.",
+          "items": {
+            "enum": [
+              "PropertyAdmin",
+              "Accountant",
+              "RevenueManager",
+              "ReservationManager",
+              "FrontDesk",
+              "Housekeeping"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "email"
+      ],
+      "type": "object"
+    },
+    "InvitationListModel": {
+      "properties": {
+        "invitations": {
+          "description": "All invitations to the current account",
+          "items": {
+            "$ref": "#/definitions/InvitationModel"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "invitations"
+      ],
+      "type": "object"
+    },
+    "InvitationModel": {
+      "properties": {
+        "created": {
+          "description": "Date the invitation was made",
+          "format": "date-time",
+          "type": "string"
+        },
+        "email": {
+          "description": "Email address, used as the login",
+          "type": "string"
+        },
+        "invitedBy": {
+          "description": "Email of the user making the invitation",
+          "type": "string"
+        },
+        "isAccountAdmin": {
+          "description": "If set to {true}, user has full access to all properties.",
+          "type": "boolean"
+        },
+        "properties": {
+          "description": "Properties that user has access to",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "role": {
+          "description": "Role this user is invited to. If more than one, returns the first.",
+          "enum": [
+            "AccountAdmin",
+            "PropertyAdmin",
+            "FinanceManager",
+            "RevenueManager",
+            "ReservationOffice",
+            "FrontOffice",
+            "Housekeeping"
+          ],
+          "type": "string"
+        },
+        "roles": {
+          "description": "Roles that user has access to",
+          "items": {
+            "enum": [
+              "PropertyAdmin",
+              "Accountant",
+              "RevenueManager",
+              "ReservationManager",
+              "FrontDesk",
+              "Housekeeping"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "email",
+        "isAccountAdmin",
+        "invitedBy",
+        "created"
+      ],
+      "type": "object"
+    },
+    "InvitedUserToAccountResponseModel": {
+      "properties": {
+        "email": {
+          "description": "Email of invited user",
+          "type": "string"
+        }
+      },
+      "required": [
+        "email"
+      ],
+      "type": "object"
+    },
+    "MessageItemCollection": {
+      "properties": {
+        "messages": {
+          "items": {
+            "type": "string"
+          },
+          "readOnly": true,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Operation": {
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "op": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "value": {
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "PropertyRolesItemModel": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "enum": [
+              "PropertyAdmin",
+              "Accountant",
+              "RevenueManager",
+              "ReservationManager",
+              "FrontDesk",
+              "Housekeeping"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "roles"
+      ],
+      "type": "object"
+    },
+    "PropertyRolesModel": {
+      "example": {
+        "roles": [
+          "Housekeeping",
+          "ReservationManager"
+        ]
+      },
+      "properties": {
+        "roles": {
+          "items": {
+            "enum": [
+              "PropertyAdmin",
+              "Accountant",
+              "RevenueManager",
+              "ReservationManager",
+              "FrontDesk",
+              "Housekeeping"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "roles"
+      ],
+      "type": "object"
+    },
+    "RoleListModel": {
+      "properties": {
+        "roles": {
+          "description": "A list of all existing roles",
+          "items": {
+            "enum": [
+              "PropertyAdmin",
+              "Accountant",
+              "RevenueManager",
+              "ReservationManager",
+              "FrontDesk",
+              "Housekeeping"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "roles"
+      ],
+      "type": "object"
+    },
+    "UserItemModel": {
+      "properties": {
+        "email": {
+          "description": "Email address, used as the login",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "If set to {false}, the user is disabled for this account and cannot log in",
+          "type": "boolean"
+        },
+        "firstName": {
+          "description": "First name",
+          "type": "string"
+        },
+        "isAccountAdmin": {
+          "description": "If set to {true}, user has full access to all properties.",
+          "type": "boolean"
+        },
+        "lastName": {
+          "description": "Last name",
+          "type": "string"
+        },
+        "properties": {
+          "description": "Properties that user has access to",
+          "items": {
+            "$ref": "#/definitions/PropertyRolesItemModel"
+          },
+          "type": "array"
+        },
+        "subjectId": {
+          "description": "Unique user identifier.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "subjectId",
+        "firstName",
+        "lastName",
+        "email",
+        "enabled",
+        "isAccountAdmin"
+      ],
+      "type": "object"
+    },
+    "UserModel": {
+      "example": {
+        "email": "user1@apaleo.com",
+        "enabled": true,
+        "firstName": "Milosz",
+        "isAccountAdmin": false,
+        "lastName": "Jones",
+        "properties": [
+          "MUC",
+          "LDN"
+        ],
+        "subjectId": "50ff45e2-9393-4040-8138-a782ce121c13"
+      },
+      "properties": {
+        "email": {
+          "description": "Email address, used as the login",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "If set to {false}, the user is disabled for this account and cannot log in",
+          "type": "boolean"
+        },
+        "firstName": {
+          "description": "First name",
+          "type": "string"
+        },
+        "isAccountAdmin": {
+          "description": "If set to {true}, user has full access to all properties.",
+          "type": "boolean"
+        },
+        "lastName": {
+          "description": "Last name",
+          "type": "string"
+        },
+        "properties": {
+          "description": "List of properties to which user has access.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "subjectId": {
+          "description": "Unique user identifier.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "subjectId",
+        "firstName",
+        "lastName",
+        "email",
+        "isAccountAdmin"
+      ],
+      "type": "object"
+    },
+    "UsersListModel": {
+      "example": {
+        "users": [
+          {
+            "email": "user1@apaleo.com",
+            "enabled": true,
+            "firstName": "Riaz",
+            "isAccountAdmin": true,
+            "lastName": "Sparks",
+            "subjectId": "3cdb2db2-3be9-48c7-8422-0265f4a1b9d2"
+          },
+          {
+            "email": "user1@apaleo.com",
+            "enabled": true,
+            "firstName": "Milosz",
+            "isAccountAdmin": false,
+            "lastName": "Jones",
+            "properties": [
+              {
+                "id": "MUC",
+                "roles": [
+                  "FrontDesk",
+                  "Accountant"
+                ]
+              }
+            ],
+            "subjectId": "98e3788d-3060-4f95-beb1-ec0cd27006d1"
+          }
+        ]
+      },
+      "properties": {
+        "users": {
+          "description": "A collection of users that have access to the current account",
+          "items": {
+            "$ref": "#/definitions/UserItemModel"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "users"
+      ],
+      "type": "object"
+    }
+  },
+  "info": {
+    "title": "apaleo Identity API",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/account/invitations": {
+      "get": {
+        "consumes": [],
+        "description": "Returns a list of all invitations to the current account.<br>Scopes required: 'identity:account-users.manage, identity:account-users.read'.",
+        "operationId": "ApiAccountInvitationsGet",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "propertyId",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/InvitationListModel"
+            }
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "identity:account-users.manage",
+              "identity:account-users.read"
+            ]
+          }
+        ],
+        "summary": "Returns a list of invitations for the current account",
+        "tags": [
+          "Invitation"
+        ]
+      },
+      "post": {
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "description": "Invites a person to the current account with the requested roles and properties.<br />\r\nWhen you specify 'IsAccountAdmin', the user will automatically have access to all properties in all roles.<br />\r\nThe <i>user</i> will only be created or linked to the account, when the person accepts the invitation.<br>Scopes required: 'identity:account-users.manage'.",
+        "operationId": "ApiAccountInvitationsPost",
+        "parameters": [
+          {
+            "description": "",
+            "in": "body",
+            "name": "request",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CreateInvitationModel"
+            }
+          }
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "422": {
+            "description": "Validation errors in the request body.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "identity:account-users.manage"
+            ]
+          }
+        ],
+        "summary": "Invites a user to the current account",
+        "tags": [
+          "Invitation"
+        ]
+      }
+    },
+    "/api/v1/account/users": {
+      "get": {
+        "consumes": [],
+        "description": "Returns a list of all users that have access to the current account.<br>Scopes required: 'identity:account-users.manage, identity:account-users.read'.",
+        "operationId": "ApiAccountUsersGet",
+        "parameters": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/AccountUsersListModel"
+            }
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "identity:account-users.manage",
+              "identity:account-users.read"
+            ]
+          }
+        ],
+        "summary": "Returns a list of users for the current account",
+        "tags": [
+          "AccountUser"
+        ]
+      }
+    },
+    "/api/v1/account/users/{email}": {
+      "patch": {
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "description": "Allows to modify an account user. Only modification of Enabled status and Roles are allowed.<br>Scopes required: 'identity:account-users.manage'.",
+        "operationId": "ApiAccountUsersByEmailPatch",
+        "parameters": [
+          {
+            "description": "",
+            "in": "path",
+            "name": "email",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "",
+            "in": "body",
+            "name": "requestBody",
+            "required": false,
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Operation"
+              },
+              "type": "array"
+            }
+          }
+        ],
+        "produces": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "204": {
+            "description": "The status was successfully set."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "422": {
+            "description": "Validation errors in the request body.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "identity:account-users.manage"
+            ]
+          }
+        ],
+        "summary": "Allows to modify an account user",
+        "tags": [
+          "AccountUser"
+        ]
+      }
+    },
+    "/api/v1/roles": {
+      "get": {
+        "consumes": [],
+        "description": "",
+        "operationId": "ApiRolesGet",
+        "parameters": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RoleListModel"
+            }
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          }
+        },
+        "summary": "Returns a static list of all roles.",
+        "tags": [
+          "Roles"
+        ]
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "consumes": [],
+        "description": "Returns a list of all users that have access to the current account.<br>Scopes required: 'identity:account-users.manage, identity:account-users.read'.",
+        "operationId": "ApiUsersGet",
+        "parameters": [
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "propertyIds",
+            "required": false,
+            "type": "array"
+          }
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UsersListModel"
+            }
+          },
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "identity:account-users.manage",
+              "identity:account-users.read"
+            ]
+          }
+        ],
+        "summary": "Returns a list of users for the current account.",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/users/{userId}": {
+      "get": {
+        "consumes": [],
+        "description": "Returns a user in the current account for a specific subjectId or email address.<br>Scopes required: 'identity:account-users.manage, identity:account-users.read'.",
+        "operationId": "ApiUsersByUserIdGet",
+        "parameters": [
+          {
+            "description": "User's subjectId or email.",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "$ref": "#/definitions/UserModel"
+            }
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "identity:account-users.manage",
+              "identity:account-users.read"
+            ]
+          }
+        ],
+        "summary": "Returns a user for the current account.",
+        "tags": [
+          "Users"
+        ]
+      },
+      "patch": {
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "description": "Modify user in an account.\r\nAllowed operations:\r\n- Replace firstName and lastName\r\n- Replace isAccountAdmin (setting it to true or false)\r\n- Replace enabled (setting it to true or false)<br>Scopes required: 'identity:account-users.manage'.",
+        "operationId": "ApiUsersByUserIdPatch",
+        "parameters": [
+          {
+            "description": "User's subjectId or email.",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "",
+            "in": "body",
+            "name": "requestBody",
+            "required": false,
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Operation"
+              },
+              "type": "array"
+            }
+          }
+        ],
+        "produces": [],
+        "responses": {
+          "204": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "422": {
+            "description": "Validation errors in the request body.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "identity:account-users.manage"
+            ]
+          }
+        ],
+        "summary": "Modify user in an account.",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/users/{userId}/properties/{propertyId}": {
+      "delete": {
+        "consumes": [],
+        "description": "Remove access to a property.<br>Scopes required: 'identity:account-users.manage'.",
+        "operationId": "ApiUsersByUserIdPropertiesByPropertyIdDelete",
+        "parameters": [
+          {
+            "description": "User's subjectId or email.",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Property ID.",
+            "in": "path",
+            "name": "propertyId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [],
+        "responses": {
+          "204": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "identity:account-users.manage"
+            ]
+          }
+        ],
+        "summary": "Remove property access.",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/users/{userId}/properties/{propertyId}/roles": {
+      "get": {
+        "consumes": [],
+        "description": "Returns property roles for a user.<br>Scopes required: 'identity:account-users.manage, identity:account-users.read'.",
+        "operationId": "ApiUsersByUserIdPropertiesByPropertyIdRolesGet",
+        "parameters": [
+          {
+            "description": "User's subjectId or email",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Property ID.",
+            "in": "path",
+            "name": "propertyId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PropertyRolesModel"
+            }
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "identity:account-users.manage",
+              "identity:account-users.read"
+            ]
+          }
+        ],
+        "summary": "Returns property roles for a user.",
+        "tags": [
+          "Users"
+        ]
+      },
+      "put": {
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "description": "Modify user's roles for a property.<br>Scopes required: 'identity:account-users.manage'.",
+        "operationId": "ApiUsersByUserIdPropertiesByPropertyIdRolesPut",
+        "parameters": [
+          {
+            "description": "User's subjectId or email.",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Property ID.",
+            "in": "path",
+            "name": "propertyId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "",
+            "in": "body",
+            "name": "request",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PropertyRolesModel"
+            }
+          }
+        ],
+        "produces": [],
+        "responses": {
+          "204": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "You are unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "The Request-URI could not be found."
+          },
+          "415": {
+            "description": "Unsupported media type."
+          },
+          "422": {
+            "description": "Validation errors in the request body.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred."
+          },
+          "503": {
+            "description": "The server is currently unavailable. Please try later."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "identity:account-users.manage"
+            ]
+          }
+        ],
+        "summary": "Modify user's roles for a property.",
+        "tags": [
+          "Users"
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "oauth2": {
+      "authorizationUrl": "https://identity.apaleo.com/connect/authorize",
+      "flow": "implicit",
+      "scopes": {
+        "identity:account-users.manage": "Manage account users"
+      },
+      "type": "oauth2"
+    }
+  },
+  "swagger": "2.0"
+}
