@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.VisualBasic;
 
 namespace Traces.Web.Models
 {
@@ -54,15 +55,32 @@ namespace Traces.Web.Models
 
         public void Replace(TraceItemModel trace, ReplaceTraceItemModel replaceTraceItemModel)
         {
-            if (trace.DueDate != replaceTraceItemModel.DueDate)
-            {
-                GetCorrectGroupList(trace.DueDate).Remove(trace);
-                GetCorrectGroupList(replaceTraceItemModel.DueDate).Add(trace);
-            }
+            var oldDueDate = trace.DueDate;
+            var newDueDate = replaceTraceItemModel.DueDate;
 
             trace.Title = replaceTraceItemModel.Title;
             trace.Description = replaceTraceItemModel.Description;
             trace.DueDate = replaceTraceItemModel.DueDate;
+
+            if (oldDueDate != newDueDate)
+            {
+                GetCorrectGroupList(oldDueDate).Remove(trace);
+                var list = GetCorrectGroupList(newDueDate);
+                list.Add(trace);
+                if (IsMonthGroup(newDueDate))
+                {
+                    SortList(list);
+                }
+            }
+        }
+
+        public void Sort()
+        {
+            SortList(_overdueItems);
+            foreach (var monthItemsValue in _monthItems.Values)
+            {
+                SortList(monthItemsValue);
+            }
         }
 
         public void Clear()
@@ -78,7 +96,12 @@ namespace Traces.Web.Models
             }
         }
 
-        private IList<TraceItemModel> GetCorrectGroupList(DateTime dateTime)
+        private void SortList(List<TraceItemModel> list)
+        {
+            list.Sort((a, b) => a.DueDate.CompareTo(b.DueDate));
+        }
+
+        private List<TraceItemModel> GetCorrectGroupList(DateTime dateTime)
         {
             var date = dateTime;
             if (date < DateTime.Today.Date)
@@ -91,13 +114,25 @@ namespace Traces.Web.Models
                 return _dayItems[date];
             }
 
-            date = date.AddDays(-(date.Day - 1));
+            date = GetFirstOfMonth(date);
             if (!_monthItems.ContainsKey(date))
             {
                 _monthItems.Add(date, new List<TraceItemModel>());
             }
 
             return _monthItems[date];
+        }
+
+        private bool IsMonthGroup(DateTime dateTime)
+        {
+            var date = dateTime.Date;
+            return !_dayItems.ContainsKey(date) && _monthItems.ContainsKey(GetFirstOfMonth(date));
+        }
+
+        private DateTime GetFirstOfMonth(DateTime dateTime)
+        {
+            var date = dateTime.Date;
+            return date.AddDays(-(date.Day - 1));
         }
     }
 }

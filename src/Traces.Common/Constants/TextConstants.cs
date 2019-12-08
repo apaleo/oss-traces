@@ -34,6 +34,10 @@ namespace Traces.Common.Constants
 
         public const string TracesAddButtonText = "Add";
 
+        public const string TracesShowNextMonthButtonText = "Show next month";
+
+        public const string TracesShowAllMonthsButtonText = "Show all months";
+
         public const string TracesDeleteButtonText = "Delete";
 
         public const string TracesTableTitleText = "Title";

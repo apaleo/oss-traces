@@ -60,8 +60,6 @@ namespace Traces.Web.ViewModels
         {
             EditTraceModificationModel.ClearCurrentState();
             EditTraceModificationModel.IsReplace = false;
-
-            EditTraceModificationModel.Title = "a";
             EditTraceModificationModel.DueDate = dueDate;
 
             CreateTraceModalRef?.Show();
@@ -219,6 +217,7 @@ namespace Traces.Web.ViewModels
                     TracesGroupModel.Add(trace);
                 }
 
+                TracesGroupModel.Sort();
                 RefreshRequested?.Invoke();
             }
         }
