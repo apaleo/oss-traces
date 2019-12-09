@@ -112,7 +112,7 @@ namespace Traces.Core.Services
         {
             var reservationId = createTraceDto.ReservationId.Match(
                 v => v,
-                () => throw new BusinessValidationException("There was no reservationId provided while trying to create a trace from the reservation flow"));
+                () => throw new BusinessValidationException(TextConstants.NoReservationIdProvidedErrorMessage));
 
             var propertyId = await GetPropertyIdFromReservationIdAsync(reservationId);
 

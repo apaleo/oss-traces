@@ -66,5 +66,7 @@ namespace Traces.Common.Constants
 
         public const string FetchingDataFromApaleoForTracesErrorMessage =
             "There was an issue creating this trace. Unfortunately there was an issue fetching the data from the apaleo services.";
+
+        public const string NoReservationIdProvidedErrorMessage = "There was no reservationId provided while trying to create a trace from the reservation flow";
     }
 }
