@@ -34,7 +34,11 @@ namespace Traces.Web.ViewModels
 
         protected ITraceModifierService TraceModifierService { get; }
 
-        public abstract Task LoadAsync();
+        public async Task LoadAsync()
+        {
+            await InitializeContextAsync();
+            await LoadTracesAsync();
+        }
 
         public async Task DeleteItemAsync(int id)
         {
@@ -119,6 +123,8 @@ namespace Traces.Web.ViewModels
             EditTraceModificationModel.ClearCurrentState();
             CreateTraceModalRef?.Hide();
         }
+
+        protected abstract Task LoadTracesAsync();
 
         /// <summary>
         /// Currently each viewmodel that can create a trace should override this method.

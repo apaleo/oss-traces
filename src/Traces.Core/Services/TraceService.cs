@@ -212,14 +212,14 @@ namespace Traces.Core.Services
                     var propertyId = reservation.Property.Id;
                     if (string.IsNullOrWhiteSpace(propertyId))
                     {
-                        throw new BusinessValidationException(TextConstants.RequestPropertyIdFromApaleoErrorMessage);
+                        throw new BusinessValidationException(TextConstants.FetchingDataFromApaleoForTracesErrorMessage);
                     }
 
                     return propertyId;
                 }
                 else
                 {
-                    throw new BusinessValidationException(TextConstants.RequestPropertyIdFromApaleoErrorMessage);
+                    throw new BusinessValidationException(TextConstants.FetchingDataFromApaleoForTracesErrorMessage);
                 }
             }
         }

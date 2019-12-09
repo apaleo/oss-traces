@@ -35,12 +35,6 @@ namespace Traces.Web.ViewModels
             LoadCurrentReservationId();
         }
 
-        public override async Task LoadAsync()
-        {
-            await InitializeContextAsync();
-            await LoadTracesAsync();
-        }
-
         public async Task CreateOrEditTraceAsync()
         {
             var result = EditTraceModificationModel.IsReplace
@@ -78,7 +72,7 @@ namespace Traces.Web.ViewModels
             return createResult.Success;
         }
 
-        private async Task LoadTracesAsync()
+        protected override async Task LoadTracesAsync()
         {
             var tracesResult = await _tracesCollectorService.GetTracesForPropertyAsync(_currentPropertyId);
 

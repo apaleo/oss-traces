@@ -25,12 +25,6 @@ namespace Traces.Web.ViewModels
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
         }
 
-        public override async Task LoadAsync()
-        {
-            await InitializeContextAsync();
-            await LoadTracesAsync();
-        }
-
         public async Task EditTraceAsync()
         {
             var result = await ReplaceTraceItemAsync();
@@ -41,7 +35,7 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        private async Task LoadTracesAsync()
+        protected override async Task LoadTracesAsync()
         {
             var tracesResult = await _tracesCollectorService.GetTracesAsync();
 
