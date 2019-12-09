@@ -17,5 +17,9 @@ namespace Traces.Core.Models
         public TraceStateEnum State { get; set; }
 
         public Option<LocalDate> CompletedDate { get; set; }
+
+        public string PropertyId { get; set; }
+
+        public Option<string> ReservationId { get; set; }
     }
 }

@@ -1,16 +1,9 @@
 using System;
-using Traces.Common.Constants;
 
 namespace Traces.Web.Models
 {
     public class EditTraceDialogViewModel
     {
-        public string ModalTitle =>
-            IsReplace ? TextConstants.ReplaceTraceModalTitle : TextConstants.CreateTraceModalTitle;
-
-        public string CreateOrEditButtonText =>
-            IsReplace ? TextConstants.ReplaceTraceButtonText : TextConstants.CreateTraceButtonText;
-
         public int Id { get; set; }
 
         public string Title { get; set; }

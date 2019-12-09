@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,6 +25,56 @@ namespace Traces.Web.Services
             try
             {
                 var traceDtos = await _traceService.GetActiveTracesAsync();
+
+                var traceModels = TraceDtosToModels(traceDtos);
+
+                return new ResultModel<IReadOnlyList<TraceItemModel>>
+                {
+                    Success = true,
+                    Result = traceModels.Some()
+                };
+            }
+            catch (BusinessValidationException e)
+            {
+                return new ResultModel<IReadOnlyList<TraceItemModel>>
+                {
+                    Success = false,
+                    Result = Option.None<IReadOnlyList<TraceItemModel>>(),
+                    ErrorMessage = e.Message.Some()
+                };
+            }
+        }
+
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesForPropertyAsync(string propertyId)
+        {
+            try
+            {
+                var traceDtos = await _traceService.GetTracesForPropertyAsync(propertyId);
+
+                var traceModels = TraceDtosToModels(traceDtos);
+
+                return new ResultModel<IReadOnlyList<TraceItemModel>>
+                {
+                    Success = true,
+                    Result = traceModels.Some()
+                };
+            }
+            catch (BusinessValidationException e)
+            {
+                return new ResultModel<IReadOnlyList<TraceItemModel>>
+                {
+                    Success = false,
+                    Result = Option.None<IReadOnlyList<TraceItemModel>>(),
+                    ErrorMessage = e.Message.Some()
+                };
+            }
+        }
+
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesForReservationAsync(string reservationId)
+        {
+            try
+            {
+                var traceDtos = await _traceService.GetTracesForReservationAsync(reservationId);
 
                 var traceModels = TraceDtosToModels(traceDtos);
 

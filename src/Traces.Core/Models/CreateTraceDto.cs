@@ -10,5 +10,9 @@ namespace Traces.Core.Models
         public Option<string> Description { get; set; }
 
         public LocalDate DueDate { get; set; }
+
+        public string PropertyId { get; set; }
+
+        public Option<string> ReservationId { get; set; }
     }
 }

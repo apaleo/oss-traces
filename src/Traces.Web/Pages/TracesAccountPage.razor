@@ -1,16 +1,14 @@
 @page "/traces/account"
 @using Traces.Common.Constants
 @using Traces.Web.ViewModels
-@inject TracesViewModel TracesViewModel
+@inject TracesAccountViewModel TracesAccountViewModel
 
 <div>
     <h1>Traces</h1>
 
-    <Button Color="Color.Primary" Clicked="@TracesViewModel.ShowCreateTraceModal">@TextConstants.TracesAddButtonText</Button>
-
     <div>
         <h2>@TextConstants.UpcomingTracesText</h2>
-        @if (TracesViewModel.Traces != null && TracesViewModel.Traces.Any())
+        @if (TracesAccountViewModel.Traces != null && TracesAccountViewModel.Traces.Any())
         {
             <Table>
                 <TableHeader>
@@ -22,7 +20,7 @@
                         </TableRow>
                 </TableHeader>
                 <TableBody>
-                    @foreach (var trace in TracesViewModel.Traces)
+                    @foreach (var trace in TracesAccountViewModel.Traces)
                     {
                         <TableRow>
                             <TableRowCell>@trace.Title</TableRowCell>
@@ -30,9 +28,9 @@
                             <TableRowCell>@trace.DueDate.ToShortDateString()</TableRowCell>
                             <TableRowCell>
                                 <Buttons>
-                                    <Button Color="Color.Primary" Clicked="@(() => TracesViewModel.CompleteTraceAsync(trace.Id))">Complete</Button>
-                                    <Button Color="Color.Secondary" Clicked="@(() => TracesViewModel.ShowReplaceTraceModal(trace))">Edit</Button>
-                                    <Button Color="Color.Danger" Clicked="@(() => TracesViewModel.DeleteItemAsync(trace.Id))">Delete</Button>
+                                    <Button Color="Color.Primary" Clicked="@(() => TracesAccountViewModel.CompleteTraceAsync(trace.Id))">Complete</Button>
+                                    <Button Color="Color.Secondary" Clicked="@(() => TracesAccountViewModel.ShowReplaceTraceModal(trace))">Edit</Button>
+                                    <Button Color="Color.Danger" Clicked="@(() => TracesAccountViewModel.DeleteItemAsync(trace.Id))">Delete</Button>
                                 </Buttons>
                             </TableRowCell>
                         </TableRow>
@@ -46,15 +44,15 @@
         }
     </div>
 
-    <Modal @ref="@TracesViewModel.CreateTraceModalRef">
+    <Modal @ref="@TracesAccountViewModel.EditTraceModalRef">
         <ModalBackdrop />
         <ModalContent IsCentered="true" Size="ModalSize.Large">
             <ModalHeader>
-                <ModalTitle>@TracesViewModel.EditTraceModificationModel.ModalTitle</ModalTitle>
-                <CloseButton Clicked="@TracesViewModel.HideCreateTraceModal"/>
+                <ModalTitle>@TextConstants.EditTraceModalTitle</ModalTitle>
+                <CloseButton Clicked="@TracesAccountViewModel.HideEditTraceModal"/>
             </ModalHeader>
             <ModalBody>
-                <EditTraceDialog OnClose="@TracesViewModel.HideCreateTraceModal"/>
+                <EditTraceDialog EditTraceDialogVm="@TracesAccountViewModel.EditTraceDialogViewModel" OnClose="@TracesAccountViewModel.HideEditTraceModal" OnSubmit="@TracesAccountViewModel.EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
             </ModalBody>
         </ModalContent>
     </Modal>
@@ -65,7 +63,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await TracesViewModel.LoadAsync();
+        await TracesAccountViewModel.LoadAsync();
         await base.OnInitializedAsync();
     }
 
