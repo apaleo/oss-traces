@@ -64,7 +64,7 @@ namespace Traces.Common.Constants
 
         public const string ApaleoSetupButtonTryAgainText = "Try again";
 
-        public const string RequestPropertyIdFromApaleoErrorMessage =
-            "There was an issue creating this trace. You can try again in a few seconds.";
+        public const string FetchingDataFromApaleoForTracesErrorMessage =
+            "There was an issue creating this trace. Unfortunately there was an issue fetching the data from the apaleo services.";
     }
 }
