@@ -54,7 +54,7 @@
                 <CloseButton Clicked="@TracesReservationViewModel.HideCreateTraceModal"/>
             </ModalHeader>
             <ModalBody>
-                <EditTraceDialog OnClose="@TracesReservationViewModel.HideCreateTraceModal"/>
+                <EditTraceDialog EditTraceDialogVm="@TracesReservationViewModel.EditTraceModificationModel" OnClose="@TracesReservationViewModel.HideCreateTraceModal" OnSubmit="@TracesReservationViewModel.CreateOrEditTraceSubmittedAsync"/>
             </ModalBody>
         </ModalContent>
     </Modal>

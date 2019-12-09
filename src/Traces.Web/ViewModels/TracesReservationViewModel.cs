@@ -40,7 +40,21 @@ namespace Traces.Web.ViewModels
             await LoadTracesAsync();
         }
 
-        public override async Task<bool> CreateTraceItemAsync()
+        public async Task<bool> CreateOrEditTraceSubmittedAsync()
+        {
+            var result = EditTraceModificationModel.IsReplace
+                ? await ReplaceTraceItemAsync()
+                : await CreateTraceItemAsync();
+
+            if (result)
+            {
+                HideCreateTraceModal();
+            }
+
+            return result;
+        }
+
+        protected override async Task<bool> CreateTraceItemAsync()
         {
             var createTraceItemModel = EditTraceModificationModel.GetCreateTraceItemModel();
             createTraceItemModel.ReservationId = _currentReservationId;

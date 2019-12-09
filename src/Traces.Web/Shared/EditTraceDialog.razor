@@ -1,29 +1,28 @@
-@using Traces.Web.ViewModels
-@inject TracesViewModel TracesViewModel
+@using Traces.Web.Models
 
 <Form>
     <Field>
         <FieldLabel>Title</FieldLabel>
         <FieldBody>
-            <TextEdit @bind-Text="@TracesViewModel.EditTraceModificationModel.Title"/>
+            <TextEdit @bind-Text="@EditTraceDialogVm.Title"/>
         </FieldBody>
     </Field>
     <Field>
         <FieldLabel>Description</FieldLabel>
         <FieldBody>
-            <MemoEdit Rows="4" @bind-Text="@TracesViewModel.EditTraceModificationModel.Description"/>
+            <MemoEdit Rows="4" @bind-Text="@EditTraceDialogVm.Description"/>
         </FieldBody>
     </Field>
 
     <Field>
         <FieldLabel>Due date</FieldLabel>
         <FieldBody>
-            <DateEdit @bind-Date="@TracesViewModel.EditTraceModificationModel.DueDate"/>
+            <DateEdit @bind-Date="@EditTraceDialogVm.DueDate"/>
         </FieldBody>
     </Field>
     <ModalFooter>
         <Button Color="Color.Secondary" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" IsLoading="@_isLoading" Clicked="@OnClose">Close</Button>
-        <Button Color="Color.Primary" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" IsLoading="@_isLoading" Clicked="@OnCreateOrEditButtonClick">@TracesViewModel.EditTraceModificationModel.CreateOrEditButtonText</Button>
+        <Button Color="Color.Primary" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" IsLoading="@_isLoading" Clicked="@OnCreateOrEditButtonClick">@EditTraceDialogVm.CreateOrEditButtonText</Button>
     </ModalFooter>
 </Form>
 
@@ -32,26 +31,20 @@
 
     private bool _isLoading;
 
-    [Parameter] public EventCallback OnClose { get; set; }
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+
+    [Parameter]
+    public EditTraceDialogViewModel EditTraceDialogVm { get; set; }
 
     async void OnCreateOrEditButtonClick()
     {
         _isLoading = true;
 
-        if (TracesViewModel.EditTraceModificationModel.IsReplace)
-        {
-            if (await TracesViewModel.ReplaceTraceItemAsync())
-            {
-                await OnClose.InvokeAsync(null);
-            }
-        }
-        else
-        {
-            if (await TracesViewModel.CreateTraceItemAsync())
-            {
-                await OnClose.InvokeAsync(null);
-            }
-        }
+        await OnSubmit.InvokeAsync(null);
 
         _isLoading = false;
     }

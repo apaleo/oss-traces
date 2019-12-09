@@ -36,48 +36,6 @@ namespace Traces.Web.ViewModels
 
         public abstract Task LoadAsync();
 
-        /// <summary>
-        /// Currently each viewmodel that can create a trace should override this method.
-        /// For instance the TracesViewModel should not be able to create a trace at this current stage.
-        /// </summary>
-        /// <returns>Trace was created or not</returns>
-        public virtual Task<bool> CreateTraceItemAsync() => throw new NotImplementedException();
-
-        public async Task<bool> ReplaceTraceItemAsync()
-        {
-            var replaceTraceItemModel = EditTraceModificationModel.GetReplaceTraceItemModel();
-            var replaceResult = await TraceModifierService.ReplaceTraceAsync(replaceTraceItemModel);
-
-            if (replaceResult.Success)
-            {
-                replaceResult.Result.MatchSome(v =>
-                {
-                    var trace = Traces.FirstOrDefault(x => x.Id == replaceTraceItemModel.Id);
-
-                    if (trace == null)
-                    {
-                        return;
-                    }
-
-                    trace.Title = replaceTraceItemModel.Title;
-                    trace.Description = replaceTraceItemModel.Description;
-                    trace.DueDate = replaceTraceItemModel.DueDate;
-
-                    ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
-                });
-            }
-            else
-            {
-                var errorMessage = replaceResult.ErrorMessage.Match(
-                    v => v,
-                    () => throw new NotImplementedException());
-
-                ShowToastMessage(false, errorMessage);
-            }
-
-            return replaceResult.Success;
-        }
-
         public async Task DeleteItemAsync(int id)
         {
             var deleteResult = await TraceModifierService.DeleteTraceAsync(id);
@@ -160,6 +118,48 @@ namespace Traces.Web.ViewModels
         {
             EditTraceModificationModel.ClearCurrentState();
             CreateTraceModalRef?.Hide();
+        }
+
+        /// <summary>
+        /// Currently each viewmodel that can create a trace should override this method.
+        /// For instance the TracesViewModel should not be able to create a trace at this current stage.
+        /// </summary>
+        /// <returns>Trace was created or not</returns>
+        protected virtual Task<bool> CreateTraceItemAsync() => throw new NotImplementedException();
+
+        protected async Task<bool> ReplaceTraceItemAsync()
+        {
+            var replaceTraceItemModel = EditTraceModificationModel.GetReplaceTraceItemModel();
+            var replaceResult = await TraceModifierService.ReplaceTraceAsync(replaceTraceItemModel);
+
+            if (replaceResult.Success)
+            {
+                replaceResult.Result.MatchSome(v =>
+                {
+                    var trace = Traces.FirstOrDefault(x => x.Id == replaceTraceItemModel.Id);
+
+                    if (trace == null)
+                    {
+                        return;
+                    }
+
+                    trace.Title = replaceTraceItemModel.Title;
+                    trace.Description = replaceTraceItemModel.Description;
+                    trace.DueDate = replaceTraceItemModel.DueDate;
+
+                    ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
+                });
+            }
+            else
+            {
+                var errorMessage = replaceResult.ErrorMessage.Match(
+                    v => v,
+                    () => throw new NotImplementedException());
+
+                ShowToastMessage(false, errorMessage);
+            }
+
+            return replaceResult.Success;
         }
 
         protected void ShowToastMessage(bool success, string message)

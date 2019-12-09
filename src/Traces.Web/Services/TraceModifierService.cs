@@ -50,7 +50,9 @@ namespace Traces.Web.Services
                 {
                     Title = createTraceItemModel.Title,
                     Description = createTraceItemModel.Description.SomeNotNull(),
-                    DueDate = createTraceItemModel.DueDate.ToLocalDateTime().Date
+                    DueDate = createTraceItemModel.DueDate.ToLocalDateTime().Date,
+                    PropertyId = createTraceItemModel.PropertyId,
+                    ReservationId = createTraceItemModel.ReservationId.SomeNotNull()
                 };
 
                 var traceId = await _traceService.CreateTraceAsync(createTraceDto);
