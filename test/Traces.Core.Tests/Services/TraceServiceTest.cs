@@ -11,6 +11,7 @@ using Optional.Unsafe;
 using Traces.Common;
 using Traces.Common.Enums;
 using Traces.Common.Exceptions;
+using Traces.Core.ClientFactories;
 using Traces.Core.Models;
 using Traces.Core.Repositories;
 using Traces.Core.Services;
@@ -27,16 +28,21 @@ namespace Traces.Core.Tests.Services
         private const string TestActiveTraceDescription = "TestActiveDescription";
         private const string TestActiveTraceTitle = "TestActiveTitle";
         private const TraceStateEnum TestActiveTraceState = TraceStateEnum.Active;
+        private const string TestActivePropertyId = "PROA";
 
         private const int TestObsoleteTraceId = 2;
         private const string TestObsoleteTraceDescription = "TestObsoleteDescription";
         private const string TestObsoleteTraceTitle = "TestObsoleteTitle";
         private const TraceStateEnum TestObsoleteTraceState = TraceStateEnum.Obsolete;
+        private const string TestObsoletePropertyId = "PROO";
+        private const string TestObsoleteReservationId = "RESO";
 
         private const int TestCompletedTraceId = 3;
         private const string TestCompletedTraceDescription = "TestCompletedDescription";
         private const string TestCompletedTraceTitle = "TestCompletedTitle";
         private const TraceStateEnum TestCompletedTraceState = TraceStateEnum.Completed;
+        private const string TestCompletedPropertyId = "PROC";
+        private const string TestCompletedReservationId = "RESC";
 
         private readonly LocalDate _testActiveTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
         private readonly LocalDate _testObsoleteTraceDueDate = DateTime.UtcNow.Subtract(TimeSpan.FromDays(1)).ToLocalDateTime().Date;
@@ -45,13 +51,15 @@ namespace Traces.Core.Tests.Services
 
         private readonly Mock<ITraceRepository> _traceRepositoryMock;
         private readonly Mock<IRequestContext> _requestContextMock;
+        private readonly Mock<IApaleoClientFactory> _apaleoClientFactoryMock;
         private readonly ITraceService _traceService;
 
         public TraceServiceTest()
         {
             _traceRepositoryMock = MockRepository.Create<ITraceRepository>();
             _requestContextMock = MockRepository.Create<IRequestContext>();
-            _traceService = new TraceService(_traceRepositoryMock.Object, _requestContextMock.Object);
+            _apaleoClientFactoryMock = MockRepository.Create<IApaleoClientFactory>();
+            _traceService = new TraceService(_traceRepositoryMock.Object, _requestContextMock.Object, _apaleoClientFactoryMock.Object);
         }
 
         [Fact]
@@ -63,7 +71,8 @@ namespace Traces.Core.Tests.Services
                 Description = TestActiveTraceDescription,
                 State = TestActiveTraceState,
                 Title = TestActiveTraceTitle,
-                DueDate = _testActiveTraceDueDate
+                DueDate = _testActiveTraceDueDate,
+                PropertyId = TestActivePropertyId
             };
 
             var testObsoleteTrace = new Trace
@@ -72,7 +81,9 @@ namespace Traces.Core.Tests.Services
                 Description = TestObsoleteTraceDescription,
                 State = TestObsoleteTraceState,
                 Title = TestObsoleteTraceTitle,
-                DueDate = _testObsoleteTraceDueDate
+                DueDate = _testObsoleteTraceDueDate,
+                PropertyId = TestObsoletePropertyId,
+                ReservationId = TestObsoleteReservationId
             };
 
             var testCompletedTrace = new Trace
@@ -82,7 +93,9 @@ namespace Traces.Core.Tests.Services
                 State = TestCompletedTraceState,
                 Title = TestCompletedTraceTitle,
                 DueDate = _testCompletedTraceDueDate,
-                CompletedDate = _testCompletedDate
+                CompletedDate = _testCompletedDate,
+                PropertyId = TestCompletedPropertyId,
+                ReservationId = TestCompletedReservationId
             };
 
             var testTraces = new List<Trace>
@@ -107,6 +120,8 @@ namespace Traces.Core.Tests.Services
             result[0].State.Should().Be(TestActiveTraceState);
             result[0].DueDate.Should().Be(_testActiveTraceDueDate);
             result[0].CompletedDate.HasValue.Should().BeFalse();
+            result[0].PropertyId.Should().Be(TestActivePropertyId);
+            result[0].ReservationId.HasValue.Should().BeFalse();
 
             // Test second element is equivalent to trace testObsoleteTrace
             result[1].Id.Should().Be(TestObsoleteTraceId);
@@ -115,6 +130,8 @@ namespace Traces.Core.Tests.Services
             result[1].State.Should().Be(TestObsoleteTraceState);
             result[1].DueDate.Should().Be(_testObsoleteTraceDueDate);
             result[1].CompletedDate.HasValue.Should().BeFalse();
+            result[1].PropertyId.Should().Be(TestObsoletePropertyId);
+            result[1].ReservationId.ValueOrFailure().Should().Be(TestObsoleteReservationId);
 
             // Test second element is equivalent to trace testCompletedTrace
             result[2].Id.Should().Be(TestCompletedTraceId);
@@ -123,6 +140,8 @@ namespace Traces.Core.Tests.Services
             result[2].State.Should().Be(TestCompletedTraceState);
             result[2].DueDate.Should().Be(_testCompletedTraceDueDate);
             result[2].CompletedDate.ValueOrFailure().Should().Be(_testCompletedDate);
+            result[2].PropertyId.Should().Be(TestCompletedPropertyId);
+            result[2].ReservationId.ValueOrFailure().Should().Be(TestCompletedReservationId);
         }
 
         [Fact]
@@ -134,7 +153,8 @@ namespace Traces.Core.Tests.Services
                 Description = TestActiveTraceDescription,
                 State = TestActiveTraceState,
                 Title = TestActiveTraceTitle,
-                DueDate = _testActiveTraceDueDate
+                DueDate = _testActiveTraceDueDate,
+                PropertyId = TestActivePropertyId
             };
 
             var testObsoleteTrace = new Trace
@@ -143,7 +163,9 @@ namespace Traces.Core.Tests.Services
                 Description = TestObsoleteTraceDescription,
                 State = TestActiveTraceState,
                 Title = TestObsoleteTraceTitle,
-                DueDate = _testObsoleteTraceDueDate
+                DueDate = _testObsoleteTraceDueDate,
+                PropertyId = TestObsoletePropertyId,
+                ReservationId = TestObsoleteReservationId
             };
 
             var testCompletedTrace = new Trace
@@ -153,7 +175,9 @@ namespace Traces.Core.Tests.Services
                 State = TestActiveTraceState,
                 Title = TestCompletedTraceTitle,
                 DueDate = _testCompletedTraceDueDate,
-                CompletedDate = _testCompletedDate
+                CompletedDate = _testCompletedDate,
+                PropertyId = TestCompletedPropertyId,
+                ReservationId = TestCompletedReservationId
             };
 
             var testTraces = new List<Trace>
@@ -178,6 +202,8 @@ namespace Traces.Core.Tests.Services
             result[0].State.Should().Be(TestActiveTraceState);
             result[0].DueDate.Should().Be(_testActiveTraceDueDate);
             result[0].CompletedDate.HasValue.Should().BeFalse();
+            result[0].PropertyId.Should().Be(TestActivePropertyId);
+            result[0].ReservationId.HasValue.Should().BeFalse();
 
             // Test second element is equivalent to trace testObsoleteTrace
             result[1].Id.Should().Be(TestObsoleteTraceId);
@@ -186,6 +212,8 @@ namespace Traces.Core.Tests.Services
             result[1].State.Should().Be(TestActiveTraceState);
             result[1].DueDate.Should().Be(_testObsoleteTraceDueDate);
             result[1].CompletedDate.HasValue.Should().BeFalse();
+            result[1].PropertyId.Should().Be(TestObsoletePropertyId);
+            result[1].ReservationId.ValueOrFailure().Should().Be(TestObsoleteReservationId);
 
             // Test second element is equivalent to trace testCompletedTrace
             result[2].Id.Should().Be(TestCompletedTraceId);
@@ -194,6 +222,8 @@ namespace Traces.Core.Tests.Services
             result[2].State.Should().Be(TestActiveTraceState);
             result[2].DueDate.Should().Be(_testCompletedTraceDueDate);
             result[2].CompletedDate.ValueOrFailure().Should().Be(_testCompletedDate);
+            result[2].PropertyId.Should().Be(TestCompletedPropertyId);
+            result[2].ReservationId.ValueOrFailure().Should().Be(TestCompletedReservationId);
         }
 
         [Fact]
@@ -206,6 +236,74 @@ namespace Traces.Core.Tests.Services
 
             result.Should().NotBeNull();
             result.Should().BeEmpty();
+        }
+
+        [Fact]
+        public async Task ShouldGetAllTracesForPropertyAsync()
+        {
+            var testActiveTrace = new Trace
+            {
+                Id = TestActiveTraceId,
+                Description = TestActiveTraceDescription,
+                State = TestActiveTraceState,
+                Title = TestActiveTraceTitle,
+                DueDate = _testActiveTraceDueDate,
+                PropertyId = TestActivePropertyId
+            };
+
+            _traceRepositoryMock.Setup(x => x.GetAllTracesForTenantAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
+                .ReturnsAsync(new List<Trace>
+                {
+                    testActiveTrace
+                });
+
+            var result = await _traceService.GetTracesForPropertyAsync(TestActivePropertyId);
+
+            result.Should().NotBeEmpty();
+            result.Should().HaveCount(1);
+
+            result[0].Id.Should().Be(TestActiveTraceId);
+            result[0].Title.Should().Be(TestActiveTraceTitle);
+            result[0].Description.ValueOrFailure().Should().Be(TestActiveTraceDescription);
+            result[0].State.Should().Be(TestActiveTraceState);
+            result[0].DueDate.Should().Be(_testActiveTraceDueDate);
+            result[0].CompletedDate.HasValue.Should().BeFalse();
+            result[0].PropertyId.Should().Be(TestActivePropertyId);
+        }
+
+        [Fact]
+        public async Task ShouldBeAbleToGetTracesRelatedToAReservationAsync()
+        {
+            var testCompletedTrace = new Trace
+            {
+                Id = TestCompletedTraceId,
+                Description = TestCompletedTraceDescription,
+                State = TestCompletedTraceState,
+                Title = TestCompletedTraceTitle,
+                DueDate = _testCompletedTraceDueDate,
+                CompletedDate = _testCompletedDate,
+                PropertyId = TestCompletedPropertyId,
+                ReservationId = TestCompletedReservationId
+            };
+
+            _traceRepositoryMock.Setup(x => x.GetAllTracesForTenantAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
+                .ReturnsAsync(new List<Trace>
+                {
+                    testCompletedTrace
+                });
+
+            var result = await _traceService.GetTracesForReservationAsync(TestCompletedReservationId);
+
+            result.Should().HaveCount(1);
+
+            result[0].Id.Should().Be(TestCompletedTraceId);
+            result[0].Title.Should().Be(TestCompletedTraceTitle);
+            result[0].Description.ValueOrFailure().Should().Be(TestCompletedTraceDescription);
+            result[0].State.Should().Be(TestCompletedTraceState);
+            result[0].DueDate.Should().Be(_testCompletedTraceDueDate);
+            result[0].CompletedDate.ValueOrFailure().Should().Be(_testCompletedDate);
+            result[0].PropertyId.Should().Be(TestCompletedPropertyId);
+            result[0].ReservationId.ValueOrFailure().Should().Be(TestCompletedReservationId);
         }
 
         [Fact]
