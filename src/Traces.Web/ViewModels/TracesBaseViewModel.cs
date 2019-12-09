@@ -23,12 +23,14 @@ namespace Traces.Web.ViewModels
             TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
             _toastService = Check.NotNull(toastService, nameof(toastService));
             Traces = new List<TraceItemModel>();
-            EditTraceModificationModel = new EditTraceDialogViewModel();
+            EditTraceDialogViewModel = new EditTraceDialogViewModel();
         }
 
-        public EditTraceDialogViewModel EditTraceModificationModel { get; }
+        public EditTraceDialogViewModel EditTraceDialogViewModel { get; }
 
         public Modal CreateTraceModalRef { get; set; }
+
+        public Modal EditTraceModalRef { get; set; }
 
         public List<TraceItemModel> Traces { get; }
 
@@ -38,6 +40,51 @@ namespace Traces.Web.ViewModels
         {
             await InitializeContextAsync();
             await LoadTracesAsync();
+        }
+
+        /// <summary>
+        /// Currently each viewmodel that can create a trace should override this method.
+        /// For instance the TracesViewModel should not be able to create a trace at this current stage.
+        /// </summary>
+        /// <returns>Trace was created or not</returns>
+        public virtual Task CreateTraceItemAsync() => throw new NotImplementedException();
+
+        public async Task EditTraceItemAsync()
+        {
+            var replaceTraceItemModel = EditTraceDialogViewModel.GetReplaceTraceItemModel();
+            var replaceResult = await TraceModifierService.ReplaceTraceAsync(replaceTraceItemModel);
+
+            if (replaceResult.Success)
+            {
+                replaceResult.Result.MatchSome(v =>
+                {
+                    var trace = Traces.FirstOrDefault(x => x.Id == replaceTraceItemModel.Id);
+
+                    if (trace == null)
+                    {
+                        return;
+                    }
+
+                    trace.Title = replaceTraceItemModel.Title;
+                    trace.Description = replaceTraceItemModel.Description;
+                    trace.DueDate = replaceTraceItemModel.DueDate;
+
+                    ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
+                });
+            }
+            else
+            {
+                var errorMessage = replaceResult.ErrorMessage.Match(
+                    v => v,
+                    () => throw new NotImplementedException());
+
+                ShowToastMessage(false, errorMessage);
+            }
+
+            if (replaceResult.Success)
+            {
+                HideEditTraceModal();
+            }
         }
 
         public async Task DeleteItemAsync(int id)
@@ -70,19 +117,6 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        public void ShowReplaceTraceModal(TraceItemModel traceItemModel)
-        {
-            EditTraceModificationModel.ClearCurrentState();
-
-            EditTraceModificationModel.IsReplace = true;
-            EditTraceModificationModel.Id = traceItemModel.Id;
-            EditTraceModificationModel.Title = traceItemModel.Title;
-            EditTraceModificationModel.Description = traceItemModel.Description;
-            EditTraceModificationModel.DueDate = traceItemModel.DueDate;
-
-            CreateTraceModalRef?.Show();
-        }
-
         public async Task CompleteTraceAsync(int id)
         {
             var completeResult = await TraceModifierService.MarkTraceAsCompleteAsync(id);
@@ -110,63 +144,38 @@ namespace Traces.Web.ViewModels
             }
         }
 
+        public void ShowReplaceTraceModal(TraceItemModel traceItemModel)
+        {
+            EditTraceDialogViewModel.ClearCurrentState();
+
+            EditTraceDialogViewModel.Id = traceItemModel.Id;
+            EditTraceDialogViewModel.Title = traceItemModel.Title;
+            EditTraceDialogViewModel.Description = traceItemModel.Description;
+            EditTraceDialogViewModel.DueDate = traceItemModel.DueDate;
+
+            EditTraceModalRef?.Show();
+        }
+
         public void ShowCreateTraceModal()
         {
-            EditTraceModificationModel.ClearCurrentState();
-            EditTraceModificationModel.IsReplace = false;
+            EditTraceDialogViewModel.ClearCurrentState();
 
             CreateTraceModalRef?.Show();
         }
 
         public void HideCreateTraceModal()
         {
-            EditTraceModificationModel.ClearCurrentState();
+            EditTraceDialogViewModel.ClearCurrentState();
             CreateTraceModalRef?.Hide();
         }
 
-        protected abstract Task LoadTracesAsync();
-
-        /// <summary>
-        /// Currently each viewmodel that can create a trace should override this method.
-        /// For instance the TracesViewModel should not be able to create a trace at this current stage.
-        /// </summary>
-        /// <returns>Trace was created or not</returns>
-        protected virtual Task<bool> CreateTraceItemAsync() => throw new NotImplementedException();
-
-        protected async Task<bool> ReplaceTraceItemAsync()
+        public void HideEditTraceModal()
         {
-            var replaceTraceItemModel = EditTraceModificationModel.GetReplaceTraceItemModel();
-            var replaceResult = await TraceModifierService.ReplaceTraceAsync(replaceTraceItemModel);
-
-            if (replaceResult.Success)
-            {
-                replaceResult.Result.MatchSome(v =>
-                {
-                    var trace = Traces.FirstOrDefault(x => x.Id == replaceTraceItemModel.Id);
-
-                    if (trace == null)
-                    {
-                        return;
-                    }
-
-                    trace.Title = replaceTraceItemModel.Title;
-                    trace.Description = replaceTraceItemModel.Description;
-                    trace.DueDate = replaceTraceItemModel.DueDate;
-
-                    ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
-                });
-            }
-            else
-            {
-                var errorMessage = replaceResult.ErrorMessage.Match(
-                    v => v,
-                    () => throw new NotImplementedException());
-
-                ShowToastMessage(false, errorMessage);
-            }
-
-            return replaceResult.Success;
+            EditTraceDialogViewModel.ClearCurrentState();
+            EditTraceModalRef?.Hide();
         }
+
+        protected abstract Task LoadTracesAsync();
 
         protected void ShowToastMessage(bool success, string message)
         {

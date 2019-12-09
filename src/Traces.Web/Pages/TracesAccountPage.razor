@@ -44,15 +44,15 @@
         }
     </div>
 
-    <Modal @ref="@TracesAccountViewModel.CreateTraceModalRef">
+    <Modal @ref="@TracesAccountViewModel.EditTraceModalRef">
         <ModalBackdrop />
         <ModalContent IsCentered="true" Size="ModalSize.Large">
             <ModalHeader>
-                <ModalTitle>@TracesAccountViewModel.EditTraceModificationModel.ModalTitle</ModalTitle>
-                <CloseButton Clicked="@TracesAccountViewModel.HideCreateTraceModal"/>
+                <ModalTitle>@TextConstants.ReplaceTraceModalTitle</ModalTitle>
+                <CloseButton Clicked="@TracesAccountViewModel.HideEditTraceModal"/>
             </ModalHeader>
             <ModalBody>
-                <EditTraceDialog EditTraceDialogVm="@TracesAccountViewModel.EditTraceModificationModel" OnClose="@TracesAccountViewModel.HideCreateTraceModal" OnSubmit="@TracesAccountViewModel.EditTraceAsync"/>
+                <EditTraceDialog EditTraceDialogVm="@TracesAccountViewModel.EditTraceDialogViewModel" OnClose="@TracesAccountViewModel.HideEditTraceModal" OnSubmit="@TracesAccountViewModel.EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
             </ModalBody>
         </ModalContent>
     </Modal>

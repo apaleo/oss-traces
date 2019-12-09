@@ -22,7 +22,7 @@
     </Field>
     <ModalFooter>
         <Button Color="Color.Secondary" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" IsLoading="@_isLoading" Clicked="@OnClose">Close</Button>
-        <Button Color="Color.Primary" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" IsLoading="@_isLoading" Clicked="@OnCreateOrEditButtonClick">@EditTraceDialogVm.CreateOrEditButtonText</Button>
+        <Button Color="Color.Primary" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" IsLoading="@_isLoading" Clicked="@OnCreateOrEditButtonClick">@SubmitButtonText</Button>
     </ModalFooter>
 </Form>
 
@@ -39,6 +39,9 @@
 
     [Parameter]
     public EditTraceDialogViewModel EditTraceDialogVm { get; set; }
+
+    [Parameter]
+    public string SubmitButtonText { get; set; }
 
     async void OnCreateOrEditButtonClick()
     {

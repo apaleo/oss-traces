@@ -46,15 +46,28 @@
         }
     </div>
 
+    <Modal @ref="@TracesPropertyViewModel.EditTraceModalRef">
+        <ModalBackdrop />
+        <ModalContent IsCentered="true" Size="ModalSize.Large">
+            <ModalHeader>
+                <ModalTitle>@TextConstants.ReplaceTraceModalTitle</ModalTitle>
+                <CloseButton Clicked="@TracesPropertyViewModel.HideEditTraceModal"/>
+            </ModalHeader>
+            <ModalBody>
+                <EditTraceDialog EditTraceDialogVm="@TracesPropertyViewModel.EditTraceDialogViewModel" OnClose="@TracesPropertyViewModel.HideEditTraceModal" OnSubmit="@TracesPropertyViewModel.EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
+            </ModalBody>
+        </ModalContent>
+    </Modal>
+
     <Modal @ref="@TracesPropertyViewModel.CreateTraceModalRef">
         <ModalBackdrop />
         <ModalContent IsCentered="true" Size="ModalSize.Large">
             <ModalHeader>
-                <ModalTitle>@TracesPropertyViewModel.EditTraceModificationModel.ModalTitle</ModalTitle>
+                <ModalTitle>@TextConstants.CreateTraceModalTitle</ModalTitle>
                 <CloseButton Clicked="@TracesPropertyViewModel.HideCreateTraceModal"/>
             </ModalHeader>
             <ModalBody>
-                <EditTraceDialog EditTraceDialogVm="@TracesPropertyViewModel.EditTraceModificationModel" OnClose="@TracesPropertyViewModel.HideCreateTraceModal" OnSubmit="@TracesPropertyViewModel.CreateOrEditTraceAsync"/>
+                <EditTraceDialog EditTraceDialogVm="@TracesPropertyViewModel.EditTraceDialogViewModel" OnClose="@TracesPropertyViewModel.HideCreateTraceModal" OnSubmit="@TracesPropertyViewModel.CreateTraceItemAsync" SubmitButtonText="@TextConstants.CreateTraceButtonText"/>
             </ModalBody>
         </ModalContent>
     </Modal>

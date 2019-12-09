@@ -28,7 +28,7 @@ namespace Traces.Common.Constants
 
         public const string CreateTraceButtonText = "Create";
 
-        public const string ReplaceTraceButtonText = "Update";
+        public const string EditTraceButtonText = "Update";
 
         public const string UpcomingTracesText = "Upcoming tasks";
 

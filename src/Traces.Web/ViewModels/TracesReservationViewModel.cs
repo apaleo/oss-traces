@@ -8,13 +8,12 @@ using Microsoft.AspNetCore.Http;
 using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Utils;
-using Traces.Web.Interfaces;
 using Traces.Web.Models;
 using Traces.Web.Services;
 
 namespace Traces.Web.ViewModels
 {
-    public class TracesReservationViewModel : TracesBaseViewModel, ITraceModifier
+    public class TracesReservationViewModel : TracesBaseViewModel
     {
         private readonly ITracesCollectorService _tracesCollectorService;
         private readonly NavigationManager _navigationManager;
@@ -35,21 +34,9 @@ namespace Traces.Web.ViewModels
             LoadCurrentReservationId();
         }
 
-        public async Task CreateOrEditTraceAsync()
+        public override async Task CreateTraceItemAsync()
         {
-            var result = EditTraceModificationModel.IsReplace
-                ? await ReplaceTraceItemAsync()
-                : await CreateTraceItemAsync();
-
-            if (result)
-            {
-                HideCreateTraceModal();
-            }
-        }
-
-        protected override async Task<bool> CreateTraceItemAsync()
-        {
-            var createTraceItemModel = EditTraceModificationModel.GetCreateTraceItemModel();
+            var createTraceItemModel = EditTraceDialogViewModel.GetCreateTraceItemModel();
             createTraceItemModel.ReservationId = _currentReservationId;
 
             var createResult = await TraceModifierService.CreateTraceWithReservationIdAsync(createTraceItemModel);
@@ -69,7 +56,10 @@ namespace Traces.Web.ViewModels
                 ShowToastMessage(false, errorMessage);
             }
 
-            return createResult.Success;
+            if (createResult.Success)
+            {
+                HideCreateTraceModal();
+            }
         }
 
         protected override async Task LoadTracesAsync()
