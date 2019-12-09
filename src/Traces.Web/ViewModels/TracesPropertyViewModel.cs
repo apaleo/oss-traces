@@ -8,12 +8,13 @@ using Microsoft.AspNetCore.Http;
 using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Utils;
+using Traces.Web.Interfaces;
 using Traces.Web.Models;
 using Traces.Web.Services;
 
 namespace Traces.Web.ViewModels
 {
-    public class TracesPropertyViewModel : TracesBaseViewModel
+    public class TracesPropertyViewModel : TracesBaseViewModel, ITraceModifier
     {
         private readonly ITracesCollectorService _tracesCollectorService;
         private readonly NavigationManager _navigationManager;
@@ -40,7 +41,7 @@ namespace Traces.Web.ViewModels
             await LoadTracesAsync();
         }
 
-        public async Task<bool> CreateOrEditTraceSubmittedAsync()
+        public async Task<bool> CreateOrEditTraceAsync()
         {
             var result = EditTraceModificationModel.IsReplace
                 ? await ReplaceTraceItemAsync()
