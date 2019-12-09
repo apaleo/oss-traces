@@ -4,12 +4,13 @@ using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Http;
 using Traces.Common;
 using Traces.Common.Utils;
+using Traces.Web.Interfaces;
 using Traces.Web.Models;
 using Traces.Web.Services;
 
 namespace Traces.Web.ViewModels
 {
-    public class TracesAccountViewModel : TracesBaseViewModel
+    public class TracesAccountViewModel : TracesBaseViewModel, ITraceEditor
     {
         private readonly ITracesCollectorService _tracesCollectorService;
 
@@ -28,6 +29,16 @@ namespace Traces.Web.ViewModels
         {
             await InitializeContextAsync();
             await LoadTracesAsync();
+        }
+
+        public async Task EditTraceAsync()
+        {
+            var result = await ReplaceTraceItemAsync();
+
+            if (result)
+            {
+                HideCreateTraceModal();
+            }
         }
 
         private async Task LoadTracesAsync()

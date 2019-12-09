@@ -41,7 +41,7 @@ namespace Traces.Web.ViewModels
             await LoadTracesAsync();
         }
 
-        public async Task<bool> CreateOrEditTraceAsync()
+        public async Task CreateOrEditTraceAsync()
         {
             var result = EditTraceModificationModel.IsReplace
                 ? await ReplaceTraceItemAsync()
@@ -51,8 +51,6 @@ namespace Traces.Web.ViewModels
             {
                 HideCreateTraceModal();
             }
-
-            return result;
         }
 
         protected override async Task<bool> CreateTraceItemAsync()

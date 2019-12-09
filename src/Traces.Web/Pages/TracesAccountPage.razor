@@ -52,7 +52,7 @@
                 <CloseButton Clicked="@TracesAccountViewModel.HideCreateTraceModal"/>
             </ModalHeader>
             <ModalBody>
-                <EditTraceDialog OnClose="@TracesAccountViewModel.HideCreateTraceModal"/>
+                <EditTraceDialog EditTraceDialogVm="@TracesAccountViewModel.EditTraceModificationModel" OnClose="@TracesAccountViewModel.HideCreateTraceModal" OnSubmit="@TracesAccountViewModel.EditTraceAsync"/>
             </ModalBody>
         </ModalContent>
     </Modal>

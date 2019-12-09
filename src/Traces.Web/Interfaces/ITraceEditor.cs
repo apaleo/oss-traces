@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 
 namespace Traces.Web.Interfaces
 {
-    internal interface ITraceModifier
+    public interface ITraceEditor
     {
-        Task CreateOrEditTraceAsync();
+        Task EditTraceAsync();
     }
 }
