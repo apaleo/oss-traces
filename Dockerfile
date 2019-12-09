@@ -1,7 +1,7 @@
 ARG PROJECT_NAME=Traces.Web
 ARG ROOT_FOLDER=src/$PROJECT_NAME
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /app
 ARG ROOT_FOLDER
 
@@ -16,7 +16,7 @@ WORKDIR /app/$ROOT_FOLDER
 RUN dotnet publish -c Release -o out --no-restore
 
 #create image
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS runtime
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS runtime
 WORKDIR /app
 ARG PROJECT_NAME
 ARG ROOT_FOLDER
