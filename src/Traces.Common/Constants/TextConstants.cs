@@ -24,7 +24,7 @@ namespace Traces.Common.Constants
 
         public const string CreateTraceModalTitle = "Create trace";
 
-        public const string ReplaceTraceModalTitle = "Update trace";
+        public const string EditTraceModalTitle = "Update trace";
 
         public const string CreateTraceButtonText = "Create";
 
