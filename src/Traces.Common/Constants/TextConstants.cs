@@ -36,6 +36,8 @@ namespace Traces.Common.Constants
 
         public const string TracesShowNextMonthButtonText = "Show next month";
 
+        public const string UpcomingTracesEmptyText = "There are currently no upcoming tasks. You can create new ones with the Add button.";
+
         public const string TracesShowAllMonthsButtonText = "Show all months";
 
         public const string TracesDeleteButtonText = "Delete";
@@ -45,6 +47,14 @@ namespace Traces.Common.Constants
         public const string TracesTableDescriptionText = "Description";
 
         public const string TracesTableDueDateText = "Due date";
+
+        public const string TracesTablePropertyText = "Property";
+
+        public const string TracesTableActionsText = "Actions";
+
+        public const string TracesCompleteButtonText = "Mark as complete";
+
+        public const string TracesEditButtonText = "Edit";
 
         public const string ApaleoSetupLoadingText = "Loading...";
 
