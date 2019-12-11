@@ -32,36 +32,6 @@
             OnEditClick="@TracesAccountViewModel.ShowReplaceTraceModal"/>
         }
     }
-    @if (TracesAccountViewModel.Traces != null && TracesAccountViewModel.Traces.Any())
-    {
-        <Table>
-            <TableHeader>
-                    <TableRow>
-                        <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
-                        <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
-                        <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
-                        <TableHeaderCell>@TextConstants.TracesTableActionsText</TableHeaderCell>
-                    </TableRow>
-            </TableHeader>
-            <TableBody>
-                @foreach (var trace in TracesAccountViewModel.Traces)
-                {
-                    <TableRow>
-                        <TableRowCell>@trace.Title</TableRowCell>
-                        <TableRowCell>@trace.Description</TableRowCell>
-                        <TableRowCell>@trace.DueDate.ToShortDateString()</TableRowCell>
-                        <TableRowCell>
-                            <Buttons>
-                                <Button Color="Color.Primary" Clicked="@(() => TracesAccountViewModel.CompleteTraceAsync(trace.Id))">Complete</Button>
-                                <Button Color="Color.Secondary" Clicked="@(() => TracesAccountViewModel.ShowReplaceTraceModal(trace))">Edit</Button>
-                                <Button Color="Color.Danger" Clicked="@(() => TracesAccountViewModel.DeleteItemAsync(trace.Id))">Delete</Button>
-                            </Buttons>
-                        </TableRowCell>
-                    </TableRow>
-                }
-            </TableBody>
-        </Table>
-    }
 
     <Modal @ref="@TracesAccountViewModel.EditTraceModalRef">
         <ModalBackdrop />
