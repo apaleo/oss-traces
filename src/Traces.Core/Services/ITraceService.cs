@@ -11,9 +11,15 @@ namespace Traces.Core.Services
 
         Task<IReadOnlyList<TraceDto>> GetActiveTracesAsync();
 
+        Task<IReadOnlyList<TraceDto>> GetTracesForPropertyAsync(string propertyId);
+
+        Task<IReadOnlyList<TraceDto>> GetTracesForReservationAsync(string reservationId);
+
         Task<Option<TraceDto>> GetTraceAsync(int id);
 
         Task<int> CreateTraceAsync(CreateTraceDto createTraceDto);
+
+        Task<int> CreateTraceFromReservationAsync(CreateTraceDto createTraceDto);
 
         Task<bool> ReplaceTraceAsync(int id, ReplaceTraceDto replaceTraceDto);
 

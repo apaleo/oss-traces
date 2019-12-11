@@ -1,0 +1,85 @@
+@page "/traces/property"
+@using Traces.Common.Constants
+@using Traces.Web.ViewModels
+@inject TracesPropertyViewModel TracesPropertyViewModel
+
+<div>
+    <h1>Traces</h1>
+
+    <Button Color="Color.Primary" Clicked="@TracesPropertyViewModel.ShowCreateTraceModal">@TextConstants.TracesAddButtonText</Button>
+
+    <div>
+        <h2>@TextConstants.UpcomingTracesText</h2>
+        @if (TracesPropertyViewModel.Traces != null && TracesPropertyViewModel.Traces.Any())
+        {
+            <Table>
+                <TableHeader>
+                        <TableRow>
+                            <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
+                            <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
+                            <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
+                            <TableHeaderCell>@TextConstants.TracesTableActionsText</TableHeaderCell>
+                        </TableRow>
+                </TableHeader>
+                <TableBody>
+                    @foreach (var trace in TracesPropertyViewModel.Traces)
+                    {
+                        <TableRow>
+                            <TableRowCell>@trace.Title</TableRowCell>
+                            <TableRowCell>@trace.Description</TableRowCell>
+                            <TableRowCell>@trace.DueDate.ToShortDateString()</TableRowCell>
+                            <TableRowCell>
+                                <Buttons>
+                                    <Button Color="Color.Primary" Clicked="@(() => TracesPropertyViewModel.CompleteTraceAsync(trace.Id))">Complete</Button>
+                                    <Button Color="Color.Secondary" Clicked="@(() => TracesPropertyViewModel.ShowReplaceTraceModal(trace))">Edit</Button>
+                                    <Button Color="Color.Danger" Clicked="@(() => TracesPropertyViewModel.DeleteItemAsync(trace.Id))">Delete</Button>
+                                </Buttons>
+                            </TableRowCell>
+                        </TableRow>
+                    }
+                </TableBody>
+            </Table>
+        }
+        else
+        {
+          <p>@TextConstants.UpcomingTracesEmptyText</p>
+        }
+    </div>
+
+    <Modal @ref="@TracesPropertyViewModel.EditTraceModalRef">
+        <ModalBackdrop />
+        <ModalContent IsCentered="true" Size="ModalSize.Large">
+            <ModalHeader>
+                <ModalTitle>@TextConstants.EditTraceModalTitle</ModalTitle>
+                <CloseButton Clicked="@TracesPropertyViewModel.HideEditTraceModal"/>
+            </ModalHeader>
+            <ModalBody>
+                <EditTraceDialog EditTraceDialogVm="@TracesPropertyViewModel.EditTraceDialogViewModel" OnClose="@TracesPropertyViewModel.HideEditTraceModal" OnSubmit="@TracesPropertyViewModel.EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
+            </ModalBody>
+        </ModalContent>
+    </Modal>
+
+    <Modal @ref="@TracesPropertyViewModel.CreateTraceModalRef">
+        <ModalBackdrop />
+        <ModalContent IsCentered="true" Size="ModalSize.Large">
+            <ModalHeader>
+                <ModalTitle>@TextConstants.CreateTraceModalTitle</ModalTitle>
+                <CloseButton Clicked="@TracesPropertyViewModel.HideCreateTraceModal"/>
+            </ModalHeader>
+            <ModalBody>
+                <EditTraceDialog EditTraceDialogVm="@TracesPropertyViewModel.EditTraceDialogViewModel" OnClose="@TracesPropertyViewModel.HideCreateTraceModal" OnSubmit="@TracesPropertyViewModel.CreateTraceItemAsync" SubmitButtonText="@TextConstants.CreateTraceButtonText"/>
+            </ModalBody>
+        </ModalContent>
+    </Modal>
+</div>
+
+@code
+{
+
+    protected override async Task OnInitializedAsync()
+    {
+        await TracesPropertyViewModel.LoadAsync();
+        await base.OnInitializedAsync();
+    }
+
+}

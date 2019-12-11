@@ -20,5 +20,10 @@ namespace Traces.Data.Entities
         public LocalDate? CompletedDate { get; set; }
 
         public string CompletedBy { get; set; }
+
+        [Required]
+        public string PropertyId { get; set; }
+
+        public string ReservationId { get; set; }
     }
 }

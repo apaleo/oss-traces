@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using NodaTime;
 using Optional;
 using Optional.Unsafe;
+using Traces.ApaleoClients.Booking.Models;
 using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Enums;
 using Traces.Common.Exceptions;
 using Traces.Common.Utils;
+using Traces.Core.ClientFactories;
 using Traces.Core.Models;
 using Traces.Core.Repositories;
 using Traces.Data.Entities;
@@ -20,11 +22,13 @@ namespace Traces.Core.Services
     {
         private readonly ITraceRepository _traceRepository;
         private readonly IRequestContext _requestContext;
+        private readonly IApaleoClientFactory _apaleoClientFactory;
 
-        public TraceService(ITraceRepository traceRepository, IRequestContext requestContext)
+        public TraceService(ITraceRepository traceRepository, IRequestContext requestContext, IApaleoClientFactory apaleoClientFactory)
         {
             _traceRepository = Check.NotNull(traceRepository, nameof(traceRepository));
             _requestContext = Check.NotNull(requestContext, nameof(requestContext));
+            _apaleoClientFactory = Check.NotNull(apaleoClientFactory, nameof(apaleoClientFactory));
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetTracesAsync()
@@ -39,6 +43,25 @@ namespace Traces.Core.Services
             var traces = await _traceRepository.GetAllTracesForTenantAsync(t => t.State == TraceStateEnum.Active);
 
             return ConvertToTraceDto(traces);
+        }
+
+        public async Task<IReadOnlyList<TraceDto>> GetTracesForPropertyAsync(string propertyId)
+        {
+            Check.NotEmpty(propertyId, nameof(propertyId));
+
+            var propertyTraces = await _traceRepository.GetAllTracesForTenantAsync(t => t.PropertyId == propertyId);
+
+            return ConvertToTraceDto(propertyTraces);
+        }
+
+        public async Task<IReadOnlyList<TraceDto>> GetTracesForReservationAsync(string reservationId)
+        {
+            Check.NotEmpty(reservationId, nameof(reservationId));
+
+            var reservationTraces =
+                await _traceRepository.GetAllTracesForTenantAsync(t => t.ReservationId == reservationId);
+
+            return ConvertToTraceDto(reservationTraces);
         }
 
         public async Task<Option<TraceDto>> GetTraceAsync(int id)
@@ -68,7 +91,9 @@ namespace Traces.Core.Services
                 Description = createTraceDto.Description.ValueOrDefault(),
                 State = TraceStateEnum.Active,
                 Title = createTraceDto.Title,
-                DueDate = createTraceDto.DueDate
+                DueDate = createTraceDto.DueDate,
+                PropertyId = createTraceDto.PropertyId,
+                ReservationId = createTraceDto.ReservationId.ValueOrDefault()
             };
 
             _traceRepository.Insert(trace);
@@ -76,6 +101,24 @@ namespace Traces.Core.Services
             await _traceRepository.SaveAsync();
 
             return trace.Id;
+        }
+
+        /// <summary>
+        /// This function exists to request the propertyId for this specific trace based on the reservationId
+        /// </summary>
+        /// <param name="createTraceDto">The dto with the information to create the trace</param>
+        /// <returns>Id of the new trace</returns>
+        public async Task<int> CreateTraceFromReservationAsync(CreateTraceDto createTraceDto)
+        {
+            var reservationId = createTraceDto.ReservationId.Match(
+                v => v,
+                () => throw new BusinessValidationException(TextConstants.NoReservationIdProvidedErrorMessage));
+
+            var propertyId = await GetPropertyIdFromReservationIdAsync(reservationId);
+
+            createTraceDto.PropertyId = propertyId;
+
+            return await CreateTraceAsync(createTraceDto);
         }
 
         public async Task<bool> ReplaceTraceAsync(int id, ReplaceTraceDto replaceTraceDto)
@@ -158,6 +201,29 @@ namespace Traces.Core.Services
             return deleted;
         }
 
+        private async Task<string> GetPropertyIdFromReservationIdAsync(string reservationId)
+        {
+            var apiClient = _apaleoClientFactory.CreateBookingApi();
+
+            using (var requestResponse = await apiClient.BookingReservationsByIdGetWithHttpMessagesAsync(reservationId))
+            {
+                if (requestResponse.Response.IsSuccessStatusCode && requestResponse.Body is ReservationModel reservation)
+                {
+                    var propertyId = reservation.Property.Id;
+                    if (string.IsNullOrWhiteSpace(propertyId))
+                    {
+                        throw new BusinessValidationException(TextConstants.FetchingDataFromApaleoForTracesErrorMessage);
+                    }
+
+                    return propertyId;
+                }
+                else
+                {
+                    throw new BusinessValidationException(TextConstants.FetchingDataFromApaleoForTracesErrorMessage);
+                }
+            }
+        }
+
         private static IReadOnlyList<TraceDto> ConvertToTraceDto(IReadOnlyList<Trace> traces)
         {
             var tracesDto = traces.Select(TraceToDto).ToList();
@@ -171,7 +237,9 @@ namespace Traces.Core.Services
             Title = trace.Title,
             CompletedDate = trace.CompletedDate?.Some() ?? Option.None<LocalDate>(),
             DueDate = trace.DueDate,
-            Id = trace.Id
+            Id = trace.Id,
+            PropertyId = trace.PropertyId,
+            ReservationId = trace.ReservationId.SomeNotNull()
         };
     }
 }

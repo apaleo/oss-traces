@@ -50,10 +50,51 @@ namespace Traces.Web.Services
                 {
                     Title = createTraceItemModel.Title,
                     Description = createTraceItemModel.Description.SomeNotNull(),
-                    DueDate = createTraceItemModel.DueDate.ToLocalDateTime().Date
+                    DueDate = createTraceItemModel.DueDate.ToLocalDateTime().Date,
+                    PropertyId = createTraceItemModel.PropertyId,
+                    ReservationId = createTraceItemModel.ReservationId.SomeNotNull()
                 };
 
                 var traceId = await _traceService.CreateTraceAsync(createTraceDto);
+
+                var traceItemModel = new TraceItemModel
+                {
+                    Id = traceId,
+                    Title = createTraceItemModel.Title,
+                    Description = createTraceItemModel.Description,
+                    State = TraceStateEnum.Active,
+                    DueDate = createTraceItemModel.DueDate
+                };
+
+                return new ResultModel<TraceItemModel>
+                {
+                    Result = traceItemModel.Some(),
+                    Success = true
+                };
+            }
+            catch (BusinessValidationException e)
+            {
+                return new ResultModel<TraceItemModel>
+                {
+                    Success = false,
+                    ErrorMessage = e.Message.Some()
+                };
+            }
+        }
+
+        public async Task<ResultModel<TraceItemModel>> CreateTraceWithReservationIdAsync(CreateTraceItemModel createTraceItemModel)
+        {
+            try
+            {
+                var createTraceDto = new CreateTraceDto
+                {
+                    Title = createTraceItemModel.Title,
+                    Description = createTraceItemModel.Description.SomeNotNull(),
+                    DueDate = createTraceItemModel.DueDate.ToLocalDateTime().Date,
+                    ReservationId = createTraceItemModel.ReservationId.SomeNotNull()
+                };
+
+                var traceId = await _traceService.CreateTraceFromReservationAsync(createTraceDto);
 
                 var traceItemModel = new TraceItemModel
                 {

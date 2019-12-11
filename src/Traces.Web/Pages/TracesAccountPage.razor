@@ -2,8 +2,7 @@
 @using Microsoft.VisualBasic
 @using Traces.Common.Constants
 @using Traces.Web.ViewModels
-@inject TracesViewModel TracesViewModel
-@implements IDisposable
+@inject TracesAccountViewModel TracesAccountViewModel
 
 <div class="mb-3">
     <Button class="btn btn-outline-primary" Clicked="@(() => TracesViewModel.ShowCreateTraceModal())"><i class="fa fa-plus mr-2"></i>@TextConstants.TracesAddButtonText</Button>
@@ -12,62 +11,71 @@
 @if (TracesViewModel.TracesGroupModel.OverdueItems.Any())
 {
     <section class="pb-4">
-        <CascadingValue Value="@TracesViewModel.TracesGroupModel.OverdueItems">
+        <CascadingValue Value="@TracesAccountViewModel.TracesGroupModel.OverdueItems">
             <TracesOverdueTable></TracesOverdueTable>
         </CascadingValue>
     </section>
 }
 
+<div>
+    <h2>@TextConstants.UpcomingTracesText</h2>
+    @if (TracesAccountViewModel.Traces != null && TracesAccountViewModel.Traces.Any())
+    {
+        <Table>
+            <TableHeader>
+                    <TableRow>
+                        <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
+                        <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
+                        <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
+                        <TableHeaderCell>@TextConstants.TracesTableActionsText</TableHeaderCell>
+                    </TableRow>
+            </TableHeader>
+            <TableBody>
+                @foreach (var trace in TracesAccountViewModel.Traces)
+                {
+                    <TableRow>
+                        <TableRowCell>@trace.Title</TableRowCell>
+                        <TableRowCell>@trace.Description</TableRowCell>
+                        <TableRowCell>@trace.DueDate.ToShortDateString()</TableRowCell>
+                        <TableRowCell>
+                            <Buttons>
+                                <Button Color="Color.Primary" Clicked="@(() => TracesAccountViewModel.CompleteTraceAsync(trace.Id))">Complete</Button>
+                                <Button Color="Color.Secondary" Clicked="@(() => TracesAccountViewModel.ShowReplaceTraceModal(trace))">Edit</Button>
+                                <Button Color="Color.Danger" Clicked="@(() => TracesAccountViewModel.DeleteItemAsync(trace.Id))">Delete</Button>
+                            </Buttons>
+                        </TableRowCell>
+                    </TableRow>
+                }
+            </TableBody>
+        </Table>
+    }
 
-@foreach (var date in SortedDayDateTimes)
-{
-    <section class="pb-4">
-        <TracesDailyTable Traces="@TracesViewModel.TracesGroupModel.DayItems[date]" Date="@date"></TracesDailyTable>
-    </section>
-}
-
-@if (IsMonthViewAvailable)
-{
-    <div class="mt-2">
-        @for (int i = 0; i <= CurrentMonthIndex; i++)
-        {
-            var month = i;
-            <section>
-                <CascadingValue Value="@TracesViewModel.TracesGroupModel.MonthItems[SortedMonthDateTimes[month]]">
-                    <TracesMonthTable Date="@SortedMonthDateTimes[month]"></TracesMonthTable>
-                </CascadingValue>
-            </section>
-        }
-
-        @if (!IsLastMonth)
-        {
-            <div class="py-2">
-                <Button class="mr-2" Color="Color.Primary" Clicked="@NextMonth">
-                    <i class="fa fa-angle-right mr-2"></i>
-                    @TextConstants.TracesShowNextMonthButtonText
-                </Button>
-                <Button Color="Color.Primary" Clicked="@ShowAllMonths">
-                    <i class="fa fa-angle-double-right mr-2"></i>
-                    @TextConstants.TracesShowAllMonthsButtonText
-                </Button>
-            </div>
-        }
-    </div>
-}
-
-<Modal @ref="@TracesViewModel.CreateTraceModalRef">
-    <ModalBackdrop/>
-    <ModalContent IsCentered="true" Size="ModalSize.Large">
-        <ModalHeader>
-            <ModalTitle>@TracesViewModel.EditTraceModificationModel.ModalTitle</ModalTitle>
-            <CloseButton Clicked="@TracesViewModel.HideCreateTraceModal"/>
-        </ModalHeader>
-        <ModalBody>
-            <EditTraceDialog OnClose="@TracesViewModel.HideCreateTraceModal"/>
-        </ModalBody>
-    </ModalContent>
-</Modal>
-
+    @if (!IsLastMonth)
+    {
+        <div class="py-2">
+            <Button class="mr-2" Color="Color.Primary" Clicked="@NextMonth">
+                <i class="fa fa-angle-right mr-2"></i>
+                @TextConstants.TracesShowNextMonthButtonText
+            </Button>
+            <Button Color="Color.Primary" Clicked="@ShowAllMonths">
+                <i class="fa fa-angle-double-right mr-2"></i>
+                @TextConstants.TracesShowAllMonthsButtonText
+            </Button>
+        </div>
+    }
+    <Modal @ref="@TracesAccountViewModel.EditTraceModalRef">
+        <ModalBackdrop />
+        <ModalContent IsCentered="true" Size="ModalSize.Large">
+            <ModalHeader>
+                <ModalTitle>@TextConstants.EditTraceModalTitle</ModalTitle>
+                <CloseButton Clicked="@TracesAccountViewModel.HideEditTraceModal"/>
+            </ModalHeader>
+            <ModalBody>
+                <EditTraceDialog EditTraceDialogVm="@TracesAccountViewModel.EditTraceDialogViewModel" OnClose="@TracesAccountViewModel.HideEditTraceModal" OnSubmit="@TracesAccountViewModel.EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
+            </ModalBody>
+        </ModalContent>
+    </Modal>
+</div>
 
 @code
 {
@@ -102,7 +110,7 @@
     
     protected override async Task OnInitializedAsync()
     {
-        await TracesViewModel.LoadAsync();
+        await TracesAccountViewModel.LoadAsync();
         await base.OnInitializedAsync();
     }
 

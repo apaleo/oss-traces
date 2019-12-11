@@ -1,0 +1,85 @@
+@page "/traces/reservation"
+@using Traces.Common.Constants
+@using Traces.Web.ViewModels
+@inject TracesReservationViewModel TracesReservationViewModel
+
+<div>
+    <h1>Traces</h1>
+
+    <Button Color="Color.Primary" Clicked="@TracesReservationViewModel.ShowCreateTraceModal">@TextConstants.TracesAddButtonText</Button>
+
+    <div>
+        <h2>@TextConstants.UpcomingTracesText</h2>
+        @if (TracesReservationViewModel.Traces != null && TracesReservationViewModel.Traces.Any())
+        {
+            <Table>
+                <TableHeader>
+                        <TableRow>
+                            <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
+                            <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
+                            <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
+                            <TableHeaderCell>@TextConstants.TracesTableActionsText</TableHeaderCell>
+                        </TableRow>
+                </TableHeader>
+                <TableBody>
+                    @foreach (var trace in TracesReservationViewModel.Traces)
+                    {
+                        <TableRow>
+                            <TableRowCell>@trace.Title</TableRowCell>
+                            <TableRowCell>@trace.Description</TableRowCell>
+                            <TableRowCell>@trace.DueDate.ToShortDateString()</TableRowCell>
+                            <TableRowCell>
+                                <Buttons>
+                                    <Button Color="Color.Primary" Clicked="@(() => TracesReservationViewModel.CompleteTraceAsync(trace.Id))">Complete</Button>
+                                    <Button Color="Color.Secondary" Clicked="@(() => TracesReservationViewModel.ShowReplaceTraceModal(trace))">Edit</Button>
+                                    <Button Color="Color.Danger" Clicked="@(() => TracesReservationViewModel.DeleteItemAsync(trace.Id))">Delete</Button>
+                                </Buttons>
+                            </TableRowCell>
+                        </TableRow>
+                    }
+                </TableBody>
+            </Table>
+        }
+        else
+        {
+          <p>@TextConstants.UpcomingTracesEmptyText</p>
+        }
+    </div>
+
+    <Modal @ref="@TracesReservationViewModel.EditTraceModalRef">
+            <ModalBackdrop />
+            <ModalContent IsCentered="true" Size="ModalSize.Large">
+                <ModalHeader>
+                    <ModalTitle>@TextConstants.EditTraceModalTitle</ModalTitle>
+                    <CloseButton Clicked="@TracesReservationViewModel.HideEditTraceModal"/>
+                </ModalHeader>
+                <ModalBody>
+                    <EditTraceDialog EditTraceDialogVm="@TracesReservationViewModel.EditTraceDialogViewModel" OnClose="@TracesReservationViewModel.HideEditTraceModal" OnSubmit="@TracesReservationViewModel.EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
+                </ModalBody>
+            </ModalContent>
+        </Modal>
+
+        <Modal @ref="@TracesReservationViewModel.CreateTraceModalRef">
+            <ModalBackdrop />
+            <ModalContent IsCentered="true" Size="ModalSize.Large">
+                <ModalHeader>
+                    <ModalTitle>@TextConstants.CreateTraceModalTitle</ModalTitle>
+                    <CloseButton Clicked="@TracesReservationViewModel.HideCreateTraceModal"/>
+                </ModalHeader>
+                <ModalBody>
+                    <EditTraceDialog EditTraceDialogVm="@TracesReservationViewModel.EditTraceDialogViewModel" OnClose="@TracesReservationViewModel.HideCreateTraceModal" OnSubmit="@TracesReservationViewModel.CreateTraceItemAsync" SubmitButtonText="@TextConstants.CreateTraceButtonText"/>
+                </ModalBody>
+            </ModalContent>
+        </Modal>
+</div>
+
+@code
+{
+
+    protected override async Task OnInitializedAsync()
+    {
+        await TracesReservationViewModel.LoadAsync();
+        await base.OnInitializedAsync();
+    }
+
+}

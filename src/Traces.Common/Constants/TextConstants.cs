@@ -24,11 +24,11 @@ namespace Traces.Common.Constants
 
         public const string CreateTraceModalTitle = "Create trace";
 
-        public const string ReplaceTraceModalTitle = "Update trace";
+        public const string EditTraceModalTitle = "Update trace";
 
         public const string CreateTraceButtonText = "Create";
 
-        public const string ReplaceTraceButtonText = "Update";
+        public const string EditTraceButtonText = "Update";
 
         public const string UpcomingTracesText = "Upcoming tasks";
 
@@ -66,5 +66,10 @@ namespace Traces.Common.Constants
         public const string ApaleoSetupButtonNavigateToApaleoText = "Go to apaleo app";
 
         public const string ApaleoSetupButtonTryAgainText = "Try again";
+
+        public const string FetchingDataFromApaleoForTracesErrorMessage =
+            "There was an issue creating this trace. Unfortunately there was an issue fetching the data from the apaleo services.";
+
+        public const string NoReservationIdProvidedErrorMessage = "There was no reservationId provided while trying to create a trace from the reservation flow";
     }
 }

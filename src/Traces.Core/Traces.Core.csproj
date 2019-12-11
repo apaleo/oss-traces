@@ -1,16 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <Import Project="../../rulesets/analysers.proj" />
-    
+
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
-    
+
     <ItemGroup>
       <ProjectReference Include="..\Clients\Traces.ApaleoClients\Traces.ApaleoClients.csproj" />
       <ProjectReference Include="..\Traces.Data\Traces.Data.csproj" />
     </ItemGroup>
-    
+
     <ItemGroup>
       <PackageReference Include="IdentityModel" Version="4.1.1" />
       <PackageReference Include="NLog" Version="4.6.8" />
