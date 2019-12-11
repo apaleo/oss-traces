@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Http;
 using Traces.Common;
+using Traces.Common.Enums;
 using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
@@ -32,9 +35,11 @@ namespace Traces.Web.ViewModels
             {
                 var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
 
-                foreach (var trace in traces)
+                var groupedTraces = traces.GroupBy(x => x.DueDate).ToList();
+
+                foreach (var group in groupedTraces)
                 {
-                    Traces.Add(trace);
+                    SortedGroupedTracesDictionary.Add(group.Key, group.ToList());
                 }
             }
         }

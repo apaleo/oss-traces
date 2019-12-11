@@ -32,13 +32,11 @@ namespace Traces.Common.Constants
 
         public const string UpcomingTracesText = "Upcoming tasks";
 
+        public const string OverdueTracesTitleText = "Overdue";
+
         public const string TracesAddButtonText = "Add";
 
-        public const string TracesShowNextMonthButtonText = "Show next month";
-
         public const string UpcomingTracesEmptyText = "There are currently no upcoming tasks. You can create new ones with the Add button.";
-
-        public const string TracesShowAllMonthsButtonText = "Show all months";
 
         public const string TracesDeleteButtonText = "Delete";
 

@@ -14,5 +14,7 @@ namespace Traces.Web.Models
         public TraceStateEnum State { get; set; }
 
         public DateTime DueDate { get; set; }
+
+        public string PropertyId { get; set; }
     }
 }

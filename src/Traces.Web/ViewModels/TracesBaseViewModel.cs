@@ -23,6 +23,8 @@ namespace Traces.Web.ViewModels
             TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
             _toastService = Check.NotNull(toastService, nameof(toastService));
             Traces = new List<TraceItemModel>();
+            SortedGroupedTracesDictionary = new SortedDictionary<DateTime, List<TraceItemModel>>();
+            OverdueTraces = new List<TraceItemModel>();
             EditTraceDialogViewModel = new EditTraceDialogViewModel();
         }
 
@@ -33,6 +35,10 @@ namespace Traces.Web.ViewModels
         public Modal EditTraceModalRef { get; set; }
 
         public List<TraceItemModel> Traces { get; }
+
+        public List<TraceItemModel> OverdueTraces { get; }
+
+        public SortedDictionary<DateTime, List<TraceItemModel>> SortedGroupedTracesDictionary { get; }
 
         protected ITraceModifierService TraceModifierService { get; }
 

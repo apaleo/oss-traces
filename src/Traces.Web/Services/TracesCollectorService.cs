@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -105,7 +104,8 @@ namespace Traces.Web.Services
                 Description = traceDto.Description.ValueOr(string.Empty),
                 Title = traceDto.Title,
                 DueDate = traceDto.DueDate.ToDateTimeUnspecified(),
-                State = traceDto.State
+                State = traceDto.State,
+                PropertyId = traceDto.PropertyId
             };
     }
 }
