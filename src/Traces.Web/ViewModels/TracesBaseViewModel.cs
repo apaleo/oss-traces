@@ -22,7 +22,6 @@ namespace Traces.Web.ViewModels
         {
             TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
             _toastService = Check.NotNull(toastService, nameof(toastService));
-            Traces = new List<TraceItemModel>();
             SortedGroupedTracesDictionary = new SortedDictionary<DateTime, List<TraceItemModel>>();
             OverdueTraces = new List<TraceItemModel>();
             EditTraceDialogViewModel = new EditTraceDialogViewModel();
@@ -44,7 +43,7 @@ namespace Traces.Web.ViewModels
         {
             await InitializeContextAsync();
             await LoadTracesAsync();
-            await LoadOverdueTraces();
+            await LoadOverdueTracesAsyc();
         }
 
         /// <summary>
@@ -61,25 +60,10 @@ namespace Traces.Web.ViewModels
 
             if (replaceResult.Success)
             {
-                replaceResult.Result.MatchSome(v =>
-                {
-                    foreach (var (_, traces) in SortedGroupedTracesDictionary)
-                    {
+                await LoadTracesAsync();
+                await LoadOverdueTracesAsyc();
 
-                    }
-                    var trace = Traces.FirstOrDefault(x => x.Id == replaceTraceItemModel.Id);
-
-                    if (trace == null)
-                    {
-                        return;
-                    }
-
-                    trace.Title = replaceTraceItemModel.Title;
-                    trace.Description = replaceTraceItemModel.Description;
-                    trace.DueDate = replaceTraceItemModel.DueDate;
-
-                    ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
-                });
+                ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
             }
             else
             {
@@ -191,7 +175,7 @@ namespace Traces.Web.ViewModels
 
         protected abstract Task LoadTracesAsync();
 
-        protected abstract Task LoadOverdueTraces();
+        protected abstract Task LoadOverdueTracesAsyc();
 
         protected void ShowToastMessage(bool success, string message)
         {
