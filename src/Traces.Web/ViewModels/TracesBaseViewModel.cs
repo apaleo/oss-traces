@@ -34,8 +34,6 @@ namespace Traces.Web.ViewModels
 
         public Modal EditTraceModalRef { get; set; }
 
-        public List<TraceItemModel> Traces { get; }
-
         public List<TraceItemModel> OverdueTraces { get; }
 
         public SortedDictionary<DateTime, List<TraceItemModel>> SortedGroupedTracesDictionary { get; }
@@ -65,6 +63,10 @@ namespace Traces.Web.ViewModels
             {
                 replaceResult.Result.MatchSome(v =>
                 {
+                    foreach (var (_, traces) in SortedGroupedTracesDictionary)
+                    {
+
+                    }
                     var trace = Traces.FirstOrDefault(x => x.Id == replaceTraceItemModel.Id);
 
                     if (trace == null)
@@ -102,14 +104,26 @@ namespace Traces.Web.ViewModels
             {
                 deleteResult.Result.MatchSome(v =>
                 {
-                    var trace = Traces.FirstOrDefault(t => t.Id == id);
-
-                    if (trace == null)
+                    TraceItemModel traceToDelete = null;
+                    var deleteKey = DateTime.MinValue;
+                    foreach (var (key, traces) in SortedGroupedTracesDictionary)
                     {
-                        return;
+                        var trace = traces.FirstOrDefault(t => t.Id == id);
+
+                        if (trace == null)
+                        {
+                            continue;
+                        }
+
+                        traceToDelete = trace;
+                        deleteKey = key;
+                        break;
                     }
 
-                    Traces.Remove(trace);
+                    if (traceToDelete != null)
+                    {
+                        SortedGroupedTracesDictionary[deleteKey].Remove(traceToDelete);
+                    }
 
                     ShowToastMessage(true, TextConstants.TraceDeletedSuccessfullyMessage);
                 });
@@ -130,14 +144,7 @@ namespace Traces.Web.ViewModels
 
             if (completeResult.Success)
             {
-                var trace = Traces.FirstOrDefault(t => t.Id == id);
-
-                if (trace == null)
-                {
-                    return;
-                }
-
-                Traces.Remove(trace);
+                await DeleteItemAsync(id);
 
                 ShowToastMessage(true, TextConstants.TraceMarkedAsCompletedMessage);
             }
@@ -197,6 +204,35 @@ namespace Traces.Web.ViewModels
             else
             {
                 _toastService.ShowError(message, header);
+            }
+        }
+
+        protected void AddTraceToDictionary(TraceItemModel trace)
+        {
+            if (SortedGroupedTracesDictionary.ContainsKey(trace.DueDate))
+            {
+                SortedGroupedTracesDictionary[trace.DueDate].Add(trace);
+            }
+            else
+            {
+                SortedGroupedTracesDictionary.Add(
+                    trace.DueDate,
+                    new List<TraceItemModel>
+                    {
+                        trace
+                    });
+            }
+        }
+
+        protected void LoadSortedDictionaryFromList(IReadOnlyList<TraceItemModel> traces)
+        {
+            SortedGroupedTracesDictionary.Clear();
+
+            var groupedTraces = traces.GroupBy(x => x.DueDate).ToList();
+
+            foreach (var group in groupedTraces)
+            {
+                SortedGroupedTracesDictionary.Add(group.Key, group.ToList());
             }
         }
     }

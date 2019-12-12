@@ -8,43 +8,54 @@
 
     <Button Color="Color.Primary" Clicked="@TracesReservationViewModel.ShowCreateTraceModal">@TextConstants.TracesAddButtonText</Button>
 
-    <div>
-        <h2>@TextConstants.UpcomingTracesText</h2>
-        @if (TracesReservationViewModel.Traces != null && TracesReservationViewModel.Traces.Any())
-        {
+    @if (TracesReservationViewModel.OverdueTraces != null && TracesReservationViewModel.OverdueTraces.Any())
+    {
+        <section class="pb-4">
             <Table>
                 <TableHeader>
-                        <TableRow>
-                            <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
-                            <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
-                            <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
-                            <TableHeaderCell>@TextConstants.TracesTableActionsText</TableHeaderCell>
-                        </TableRow>
+                    <TableRow>
+                        <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
+                        <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
+                        <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
+                        <TableHeaderCell>@TextConstants.TracesTablePropertyText</TableHeaderCell>
+                        <TableHeaderCell></TableHeaderCell>
+                    </TableRow>
                 </TableHeader>
-                <TableBody>
-                    @foreach (var trace in TracesReservationViewModel.Traces)
-                    {
-                        <TableRow>
-                            <TableRowCell>@trace.Title</TableRowCell>
-                            <TableRowCell>@trace.Description</TableRowCell>
-                            <TableRowCell>@trace.DueDate.ToShortDateString()</TableRowCell>
-                            <TableRowCell>
-                                <Buttons>
-                                    <Button Color="Color.Primary" Clicked="@(() => TracesReservationViewModel.CompleteTraceAsync(trace.Id))">Complete</Button>
-                                    <Button Color="Color.Secondary" Clicked="@(() => TracesReservationViewModel.ShowReplaceTraceModal(trace))">Edit</Button>
-                                    <Button Color="Color.Danger" Clicked="@(() => TracesReservationViewModel.DeleteItemAsync(trace.Id))">Delete</Button>
-                                </Buttons>
-                            </TableRowCell>
-                        </TableRow>
-                    }
-                </TableBody>
+                <TracesComponent
+                    Title="@TextConstants.OverdueTracesTitleText"
+                    Traces="@TracesReservationViewModel.OverdueTraces"
+                    IsPropertyVisible="true"
+                    IsDueDateVisible="true"
+                    OnCompleteClick="@TracesReservationViewModel.CompleteTraceAsync"
+                    OnDeleteClick="@TracesReservationViewModel.DeleteItemAsync"
+                    OnEditClick="@TracesReservationViewModel.ShowReplaceTraceModal"/>
             </Table>
-        }
-        else
-        {
-          <p>@TextConstants.UpcomingTracesEmptyText</p>
-        }
-    </div>
+        </section>
+    }
+
+    @if (TracesReservationViewModel.SortedGroupedTracesDictionary != null && TracesReservationViewModel.SortedGroupedTracesDictionary.Any())
+    {
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
+                    <TableHeaderCell></TableHeaderCell>
+                </TableRow>
+            </TableHeader>
+            @foreach (var (date, traces) in TracesReservationViewModel.SortedGroupedTracesDictionary)
+            {
+                <TracesComponent
+                Title="@date.ToShortDateString()"
+                Traces="@traces"
+                IsPropertyVisible="false"
+                IsDueDateVisible="false"
+                OnCompleteClick="@TracesReservationViewModel.CompleteTraceAsync"
+                OnDeleteClick="@TracesReservationViewModel.DeleteItemAsync"
+                OnEditClick="@TracesReservationViewModel.ShowReplaceTraceModal"/>
+            }
+        </Table>
+    }
 
     <Modal @ref="@TracesReservationViewModel.EditTraceModalRef">
             <ModalBackdrop />

@@ -35,12 +35,7 @@ namespace Traces.Web.ViewModels
             {
                 var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
 
-                var groupedTraces = traces.GroupBy(x => x.DueDate).ToList();
-
-                foreach (var group in groupedTraces)
-                {
-                    SortedGroupedTracesDictionary.Add(group.Key, group.ToList());
-                }
+                LoadSortedDictionaryFromList(traces);
             }
         }
 

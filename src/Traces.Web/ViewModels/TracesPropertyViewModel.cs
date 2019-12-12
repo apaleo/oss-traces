@@ -43,7 +43,7 @@ namespace Traces.Web.ViewModels
 
             if (createResult.Success)
             {
-                createResult.Result.MatchSome(Traces.Add);
+                createResult.Result.MatchSome(AddTraceToDictionary);
 
                 ShowToastMessage(true, TextConstants.TraceCreatedSuccessfullyMessage);
             }
@@ -70,10 +70,7 @@ namespace Traces.Web.ViewModels
             {
                 var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
 
-                foreach (var trace in traces)
-                {
-                    Traces.Add(trace);
-                }
+                LoadSortedDictionaryFromList(traces);
             }
         }
 
