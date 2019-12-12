@@ -6,31 +6,52 @@
 @if (TracesAccountViewModel.OverdueTraces != null && TracesAccountViewModel.OverdueTraces.Any())
 {
     <section class="pb-4">
-        <TracesComponent
-            Title="@TextConstants.OverdueTracesTitleText"
-            Traces="@TracesAccountViewModel.OverdueTraces"
-            IsPropertyVisible="true"
-            IsDueDateVisible="true"
-            OnCompleteClick="@TracesAccountViewModel.CompleteTraceAsync"
-            OnDeleteClick="@TracesAccountViewModel.DeleteItemAsync"
-            OnEditClick="@TracesAccountViewModel.ShowReplaceTraceModal"/>
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTablePropertyText</TableHeaderCell>
+                    <TableHeaderCell></TableHeaderCell>
+                </TableRow>
+            </TableHeader>
+            <TracesComponent
+                Title="@TextConstants.OverdueTracesTitleText"
+                Traces="@TracesAccountViewModel.OverdueTraces"
+                IsPropertyVisible="true"
+                IsDueDateVisible="true"
+                OnCompleteClick="@TracesAccountViewModel.CompleteTraceAsync"
+                OnDeleteClick="@TracesAccountViewModel.DeleteItemAsync"
+                OnEditClick="@TracesAccountViewModel.ShowReplaceTraceModal"/>
+        </Table>
     </section>
 }
 
 <div>
     @if (TracesAccountViewModel.SortedGroupedTracesDictionary != null && TracesAccountViewModel.SortedGroupedTracesDictionary.Any())
     {
-        foreach (var (date, traces) in TracesAccountViewModel.SortedGroupedTracesDictionary)
-        {
-            <TracesComponent
-            Title="@date.ToShortDateString()"
-            Traces="@traces"
-            IsPropertyVisible="true"
-            IsDueDateVisible="false"
-            OnCompleteClick="@TracesAccountViewModel.CompleteTraceAsync"
-            OnDeleteClick="@TracesAccountViewModel.DeleteItemAsync"
-            OnEditClick="@TracesAccountViewModel.ShowReplaceTraceModal"/>
-        }
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTablePropertyText</TableHeaderCell>
+                    <TableHeaderCell></TableHeaderCell>
+                </TableRow>
+            </TableHeader>
+            @foreach (var (date, traces) in TracesAccountViewModel.SortedGroupedTracesDictionary)
+            {
+                <TracesComponent
+                Title="@date.ToShortDateString()"
+                Traces="@traces"
+                IsPropertyVisible="true"
+                IsDueDateVisible="false"
+                OnCompleteClick="@TracesAccountViewModel.CompleteTraceAsync"
+                OnDeleteClick="@TracesAccountViewModel.DeleteItemAsync"
+                OnEditClick="@TracesAccountViewModel.ShowReplaceTraceModal"/>
+            }
+        </Table>
     }
 
     <Modal @ref="@TracesAccountViewModel.EditTraceModalRef">
@@ -49,7 +70,6 @@
 
 @code
 {
-
     protected override async Task OnInitializedAsync()
     {
         await TracesAccountViewModel.LoadAsync();
