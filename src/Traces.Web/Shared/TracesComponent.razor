@@ -21,7 +21,7 @@
                 }
                 <TableRowCell class="fit">
                     <div class="d-flex align-items-start">
-                        <Button class="mr-2" Color="Color.Primary" IsLoading="@IsLoading" Clicked="@(() => OnComplete(trace.Id))">
+                        <Button class="mr-2" Color="Color.Primary" IsLoading="@IsLoading" Clicked="@(() => OnComplete(trace))">
                             @TextConstants.TracesCompleteButtonText
                         </Button>
                         <Button class="mr-2" Color="Color.Secondary" IsLoading="@IsLoading" Clicked="@(() => OnEdit(trace))">
@@ -31,7 +31,7 @@
                             <DropdownToggle>
                             </DropdownToggle>
                             <DropdownMenu IsRightAligned="true">
-                                <DropdownItem class="text-danger" Clicked="@(() => OnDelete(trace.Id))">
+                                <DropdownItem class="text-danger" Clicked="@(() => OnDelete(trace))">
                                     @TextConstants.TracesDeleteButtonText
                                 </DropdownItem>
                             </DropdownMenu>
@@ -51,10 +51,10 @@
     public EventCallback<TraceItemModel> OnEditClick { get; set; }
 
     [Parameter]
-    public EventCallback<int> OnDeleteClick { get; set; }
+    public EventCallback<TraceItemModel> OnDeleteClick { get; set; }
 
     [Parameter]
-    public EventCallback<int> OnCompleteClick { get; set; }
+    public EventCallback<TraceItemModel> OnCompleteClick { get; set; }
 
     [Parameter]
     public string Title { get; set; }
@@ -68,11 +68,11 @@
     [Parameter]
     public bool IsDueDateVisible { get; set; }
 
-    private async Task OnComplete(int id)
+    private async Task OnComplete(TraceItemModel trace)
     {
         IsLoading = true;
 
-        await OnCompleteClick.InvokeAsync(id);
+        await OnCompleteClick.InvokeAsync(trace);
 
         IsLoading = false;
     }
@@ -82,11 +82,11 @@
         await OnEditClick.InvokeAsync(trace);
     }
 
-    private async Task OnDelete(int id)
+    private async Task OnDelete(TraceItemModel trace)
     {
         IsLoading = true;
 
-        await OnDeleteClick.InvokeAsync(id);
+        await OnDeleteClick.InvokeAsync(trace);
 
         IsLoading = false;
     }

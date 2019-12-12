@@ -80,37 +80,15 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        public async Task DeleteItemAsync(int id)
+        public async Task DeleteItemAsync(TraceItemModel trace)
         {
-            var deleteResult = await TraceModifierService.DeleteTraceAsync(id);
+            var deleteResult = await TraceModifierService.DeleteTraceAsync(trace.Id);
 
             if (deleteResult.Success)
             {
-                deleteResult.Result.MatchSome(v =>
-                {
-                    TraceItemModel traceToDelete = null;
-                    var deleteKey = DateTime.MinValue;
-                    foreach (var (key, traces) in SortedGroupedTracesDictionary)
-                    {
-                        var trace = traces.FirstOrDefault(t => t.Id == id);
+                RemoveTraceFromList(trace);
 
-                        if (trace == null)
-                        {
-                            continue;
-                        }
-
-                        traceToDelete = trace;
-                        deleteKey = key;
-                        break;
-                    }
-
-                    if (traceToDelete != null)
-                    {
-                        SortedGroupedTracesDictionary[deleteKey].Remove(traceToDelete);
-                    }
-
-                    ShowToastMessage(true, TextConstants.TraceDeletedSuccessfullyMessage);
-                });
+                ShowToastMessage(true, TextConstants.TraceDeletedSuccessfullyMessage);
             }
             else
             {
@@ -122,13 +100,13 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        public async Task CompleteTraceAsync(int id)
+        public async Task CompleteTraceAsync(TraceItemModel trace)
         {
-            var completeResult = await TraceModifierService.MarkTraceAsCompleteAsync(id);
+            var completeResult = await TraceModifierService.MarkTraceAsCompleteAsync(trace.Id);
 
             if (completeResult.Success)
             {
-                await DeleteItemAsync(id);
+                RemoveTraceFromList(trace);
 
                 ShowToastMessage(true, TextConstants.TraceMarkedAsCompletedMessage);
             }
@@ -217,6 +195,23 @@ namespace Traces.Web.ViewModels
             foreach (var group in groupedTraces)
             {
                 SortedGroupedTracesDictionary.Add(group.Key, group.ToList());
+            }
+        }
+
+        private void RemoveTraceFromList(TraceItemModel trace)
+        {
+            if (SortedGroupedTracesDictionary.ContainsKey(trace.DueDate))
+            {
+                SortedGroupedTracesDictionary[trace.DueDate].Remove(trace);
+
+                if (SortedGroupedTracesDictionary[trace.DueDate].Count == 0)
+                {
+                    SortedGroupedTracesDictionary.Remove(trace.DueDate);
+                }
+            }
+            else if (OverdueTraces.Contains(trace))
+            {
+                OverdueTraces.Remove(trace);
             }
         }
     }
