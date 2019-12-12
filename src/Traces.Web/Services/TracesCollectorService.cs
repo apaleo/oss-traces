@@ -33,7 +33,7 @@ namespace Traces.Web.Services
             }
         }
 
-        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsyn()
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsync()
         {
             try
             {

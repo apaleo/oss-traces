@@ -46,6 +46,7 @@ namespace Traces.Web.ViewModels
         {
             await InitializeContextAsync();
             await LoadTracesAsync();
+            await LoadOverdueTraces();
         }
 
         /// <summary>
@@ -182,6 +183,8 @@ namespace Traces.Web.ViewModels
         }
 
         protected abstract Task LoadTracesAsync();
+
+        protected abstract Task LoadOverdueTraces();
 
         protected void ShowToastMessage(bool success, string message)
         {

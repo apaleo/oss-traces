@@ -8,7 +8,7 @@ namespace Traces.Web.Services
     {
         Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesAsync();
 
-        Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsyn();
+        Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsync();
 
         Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesForPropertyAsync(string propertyIde);
 

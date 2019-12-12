@@ -77,6 +77,23 @@ namespace Traces.Web.ViewModels
             }
         }
 
+        protected override async Task LoadOverdueTraces()
+        {
+            var tracesResult = await _tracesCollectorService.GetOverdueTracesForPropertyAsync(_currentPropertyId);
+
+            if (tracesResult.Success)
+            {
+                OverdueTraces.Clear();
+
+                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                foreach (var trace in traces)
+                {
+                    OverdueTraces.Add(trace);
+                }
+            }
+        }
+
         private void LoadCurrentReservationId()
             => _currentPropertyId = ExtractQueryParameterFromUrl(ApaleoOneConstants.PropertyIdQueryParameter);
 

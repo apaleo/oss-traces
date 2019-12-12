@@ -43,5 +43,22 @@ namespace Traces.Web.ViewModels
                 }
             }
         }
+
+        protected override async Task LoadOverdueTraces()
+        {
+            var tracesResult = await _tracesCollectorService.GetOverdueTracesAsync();
+
+            if (tracesResult.Success)
+            {
+                OverdueTraces.Clear();
+
+                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                foreach (var trace in traces)
+                {
+                    OverdueTraces.Add(trace);
+                }
+            }
+        }
     }
 }
