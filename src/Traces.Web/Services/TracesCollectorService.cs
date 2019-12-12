@@ -25,22 +25,25 @@ namespace Traces.Web.Services
             {
                 var traceDtos = await _traceService.GetActiveTracesAsync();
 
-                var traceModels = TraceDtosToModels(traceDtos);
-
-                return new ResultModel<IReadOnlyList<TraceItemModel>>
-                {
-                    Success = true,
-                    Result = traceModels.Some()
-                };
+                return SuccessModelFromTraceDtoList(traceDtos);
             }
             catch (BusinessValidationException e)
             {
-                return new ResultModel<IReadOnlyList<TraceItemModel>>
-                {
-                    Success = false,
-                    Result = Option.None<IReadOnlyList<TraceItemModel>>(),
-                    ErrorMessage = e.Message.Some()
-                };
+                return FailModelWithErrorMessage(e.Message);
+            }
+        }
+
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsyn()
+        {
+            try
+            {
+                var overdueTraces = await _traceService.GetOverdueTracesAsync();
+
+                return SuccessModelFromTraceDtoList(overdueTraces);
+            }
+            catch (BusinessValidationException e)
+            {
+                return FailModelWithErrorMessage(e.Message);
             }
         }
 
@@ -48,24 +51,27 @@ namespace Traces.Web.Services
         {
             try
             {
-                var traceDtos = await _traceService.GetTracesForPropertyAsync(propertyId);
+                var traceDtos = await _traceService.GetActiveTracesForPropertyAsync(propertyId);
 
-                var traceModels = TraceDtosToModels(traceDtos);
-
-                return new ResultModel<IReadOnlyList<TraceItemModel>>
-                {
-                    Success = true,
-                    Result = traceModels.Some()
-                };
+                return SuccessModelFromTraceDtoList(traceDtos);
             }
             catch (BusinessValidationException e)
             {
-                return new ResultModel<IReadOnlyList<TraceItemModel>>
-                {
-                    Success = false,
-                    Result = Option.None<IReadOnlyList<TraceItemModel>>(),
-                    ErrorMessage = e.Message.Some()
-                };
+                return FailModelWithErrorMessage(e.Message);
+            }
+        }
+
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesForPropertyAsync(string propertyId)
+        {
+            try
+            {
+                var overdueTraces = await _traceService.GetOverdueTracesForPropertyAsync(propertyId);
+
+                return SuccessModelFromTraceDtoList(overdueTraces);
+            }
+            catch (BusinessValidationException e)
+            {
+                return FailModelWithErrorMessage(e.Message);
             }
         }
 
@@ -73,31 +79,50 @@ namespace Traces.Web.Services
         {
             try
             {
-                var traceDtos = await _traceService.GetTracesForReservationAsync(reservationId);
+                var traceDtos = await _traceService.GetActiveTracesForReservationAsync(reservationId);
 
-                var traceModels = TraceDtosToModels(traceDtos);
-
-                return new ResultModel<IReadOnlyList<TraceItemModel>>
-                {
-                    Success = true,
-                    Result = traceModels.Some()
-                };
+                return SuccessModelFromTraceDtoList(traceDtos);
             }
             catch (BusinessValidationException e)
             {
-                return new ResultModel<IReadOnlyList<TraceItemModel>>
-                {
-                    Success = false,
-                    Result = Option.None<IReadOnlyList<TraceItemModel>>(),
-                    ErrorMessage = e.Message.Some()
-                };
+                return FailModelWithErrorMessage(e.Message);
             }
         }
 
-        private IReadOnlyList<TraceItemModel> TraceDtosToModels(IReadOnlyList<TraceDto> traceDtos) =>
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesForReservationAsync(string reservationId)
+        {
+            try
+            {
+                var overdueTraces = await _traceService.GetOverdueTracesForReservationAsync(reservationId);
+
+                return SuccessModelFromTraceDtoList(overdueTraces);
+            }
+            catch (BusinessValidationException e)
+            {
+                return FailModelWithErrorMessage(e.Message);
+            }
+        }
+
+        private static ResultModel<IReadOnlyList<TraceItemModel>> SuccessModelFromTraceDtoList(
+            IReadOnlyList<TraceDto> traceDtoList)
+            => new ResultModel<IReadOnlyList<TraceItemModel>>
+            {
+                Success = true,
+                Result = TraceDtosToModels(traceDtoList).Some()
+            };
+
+        private static ResultModel<IReadOnlyList<TraceItemModel>> FailModelWithErrorMessage(string errorMessage)
+            => new ResultModel<IReadOnlyList<TraceItemModel>>
+            {
+                Success = false,
+                Result = Option.None<IReadOnlyList<TraceItemModel>>(),
+                ErrorMessage = errorMessage.SomeNotNull()
+            };
+
+        private static IReadOnlyList<TraceItemModel> TraceDtosToModels(IReadOnlyList<TraceDto> traceDtos) =>
             traceDtos.Select(TraceDtoToModel).ToList();
 
-        private TraceItemModel TraceDtoToModel(TraceDto traceDto)
+        private static TraceItemModel TraceDtoToModel(TraceDto traceDto)
             => new TraceItemModel
             {
                 Id = traceDto.Id,
@@ -105,7 +130,8 @@ namespace Traces.Web.Services
                 Title = traceDto.Title,
                 DueDate = traceDto.DueDate.ToDateTimeUnspecified(),
                 State = traceDto.State,
-                PropertyId = traceDto.PropertyId
+                PropertyId = traceDto.PropertyId,
+                ReservationId = traceDto.ReservationId.ValueOr(string.Empty)
             };
     }
 }

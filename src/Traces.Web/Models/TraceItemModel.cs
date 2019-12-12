@@ -16,5 +16,7 @@ namespace Traces.Web.Models
         public DateTime DueDate { get; set; }
 
         public string PropertyId { get; set; }
+
+        public string ReservationId { get; set; }
     }
 }

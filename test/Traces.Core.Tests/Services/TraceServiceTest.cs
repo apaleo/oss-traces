@@ -257,7 +257,7 @@ namespace Traces.Core.Tests.Services
                     testActiveTrace
                 });
 
-            var result = await _traceService.GetTracesForPropertyAsync(TestActivePropertyId);
+            var result = await _traceService.GetActiveTracesForPropertyAsync(TestActivePropertyId);
 
             result.Should().NotBeEmpty();
             result.Should().HaveCount(1);
@@ -292,7 +292,7 @@ namespace Traces.Core.Tests.Services
                     testCompletedTrace
                 });
 
-            var result = await _traceService.GetTracesForReservationAsync(TestCompletedReservationId);
+            var result = await _traceService.GetActiveTracesForReservationAsync(TestCompletedReservationId);
 
             result.Should().HaveCount(1);
 
