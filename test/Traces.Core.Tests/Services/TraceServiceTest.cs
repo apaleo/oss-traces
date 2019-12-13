@@ -390,7 +390,8 @@ namespace Traces.Core.Tests.Services
             {
                 Description = TestActiveTraceDescription.Some(),
                 Title = TestActiveTraceTitle,
-                DueDate = _testActiveTraceDueDate
+                DueDate = _testActiveTraceDueDate,
+                PropertyId = TestActivePropertyId
             };
 
             _traceRepositoryMock.Setup(x => x.Insert(
@@ -398,14 +399,20 @@ namespace Traces.Core.Tests.Services
                     t.Description == TestActiveTraceDescription &&
                     t.Title == TestActiveTraceTitle &&
                     t.State == TraceStateEnum.Active &&
-                    t.DueDate == _testActiveTraceDueDate)));
+                    t.DueDate == _testActiveTraceDueDate &&
+                    t.PropertyId == TestActivePropertyId)));
 
             _traceRepositoryMock.Setup(x => x.SaveAsync())
                 .Returns(Task.CompletedTask);
 
             var result = await _traceService.CreateTraceAsync(createTraceDto);
 
-            result.Should().Be(0);
+            result.Id.Should().Be(0);
+            result.Title.Should().Be(TestActiveTraceTitle);
+            result.Description.ValueOrFailure().Should().Be(TestActiveTraceDescription);
+            result.DueDate.Should().Be(_testActiveTraceDueDate);
+            result.PropertyId.Should().Be(TestActivePropertyId);
+            result.ReservationId.HasValue.Should().BeFalse();
         }
 
         [Fact]

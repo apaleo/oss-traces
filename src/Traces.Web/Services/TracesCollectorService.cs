@@ -8,6 +8,7 @@ using Traces.Common.Utils;
 using Traces.Core.Models;
 using Traces.Core.Services;
 using Traces.Web.Models;
+using Traces.Web.Utils;
 
 namespace Traces.Web.Services
 {
@@ -121,18 +122,6 @@ namespace Traces.Web.Services
             };
 
         private static IReadOnlyList<TraceItemModel> TraceDtosToModels(IReadOnlyList<TraceDto> traceDtos) =>
-            traceDtos.Select(TraceDtoToModel).ToList();
-
-        private static TraceItemModel TraceDtoToModel(TraceDto traceDto)
-            => new TraceItemModel
-            {
-                Id = traceDto.Id,
-                Description = traceDto.Description.ValueOr(string.Empty),
-                Title = traceDto.Title,
-                DueDate = traceDto.DueDate.ToDateTimeUnspecified(),
-                State = traceDto.State,
-                PropertyId = traceDto.PropertyId,
-                ReservationId = traceDto.ReservationId.ValueOr(string.Empty)
-            };
+            traceDtos.Select(t => t.ConvertToTraceItemModel()).ToList();
     }
 }

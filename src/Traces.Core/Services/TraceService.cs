@@ -147,7 +147,7 @@ namespace Traces.Core.Services
             return TraceToDto(trace).Some();
         }
 
-        public async Task<int> CreateTraceAsync(CreateTraceDto createTraceDto)
+        public async Task<TraceDto> CreateTraceAsync(CreateTraceDto createTraceDto)
         {
             Check.NotNull(createTraceDto, nameof(createTraceDto));
 
@@ -171,7 +171,7 @@ namespace Traces.Core.Services
 
             await _traceRepository.SaveAsync();
 
-            return trace.Id;
+            return TraceToDto(trace);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Traces.Core.Services
         /// </summary>
         /// <param name="createTraceDto">The dto with the information to create the trace</param>
         /// <returns>Id of the new trace</returns>
-        public async Task<int> CreateTraceFromReservationAsync(CreateTraceDto createTraceDto)
+        public async Task<TraceDto> CreateTraceFromReservationAsync(CreateTraceDto createTraceDto)
         {
             var reservationId = createTraceDto.ReservationId.Match(
                 v => v,

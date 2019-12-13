@@ -24,9 +24,9 @@ namespace Traces.Core.Services
 
         Task<Option<TraceDto>> GetTraceAsync(int id);
 
-        Task<int> CreateTraceAsync(CreateTraceDto createTraceDto);
+        Task<TraceDto> CreateTraceAsync(CreateTraceDto createTraceDto);
 
-        Task<int> CreateTraceFromReservationAsync(CreateTraceDto createTraceDto);
+        Task<TraceDto> CreateTraceFromReservationAsync(CreateTraceDto createTraceDto);
 
         Task<bool> ReplaceTraceAsync(int id, ReplaceTraceDto replaceTraceDto);
 
