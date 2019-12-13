@@ -62,15 +62,49 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        protected override async Task LoadTracesAsync()
+        public override async Task LoadNextDaysAsync()
         {
-            var tracesResult = await _tracesCollectorService.GetTracesForPropertyAsync(_currentPropertyId);
+            var loadFromDate = CurrentToDate.AddDays(1);
+            var loadUntilDate = CurrentToDate.AddDays(CurrentDayIncrease);
+
+            var tracesResult = await _tracesCollectorService.GetTracesForPropertyAsync(_currentPropertyId, loadFromDate, loadUntilDate);
+
+            if (tracesResult.Success)
+            {
+                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                foreach (var trace in traces)
+                {
+                    AddTraceToDictionary(trace);
+                }
+
+                CurrentToDate = loadUntilDate;
+                CurrentDayIncrease = 7;
+
+                UpdateLoadedUntilText();
+            }
+            else
+            {
+                var errorMessage = tracesResult.ErrorMessage.Match(
+                    v => v,
+                    () => throw new NotImplementedException());
+
+                ShowToastMessage(false, errorMessage);
+            }
+        }
+
+        protected override async Task LoadTracesAsync(DateTime from, DateTime to)
+        {
+            var tracesResult = await _tracesCollectorService.GetTracesForPropertyAsync(_currentPropertyId, from, to);
 
             if (tracesResult.Success)
             {
                 var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
 
                 LoadSortedDictionaryFromList(traces);
+
+                CurrentFromDate = from;
+                CurrentToDate = to;
             }
         }
 

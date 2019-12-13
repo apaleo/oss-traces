@@ -48,7 +48,9 @@ namespace Traces.Common.Constants
 
         public const string TracesTablePropertyText = "Property";
 
-        public const string TracesTableActionsText = "Actions";
+        public const string TracesLoadedUntilTextFormat = "Tasks loaded until {0}";
+
+        public const string TracesLoadMoreButtonTextFormat = "Load tasks for the next {0} days";
 
         public const string TracesCompleteButtonText = "Mark as complete";
 
@@ -79,5 +81,8 @@ namespace Traces.Common.Constants
             "There was an issue creating this trace. Unfortunately there was an issue fetching the data from the apaleo services.";
 
         public const string NoReservationIdProvidedErrorMessage = "There was no reservationId provided while trying to create a trace from the reservation flow";
+
+        public const string DateIntervalErrorMessage =
+            "The provided date interval is invalid. The end of the interval must be greater than the beginning";
     }
 }

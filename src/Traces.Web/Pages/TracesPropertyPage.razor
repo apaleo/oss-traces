@@ -55,6 +55,11 @@
         </Table>
     }
 
+    <section>
+        <p>@TracesPropertyViewModel.LoadedUntilDateMessage</p>
+        <Button Color="Color.Primary" Clicked="@TracesPropertyViewModel.LoadNextDaysAsync">@string.Format(TextConstants.TracesLoadMoreButtonTextFormat, TracesPropertyViewModel.CurrentDayIncrease)</Button>
+    </section>
+
     <Modal @ref="@TracesPropertyViewModel.EditTraceModalRef">
         <ModalBackdrop />
         <ModalContent IsCentered="true" Size="ModalSize.Large">

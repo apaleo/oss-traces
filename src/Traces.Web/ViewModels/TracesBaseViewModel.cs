@@ -25,6 +25,7 @@ namespace Traces.Web.ViewModels
             SortedGroupedTracesDictionary = new SortedDictionary<DateTime, List<TraceItemModel>>();
             OverdueTraces = new List<TraceItemModel>();
             EditTraceDialogViewModel = new EditTraceDialogViewModel();
+            CurrentDayIncrease = 5;
         }
 
         public EditTraceDialogViewModel EditTraceDialogViewModel { get; }
@@ -37,13 +38,30 @@ namespace Traces.Web.ViewModels
 
         public SortedDictionary<DateTime, List<TraceItemModel>> SortedGroupedTracesDictionary { get; }
 
+        public string LoadedUntilDateMessage { get; private set; }
+
+        public string LoadMoreDaysText { get; private set; }
+
+        public int CurrentDayIncrease { get; protected set; }
+
         protected ITraceModifierService TraceModifierService { get; }
+
+        protected DateTime CurrentFromDate { get; set; }
+
+        protected DateTime CurrentToDate { get; set; }
 
         public async Task LoadAsync()
         {
             await InitializeContextAsync();
-            await LoadTracesAsync();
+
+            // On initialization we just load from today to tomorrow
+            var from = DateTime.Today;
+            var to = DateTime.Today.AddDays(1);
+
+            await LoadTracesAsync(from, to);
             await LoadOverdueTracesAsyc();
+
+            UpdateLoadedUntilText();
         }
 
         /// <summary>
@@ -60,7 +78,7 @@ namespace Traces.Web.ViewModels
 
             if (replaceResult.Success)
             {
-                await LoadTracesAsync();
+                await LoadTracesAsync(CurrentFromDate, CurrentToDate);
                 await LoadOverdueTracesAsyc();
 
                 ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
@@ -151,7 +169,9 @@ namespace Traces.Web.ViewModels
             EditTraceModalRef?.Hide();
         }
 
-        protected abstract Task LoadTracesAsync();
+        public abstract Task LoadNextDaysAsync();
+
+        protected abstract Task LoadTracesAsync(DateTime from, DateTime to);
 
         protected abstract Task LoadOverdueTracesAsyc();
 
@@ -196,6 +216,14 @@ namespace Traces.Web.ViewModels
             {
                 SortedGroupedTracesDictionary.Add(group.Key, group.ToList());
             }
+        }
+
+        protected void UpdateLoadedUntilText()
+        {
+            LoadedUntilDateMessage =
+                string.Format(TextConstants.TracesLoadedUntilTextFormat, CurrentToDate.ToShortDateString());
+
+            LoadMoreDaysText = string.Format(TextConstants.TracesLoadMoreButtonTextFormat, CurrentDayIncrease);
         }
 
         private void RemoveTraceFromList(TraceItemModel trace)

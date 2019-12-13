@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Optional;
@@ -9,11 +10,11 @@ namespace Traces.Core.Services
     {
         Task<IReadOnlyList<TraceDto>> GetTracesAsync();
 
-        Task<IReadOnlyList<TraceDto>> GetActiveTracesAsync();
+        Task<IReadOnlyList<TraceDto>> GetActiveTracesAsync(DateTime from, DateTime to);
 
-        Task<IReadOnlyList<TraceDto>> GetActiveTracesForPropertyAsync(string propertyId);
+        Task<IReadOnlyList<TraceDto>> GetActiveTracesForPropertyAsync(string propertyId, DateTime from, DateTime to);
 
-        Task<IReadOnlyList<TraceDto>> GetActiveTracesForReservationAsync(string reservationId);
+        Task<IReadOnlyList<TraceDto>> GetActiveTracesForReservationAsync(string reservationId, DateTime from, DateTime to);
 
         Task<IReadOnlyList<TraceDto>> GetOverdueTracesAsync();
 

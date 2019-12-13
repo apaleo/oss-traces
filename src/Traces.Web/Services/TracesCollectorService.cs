@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,11 +20,11 @@ namespace Traces.Web.Services
             _traceService = Check.NotNull(traceService, nameof(traceService));
         }
 
-        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesAsync()
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesAsync(DateTime from, DateTime to)
         {
             try
             {
-                var traceDtos = await _traceService.GetActiveTracesAsync();
+                var traceDtos = await _traceService.GetActiveTracesAsync(from, to);
 
                 return SuccessModelFromTraceDtoList(traceDtos);
             }
@@ -47,11 +48,11 @@ namespace Traces.Web.Services
             }
         }
 
-        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesForPropertyAsync(string propertyId)
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesForPropertyAsync(string propertyId, DateTime from, DateTime to)
         {
             try
             {
-                var traceDtos = await _traceService.GetActiveTracesForPropertyAsync(propertyId);
+                var traceDtos = await _traceService.GetActiveTracesForPropertyAsync(propertyId, from, to);
 
                 return SuccessModelFromTraceDtoList(traceDtos);
             }
@@ -75,11 +76,11 @@ namespace Traces.Web.Services
             }
         }
 
-        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesForReservationAsync(string reservationId)
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesForReservationAsync(string reservationId, DateTime from, DateTime to)
         {
             try
             {
-                var traceDtos = await _traceService.GetActiveTracesForReservationAsync(reservationId);
+                var traceDtos = await _traceService.GetActiveTracesForReservationAsync(reservationId, from, to);
 
                 return SuccessModelFromTraceDtoList(traceDtos);
             }
