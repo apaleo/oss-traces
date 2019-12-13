@@ -22,8 +22,10 @@ namespace Traces.Web.ViewModels
         {
             TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
             _toastService = Check.NotNull(toastService, nameof(toastService));
-            Traces = new List<TraceItemModel>();
+            SortedGroupedTracesDictionary = new SortedDictionary<DateTime, List<TraceItemModel>>();
+            OverdueTraces = new List<TraceItemModel>();
             EditTraceDialogViewModel = new EditTraceDialogViewModel();
+            CurrentDayIncrease = 5;
         }
 
         public EditTraceDialogViewModel EditTraceDialogViewModel { get; }
@@ -32,14 +34,34 @@ namespace Traces.Web.ViewModels
 
         public Modal EditTraceModalRef { get; set; }
 
-        public List<TraceItemModel> Traces { get; }
+        public List<TraceItemModel> OverdueTraces { get; }
+
+        public SortedDictionary<DateTime, List<TraceItemModel>> SortedGroupedTracesDictionary { get; }
+
+        public string LoadedUntilDateMessage { get; private set; }
+
+        public string LoadMoreDaysText { get; private set; }
+
+        public int CurrentDayIncrease { get; protected set; }
 
         protected ITraceModifierService TraceModifierService { get; }
+
+        protected DateTime CurrentFromDate { get; set; }
+
+        protected DateTime CurrentToDate { get; set; }
 
         public async Task LoadAsync()
         {
             await InitializeContextAsync();
-            await LoadTracesAsync();
+
+            // On initialization we just load from today to tomorrow
+            var from = DateTime.Today;
+            var to = DateTime.Today.AddDays(1);
+
+            await LoadTracesAsync(from, to);
+            await LoadOverdueTracesAsyc();
+
+            UpdateLoadedUntilText();
         }
 
         /// <summary>
@@ -56,21 +78,10 @@ namespace Traces.Web.ViewModels
 
             if (replaceResult.Success)
             {
-                replaceResult.Result.MatchSome(v =>
-                {
-                    var trace = Traces.FirstOrDefault(x => x.Id == replaceTraceItemModel.Id);
+                await LoadTracesAsync(CurrentFromDate, CurrentToDate);
+                await LoadOverdueTracesAsyc();
 
-                    if (trace == null)
-                    {
-                        return;
-                    }
-
-                    trace.Title = replaceTraceItemModel.Title;
-                    trace.Description = replaceTraceItemModel.Description;
-                    trace.DueDate = replaceTraceItemModel.DueDate;
-
-                    ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
-                });
+                ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
             }
             else
             {
@@ -87,25 +98,15 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        public async Task DeleteItemAsync(int id)
+        public async Task DeleteItemAsync(TraceItemModel trace)
         {
-            var deleteResult = await TraceModifierService.DeleteTraceAsync(id);
+            var deleteResult = await TraceModifierService.DeleteTraceAsync(trace.Id);
 
             if (deleteResult.Success)
             {
-                deleteResult.Result.MatchSome(v =>
-                {
-                    var trace = Traces.FirstOrDefault(t => t.Id == id);
+                RemoveTraceFromList(trace);
 
-                    if (trace == null)
-                    {
-                        return;
-                    }
-
-                    Traces.Remove(trace);
-
-                    ShowToastMessage(true, TextConstants.TraceDeletedSuccessfullyMessage);
-                });
+                ShowToastMessage(true, TextConstants.TraceDeletedSuccessfullyMessage);
             }
             else
             {
@@ -117,20 +118,13 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        public async Task CompleteTraceAsync(int id)
+        public async Task CompleteTraceAsync(TraceItemModel trace)
         {
-            var completeResult = await TraceModifierService.MarkTraceAsCompleteAsync(id);
+            var completeResult = await TraceModifierService.MarkTraceAsCompleteAsync(trace.Id);
 
             if (completeResult.Success)
             {
-                var trace = Traces.FirstOrDefault(t => t.Id == id);
-
-                if (trace == null)
-                {
-                    return;
-                }
-
-                Traces.Remove(trace);
+                RemoveTraceFromList(trace);
 
                 ShowToastMessage(true, TextConstants.TraceMarkedAsCompletedMessage);
             }
@@ -175,7 +169,11 @@ namespace Traces.Web.ViewModels
             EditTraceModalRef?.Hide();
         }
 
-        protected abstract Task LoadTracesAsync();
+        public abstract Task LoadNextDaysAsync();
+
+        protected abstract Task LoadTracesAsync(DateTime from, DateTime to);
+
+        protected abstract Task LoadOverdueTracesAsyc();
 
         protected void ShowToastMessage(bool success, string message)
         {
@@ -188,6 +186,60 @@ namespace Traces.Web.ViewModels
             else
             {
                 _toastService.ShowError(message, header);
+            }
+        }
+
+        protected void AddTraceToDictionary(TraceItemModel trace)
+        {
+            if (SortedGroupedTracesDictionary.ContainsKey(trace.DueDate))
+            {
+                SortedGroupedTracesDictionary[trace.DueDate].Add(trace);
+            }
+            else
+            {
+                SortedGroupedTracesDictionary.Add(
+                    trace.DueDate,
+                    new List<TraceItemModel>
+                    {
+                        trace
+                    });
+            }
+        }
+
+        protected void LoadSortedDictionaryFromList(IReadOnlyList<TraceItemModel> traces)
+        {
+            SortedGroupedTracesDictionary.Clear();
+
+            var groupedTraces = traces.GroupBy(x => x.DueDate).ToList();
+
+            foreach (var group in groupedTraces)
+            {
+                SortedGroupedTracesDictionary.Add(group.Key, group.ToList());
+            }
+        }
+
+        protected void UpdateLoadedUntilText()
+        {
+            LoadedUntilDateMessage =
+                string.Format(TextConstants.TracesLoadedUntilTextFormat, CurrentToDate.ToShortDateString());
+
+            LoadMoreDaysText = string.Format(TextConstants.TracesLoadMoreButtonTextFormat, CurrentDayIncrease);
+        }
+
+        private void RemoveTraceFromList(TraceItemModel trace)
+        {
+            if (SortedGroupedTracesDictionary.ContainsKey(trace.DueDate))
+            {
+                SortedGroupedTracesDictionary[trace.DueDate].Remove(trace);
+
+                if (SortedGroupedTracesDictionary[trace.DueDate].Count == 0)
+                {
+                    SortedGroupedTracesDictionary.Remove(trace.DueDate);
+                }
+            }
+            else if (OverdueTraces.Contains(trace))
+            {
+                OverdueTraces.Remove(trace);
             }
         }
     }

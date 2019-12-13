@@ -32,9 +32,13 @@ namespace Traces.Common.Constants
 
         public const string UpcomingTracesText = "Upcoming tasks";
 
+        public const string OverdueTracesTitleText = "Overdue";
+
         public const string TracesAddButtonText = "Add";
 
         public const string UpcomingTracesEmptyText = "There are currently no upcoming tasks. You can create new ones with the Add button.";
+
+        public const string TracesDeleteButtonText = "Delete";
 
         public const string TracesTableTitleText = "Title";
 
@@ -42,13 +46,22 @@ namespace Traces.Common.Constants
 
         public const string TracesTableDueDateText = "Due date";
 
-        public const string TracesTableActionsText = "Actions";
+        public const string TracesTablePropertyText = "Property";
+
+        public const string TracesLoadedUntilTextFormat = "Tasks loaded until {0}";
+
+        public const string TracesLoadMoreButtonTextFormat = "Load tasks for the next {0} days";
+
+        public const string TracesCompleteButtonText = "Mark as complete";
+
+        public const string TracesEditButtonText = "Edit";
 
         public const string ApaleoSetupLoadingText = "Loading...";
 
         public const string ApaleoSetupLoadingTitle = "Setting things up...";
 
-        public const string ApaleoSetupLoadingMessage = "We are getting everything ready for you. This will only take a few seconds...";
+        public const string ApaleoSetupLoadingMessage =
+            "We are getting everything ready for you. This will only take a few seconds...";
 
         public const string ApaleoSetupErrorTitle = "Oops... That should not have happened.";
 
@@ -68,5 +81,8 @@ namespace Traces.Common.Constants
             "There was an issue creating this trace. Unfortunately there was an issue fetching the data from the apaleo services.";
 
         public const string NoReservationIdProvidedErrorMessage = "There was no reservationId provided while trying to create a trace from the reservation flow";
+
+        public const string DateIntervalErrorMessage =
+            "The provided date interval is invalid. The end of the interval must be greater than the beginning";
     }
 }

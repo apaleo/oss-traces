@@ -8,6 +8,7 @@ using Traces.Common.Utils;
 using Traces.Core.Models;
 using Traces.Core.Services;
 using Traces.Web.Models;
+using Traces.Web.Utils;
 
 namespace Traces.Web.Services
 {
@@ -20,92 +21,107 @@ namespace Traces.Web.Services
             _traceService = Check.NotNull(traceService, nameof(traceService));
         }
 
-        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesAsync()
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesAsync(DateTime from, DateTime to)
         {
             try
             {
-                var traceDtos = await _traceService.GetActiveTracesAsync();
+                var traceDtos = await _traceService.GetActiveTracesAsync(from, to);
 
-                var traceModels = TraceDtosToModels(traceDtos);
-
-                return new ResultModel<IReadOnlyList<TraceItemModel>>
-                {
-                    Success = true,
-                    Result = traceModels.Some()
-                };
+                return SuccessModelFromTraceDtoList(traceDtos);
             }
             catch (BusinessValidationException e)
             {
-                return new ResultModel<IReadOnlyList<TraceItemModel>>
-                {
-                    Success = false,
-                    Result = Option.None<IReadOnlyList<TraceItemModel>>(),
-                    ErrorMessage = e.Message.Some()
-                };
+                return FailModelWithErrorMessage(e.Message);
             }
         }
 
-        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesForPropertyAsync(string propertyId)
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsync()
         {
             try
             {
-                var traceDtos = await _traceService.GetTracesForPropertyAsync(propertyId);
+                var overdueTraces = await _traceService.GetOverdueTracesAsync();
 
-                var traceModels = TraceDtosToModels(traceDtos);
-
-                return new ResultModel<IReadOnlyList<TraceItemModel>>
-                {
-                    Success = true,
-                    Result = traceModels.Some()
-                };
+                return SuccessModelFromTraceDtoList(overdueTraces);
             }
             catch (BusinessValidationException e)
             {
-                return new ResultModel<IReadOnlyList<TraceItemModel>>
-                {
-                    Success = false,
-                    Result = Option.None<IReadOnlyList<TraceItemModel>>(),
-                    ErrorMessage = e.Message.Some()
-                };
+                return FailModelWithErrorMessage(e.Message);
             }
         }
 
-        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesForReservationAsync(string reservationId)
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesForPropertyAsync(string propertyId, DateTime from, DateTime to)
         {
             try
             {
-                var traceDtos = await _traceService.GetTracesForReservationAsync(reservationId);
+                var traceDtos = await _traceService.GetActiveTracesForPropertyAsync(propertyId, from, to);
 
-                var traceModels = TraceDtosToModels(traceDtos);
-
-                return new ResultModel<IReadOnlyList<TraceItemModel>>
-                {
-                    Success = true,
-                    Result = traceModels.Some()
-                };
+                return SuccessModelFromTraceDtoList(traceDtos);
             }
             catch (BusinessValidationException e)
             {
-                return new ResultModel<IReadOnlyList<TraceItemModel>>
-                {
-                    Success = false,
-                    Result = Option.None<IReadOnlyList<TraceItemModel>>(),
-                    ErrorMessage = e.Message.Some()
-                };
+                return FailModelWithErrorMessage(e.Message);
             }
         }
 
-        private IReadOnlyList<TraceItemModel> TraceDtosToModels(IReadOnlyList<TraceDto> traceDtos) =>
-            traceDtos.Select(TraceDtoToModel).ToList();
-
-        private TraceItemModel TraceDtoToModel(TraceDto traceDto)
-            => new TraceItemModel
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesForPropertyAsync(string propertyId)
+        {
+            try
             {
-                Id = traceDto.Id,
-                Description = traceDto.Description.ValueOr(string.Empty),
-                Title = traceDto.Title,
-                DueDate = traceDto.DueDate.ToDateTimeUnspecified(),
-                State = traceDto.State
+                var overdueTraces = await _traceService.GetOverdueTracesForPropertyAsync(propertyId);
+
+                return SuccessModelFromTraceDtoList(overdueTraces);
+            }
+            catch (BusinessValidationException e)
+            {
+                return FailModelWithErrorMessage(e.Message);
+            }
+        }
+
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesForReservationAsync(string reservationId, DateTime from, DateTime to)
+        {
+            try
+            {
+                var traceDtos = await _traceService.GetActiveTracesForReservationAsync(reservationId, from, to);
+
+                return SuccessModelFromTraceDtoList(traceDtos);
+            }
+            catch (BusinessValidationException e)
+            {
+                return FailModelWithErrorMessage(e.Message);
+            }
+        }
+
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesForReservationAsync(string reservationId)
+        {
+            try
+            {
+                var overdueTraces = await _traceService.GetOverdueTracesForReservationAsync(reservationId);
+
+                return SuccessModelFromTraceDtoList(overdueTraces);
+            }
+            catch (BusinessValidationException e)
+            {
+                return FailModelWithErrorMessage(e.Message);
+            }
+        }
+
+        private static ResultModel<IReadOnlyList<TraceItemModel>> SuccessModelFromTraceDtoList(
+            IReadOnlyList<TraceDto> traceDtoList)
+            => new ResultModel<IReadOnlyList<TraceItemModel>>
+            {
+                Success = true,
+                Result = TraceDtosToModels(traceDtoList).Some()
             };
+
+        private static ResultModel<IReadOnlyList<TraceItemModel>> FailModelWithErrorMessage(string errorMessage)
+            => new ResultModel<IReadOnlyList<TraceItemModel>>
+            {
+                Success = false,
+                Result = Option.None<IReadOnlyList<TraceItemModel>>(),
+                ErrorMessage = errorMessage.SomeNotNull()
+            };
+
+        private static IReadOnlyList<TraceItemModel> TraceDtosToModels(IReadOnlyList<TraceDto> traceDtos) =>
+            traceDtos.Select(t => t.ConvertToTraceItemModel()).ToList();
     }
 }

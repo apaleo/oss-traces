@@ -43,7 +43,7 @@ namespace Traces.Web.ViewModels
 
             if (createResult.Success)
             {
-                createResult.Result.MatchSome(Traces.Add);
+                createResult.Result.MatchSome(AddTraceToDictionary);
 
                 ShowToastMessage(true, TextConstants.TraceCreatedSuccessfullyMessage);
             }
@@ -62,9 +62,16 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        protected override async Task LoadTracesAsync()
+        public override async Task LoadNextDaysAsync()
         {
-            var tracesResult = await _tracesCollectorService.GetTracesForReservationAsync(_currentReservationId);
+            var loadFromDate = CurrentToDate.AddDays(1);
+            var loadToDate = CurrentToDate.AddDays(CurrentDayIncrease);
+
+            var tracesResult =
+                await _tracesCollectorService.GetTracesForReservationAsync(
+                    _currentReservationId,
+                    loadFromDate,
+                    loadToDate);
 
             if (tracesResult.Success)
             {
@@ -72,8 +79,69 @@ namespace Traces.Web.ViewModels
 
                 foreach (var trace in traces)
                 {
-                    Traces.Add(trace);
+                    AddTraceToDictionary(trace);
                 }
+
+                CurrentToDate = loadToDate;
+                CurrentDayIncrease = 7;
+
+                UpdateLoadedUntilText();
+            }
+            else
+            {
+                var errorMessage = tracesResult.ErrorMessage.Match(
+                    v => v,
+                    () => throw new NotImplementedException());
+
+                ShowToastMessage(false, errorMessage);
+            }
+        }
+
+        protected override async Task LoadTracesAsync(DateTime from, DateTime to)
+        {
+            var tracesResult = await _tracesCollectorService.GetTracesForReservationAsync(_currentReservationId, from, to);
+
+            if (tracesResult.Success)
+            {
+                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                LoadSortedDictionaryFromList(traces);
+
+                CurrentFromDate = from;
+                CurrentToDate = to;
+            }
+            else
+            {
+                var errorMessage = tracesResult.ErrorMessage.Match(
+                    v => v,
+                    () => throw new NotImplementedException());
+
+                ShowToastMessage(false, errorMessage);
+            }
+        }
+
+        protected override async Task LoadOverdueTracesAsyc()
+        {
+            var tracesResult = await _tracesCollectorService.GetOverdueTracesForReservationAsync(_currentReservationId);
+
+            if (tracesResult.Success)
+            {
+                OverdueTraces.Clear();
+
+                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                foreach (var trace in traces)
+                {
+                    OverdueTraces.Add(trace);
+                }
+            }
+            else
+            {
+                var errorMessage = tracesResult.ErrorMessage.Match(
+                    v => v,
+                    () => throw new NotImplementedException());
+
+                ShowToastMessage(false, errorMessage);
             }
         }
 

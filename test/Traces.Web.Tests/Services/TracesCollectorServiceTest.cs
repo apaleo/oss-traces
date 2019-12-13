@@ -19,6 +19,8 @@ namespace Traces.Web.Tests.Services
 {
     public class TracesCollectorServiceTest : BaseTest
     {
+        private const string PropertyId = "PROP";
+        private const string ReservationId = "THEREALDEAL-1";
         private const int FirstTraceId = 1;
         private const string FirstTraceTitle = "FirstTraceTitle";
         private const string FirstTraceDescription = "FirstTraceDescription";
@@ -36,6 +38,9 @@ namespace Traces.Web.Tests.Services
         private readonly LocalDate _firstTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
         private readonly LocalDate _secondTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
         private readonly LocalDate _thirdTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
+
+        private readonly DateTime _testFromDate = DateTime.Today;
+        private readonly DateTime _testToDate = DateTime.Today.AddDays(1);
 
         private readonly Mock<ITraceService> _traceServiceMock;
         private readonly ITracesCollectorService _tracesCollectorService;
@@ -76,10 +81,12 @@ namespace Traces.Web.Tests.Services
                 }
             };
 
-            _traceServiceMock.Setup(x => x.GetActiveTracesAsync())
+            _traceServiceMock.Setup(x => x.GetActiveTracesAsync(
+                    It.Is<DateTime>(dt => dt == _testFromDate),
+                    It.Is<DateTime>(dt => dt == _testToDate)))
                 .ReturnsAsync(testTraces);
 
-            var result = await _tracesCollectorService.GetTracesAsync();
+            var result = await _tracesCollectorService.GetTracesAsync(_testFromDate, _testToDate);
 
             result.Should().NotBeNull();
 
@@ -110,14 +117,16 @@ namespace Traces.Web.Tests.Services
         }
 
         [Fact]
-        public async Task ShouldCatchValidationExceptionAndReturnUnsuccessfulResult()
+        public async Task ShouldCatchValidationExceptionAndReturnUnsuccessfulResultAsync()
         {
             const string exceptionMessage = "Traces do not exist";
 
-            _traceServiceMock.Setup(x => x.GetActiveTracesAsync())
+            _traceServiceMock.Setup(x => x.GetActiveTracesAsync(
+                    It.Is<DateTime>(dt => dt == _testFromDate),
+                    It.Is<DateTime>(dt => dt == _testToDate)))
                 .ThrowsAsync(new BusinessValidationException(exceptionMessage));
 
-            var collectorResult = await _tracesCollectorService.GetTracesAsync();
+            var collectorResult = await _tracesCollectorService.GetTracesAsync(_testFromDate, _testToDate);
 
             collectorResult.Success.Should().BeFalse();
             collectorResult.Result.HasValue.Should().BeFalse();
@@ -126,6 +135,263 @@ namespace Traces.Web.Tests.Services
             var errorMessage = collectorResult.ErrorMessage.ValueOrFailure();
 
             errorMessage.Should().Be(exceptionMessage);
+        }
+
+        [Fact]
+        public async Task ShouldGetTracesForPropertyAsync()
+        {
+            var testTraces = new List<TraceDto>
+            {
+                new TraceDto
+                {
+                    Id = FirstTraceId,
+                    Title = FirstTraceTitle,
+                    Description = FirstTraceDescription.Some(),
+                    State = FirstTraceState,
+                    DueDate = _firstTraceDueDate,
+                    PropertyId = PropertyId
+                },
+                new TraceDto
+                {
+                    Id = ThirdTraceId,
+                    Title = ThirdTraceTitle,
+                    Description = ThirdTraceDescription.Some(),
+                    State = ThirdTraceState,
+                    DueDate = _thirdTraceDueDate,
+                    PropertyId = PropertyId
+                }
+            };
+
+            var testTraceFromDate = DateTime.Today;
+            var testTraceToDate = DateTime.Today.AddDays(1);
+
+            _traceServiceMock.Setup(x => x.GetActiveTracesForPropertyAsync(
+                    It.Is<string>(v => v == PropertyId),
+                    It.Is<DateTime>(v => v == testTraceFromDate),
+                    It.Is<DateTime>(v => v == testTraceToDate)))
+                .ReturnsAsync(testTraces);
+
+            var result =
+                await _tracesCollectorService.GetTracesForPropertyAsync(PropertyId, testTraceFromDate, testTraceToDate);
+
+            result.Success.Should().BeTrue();
+
+            var resultContent = result.Result.ValueOrFailure();
+
+            resultContent.Should().HaveCount(2);
+
+            resultContent[0].Id.Should().Be(FirstTraceId);
+            resultContent[0].Title.Should().Be(FirstTraceTitle);
+            resultContent[0].Description.Should().Be(FirstTraceDescription);
+            resultContent[0].DueDate.Should().Be(_firstTraceDueDate.ToDateTimeUnspecified());
+            resultContent[0].State.Should().Be(FirstTraceState);
+            resultContent[0].PropertyId.Should().Be(PropertyId);
+
+            resultContent[1].Id.Should().Be(ThirdTraceId);
+            resultContent[1].Title.Should().Be(ThirdTraceTitle);
+            resultContent[1].Description.Should().Be(ThirdTraceDescription);
+            resultContent[1].DueDate.Should().Be(_thirdTraceDueDate.ToDateTimeUnspecified());
+            resultContent[1].State.Should().Be(ThirdTraceState);
+            resultContent[1].PropertyId.Should().Be(PropertyId);
+        }
+
+        [Fact]
+        public async Task ShouldBeAbleToGetTracesForReservationAsync()
+        {
+            var testTraces = new List<TraceDto>
+            {
+                new TraceDto
+                {
+                    Id = FirstTraceId,
+                    Title = FirstTraceTitle,
+                    Description = FirstTraceDescription.Some(),
+                    State = FirstTraceState,
+                    DueDate = _firstTraceDueDate,
+                    PropertyId = PropertyId,
+                    ReservationId = ReservationId.Some()
+                }
+            };
+
+            var testTraceFromDate = DateTime.Today;
+            var testTraceToDate = DateTime.Today.AddDays(1);
+
+            _traceServiceMock.Setup(x => x.GetActiveTracesForReservationAsync(
+                    It.Is<string>(v => v == ReservationId),
+                    It.Is<DateTime>(v => v == testTraceFromDate),
+                    It.Is<DateTime>(v => v == testTraceToDate)))
+                .ReturnsAsync(testTraces);
+
+            var result =
+                await _tracesCollectorService.GetTracesForReservationAsync(
+                    ReservationId,
+                    testTraceFromDate,
+                    testTraceToDate);
+
+            result.Success.Should().BeTrue();
+
+            var resultContent = result.Result.ValueOrFailure();
+
+            resultContent.Should().HaveCount(1);
+
+            resultContent[0].Id.Should().Be(FirstTraceId);
+            resultContent[0].Title.Should().Be(FirstTraceTitle);
+            resultContent[0].Description.Should().Be(FirstTraceDescription);
+            resultContent[0].DueDate.Should().Be(_firstTraceDueDate.ToDateTimeUnspecified());
+            resultContent[0].State.Should().Be(FirstTraceState);
+            resultContent[0].PropertyId.Should().Be(PropertyId);
+            resultContent[0].ReservationId.Should().Be(ReservationId);
+        }
+
+        [Fact]
+        public async Task ShouldBeAbleToGetOverdueTracesAsync()
+        {
+            var testTraces = new List<TraceDto>
+            {
+                new TraceDto
+                {
+                    Id = ThirdTraceId,
+                    Title = ThirdTraceTitle,
+                    Description = ThirdTraceDescription.Some(),
+                    State = ThirdTraceState,
+                    DueDate = _thirdTraceDueDate,
+                    PropertyId = PropertyId
+                }
+            };
+
+            _traceServiceMock.Setup(x => x.GetOverdueTracesAsync())
+                .ReturnsAsync(testTraces);
+
+            var result = await _tracesCollectorService.GetOverdueTracesAsync();
+
+            result.Success.Should().BeTrue();
+
+            var resultContent = result.Result.ValueOrFailure();
+            resultContent[0].Id.Should().Be(ThirdTraceId);
+            resultContent[0].Title.Should().Be(ThirdTraceTitle);
+            resultContent[0].Description.Should().Be(ThirdTraceDescription);
+            resultContent[0].DueDate.Should().Be(_thirdTraceDueDate.ToDateTimeUnspecified());
+            resultContent[0].State.Should().Be(ThirdTraceState);
+            resultContent[0].PropertyId.Should().Be(PropertyId);
+        }
+
+        [Fact]
+        public async Task ShouldBeAbleToGetOverdueTracesForPropertyAsync()
+        {
+            var testTraces = new List<TraceDto>
+            {
+                new TraceDto
+                {
+                    Id = FirstTraceId,
+                    Title = FirstTraceTitle,
+                    Description = FirstTraceDescription.Some(),
+                    State = FirstTraceState,
+                    DueDate = _firstTraceDueDate,
+                    PropertyId = PropertyId,
+                    ReservationId = ReservationId.Some()
+                },
+                new TraceDto
+                {
+                    Id = SecondTraceId,
+                    Title = SecondTraceTitle,
+                    State = SecondTraceState,
+                    DueDate = _secondTraceDueDate,
+                    PropertyId = PropertyId
+                },
+                new TraceDto
+                {
+                    Id = ThirdTraceId,
+                    Title = ThirdTraceTitle,
+                    Description = ThirdTraceDescription.Some(),
+                    State = ThirdTraceState,
+                    DueDate = _thirdTraceDueDate,
+                    PropertyId = PropertyId
+                }
+            };
+
+            _traceServiceMock.Setup(x => x.GetOverdueTracesForPropertyAsync(
+                    It.Is<string>(v => v == PropertyId)))
+                .ReturnsAsync(testTraces);
+
+            var result = await _tracesCollectorService.GetOverdueTracesForPropertyAsync(PropertyId);
+
+            result.Success.Should().BeTrue();
+
+            var resultContent = result.Result.ValueOrFailure();
+
+            resultContent[0].Id.Should().Be(FirstTraceId);
+            resultContent[0].Title.Should().Be(FirstTraceTitle);
+            resultContent[0].Description.Should().Be(FirstTraceDescription);
+            resultContent[0].DueDate.Should().Be(_firstTraceDueDate.ToDateTimeUnspecified());
+            resultContent[0].State.Should().Be(FirstTraceState);
+            resultContent[0].PropertyId.Should().Be(PropertyId);
+            resultContent[0].ReservationId.Should().Be(ReservationId);
+
+            resultContent[1].Id.Should().Be(SecondTraceId);
+            resultContent[1].Title.Should().Be(SecondTraceTitle);
+            resultContent[1].Description.Should().BeEmpty();
+            resultContent[1].DueDate.Should().Be(_secondTraceDueDate.ToDateTimeUnspecified());
+            resultContent[1].State.Should().Be(SecondTraceState);
+            resultContent[1].PropertyId.Should().Be(PropertyId);
+
+            resultContent[2].Id.Should().Be(ThirdTraceId);
+            resultContent[2].Title.Should().Be(ThirdTraceTitle);
+            resultContent[2].Description.Should().Be(ThirdTraceDescription);
+            resultContent[2].DueDate.Should().Be(_thirdTraceDueDate.ToDateTimeUnspecified());
+            resultContent[2].State.Should().Be(ThirdTraceState);
+            resultContent[2].PropertyId.Should().Be(PropertyId);
+        }
+
+        [Fact]
+        public async Task ShouldBeAbleToGetOverdueTracesForReservationAsync()
+        {
+            var testTraces = new List<TraceDto>
+            {
+                new TraceDto
+                {
+                    Id = SecondTraceId,
+                    Title = SecondTraceTitle,
+                    State = SecondTraceState,
+                    DueDate = _secondTraceDueDate,
+                    PropertyId = PropertyId,
+                    ReservationId = ReservationId.Some()
+                },
+                new TraceDto
+                {
+                    Id = ThirdTraceId,
+                    Title = ThirdTraceTitle,
+                    Description = ThirdTraceDescription.Some(),
+                    State = ThirdTraceState,
+                    DueDate = _thirdTraceDueDate,
+                    PropertyId = PropertyId,
+                    ReservationId = ReservationId.Some()
+                }
+            };
+
+            _traceServiceMock.Setup(x => x.GetOverdueTracesForReservationAsync(
+                    It.Is<string>(v => v == ReservationId)))
+                .ReturnsAsync(testTraces);
+
+            var result = await _tracesCollectorService.GetOverdueTracesForReservationAsync(ReservationId);
+
+            result.Success.Should().BeTrue();
+
+            var resultContent = result.Result.ValueOrFailure();
+
+            resultContent.Should().HaveCount(2);
+
+            resultContent[0].Id.Should().Be(SecondTraceId);
+            resultContent[0].Title.Should().Be(SecondTraceTitle);
+            resultContent[0].Description.Should().BeEmpty();
+            resultContent[0].DueDate.Should().Be(_secondTraceDueDate.ToDateTimeUnspecified());
+            resultContent[0].State.Should().Be(SecondTraceState);
+            resultContent[0].PropertyId.Should().Be(PropertyId);
+
+            resultContent[1].Id.Should().Be(ThirdTraceId);
+            resultContent[1].Title.Should().Be(ThirdTraceTitle);
+            resultContent[1].Description.Should().Be(ThirdTraceDescription);
+            resultContent[1].DueDate.Should().Be(_thirdTraceDueDate.ToDateTimeUnspecified());
+            resultContent[1].State.Should().Be(ThirdTraceState);
+            resultContent[1].PropertyId.Should().Be(PropertyId);
         }
     }
 }

@@ -1,0 +1,28 @@
+
+html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+app {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    flex: 1;
+}
+
+
+.main .page-header {
+    background: #F5F5F5;
+    padding: 1.1rem 1.5rem 0 1.5rem;
+}
+
+.main .page-header .navbar {
+    padding: 8px 0 0 0;
+}
+
+.main .page-content {
+    padding: 1.1rem 1.5rem 0 1.5rem;
+}

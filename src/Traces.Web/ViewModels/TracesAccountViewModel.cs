@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blazored.Toast.Services;
@@ -24,9 +25,12 @@ namespace Traces.Web.ViewModels
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
         }
 
-        protected override async Task LoadTracesAsync()
+        public override async Task LoadNextDaysAsync()
         {
-            var tracesResult = await _tracesCollectorService.GetTracesAsync();
+            var loadFromDate = CurrentToDate.AddDays(1);
+            var loadUntilDate = CurrentToDate.AddDays(CurrentDayIncrease);
+
+            var tracesResult = await _tracesCollectorService.GetTracesAsync(loadFromDate, loadUntilDate);
 
             if (tracesResult.Success)
             {
@@ -34,7 +38,54 @@ namespace Traces.Web.ViewModels
 
                 foreach (var trace in traces)
                 {
-                    Traces.Add(trace);
+                    AddTraceToDictionary(trace);
+                }
+
+                CurrentToDate = loadUntilDate;
+
+                // After the first run, we always load the next 7 days
+                CurrentDayIncrease = 7;
+
+                UpdateLoadedUntilText();
+            }
+            else
+            {
+                var errorMessage = tracesResult.ErrorMessage.Match(
+                    v => v,
+                    () => throw new NotImplementedException());
+
+                ShowToastMessage(false, errorMessage);
+            }
+        }
+
+        protected override async Task LoadTracesAsync(DateTime from, DateTime to)
+        {
+            var tracesResult = await _tracesCollectorService.GetTracesAsync(from, to);
+
+            if (tracesResult.Success)
+            {
+                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                LoadSortedDictionaryFromList(traces);
+
+                CurrentFromDate = from;
+                CurrentToDate = to;
+            }
+        }
+
+        protected override async Task LoadOverdueTracesAsyc()
+        {
+            var tracesResult = await _tracesCollectorService.GetOverdueTracesAsync();
+
+            if (tracesResult.Success)
+            {
+                OverdueTraces.Clear();
+
+                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                foreach (var trace in traces)
+                {
+                    OverdueTraces.Add(trace);
                 }
             }
         }

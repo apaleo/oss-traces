@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
+using NodaTime.Extensions;
 using Optional;
 using Optional.Unsafe;
 using Traces.Common.Enums;
@@ -72,13 +73,25 @@ namespace Traces.Web.Tests.Services
             const int createdId = 100;
             const string testTraceTitle = "TestTitle";
             const string testTraceDescription = "TestDescription";
+            const string testTracePropertyId = "PROP";
             var testTraceDueDate = DateTime.Now.Add(TimeSpan.FromDays(2)).Date;
 
             var testCreateTrace = new CreateTraceItemModel
             {
                 Title = testTraceTitle,
                 Description = testTraceDescription,
-                DueDate = testTraceDueDate
+                DueDate = testTraceDueDate,
+                PropertyId = testTracePropertyId
+            };
+
+            var resultTraceDto = new TraceDto
+            {
+                Id = createdId,
+                Title = testTraceTitle,
+                Description = testTraceDescription.Some(),
+                DueDate = testTraceDueDate.ToLocalDateTime().Date,
+                State = TraceStateEnum.Active,
+                PropertyId = testTracePropertyId
             };
 
             _traceServiceMock.Setup(x => x.CreateTraceAsync(
@@ -86,7 +99,7 @@ namespace Traces.Web.Tests.Services
                 v.Title == testTraceTitle &&
                 v.Description.ValueOrFailure() == testTraceDescription &&
                 v.DueDate.ToDateTimeUnspecified().Date == testTraceDueDate)))
-                .ReturnsAsync(createdId);
+                .ReturnsAsync(resultTraceDto);
 
             var creationResult = await _traceModifierService.CreateTraceAsync(testCreateTrace);
 
@@ -102,10 +115,11 @@ namespace Traces.Web.Tests.Services
             result.Description.Should().Be(testTraceDescription);
             result.State.Should().Be(TraceStateEnum.Active);
             result.DueDate.Should().Be(testTraceDueDate);
+            result.PropertyId.Should().Be(testTracePropertyId);
         }
 
         [Fact]
-        public async Task ShouldNotCreateWhenAValidationExceptionIsThrown()
+        public async Task ShouldNotCreateWhenAValidationExceptionIsThrownAsync()
         {
             const string exceptionMessage = "iBreak";
             const string testTraceTitle = "TestTitle";
@@ -242,6 +256,90 @@ namespace Traces.Web.Tests.Services
 
             var errorMessage = deleteResult.ErrorMessage.ValueOrFailure();
             errorMessage.Should().Be(exceptionMessage);
+        }
+
+        [Fact]
+        public async Task ShouldBeAbleToCreateTraceWithReservationIdAsync()
+        {
+            const string testTraceTitle = "ReservationTrace";
+            const string testTraceDescription = "ReservationTraceDescription";
+            var testTraceDueDate = DateTime.Today.AddDays(2);
+            const string testReservationId = "REALRESERVATION_1";
+            const int resultTraceId = 10;
+            const string resultPropertyId = "PROP";
+
+            var createTraceItemModel = new CreateTraceItemModel
+            {
+                Title = testTraceTitle,
+                Description = testTraceDescription,
+                DueDate = testTraceDueDate,
+                ReservationId = testReservationId
+            };
+
+            var resultTraceDto = new TraceDto
+            {
+                Id = resultTraceId,
+                Title = testTraceTitle,
+                Description = testTraceDescription.Some(),
+                State = TraceStateEnum.Active,
+                DueDate = testTraceDueDate.ToLocalDateTime().Date,
+                PropertyId = resultPropertyId,
+                ReservationId = testReservationId.Some()
+            };
+
+            _traceServiceMock.Setup(x => x.CreateTraceFromReservationAsync(It.Is<CreateTraceDto>(
+                    t => t.Title == testTraceTitle &&
+                         t.Description.ValueOrFailure() == testTraceDescription &&
+                         t.DueDate == testTraceDueDate.ToLocalDateTime().Date &&
+                         t.ReservationId.ValueOrFailure() == testReservationId &&
+                         string.IsNullOrWhiteSpace(t.PropertyId))))
+                .ReturnsAsync(resultTraceDto);
+
+            var result = await _traceModifierService.CreateTraceWithReservationIdAsync(createTraceItemModel);
+
+            result.Success.Should().BeTrue();
+
+            var resultContent = result.Result.ValueOrFailure();
+
+            resultContent.Id.Should().Be(resultTraceId);
+            resultContent.Title.Should().Be(testTraceTitle);
+            resultContent.Description.Should().Be(testTraceDescription);
+            resultContent.State.Should().Be(TraceStateEnum.Active);
+            resultContent.DueDate.Should().Be(testTraceDueDate);
+            resultContent.ReservationId = testReservationId;
+        }
+
+        [Fact]
+        public async Task ShouldNotBeAbleToCreateTraceWithReservationWhenValidationExceptionIsThrownAsync()
+        {
+            const string errorMessage = "Something went wrong";
+
+            const string testTraceTitle = "ReservationTrace";
+            const string testTraceDescription = "ReservationTraceDescription";
+            var testTraceDueDate = DateTime.Today.AddDays(2);
+            const string testReservationId = "REALRESERVATION_1";
+
+            var createTraceItemModel = new CreateTraceItemModel
+            {
+                Title = testTraceTitle,
+                Description = testTraceDescription,
+                DueDate = testTraceDueDate,
+                ReservationId = testReservationId
+            };
+
+            _traceServiceMock.Setup(x => x.CreateTraceFromReservationAsync(It.Is<CreateTraceDto>(
+                    t => t.Title == testTraceTitle &&
+                         t.Description.ValueOrFailure() == testTraceDescription &&
+                         t.DueDate == testTraceDueDate.ToLocalDateTime().Date &&
+                         t.ReservationId.ValueOrFailure() == testReservationId &&
+                         string.IsNullOrWhiteSpace(t.PropertyId))))
+                .ThrowsAsync(new BusinessValidationException(errorMessage));
+
+            var result = await _traceModifierService.CreateTraceWithReservationIdAsync(createTraceItemModel);
+
+            result.Success.Should().BeFalse();
+            result.Result.HasValue.Should().BeFalse();
+            result.ErrorMessage.ValueOrFailure().Should().Be(errorMessage);
         }
     }
 }

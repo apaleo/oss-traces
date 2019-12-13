@@ -7,6 +7,7 @@ using Traces.Common.Utils;
 using Traces.Core.Models;
 using Traces.Core.Services;
 using Traces.Web.Models;
+using Traces.Web.Utils;
 
 namespace Traces.Web.Services
 {
@@ -55,16 +56,9 @@ namespace Traces.Web.Services
                     ReservationId = createTraceItemModel.ReservationId.SomeNotNull()
                 };
 
-                var traceId = await _traceService.CreateTraceAsync(createTraceDto);
+                var traceDto = await _traceService.CreateTraceAsync(createTraceDto);
 
-                var traceItemModel = new TraceItemModel
-                {
-                    Id = traceId,
-                    Title = createTraceItemModel.Title,
-                    Description = createTraceItemModel.Description,
-                    State = TraceStateEnum.Active,
-                    DueDate = createTraceItemModel.DueDate
-                };
+                var traceItemModel = traceDto.ConvertToTraceItemModel();
 
                 return new ResultModel<TraceItemModel>
                 {
@@ -94,16 +88,9 @@ namespace Traces.Web.Services
                     ReservationId = createTraceItemModel.ReservationId.SomeNotNull()
                 };
 
-                var traceId = await _traceService.CreateTraceFromReservationAsync(createTraceDto);
+                var traceDto = await _traceService.CreateTraceFromReservationAsync(createTraceDto);
 
-                var traceItemModel = new TraceItemModel
-                {
-                    Id = traceId,
-                    Title = createTraceItemModel.Title,
-                    Description = createTraceItemModel.Description,
-                    State = TraceStateEnum.Active,
-                    DueDate = createTraceItemModel.DueDate
-                };
+                var traceItemModel = traceDto.ConvertToTraceItemModel();
 
                 return new ResultModel<TraceItemModel>
                 {

@@ -3,46 +3,61 @@
 @using Traces.Web.ViewModels
 @inject TracesAccountViewModel TracesAccountViewModel
 
-<div>
-    <h1>Traces</h1>
+@if (TracesAccountViewModel.OverdueTraces != null && TracesAccountViewModel.OverdueTraces.Any())
+{
+    <section class="pb-4">
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTablePropertyText</TableHeaderCell>
+                    <TableHeaderCell></TableHeaderCell>
+                </TableRow>
+            </TableHeader>
+            <TracesComponent
+                Title="@TextConstants.OverdueTracesTitleText"
+                Traces="@TracesAccountViewModel.OverdueTraces"
+                IsPropertyVisible="true"
+                IsDueDateVisible="true"
+                OnCompleteClick="@TracesAccountViewModel.CompleteTraceAsync"
+                OnDeleteClick="@TracesAccountViewModel.DeleteItemAsync"
+                OnEditClick="@TracesAccountViewModel.ShowReplaceTraceModal"/>
+        </Table>
+    </section>
+}
 
-    <div>
-        <h2>@TextConstants.UpcomingTracesText</h2>
-        @if (TracesAccountViewModel.Traces != null && TracesAccountViewModel.Traces.Any())
-        {
-            <Table>
-                <TableHeader>
-                        <TableRow>
-                            <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
-                            <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
-                            <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
-                            <TableHeaderCell>@TextConstants.TracesTableActionsText</TableHeaderCell>
-                        </TableRow>
-                </TableHeader>
-                <TableBody>
-                    @foreach (var trace in TracesAccountViewModel.Traces)
-                    {
-                        <TableRow>
-                            <TableRowCell>@trace.Title</TableRowCell>
-                            <TableRowCell>@trace.Description</TableRowCell>
-                            <TableRowCell>@trace.DueDate.ToShortDateString()</TableRowCell>
-                            <TableRowCell>
-                                <Buttons>
-                                    <Button Color="Color.Primary" Clicked="@(() => TracesAccountViewModel.CompleteTraceAsync(trace.Id))">Complete</Button>
-                                    <Button Color="Color.Secondary" Clicked="@(() => TracesAccountViewModel.ShowReplaceTraceModal(trace))">Edit</Button>
-                                    <Button Color="Color.Danger" Clicked="@(() => TracesAccountViewModel.DeleteItemAsync(trace.Id))">Delete</Button>
-                                </Buttons>
-                            </TableRowCell>
-                        </TableRow>
-                    }
-                </TableBody>
-            </Table>
-        }
-        else
-        {
-          <p>@TextConstants.UpcomingTracesEmptyText</p>
-        }
-    </div>
+<div>
+    @if (TracesAccountViewModel.SortedGroupedTracesDictionary != null && TracesAccountViewModel.SortedGroupedTracesDictionary.Any())
+    {
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTablePropertyText</TableHeaderCell>
+                    <TableHeaderCell></TableHeaderCell>
+                </TableRow>
+            </TableHeader>
+            @foreach (var (date, traces) in TracesAccountViewModel.SortedGroupedTracesDictionary)
+            {
+                <TracesComponent
+                Title="@date.ToShortDateString()"
+                Traces="@traces"
+                IsPropertyVisible="true"
+                IsDueDateVisible="false"
+                OnCompleteClick="@TracesAccountViewModel.CompleteTraceAsync"
+                OnDeleteClick="@TracesAccountViewModel.DeleteItemAsync"
+                OnEditClick="@TracesAccountViewModel.ShowReplaceTraceModal"/>
+            }
+        </Table>
+    }
+
+    <section>
+        <p>@TracesAccountViewModel.LoadedUntilDateMessage</p>
+        <Button Color="Color.Primary" Clicked="@TracesAccountViewModel.LoadNextDaysAsync">@string.Format(TextConstants.TracesLoadMoreButtonTextFormat, TracesAccountViewModel.CurrentDayIncrease)</Button>
+    </section>
 
     <Modal @ref="@TracesAccountViewModel.EditTraceModalRef">
         <ModalBackdrop />
@@ -60,11 +75,9 @@
 
 @code
 {
-
     protected override async Task OnInitializedAsync()
     {
         await TracesAccountViewModel.LoadAsync();
         await base.OnInitializedAsync();
     }
-
 }

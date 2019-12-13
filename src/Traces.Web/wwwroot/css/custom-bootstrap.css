@@ -1,0 +1,23 @@
+/* Reset bootstrap */
+.text-primary {
+    color: var(--b-theme-primary) !important;
+}
+
+/* Elements */
+.nav-item.active {
+    border-bottom: 3px solid #F19722;
+}
+
+.table .icon-header-cell {
+    width: 36px;
+}
+
+.dropdown-item:active {
+    background-color: #f0f0f0 !important;
+}
+
+.table td.fit,
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
