@@ -37,6 +37,9 @@ namespace Traces.Web.Tests.Services
         private readonly LocalDate _secondTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
         private readonly LocalDate _thirdTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
 
+        private readonly DateTime _testFromDate = DateTime.Today;
+        private readonly DateTime _testToDate = DateTime.Today.AddDays(1);
+
         private readonly Mock<ITraceService> _traceServiceMock;
         private readonly ITracesCollectorService _tracesCollectorService;
 
@@ -76,10 +79,12 @@ namespace Traces.Web.Tests.Services
                 }
             };
 
-            _traceServiceMock.Setup(x => x.GetActiveTracesAsync())
+            _traceServiceMock.Setup(x => x.GetActiveTracesAsync(
+                    It.Is<DateTime>(dt => dt == _testFromDate),
+                    It.Is<DateTime>(dt => dt == _testToDate)))
                 .ReturnsAsync(testTraces);
 
-            var result = await _tracesCollectorService.GetTracesAsync();
+            var result = await _tracesCollectorService.GetTracesAsync(_testFromDate, _testToDate);
 
             result.Should().NotBeNull();
 
@@ -114,10 +119,12 @@ namespace Traces.Web.Tests.Services
         {
             const string exceptionMessage = "Traces do not exist";
 
-            _traceServiceMock.Setup(x => x.GetActiveTracesAsync())
+            _traceServiceMock.Setup(x => x.GetActiveTracesAsync(
+                    It.Is<DateTime>(dt => dt == _testFromDate),
+                    It.Is<DateTime>(dt => dt == _testToDate)))
                 .ThrowsAsync(new BusinessValidationException(exceptionMessage));
 
-            var collectorResult = await _tracesCollectorService.GetTracesAsync();
+            var collectorResult = await _tracesCollectorService.GetTracesAsync(_testFromDate, _testToDate);
 
             collectorResult.Success.Should().BeFalse();
             collectorResult.Result.HasValue.Should().BeFalse();
