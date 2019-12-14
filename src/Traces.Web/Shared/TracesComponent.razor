@@ -19,6 +19,10 @@
                 {
                     <TableRowCell>@trace.PropertyId</TableRowCell>
                 }
+                @if (IsReservationVisible)
+                {
+                    <TableRowCell>@(string.IsNullOrEmpty(trace.ReservationId) ? "-" : trace.ReservationId)</TableRowCell>
+                }
                 <TableRowCell class="fit">
                     <div class="d-flex align-items-start">
                         <Button class="mr-2" Color="Color.Primary" IsLoading="@IsLoading" Clicked="@(() => OnComplete(trace))">
@@ -67,6 +71,9 @@
 
     [Parameter]
     public bool IsDueDateVisible { get; set; }
+    
+    [Parameter]
+    public bool IsReservationVisible { get; set; }
 
     private async Task OnComplete(TraceItemModel trace)
     {

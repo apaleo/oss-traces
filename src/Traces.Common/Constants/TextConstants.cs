@@ -36,7 +36,8 @@ namespace Traces.Common.Constants
 
         public const string TracesAddButtonText = "Add";
 
-        public const string UpcomingTracesEmptyText = "There are currently no upcoming tasks. You can create new ones with the Add button.";
+        public const string UpcomingTracesEmptyText =
+            "There are currently no upcoming tasks. You can create new ones with the Add button.";
 
         public const string TracesDeleteButtonText = "Delete";
 
@@ -47,6 +48,8 @@ namespace Traces.Common.Constants
         public const string TracesTableDueDateText = "Due date";
 
         public const string TracesTablePropertyText = "Property";
+
+        public const string TracesTableReservationText = "Reservation";
 
         public const string TracesLoadedUntilTextFormat = "Tasks loaded until {0}";
 
@@ -80,7 +83,8 @@ namespace Traces.Common.Constants
         public const string FetchingDataFromApaleoForTracesErrorMessage =
             "There was an issue creating this trace. Unfortunately there was an issue fetching the data from the apaleo services.";
 
-        public const string NoReservationIdProvidedErrorMessage = "There was no reservationId provided while trying to create a trace from the reservation flow";
+        public const string NoReservationIdProvidedErrorMessage =
+            "There was no reservationId provided while trying to create a trace from the reservation flow";
 
         public const string DateIntervalErrorMessage =
             "The provided date interval is invalid. The end of the interval must be greater than the beginning";
