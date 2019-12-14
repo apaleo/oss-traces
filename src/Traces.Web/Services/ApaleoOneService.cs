@@ -12,15 +12,15 @@ namespace Traces.Web.Services
     public class ApaleoOneService : IApaleoOneService
     {
         private readonly IJSRuntime _jsRuntime;
-        private readonly JsonSerializerSettings _jsonSerializerSettings;
+
+        private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        };
 
         public ApaleoOneService(IJSRuntime runtime)
         {
             _jsRuntime = runtime;
-            _jsonSerializerSettings = new JsonSerializerSettings
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
         }
 
         public async Task<ResultModel<bool>> NavigateToReservation(TraceItemModel traceItemModel)
