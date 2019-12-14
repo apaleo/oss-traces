@@ -73,7 +73,7 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        protected override async Task LoadOverdueTracesAsyc()
+        protected override async Task LoadOverdueTracesAsync()
         {
             var tracesResult = await _tracesCollectorService.GetOverdueTracesAsync();
 

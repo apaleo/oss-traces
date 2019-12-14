@@ -59,7 +59,7 @@ namespace Traces.Web.ViewModels
             var to = DateTime.Today.AddDays(1);
 
             await LoadTracesAsync(from, to);
-            await LoadOverdueTracesAsyc();
+            await LoadOverdueTracesAsync();
 
             UpdateLoadedUntilText();
         }
@@ -79,7 +79,7 @@ namespace Traces.Web.ViewModels
             if (replaceResult.Success)
             {
                 await LoadTracesAsync(CurrentFromDate, CurrentToDate);
-                await LoadOverdueTracesAsyc();
+                await LoadOverdueTracesAsync();
 
                 ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
             }
@@ -173,7 +173,7 @@ namespace Traces.Web.ViewModels
 
         protected abstract Task LoadTracesAsync(DateTime from, DateTime to);
 
-        protected abstract Task LoadOverdueTracesAsyc();
+        protected abstract Task LoadOverdueTracesAsync();
 
         protected void ShowToastMessage(bool success, string message)
         {
@@ -193,7 +193,11 @@ namespace Traces.Web.ViewModels
         {
             if (SortedGroupedTracesDictionary.ContainsKey(trace.DueDate))
             {
-                SortedGroupedTracesDictionary[trace.DueDate].Add(trace);
+                var list = SortedGroupedTracesDictionary[trace.DueDate];
+                if (list.TrueForAll(item => item.Id != trace.Id))
+                {
+                    list.Add(trace);
+                }
             }
             else
             {
