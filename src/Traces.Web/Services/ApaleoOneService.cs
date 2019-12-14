@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.JSInterop;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Optional;
 using Traces.Common.Constants;
 using Traces.Web.Models;
@@ -10,10 +12,15 @@ namespace Traces.Web.Services
     public class ApaleoOneService : IApaleoOneService
     {
         private readonly IJSRuntime _jsRuntime;
+        private readonly JsonSerializerSettings _jsonSerializerSettings;
 
         public ApaleoOneService(IJSRuntime runtime)
         {
             _jsRuntime = runtime;
+            _jsonSerializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
         }
 
         public async Task<ResultModel<bool>> NavigateToReservation(TraceItemModel traceItemModel)
@@ -33,7 +40,9 @@ namespace Traces.Web.Services
                     Id = traceItemModel.ReservationId
                 };
 
-                await _jsRuntime.InvokeVoidAsync("parent.postMessage", message, "*");
+                var messageString = JsonConvert.SerializeObject(message, _jsonSerializerSettings);
+
+                await _jsRuntime.InvokeVoidAsync("parent.postMessage", messageString, "*");
 
                 return new ResultModel<bool>
                 {
