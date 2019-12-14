@@ -4,9 +4,7 @@
 @inject TracesReservationViewModel TracesReservationViewModel
 
 <div>
-    <h1>Traces</h1>
-
-    <Button Color="Color.Primary" Clicked="@TracesReservationViewModel.ShowCreateTraceModal">@TextConstants.TracesAddButtonText</Button>
+    <Button class="mb-3" Color="Color.Primary" Clicked="@TracesReservationViewModel.ShowCreateTraceModal">@TextConstants.TracesAddButtonText</Button>
 
     @if (TracesReservationViewModel.OverdueTraces != null && TracesReservationViewModel.OverdueTraces.Any())
     {
