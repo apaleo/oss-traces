@@ -80,6 +80,9 @@ namespace Traces.Common.Constants
 
         public const string ApaleoSetupButtonTryAgainText = "Try again";
 
+        public const string ApaleoOneMessageItemIncomplete =
+            "The requested item is incommplete. Creating is not possible.";
+
         public const string FetchingDataFromApaleoForTracesErrorMessage =
             "There was an issue creating this trace. Unfortunately there was an issue fetching the data from the apaleo services.";
 

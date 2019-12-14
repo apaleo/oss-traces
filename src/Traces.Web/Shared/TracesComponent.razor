@@ -1,5 +1,7 @@
 @using Traces.Common.Constants
 @using Traces.Web.Models
+@using Traces.Web.Services
+@inject IApaleoOneService ApaleoOneService 
 
 <h4>@Title</h4>
 
@@ -21,7 +23,16 @@
                 }
                 @if (IsReservationVisible)
                 {
-                    <TableRowCell>@(string.IsNullOrEmpty(trace.ReservationId) ? "-" : trace.ReservationId)</TableRowCell>
+                    <TableRowCell>
+                        @if (string.IsNullOrEmpty(trace.ReservationId))
+                        {
+                            <span>-</span>
+                        }
+                        else
+                        {
+                            <a @onclick="@(() => OnNavigate(trace))">@trace.ReservationId</a>
+                        }
+                    </TableRowCell>
                 }
                 <TableRowCell class="fit">
                     <div class="d-flex align-items-start">
@@ -71,7 +82,7 @@
 
     [Parameter]
     public bool IsDueDateVisible { get; set; }
-    
+
     [Parameter]
     public bool IsReservationVisible { get; set; }
 
@@ -96,5 +107,10 @@
         await OnDeleteClick.InvokeAsync(trace);
 
         IsLoading = false;
+    }
+
+    private async Task OnNavigate(TraceItemModel trace)
+    {
+        await ApaleoOneService.NavigateToReservation(trace);
     }
 }
