@@ -36,7 +36,8 @@ namespace Traces.Common.Constants
 
         public const string TracesAddButtonText = "Add";
 
-        public const string UpcomingTracesEmptyText = "There are currently no upcoming tasks. You can create new ones with the Add button.";
+        public const string UpcomingTracesEmptyText =
+            "There are currently no upcoming tasks. You can create new ones with the Add button.";
 
         public const string TracesDeleteButtonText = "Delete";
 
@@ -48,6 +49,8 @@ namespace Traces.Common.Constants
 
         public const string TracesTablePropertyText = "Property";
 
+        public const string TracesTableReservationText = "Reservation";
+
         public const string TracesLoadedUntilTextFormat = "Tasks loaded until {0}";
 
         public const string TracesLoadMoreButtonTextFormat = "Load tasks for the next {0} days";
@@ -55,6 +58,8 @@ namespace Traces.Common.Constants
         public const string TracesCompleteButtonText = "Mark as complete";
 
         public const string TracesEditButtonText = "Edit";
+
+        public const string TracesReservationIdNotAvailableText = "-";
 
         public const string ApaleoSetupLoadingText = "Loading...";
 
@@ -77,10 +82,14 @@ namespace Traces.Common.Constants
 
         public const string ApaleoSetupButtonTryAgainText = "Try again";
 
+        public const string ApaleoOneNavigationNotPossible =
+            "Navigation to reservation is not possible right now, there is some information missing.";
+
         public const string FetchingDataFromApaleoForTracesErrorMessage =
             "There was an issue creating this trace. Unfortunately there was an issue fetching the data from the apaleo services.";
 
-        public const string NoReservationIdProvidedErrorMessage = "There was no reservationId provided while trying to create a trace from the reservation flow";
+        public const string NoReservationIdProvidedErrorMessage =
+            "There was no reservationId provided while trying to create a trace from the reservation flow";
 
         public const string DateIntervalErrorMessage =
             "The provided date interval is invalid. The end of the interval must be greater than the beginning";

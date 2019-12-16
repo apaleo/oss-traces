@@ -16,12 +16,20 @@ namespace Traces.Web.ViewModels
     public abstract class TracesBaseViewModel : BaseViewModel
     {
         private readonly IToastService _toastService;
+        private readonly IApaleoOneService _apaleoOneService;
 
-        protected TracesBaseViewModel(ITraceModifierService traceModifierService, IToastService toastService, IHttpContextAccessor httpContextAccessor, IRequestContext requestContext)
+        protected TracesBaseViewModel(
+            ITraceModifierService traceModifierService,
+            IToastService toastService,
+            IHttpContextAccessor httpContextAccessor,
+            IRequestContext requestContext,
+            IApaleoOneService apaleoOneService)
             : base(httpContextAccessor, requestContext)
         {
             TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
             _toastService = Check.NotNull(toastService, nameof(toastService));
+            _apaleoOneService = Check.NotNull(apaleoOneService, nameof(apaleoOneService));
+
             SortedGroupedTracesDictionary = new SortedDictionary<DateTime, List<TraceItemModel>>();
             OverdueTraces = new List<TraceItemModel>();
             EditTraceDialogViewModel = new EditTraceDialogViewModel();
@@ -59,7 +67,7 @@ namespace Traces.Web.ViewModels
             var to = DateTime.Today.AddDays(1);
 
             await LoadTracesAsync(from, to);
-            await LoadOverdueTracesAsyc();
+            await LoadOverdueTracesAsync();
 
             UpdateLoadedUntilText();
         }
@@ -79,7 +87,7 @@ namespace Traces.Web.ViewModels
             if (replaceResult.Success)
             {
                 await LoadTracesAsync(CurrentFromDate, CurrentToDate);
-                await LoadOverdueTracesAsyc();
+                await LoadOverdueTracesAsync();
 
                 ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
             }
@@ -138,6 +146,22 @@ namespace Traces.Web.ViewModels
             }
         }
 
+        public async Task NavigateToReservationAsync(TraceItemModel trace)
+        {
+            var navigationResult = await _apaleoOneService.NavigateToReservationAsync(trace);
+
+            if (navigationResult.Success)
+            {
+                return;
+            }
+
+            var errorMessage = navigationResult.ErrorMessage.Match(
+                v => v,
+                () => throw new NotImplementedException());
+
+            ShowToastMessage(false, errorMessage);
+        }
+
         public void ShowReplaceTraceModal(TraceItemModel traceItemModel)
         {
             EditTraceDialogViewModel.ClearCurrentState();
@@ -173,7 +197,7 @@ namespace Traces.Web.ViewModels
 
         protected abstract Task LoadTracesAsync(DateTime from, DateTime to);
 
-        protected abstract Task LoadOverdueTracesAsyc();
+        protected abstract Task LoadOverdueTracesAsync();
 
         protected void ShowToastMessage(bool success, string message)
         {
@@ -193,7 +217,13 @@ namespace Traces.Web.ViewModels
         {
             if (SortedGroupedTracesDictionary.ContainsKey(trace.DueDate))
             {
-                SortedGroupedTracesDictionary[trace.DueDate].Add(trace);
+                var existentTraces = SortedGroupedTracesDictionary[trace.DueDate];
+                if (existentTraces.Exists(item => item.Id == trace.Id))
+                {
+                    return;
+                }
+
+                existentTraces.Add(trace);
             }
             else
             {

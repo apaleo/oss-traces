@@ -13,6 +13,7 @@
                     <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
                     <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
                     <TableHeaderCell>@TextConstants.TracesTablePropertyText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTableReservationText</TableHeaderCell>
                     <TableHeaderCell></TableHeaderCell>
                 </TableRow>
             </TableHeader>
@@ -20,6 +21,7 @@
                 Title="@TextConstants.OverdueTracesTitleText"
                 Traces="@TracesAccountViewModel.OverdueTraces"
                 IsPropertyVisible="true"
+                IsReservationVisible="true"
                 IsDueDateVisible="true"
                 OnCompleteClick="@TracesAccountViewModel.CompleteTraceAsync"
                 OnDeleteClick="@TracesAccountViewModel.DeleteItemAsync"
@@ -37,19 +39,22 @@
                     <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
                     <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
                     <TableHeaderCell>@TextConstants.TracesTablePropertyText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTableReservationText</TableHeaderCell>
                     <TableHeaderCell></TableHeaderCell>
                 </TableRow>
             </TableHeader>
             @foreach (var (date, traces) in TracesAccountViewModel.SortedGroupedTracesDictionary)
             {
                 <TracesComponent
-                Title="@date.ToShortDateString()"
-                Traces="@traces"
-                IsPropertyVisible="true"
-                IsDueDateVisible="false"
-                OnCompleteClick="@TracesAccountViewModel.CompleteTraceAsync"
-                OnDeleteClick="@TracesAccountViewModel.DeleteItemAsync"
-                OnEditClick="@TracesAccountViewModel.ShowReplaceTraceModal"/>
+                    Title="@date.ToShortDateString()"
+                    Traces="@traces"
+                    IsPropertyVisible="true"
+                    IsReservationVisible="true"
+                    IsDueDateVisible="false"
+                    OnCompleteClick="@TracesAccountViewModel.CompleteTraceAsync"
+                    OnDeleteClick="@TracesAccountViewModel.DeleteItemAsync"
+                    OnEditClick="@TracesAccountViewModel.ShowReplaceTraceModal"
+                    OnNavigateClick="@TracesAccountViewModel.NavigateToReservationAsync"/>
             }
         </Table>
     }
@@ -60,7 +65,7 @@
     </section>
 
     <Modal @ref="@TracesAccountViewModel.EditTraceModalRef">
-        <ModalBackdrop />
+        <ModalBackdrop/>
         <ModalContent IsCentered="true" Size="ModalSize.Large">
             <ModalHeader>
                 <ModalTitle>@TextConstants.EditTraceModalTitle</ModalTitle>

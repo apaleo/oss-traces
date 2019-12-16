@@ -1,7 +1,8 @@
 @using Traces.Common.Constants
 @using Traces.Web.Models
+@using Traces.Web.Services
 
-<h4>@Title</h4>
+<h4 class="mt-2">@Title</h4>
 
 @if (Traces != null && Traces.Any())
 {
@@ -18,6 +19,19 @@
                 @if (IsPropertyVisible)
                 {
                     <TableRowCell>@trace.PropertyId</TableRowCell>
+                }
+                @if (IsReservationVisible)
+                {
+                    <TableRowCell>
+                        @if (string.IsNullOrWhiteSpace(trace.ReservationId))
+                        {
+                            <span>@TextConstants.TracesReservationIdNotAvailableText</span>
+                        }
+                        else
+                        {
+                            <a href="javascript:void(0)" @onclick="@(() => OnNavigate(trace))">@trace.ReservationId</a>
+                        }
+                    </TableRowCell>
                 }
                 <TableRowCell class="fit">
                     <div class="d-flex align-items-start">
@@ -55,6 +69,9 @@
 
     [Parameter]
     public EventCallback<TraceItemModel> OnCompleteClick { get; set; }
+    
+    [Parameter]
+    public EventCallback<TraceItemModel> OnNavigateClick { get; set; }
 
     [Parameter]
     public string Title { get; set; }
@@ -67,6 +84,9 @@
 
     [Parameter]
     public bool IsDueDateVisible { get; set; }
+
+    [Parameter]
+    public bool IsReservationVisible { get; set; }
 
     private async Task OnComplete(TraceItemModel trace)
     {
@@ -89,5 +109,10 @@
         await OnDeleteClick.InvokeAsync(trace);
 
         IsLoading = false;
+    }
+
+    private async Task OnNavigate(TraceItemModel trace)
+    {
+        await OnNavigateClick.InvokeAsync(trace);
     }
 }
