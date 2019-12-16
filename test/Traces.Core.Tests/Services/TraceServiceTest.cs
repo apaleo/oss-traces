@@ -53,14 +53,14 @@ namespace Traces.Core.Tests.Services
 
         private readonly Mock<ITraceRepository> _traceRepositoryMock;
         private readonly Mock<IRequestContext> _requestContextMock;
-        private readonly Mock<IApaleoClientFactory> _apaleoClientFactoryMock;
+        private readonly Mock<IApaleoClientsFactory> _apaleoClientFactoryMock;
         private readonly ITraceService _traceService;
 
         public TraceServiceTest()
         {
             _traceRepositoryMock = MockRepository.Create<ITraceRepository>();
             _requestContextMock = MockRepository.Create<IRequestContext>();
-            _apaleoClientFactoryMock = MockRepository.Create<IApaleoClientFactory>();
+            _apaleoClientFactoryMock = MockRepository.Create<IApaleoClientsFactory>();
             _traceService = new TraceService(_traceRepositoryMock.Object, _requestContextMock.Object, _apaleoClientFactoryMock.Object);
         }
 

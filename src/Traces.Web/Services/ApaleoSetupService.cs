@@ -16,15 +16,15 @@ namespace Traces.Web.Services
     internal class ApaleoSetupService : IApaleoSetupService
     {
         private const int MaxRetryCount = 3;
-        private readonly IApaleoIntegrationClientFactory _apaleoIntegrationClientFactory;
+        private readonly IApaleoClientsFactory _apaleoClientsFactory;
         private readonly IOptions<IntegrationConfig> _integrationConfig;
 
         private readonly Dictionary<ApaleoIntegrationTargetsEnum, Uri> _apaleoIntegrationTargetsUrlDictionary;
 
-        public ApaleoSetupService(IApaleoIntegrationClientFactory apaleoIntegrationClientFactory, IOptions<IntegrationConfig> integrationConfig)
+        public ApaleoSetupService(IApaleoClientsFactory apaleoIntegrationClientsFactory, IOptions<IntegrationConfig> integrationConfig)
         {
             _integrationConfig = Check.NotNull(integrationConfig, nameof(integrationConfig));
-            _apaleoIntegrationClientFactory = Check.NotNull(apaleoIntegrationClientFactory, nameof(apaleoIntegrationClientFactory));
+            _apaleoClientsFactory = Check.NotNull(apaleoIntegrationClientsFactory, nameof(apaleoIntegrationClientsFactory));
             _apaleoIntegrationTargetsUrlDictionary = new Dictionary<ApaleoIntegrationTargetsEnum, Uri>
             {
                 {
@@ -51,7 +51,7 @@ namespace Traces.Web.Services
 
         private async Task<IReadOnlyList<ApaleoIntegrationTargetsEnum>> GetMissingIntegrationTargetsAsync()
         {
-            var integrationApi = _apaleoIntegrationClientFactory.CreateIntegrationApi();
+            var integrationApi = _apaleoClientsFactory.GetIntegrationApi();
 
             using (var requestResult = await integrationApi.IntegrationUiIntegrationsGetWithHttpMessagesAsync())
             {
@@ -86,7 +86,7 @@ namespace Traces.Web.Services
 
         private async Task CreateApaleoIntegrationAsync(ApaleoIntegrationTargetsEnum integrationTargetEnum)
         {
-            var integrationApi = _apaleoIntegrationClientFactory.CreateIntegrationApi();
+            var integrationApi = _apaleoClientsFactory.GetIntegrationApi();
 
             var integrationTarget = integrationTargetEnum.ToString("G");
 

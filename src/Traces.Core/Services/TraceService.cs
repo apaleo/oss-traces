@@ -22,13 +22,13 @@ namespace Traces.Core.Services
     {
         private readonly ITraceRepository _traceRepository;
         private readonly IRequestContext _requestContext;
-        private readonly IApaleoClientFactory _apaleoClientFactory;
+        private readonly IApaleoClientsFactory _apaleoClientsFactory;
 
-        public TraceService(ITraceRepository traceRepository, IRequestContext requestContext, IApaleoClientFactory apaleoClientFactory)
+        public TraceService(ITraceRepository traceRepository, IRequestContext requestContext, IApaleoClientsFactory apaleoClientsFactory)
         {
             _traceRepository = Check.NotNull(traceRepository, nameof(traceRepository));
             _requestContext = Check.NotNull(requestContext, nameof(requestContext));
-            _apaleoClientFactory = Check.NotNull(apaleoClientFactory, nameof(apaleoClientFactory));
+            _apaleoClientsFactory = Check.NotNull(apaleoClientsFactory, nameof(apaleoClientsFactory));
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetTracesAsync()
@@ -274,7 +274,7 @@ namespace Traces.Core.Services
 
         private async Task<string> GetPropertyIdFromReservationIdAsync(string reservationId)
         {
-            var apiClient = _apaleoClientFactory.CreateBookingApi();
+            var apiClient = _apaleoClientsFactory.GetBookingApi();
 
             using (var requestResponse = await apiClient.BookingReservationsByIdGetWithHttpMessagesAsync(reservationId))
             {
