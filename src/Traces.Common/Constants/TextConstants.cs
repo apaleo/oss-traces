@@ -59,6 +59,8 @@ namespace Traces.Common.Constants
 
         public const string TracesEditButtonText = "Edit";
 
+        public const string TracesReservationIdNotAvailableText = "-";
+
         public const string ApaleoSetupLoadingText = "Loading...";
 
         public const string ApaleoSetupLoadingTitle = "Setting things up...";
@@ -80,8 +82,8 @@ namespace Traces.Common.Constants
 
         public const string ApaleoSetupButtonTryAgainText = "Try again";
 
-        public const string ApaleoOneMessageItemIncomplete =
-            "The requested item is incomplete. Creating is not possible.";
+        public const string ApaleoOneNavigationNotPossible =
+            "Navigation to reservation is not possible right now, there is some information missing.";
 
         public const string FetchingDataFromApaleoForTracesErrorMessage =
             "There was an issue creating this trace. Unfortunately there was an issue fetching the data from the apaleo services.";

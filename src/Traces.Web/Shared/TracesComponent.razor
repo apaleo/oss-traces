@@ -23,9 +23,9 @@
                 @if (IsReservationVisible)
                 {
                     <TableRowCell>
-                        @if (string.IsNullOrEmpty(trace.ReservationId))
+                        @if (string.IsNullOrWhiteSpace(trace.ReservationId))
                         {
-                            <span>-</span>
+                            <span>@TextConstants.TracesReservationIdNotAvailableText</span>
                         }
                         else
                         {

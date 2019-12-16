@@ -28,10 +28,10 @@ namespace Traces.Web.Services
         {
             try
             {
-                if (string.IsNullOrEmpty(traceItemModel.ReservationId) ||
-                    string.IsNullOrEmpty(traceItemModel.PropertyId))
+                if (string.IsNullOrWhiteSpace(traceItemModel.ReservationId) ||
+                    string.IsNullOrWhiteSpace(traceItemModel.PropertyId))
                 {
-                    throw new BusinessValidationException(TextConstants.ApaleoOneMessageItemIncomplete);
+                    throw new BusinessValidationException(TextConstants.ApaleoOneNavigationNotPossible);
                 }
 
                 var message = new ApaleoNavigationMessageModel
