@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Optional;
 using Traces.Common.Constants;
+using Traces.Common.Exceptions;
 using Traces.Web.Models;
 
 namespace Traces.Web.Services
@@ -23,14 +24,14 @@ namespace Traces.Web.Services
             _jsRuntime = runtime;
         }
 
-        public async Task<ResultModel<bool>> NavigateToReservation(TraceItemModel traceItemModel)
+        public async Task<ResultModel<bool>> NavigateToReservationAsync(TraceItemModel traceItemModel)
         {
             try
             {
                 if (string.IsNullOrEmpty(traceItemModel.ReservationId) ||
                     string.IsNullOrEmpty(traceItemModel.PropertyId))
                 {
-                    throw new ArgumentException(TextConstants.ApaleoOneMessageItemIncomplete);
+                    throw new BusinessValidationException(TextConstants.ApaleoOneMessageItemIncomplete);
                 }
 
                 var message = new ApaleoNavigationMessageModel
@@ -46,15 +47,14 @@ namespace Traces.Web.Services
 
                 return new ResultModel<bool>
                 {
-                    Result = Option.Some(true),
+                    Result = true.Some(),
                     Success = true
                 };
             }
-            catch (ArgumentException e)
+            catch (BusinessValidationException e)
             {
                 return new ResultModel<bool>
                 {
-                    Result = Option.None<bool>(),
                     Success = false,
                     ErrorMessage = e.Message.Some()
                 };

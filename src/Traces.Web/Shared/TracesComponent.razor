@@ -1,7 +1,6 @@
 @using Traces.Common.Constants
 @using Traces.Web.Models
 @using Traces.Web.Services
-@inject IApaleoOneService ApaleoOneService 
 
 <h4 class="mt-2">@Title</h4>
 
@@ -70,6 +69,9 @@
 
     [Parameter]
     public EventCallback<TraceItemModel> OnCompleteClick { get; set; }
+    
+    [Parameter]
+    public EventCallback<TraceItemModel> OnNavigateClick { get; set; }
 
     [Parameter]
     public string Title { get; set; }
@@ -111,6 +113,6 @@
 
     private async Task OnNavigate(TraceItemModel trace)
     {
-        await ApaleoOneService.NavigateToReservation(trace);
+        await OnNavigateClick.InvokeAsync(trace);
     }
 }

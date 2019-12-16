@@ -25,8 +25,9 @@ namespace Traces.Web.ViewModels
             IToastService toastService,
             NavigationManager navigationManager,
             IRequestContext requestContext,
-            IHttpContextAccessor httpContextAccessor)
-            : base(traceModifierService, toastService, httpContextAccessor, requestContext)
+            IHttpContextAccessor httpContextAccessor,
+            IApaleoOneService apaleoOneService)
+            : base(traceModifierService, toastService, httpContextAccessor, requestContext, apaleoOneService)
         {
             _navigationManager = Check.NotNull(navigationManager, nameof(navigationManager));
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));

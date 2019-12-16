@@ -5,6 +5,6 @@ namespace Traces.Web.Services
 {
     public interface IApaleoOneService
     {
-        Task<ResultModel<bool>> NavigateToReservation(TraceItemModel traceItemModel);
+        Task<ResultModel<bool>> NavigateToReservationAsync(TraceItemModel traceItemModel);
     }
 }
