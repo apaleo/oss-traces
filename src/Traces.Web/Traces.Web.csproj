@@ -22,4 +22,8 @@
       <PackageReference Include="SumoLogic.Logging.NLog" Version="1.0.1.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\js\iframe-resizer" />
+    </ItemGroup>
+
 </Project>
