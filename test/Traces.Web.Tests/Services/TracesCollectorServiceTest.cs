@@ -34,7 +34,7 @@ namespace Traces.Web.Tests.Services
         private const int ThirdTraceId = 3;
         private const string ThirdTraceTitle = "ThirdTraceTitle";
         private const string ThirdTraceDescription = "ThirdTraceDescription";
-        private const TraceStateEnum ThirdTraceState = TraceStateEnum.Obsolete;
+        private const TraceStateEnum ThirdTraceState = TraceStateEnum.Completed;
 
         private readonly LocalDate _firstTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
         private readonly LocalDate _secondTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;

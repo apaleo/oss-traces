@@ -103,7 +103,7 @@ namespace Traces.Core.Services
         {
             var todayDate = LocalDate.FromDateTime(DateTime.Today);
             var traces = await _traceRepository.GetAllTracesForTenantAsync(t =>
-                (t.State == TraceStateEnum.Active || t.State == TraceStateEnum.Obsolete) &&
+                t.State == TraceStateEnum.Active &&
                 t.DueDate < todayDate);
 
             return ConvertToTraceDto(traces);
@@ -115,7 +115,7 @@ namespace Traces.Core.Services
 
             var todayDate = LocalDate.FromDateTime(DateTime.Today);
             var overdueTracesForProperty = await _traceRepository.GetAllTracesForTenantAsync(t =>
-                (t.State == TraceStateEnum.Active || t.State == TraceStateEnum.Obsolete) &&
+                t.State == TraceStateEnum.Active &&
                 t.DueDate < todayDate &&
                 t.PropertyId == propertyId);
 
@@ -128,7 +128,7 @@ namespace Traces.Core.Services
 
             var todayDate = LocalDate.FromDateTime(DateTime.Today);
             var overdueTracesForReservation = await _traceRepository.GetAllTracesForTenantAsync(t =>
-                (t.State == TraceStateEnum.Active || t.State == TraceStateEnum.Obsolete) &&
+                t.State == TraceStateEnum.Active &&
                 t.DueDate < todayDate &&
                 t.ReservationId == reservationId);
 
@@ -248,7 +248,7 @@ namespace Traces.Core.Services
             var trace = await _traceRepository.GetAsync(id);
 
             trace.CompletedDate = null;
-            trace.State = trace.DueDate < LocalDate.FromDateTime(DateTime.Today) ? TraceStateEnum.Obsolete : TraceStateEnum.Active;
+            trace.State = TraceStateEnum.Active;
 
             await _traceRepository.SaveAsync();
 
