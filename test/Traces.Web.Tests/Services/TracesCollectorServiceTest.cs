@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NodaTime;
 using NodaTime.Extensions;
@@ -43,12 +44,13 @@ namespace Traces.Web.Tests.Services
         private readonly DateTime _testToDate = DateTime.Today.AddDays(1);
 
         private readonly Mock<ITraceService> _traceServiceMock;
+        private readonly Mock<ILogger<TracesCollectorService>> _loggerMock = new Mock<ILogger<TracesCollectorService>>();
         private readonly ITracesCollectorService _tracesCollectorService;
 
         public TracesCollectorServiceTest()
         {
             _traceServiceMock = MockRepository.Create<ITraceService>();
-            _tracesCollectorService = new TracesCollectorService(_traceServiceMock.Object);
+            _tracesCollectorService = new TracesCollectorService(_traceServiceMock.Object, _loggerMock.Object);
         }
 
         [Fact]

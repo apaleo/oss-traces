@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NodaTime.Extensions;
 using Optional;
@@ -20,12 +21,13 @@ namespace Traces.Web.Tests.Services
     {
         private readonly Mock<ITraceService> _traceServiceMock;
         private readonly ITraceModifierService _traceModifierService;
+        private readonly Mock<ILogger<TraceModifierService>> _loggerMock = new Mock<ILogger<TraceModifierService>>();
 
         public TraceModifierServiceTest()
         {
             _traceServiceMock = MockRepository.Create<ITraceService>();
 
-            _traceModifierService = new TraceModifierService(_traceServiceMock.Object);
+            _traceModifierService = new TraceModifierService(_traceServiceMock.Object, _loggerMock.Object);
         }
 
         [Fact]
