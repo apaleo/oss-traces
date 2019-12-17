@@ -19,7 +19,7 @@ namespace Traces.Web.Models
             {
                 Title = Title,
                 Description = Description,
-                DueDate = DueDate.HasValue ? DueDate.Value : DateTime.MinValue
+                DueDate = DueDate ?? DateTime.MinValue
             };
 
         public ReplaceTraceItemModel GetReplaceTraceItemModel()
@@ -28,7 +28,7 @@ namespace Traces.Web.Models
                 Id = Id,
                 Title = Title,
                 Description = Description,
-                DueDate = DueDate.HasValue ? DueDate.Value : DateTime.MinValue
+                DueDate = DueDate ?? DateTime.MinValue
             };
 
         public void ClearCurrentState()

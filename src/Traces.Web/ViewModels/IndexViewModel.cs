@@ -1,6 +1,6 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Exceptions;
@@ -12,14 +12,17 @@ namespace Traces.Web.ViewModels
     public class IndexViewModel : BaseViewModel
     {
         private readonly IApaleoSetupService _apaleoSetupService;
+        private readonly ILogger _logger;
 
         public IndexViewModel(
             IApaleoSetupService apaleoSetupService,
             IHttpContextAccessor httpContextAccessor,
-            IRequestContext requestContext)
+            IRequestContext requestContext,
+            ILogger<IndexViewModel> logger)
             : base(httpContextAccessor, requestContext)
         {
             _apaleoSetupService = Check.NotNull(apaleoSetupService, nameof(apaleoSetupService));
+            _logger = Check.NotNull(logger, nameof(logger));
         }
 
         public bool IsLoading { get; private set; }
@@ -49,12 +52,13 @@ namespace Traces.Web.ViewModels
                 Message = TextConstants.ApaleoSetupSuccessMessage;
                 ButtonText = TextConstants.ApaleoSetupButtonNavigateToApaleoText;
             }
-            catch (BusinessValidationException)
+            catch (BusinessValidationException ex)
             {
                 IsSuccess = false;
                 Title = TextConstants.ApaleoSetupErrorTitle;
                 Message = TextConstants.ApaleoSetupErrorMessage;
                 ButtonText = TextConstants.ApaleoSetupButtonTryAgainText;
+                _logger.LogError(ex, $"{nameof(IndexViewModel)} There was an issue while trying to setup the traces UI integrations");
             }
 
             IsLoading = false;

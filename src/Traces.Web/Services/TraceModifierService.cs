@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using NodaTime.Extensions;
 using Optional;
-using Traces.Common.Enums;
 using Traces.Common.Exceptions;
 using Traces.Common.Utils;
 using Traces.Core.Models;
@@ -14,10 +14,12 @@ namespace Traces.Web.Services
     public class TraceModifierService : ITraceModifierService
     {
         private readonly ITraceService _traceService;
+        private readonly ILogger _logger;
 
-        public TraceModifierService(ITraceService traceService)
+        public TraceModifierService(ITraceService traceService, ILogger<TraceModifierService> logger)
         {
             _traceService = Check.NotNull(traceService, nameof(traceService));
+            _logger = Check.NotNull(logger, nameof(logger));
         }
 
         public async Task<ResultModel<bool>> MarkTraceAsCompleteAsync(int id)
@@ -32,13 +34,15 @@ namespace Traces.Web.Services
                     Success = true
                 };
             }
-            catch (BusinessValidationException e)
+            catch (BusinessValidationException ex)
             {
+                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(MarkTraceAsCompleteAsync)} - Exception while trying to mark trace as complete with Id {id}");
+
                 return new ResultModel<bool>
                 {
                     Result = Option.None<bool>(),
                     Success = false,
-                    ErrorMessage = e.Message.Some()
+                    ErrorMessage = ex.Message.Some()
                 };
             }
         }
@@ -66,12 +70,14 @@ namespace Traces.Web.Services
                     Success = true
                 };
             }
-            catch (BusinessValidationException e)
+            catch (BusinessValidationException ex)
             {
+                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(CreateTraceAsync)} - Exception while trying to create trace");
+
                 return new ResultModel<TraceItemModel>
                 {
                     Success = false,
-                    ErrorMessage = e.Message.Some()
+                    ErrorMessage = ex.Message.Some()
                 };
             }
         }
@@ -98,12 +104,14 @@ namespace Traces.Web.Services
                     Success = true
                 };
             }
-            catch (BusinessValidationException e)
+            catch (BusinessValidationException ex)
             {
+                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(CreateTraceWithReservationIdAsync)} - Exception while trying to create reservation for reservation with Id {createTraceItemModel.ReservationId}");
+
                 return new ResultModel<TraceItemModel>
                 {
                     Success = false,
-                    ErrorMessage = e.Message.Some()
+                    ErrorMessage = ex.Message.Some()
                 };
             }
         }
@@ -127,12 +135,14 @@ namespace Traces.Web.Services
                     Result = replaceResult.Some()
                 };
             }
-            catch (BusinessValidationException e)
+            catch (BusinessValidationException ex)
             {
+                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(ReplaceTraceAsync)} - Exception while trying to replace trace with Id {replaceTraceItemModel.Id}");
+
                 return new ResultModel<bool>
                 {
                     Success = false,
-                    ErrorMessage = e.Message.Some()
+                    ErrorMessage = ex.Message.Some()
                 };
             }
         }
@@ -149,12 +159,14 @@ namespace Traces.Web.Services
                     Success = true
                 };
             }
-            catch (BusinessValidationException e)
+            catch (BusinessValidationException ex)
             {
+                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(DeleteTraceAsync)} - Exception while deleting trace with id {id}");
+
                 return new ResultModel<bool>
                 {
                     Success = false,
-                    ErrorMessage = e.Message.Some()
+                    ErrorMessage = ex.Message.Some()
                 };
             }
         }

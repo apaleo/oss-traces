@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Optional;
 using Traces.Common.Exceptions;
 using Traces.Common.Utils;
@@ -15,10 +16,12 @@ namespace Traces.Web.Services
     public class TracesCollectorService : ITracesCollectorService
     {
         private readonly ITraceService _traceService;
+        private readonly ILogger _logger;
 
-        public TracesCollectorService(ITraceService traceService)
+        public TracesCollectorService(ITraceService traceService, ILogger<TracesCollectorService> logger)
         {
             _traceService = Check.NotNull(traceService, nameof(traceService));
+            _logger = Check.NotNull(logger, nameof(logger));
         }
 
         public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetTracesAsync(DateTime from, DateTime to)
@@ -31,6 +34,7 @@ namespace Traces.Web.Services
             }
             catch (BusinessValidationException e)
             {
+                _logger.LogWarning(e, $"{nameof(TracesCollectorService)}.{nameof(GetTracesAsync)} Exception while trying to get all traces for account from {from} to {to}");
                 return FailModelWithErrorMessage(e.Message);
             }
         }
@@ -43,9 +47,10 @@ namespace Traces.Web.Services
 
                 return SuccessModelFromTraceDtoList(overdueTraces);
             }
-            catch (BusinessValidationException e)
+            catch (BusinessValidationException ex)
             {
-                return FailModelWithErrorMessage(e.Message);
+                _logger.LogWarning(ex, $"{nameof(TracesCollectorService)}.{nameof(GetOverdueTracesAsync)} Exception while trying to get overdue traces for account");
+                return FailModelWithErrorMessage(ex.Message);
             }
         }
 
@@ -57,9 +62,10 @@ namespace Traces.Web.Services
 
                 return SuccessModelFromTraceDtoList(traceDtos);
             }
-            catch (BusinessValidationException e)
+            catch (BusinessValidationException ex)
             {
-                return FailModelWithErrorMessage(e.Message);
+                _logger.LogWarning(ex, $"{nameof(TracesCollectorService)}.{nameof(GetTracesForPropertyAsync)} - Exception while trying to get traces for property {propertyId} from {from} to {to}");
+                return FailModelWithErrorMessage(ex.Message);
             }
         }
 
@@ -71,9 +77,10 @@ namespace Traces.Web.Services
 
                 return SuccessModelFromTraceDtoList(overdueTraces);
             }
-            catch (BusinessValidationException e)
+            catch (BusinessValidationException ex)
             {
-                return FailModelWithErrorMessage(e.Message);
+                _logger.LogWarning(ex, $"{nameof(TracesCollectorService)}.{nameof(GetOverdueTracesForPropertyAsync)} - Exception while trying to get overdue traces for property with Id {propertyId}");
+                return FailModelWithErrorMessage(ex.Message);
             }
         }
 
@@ -85,9 +92,10 @@ namespace Traces.Web.Services
 
                 return SuccessModelFromTraceDtoList(traceDtos);
             }
-            catch (BusinessValidationException e)
+            catch (BusinessValidationException ex)
             {
-                return FailModelWithErrorMessage(e.Message);
+                _logger.LogWarning(ex, $"{nameof(TracesCollectorService)}.{nameof(GetTracesForReservationAsync)} - Exception while trying to get traces for reservation with Id {reservationId} and dates from {from} to {to}");
+                return FailModelWithErrorMessage(ex.Message);
             }
         }
 
@@ -99,9 +107,10 @@ namespace Traces.Web.Services
 
                 return SuccessModelFromTraceDtoList(overdueTraces);
             }
-            catch (BusinessValidationException e)
+            catch (BusinessValidationException ex)
             {
-                return FailModelWithErrorMessage(e.Message);
+                _logger.LogWarning(ex, $"{nameof(TracesCollectorService)}.{nameof(GetOverdueTracesForReservationAsync)} - Exception while trying to get overdue traces for reservation with Id {reservationId}");
+                return FailModelWithErrorMessage(ex.Message);
             }
         }
 

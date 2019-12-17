@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Traces.Common.Constants
 {
     public static class ApaleoOneConstants
