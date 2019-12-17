@@ -17,7 +17,7 @@
     <Field>
         <FieldLabel>Due date</FieldLabel>
         <FieldBody>
-            <DateEdit @bind-Date="@EditTraceDialogVm.DueDate"/>
+            <DateEdit @bind-Date="@EditTraceDialogVm.DueDate" Min="@DateTime.Today"/>
         </FieldBody>
     </Field>
     <ModalFooter>

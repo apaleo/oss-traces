@@ -48,7 +48,7 @@ namespace Traces.Web
 
             services.AddServerSideBlazor();
 
-            services.AddBlazorise()
+            services.AddBlazorise(options => { options.ChangeTextOnKeyPress = false; })
                 .AddBootstrapProviders()
                 .AddFontAwesomeIcons();
 
