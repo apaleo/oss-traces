@@ -30,12 +30,12 @@ namespace Traces.Core.Tests.Services
         private const TraceStateEnum TestActiveTraceState = TraceStateEnum.Active;
         private const string TestActivePropertyId = "PROA";
 
-        private const int TestObsoleteTraceId = 2;
-        private const string TestObsoleteTraceDescription = "TestObsoleteDescription";
-        private const string TestObsoleteTraceTitle = "TestObsoleteTitle";
-        private const TraceStateEnum TestObsoleteTraceState = TraceStateEnum.Obsolete;
-        private const string TestObsoletePropertyId = "PROO";
-        private const string TestObsoleteReservationId = "RESO";
+        private const int TestOverdueTraceId = 2;
+        private const string TestOverdueTraceDescription = "TestObsoleteDescription";
+        private const string TestOverdueTraceTitle = "TestObsoleteTitle";
+        private const TraceStateEnum TestOverdueTraceState = TraceStateEnum.Active;
+        private const string TestOverduePropertyId = "PROO";
+        private const string TestOverdueReservationId = "RESO";
 
         private const int TestCompletedTraceId = 3;
         private const string TestCompletedTraceDescription = "TestCompletedDescription";
@@ -45,7 +45,7 @@ namespace Traces.Core.Tests.Services
         private const string TestCompletedReservationId = "RESC";
 
         private readonly LocalDate _testActiveTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
-        private readonly LocalDate _testObsoleteTraceDueDate = DateTime.UtcNow.Subtract(TimeSpan.FromDays(1)).ToLocalDateTime().Date;
+        private readonly LocalDate _testOverdueTraceDueDate = DateTime.UtcNow.Subtract(TimeSpan.FromDays(1)).ToLocalDateTime().Date;
         private readonly LocalDate _testCompletedTraceDueDate = DateTime.UtcNow.Add(TimeSpan.FromHours(1)).ToLocalDateTime().Date;
         private readonly LocalDate _testCompletedDate = DateTime.UtcNow.ToLocalDateTime().Date;
         private readonly DateTime _testFromDate = DateTime.Today;
@@ -79,13 +79,13 @@ namespace Traces.Core.Tests.Services
 
             var testObsoleteTrace = new Trace
             {
-                Id = TestObsoleteTraceId,
-                Description = TestObsoleteTraceDescription,
-                State = TestObsoleteTraceState,
-                Title = TestObsoleteTraceTitle,
-                DueDate = _testObsoleteTraceDueDate,
-                PropertyId = TestObsoletePropertyId,
-                ReservationId = TestObsoleteReservationId
+                Id = TestOverdueTraceId,
+                Description = TestOverdueTraceDescription,
+                State = TestOverdueTraceState,
+                Title = TestOverdueTraceTitle,
+                DueDate = _testOverdueTraceDueDate,
+                PropertyId = TestOverduePropertyId,
+                ReservationId = TestOverdueReservationId
             };
 
             var testCompletedTrace = new Trace
@@ -126,14 +126,14 @@ namespace Traces.Core.Tests.Services
             result[0].ReservationId.HasValue.Should().BeFalse();
 
             // Test second element is equivalent to trace testObsoleteTrace
-            result[1].Id.Should().Be(TestObsoleteTraceId);
-            result[1].Title.Should().Be(TestObsoleteTraceTitle);
-            result[1].Description.ValueOrFailure().Should().Be(TestObsoleteTraceDescription);
-            result[1].State.Should().Be(TestObsoleteTraceState);
-            result[1].DueDate.Should().Be(_testObsoleteTraceDueDate);
+            result[1].Id.Should().Be(TestOverdueTraceId);
+            result[1].Title.Should().Be(TestOverdueTraceTitle);
+            result[1].Description.ValueOrFailure().Should().Be(TestOverdueTraceDescription);
+            result[1].State.Should().Be(TestOverdueTraceState);
+            result[1].DueDate.Should().Be(_testOverdueTraceDueDate);
             result[1].CompletedDate.HasValue.Should().BeFalse();
-            result[1].PropertyId.Should().Be(TestObsoletePropertyId);
-            result[1].ReservationId.ValueOrFailure().Should().Be(TestObsoleteReservationId);
+            result[1].PropertyId.Should().Be(TestOverduePropertyId);
+            result[1].ReservationId.ValueOrFailure().Should().Be(TestOverdueReservationId);
 
             // Test second element is equivalent to trace testCompletedTrace
             result[2].Id.Should().Be(TestCompletedTraceId);
@@ -161,13 +161,13 @@ namespace Traces.Core.Tests.Services
 
             var testObsoleteTrace = new Trace
             {
-                Id = TestObsoleteTraceId,
-                Description = TestObsoleteTraceDescription,
+                Id = TestOverdueTraceId,
+                Description = TestOverdueTraceDescription,
                 State = TestActiveTraceState,
-                Title = TestObsoleteTraceTitle,
-                DueDate = _testObsoleteTraceDueDate,
-                PropertyId = TestObsoletePropertyId,
-                ReservationId = TestObsoleteReservationId
+                Title = TestOverdueTraceTitle,
+                DueDate = _testOverdueTraceDueDate,
+                PropertyId = TestOverduePropertyId,
+                ReservationId = TestOverdueReservationId
             };
 
             var testCompletedTrace = new Trace
@@ -208,14 +208,14 @@ namespace Traces.Core.Tests.Services
             result[0].ReservationId.HasValue.Should().BeFalse();
 
             // Test second element is equivalent to trace testObsoleteTrace
-            result[1].Id.Should().Be(TestObsoleteTraceId);
-            result[1].Title.Should().Be(TestObsoleteTraceTitle);
-            result[1].Description.ValueOrFailure().Should().Be(TestObsoleteTraceDescription);
+            result[1].Id.Should().Be(TestOverdueTraceId);
+            result[1].Title.Should().Be(TestOverdueTraceTitle);
+            result[1].Description.ValueOrFailure().Should().Be(TestOverdueTraceDescription);
             result[1].State.Should().Be(TestActiveTraceState);
-            result[1].DueDate.Should().Be(_testObsoleteTraceDueDate);
+            result[1].DueDate.Should().Be(_testOverdueTraceDueDate);
             result[1].CompletedDate.HasValue.Should().BeFalse();
-            result[1].PropertyId.Should().Be(TestObsoletePropertyId);
-            result[1].ReservationId.ValueOrFailure().Should().Be(TestObsoleteReservationId);
+            result[1].PropertyId.Should().Be(TestOverduePropertyId);
+            result[1].ReservationId.ValueOrFailure().Should().Be(TestOverdueReservationId);
 
             // Test second element is equivalent to trace testCompletedTrace
             result[2].Id.Should().Be(TestCompletedTraceId);
@@ -378,7 +378,7 @@ namespace Traces.Core.Tests.Services
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
                 .ReturnsAsync(false);
 
-            var result = await _traceService.GetTraceAsync(TestObsoleteTraceId);
+            var result = await _traceService.GetTraceAsync(TestOverdueTraceId);
 
             result.HasValue.Should().BeFalse();
         }
@@ -463,8 +463,8 @@ namespace Traces.Core.Tests.Services
         {
             var replaceTraceDto = new ReplaceTraceDto
             {
-                Description = TestObsoleteTraceDescription.Some(),
-                Title = TestObsoleteTraceTitle,
+                Description = TestOverdueTraceDescription.Some(),
+                Title = TestOverdueTraceTitle,
                 DueDate = LocalDate.FromDateTime(DateTime.Today)
             };
 
@@ -492,8 +492,8 @@ namespace Traces.Core.Tests.Services
         {
             var replaceTraceDto = new ReplaceTraceDto
             {
-                Description = TestObsoleteTraceDescription.Some(),
-                DueDate = _testObsoleteTraceDueDate
+                Description = TestOverdueTraceDescription.Some(),
+                DueDate = _testOverdueTraceDueDate
             };
 
             var result = await Assert.ThrowsAsync<BusinessValidationException>(() =>
@@ -508,15 +508,15 @@ namespace Traces.Core.Tests.Services
             var replaceTraceDto = new ReplaceTraceDto
             {
                 Title = TestActiveTraceTitle,
-                Description = TestObsoleteTraceDescription.Some()
+                Description = TestOverdueTraceDescription.Some()
             };
 
             var result = await Assert.ThrowsAsync<BusinessValidationException>(() =>
-                _traceService.ReplaceTraceAsync(TestObsoleteTraceId, replaceTraceDto));
+                _traceService.ReplaceTraceAsync(TestOverdueTraceId, replaceTraceDto));
 
             result.Message.Should()
                 .Be(
-                    $"Trace with id {TestObsoleteTraceId} cannot be updated, the replacement must have a title and a due date in the future.");
+                    $"Trace with id {TestOverdueTraceId} cannot be updated, the replacement must have a title and a due date in the future.");
         }
 
         [Fact]
@@ -525,16 +525,16 @@ namespace Traces.Core.Tests.Services
             var replaceTraceDto = new ReplaceTraceDto
             {
                 Title = TestActiveTraceTitle,
-                Description = TestObsoleteTraceDescription.Some(),
+                Description = TestOverdueTraceDescription.Some(),
                 DueDate = LocalDate.FromDateTime(DateTime.Today.AddDays(-1))
             };
 
             var result = await Assert.ThrowsAsync<BusinessValidationException>(() =>
-                _traceService.ReplaceTraceAsync(TestObsoleteTraceId, replaceTraceDto));
+                _traceService.ReplaceTraceAsync(TestOverdueTraceId, replaceTraceDto));
 
             result.Message.Should()
                 .Be(
-                    $"Trace with id {TestObsoleteTraceId} cannot be updated, the replacement must have a title and a due date in the future.");
+                    $"Trace with id {TestOverdueTraceId} cannot be updated, the replacement must have a title and a due date in the future.");
         }
 
         [Fact]
@@ -617,13 +617,13 @@ namespace Traces.Core.Tests.Services
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
                 .ReturnsAsync(true);
 
-            _traceRepositoryMock.Setup(x => x.DeleteAsync(It.Is<int>(i => i == TestObsoleteTraceId)))
+            _traceRepositoryMock.Setup(x => x.DeleteAsync(It.Is<int>(i => i == TestOverdueTraceId)))
                 .ReturnsAsync(true);
 
             _traceRepositoryMock.Setup(x => x.SaveAsync())
                 .Returns(Task.CompletedTask);
 
-            var result = await _traceService.DeleteTraceAsync(TestObsoleteTraceId);
+            var result = await _traceService.DeleteTraceAsync(TestOverdueTraceId);
             result.Should().BeTrue();
         }
 
@@ -635,9 +635,9 @@ namespace Traces.Core.Tests.Services
 
             var result =
                 await Assert.ThrowsAsync<BusinessValidationException>(() =>
-                    _traceService.DeleteTraceAsync(TestObsoleteTraceId));
+                    _traceService.DeleteTraceAsync(TestOverdueTraceId));
 
-            result.Message.Should().Be($"The trace with id {TestObsoleteTraceId} could not be found.");
+            result.Message.Should().Be($"The trace with id {TestOverdueTraceId} could not be found.");
         }
 
         [Fact]
