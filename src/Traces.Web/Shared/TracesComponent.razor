@@ -1,3 +1,4 @@
+@using Humanizer
 @using Traces.Common.Constants
 @using Traces.Web.Models
 
@@ -39,7 +40,7 @@
                     }
                     else
                     {
-                        @trace.AssignedRole
+                        @trace.AssignedRole.Humanize()
                     }
                 </TableRowCell>
                 <TableRowCell class="fit">
