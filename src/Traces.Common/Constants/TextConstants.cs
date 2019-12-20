@@ -30,16 +30,19 @@ namespace Traces.Common.Constants
 
         public const string EditTraceButtonText = "Update";
 
-        public const string UpcomingTracesText = "Upcoming tasks";
-
         public const string OverdueTracesTitleText = "Overdue";
 
         public const string TracesAddButtonText = "Add";
 
-        public const string UpcomingTracesEmptyText =
-            "There are currently no upcoming tasks. You can create new ones with the Add button.";
-
         public const string TracesDeleteButtonText = "Delete";
+
+        public const string TracesEditDialogTitleText = "Title";
+
+        public const string TracesEditDialogDescriptionText = "Description";
+
+        public const string TracesEditDialogDueDateText = "Due date";
+
+        public const string TracesEditDialogRoleText = "Role";
 
         public const string TracesTableTitleText = "Title";
 
