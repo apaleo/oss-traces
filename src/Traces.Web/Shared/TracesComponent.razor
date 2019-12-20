@@ -1,3 +1,4 @@
+@using Humanizer
 @using Traces.Common.Constants
 @using Traces.Web.Models
 
@@ -24,7 +25,7 @@
                     <TableRowCell>
                         @if (string.IsNullOrWhiteSpace(trace.ReservationId))
                         {
-                            <span>@TextConstants.TracesReservationIdNotAvailableText</span>
+                            <span>&mdash;</span>
                         }
                         else
                         {
@@ -32,6 +33,16 @@
                         }
                     </TableRowCell>
                 }
+                <TableRowCell>
+                    @if (string.IsNullOrWhiteSpace(trace.AssignedRole))
+                    {
+                        <span>&mdash;</span>
+                    }
+                    else
+                    {
+                        @trace.AssignedRole.Humanize()
+                    }
+                </TableRowCell>
                 <TableRowCell class="fit">
                     <div class="d-flex align-items-start">
                         <Button class="mr-2" Color="Color.Primary" IsLoading="@IsLoading" Clicked="@(() => OnComplete(trace))">

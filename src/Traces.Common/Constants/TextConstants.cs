@@ -30,16 +30,21 @@ namespace Traces.Common.Constants
 
         public const string EditTraceButtonText = "Update";
 
-        public const string UpcomingTracesText = "Upcoming tasks";
-
         public const string OverdueTracesTitleText = "Overdue";
 
         public const string TracesAddButtonText = "Add";
 
-        public const string UpcomingTracesEmptyText =
-            "There are currently no upcoming tasks. You can create new ones with the Add button.";
-
         public const string TracesDeleteButtonText = "Delete";
+
+        public const string TracesEditDialogTitleText = "Title";
+
+        public const string TracesEditDialogDescriptionText = "Description";
+
+        public const string TracesEditDialogDueDateText = "Due date";
+
+        public const string TracesEditDialogRoleText = "Role";
+
+        public const string TracesEditDialogNoRoleAssignedText = "No role assigned";
 
         public const string TracesTableTitleText = "Title";
 
@@ -51,6 +56,8 @@ namespace Traces.Common.Constants
 
         public const string TracesTableReservationText = "Reservation";
 
+        public const string TracesTableAssignedRoleText = "Assigned role";
+
         public const string TracesLoadedUntilTextFormat = "Tasks loaded until {0}";
 
         public const string TracesLoadMoreButtonTextFormat = "Load tasks for the next {0} days";
@@ -58,8 +65,6 @@ namespace Traces.Common.Constants
         public const string TracesCompleteButtonText = "Mark as complete";
 
         public const string TracesEditButtonText = "Edit";
-
-        public const string TracesReservationIdNotAvailableText = "-";
 
         public const string ApaleoSetupLoadingText = "Loading...";
 

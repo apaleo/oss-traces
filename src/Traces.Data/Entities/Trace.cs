@@ -25,5 +25,7 @@ namespace Traces.Data.Entities
         public string PropertyId { get; set; }
 
         public string ReservationId { get; set; }
+
+        public string AssignedRole { get; set; }
     }
 }

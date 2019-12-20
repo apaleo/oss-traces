@@ -1,23 +1,36 @@
+@using Humanizer
+@using Traces.Common.Constants
 @using Traces.Web.Models
 
 <Form>
     <Field>
-        <FieldLabel>Title</FieldLabel>
+        <FieldLabel>@TextConstants.TracesEditDialogTitleText</FieldLabel>
         <FieldBody>
             <TextEdit @bind-Text="@EditTraceDialogVm.Title"/>
         </FieldBody>
     </Field>
     <Field>
-        <FieldLabel>Description</FieldLabel>
+        <FieldLabel>@TextConstants.TracesEditDialogDescriptionText</FieldLabel>
         <FieldBody>
             <MemoEdit Rows="4" @bind-Text="@EditTraceDialogVm.Description"/>
         </FieldBody>
     </Field>
 
     <Field>
-        <FieldLabel>Due date</FieldLabel>
+        <FieldLabel>@TextConstants.TracesEditDialogDueDateText</FieldLabel>
         <FieldBody>
             <DateEdit @bind-Date="@EditTraceDialogVm.DueDate" Min="@DateTime.Today"/>
+        </FieldBody>
+    </Field>
+    <Field>
+        <FieldLabel>@TextConstants.TracesEditDialogRoleText</FieldLabel>
+        <FieldBody>
+            <SelectEdit @bind-SelectedValue="@EditTraceDialogVm.SelectedRole">
+                @foreach (var role in EditTraceDialogVm.Roles)
+                {
+                    <SelectItem Value="@role">@role.Humanize()</SelectItem>
+                }
+            </SelectEdit>
         </FieldBody>
     </Field>
     <ModalFooter>

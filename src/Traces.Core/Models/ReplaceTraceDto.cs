@@ -10,5 +10,7 @@ namespace Traces.Core.Models
         public Option<string> Description { get; set; }
 
         public LocalDate DueDate { get; set; }
+
+        public Option<string> AssignedRole { get; set; }
     }
 }

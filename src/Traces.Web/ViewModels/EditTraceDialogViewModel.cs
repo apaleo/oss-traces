@@ -1,9 +1,16 @@
 using System;
+using System.Collections.Generic;
+using Traces.Common.Constants;
 
 namespace Traces.Web.Models
 {
     public class EditTraceDialogViewModel
     {
+        public EditTraceDialogViewModel()
+        {
+            Roles = new List<string>();
+        }
+
         public int Id { get; set; }
 
         public string Title { get; set; }
@@ -12,14 +19,21 @@ namespace Traces.Web.Models
 
         public DateTime? DueDate { get; set; }
 
-        public bool IsReplace { get; set; }
+        public string SelectedRole { get; set; }
+
+        public List<string> Roles { get; }
 
         public CreateTraceItemModel GetCreateTraceItemModel()
             => new CreateTraceItemModel
             {
                 Title = Title,
                 Description = Description,
-                DueDate = DueDate ?? DateTime.MinValue
+                DueDate = DueDate ?? DateTime.MinValue,
+                AssignedRole =
+                    string.IsNullOrWhiteSpace(SelectedRole) ||
+                    SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText
+                        ? null
+                        : SelectedRole
             };
 
         public ReplaceTraceItemModel GetReplaceTraceItemModel()
@@ -28,7 +42,12 @@ namespace Traces.Web.Models
                 Id = Id,
                 Title = Title,
                 Description = Description,
-                DueDate = DueDate ?? DateTime.MinValue
+                DueDate = DueDate ?? DateTime.MinValue,
+                AssignedRole =
+                    string.IsNullOrWhiteSpace(SelectedRole) ||
+                    SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText
+                        ? null
+                        : SelectedRole
             };
 
         public void ClearCurrentState()
@@ -37,6 +56,7 @@ namespace Traces.Web.Models
             Title = string.Empty;
             Description = string.Empty;
             DueDate = null;
+            SelectedRole = string.Empty;
         }
     }
 }
