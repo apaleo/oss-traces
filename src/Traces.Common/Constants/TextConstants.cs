@@ -54,6 +54,8 @@ namespace Traces.Common.Constants
 
         public const string TracesTableReservationText = "Reservation";
 
+        public const string TracesTableAssignedRoleText = "Assigned role";
+
         public const string TracesLoadedUntilTextFormat = "Tasks loaded until {0}";
 
         public const string TracesLoadMoreButtonTextFormat = "Load tasks for the next {0} days";
@@ -63,6 +65,8 @@ namespace Traces.Common.Constants
         public const string TracesEditButtonText = "Edit";
 
         public const string TracesReservationIdNotAvailableText = "-";
+
+        public const string TracesRoleNotAssignedText = "-";
 
         public const string ApaleoSetupLoadingText = "Loading...";
 
