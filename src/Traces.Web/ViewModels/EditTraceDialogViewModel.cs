@@ -29,7 +29,11 @@ namespace Traces.Web.Models
                 Title = Title,
                 Description = Description,
                 DueDate = DueDate ?? DateTime.MinValue,
-                AssignedRole = SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText ? null : SelectedRole
+                AssignedRole =
+                    string.IsNullOrWhiteSpace(SelectedRole) ||
+                    SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText
+                        ? null
+                        : SelectedRole
             };
 
         public ReplaceTraceItemModel GetReplaceTraceItemModel()
@@ -39,7 +43,11 @@ namespace Traces.Web.Models
                 Title = Title,
                 Description = Description,
                 DueDate = DueDate ?? DateTime.MinValue,
-                AssignedRole = SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText ? null : SelectedRole
+                AssignedRole =
+                    string.IsNullOrWhiteSpace(SelectedRole) ||
+                    SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText
+                        ? null
+                        : SelectedRole
             };
 
         public void ClearCurrentState()
