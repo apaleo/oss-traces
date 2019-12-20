@@ -1,3 +1,4 @@
+@using Humanizer
 @using Traces.Common.Constants
 @using Traces.Web.Models
 
@@ -27,7 +28,7 @@
             <SelectEdit @bind-SelectedValue="@EditTraceDialogVm.SelectedRole">
                 @foreach (var role in EditTraceDialogVm.Roles)
                 {
-                    <SelectItem Value="@role">@role</SelectItem>
+                    <SelectItem Value="@role">@role.Humanize()</SelectItem>
                 }
             </SelectEdit>
         </FieldBody>
