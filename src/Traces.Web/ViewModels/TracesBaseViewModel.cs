@@ -17,18 +17,21 @@ namespace Traces.Web.ViewModels
     {
         private readonly IToastService _toastService;
         private readonly IApaleoOneService _apaleoOneService;
+        private readonly IApaleoRolesCollectorService _apaleoRolesCollector;
 
         protected TracesBaseViewModel(
             ITraceModifierService traceModifierService,
             IToastService toastService,
             IHttpContextAccessor httpContextAccessor,
             IRequestContext requestContext,
-            IApaleoOneService apaleoOneService)
+            IApaleoOneService apaleoOneService,
+            IApaleoRolesCollectorService apaleoRolesCollector)
             : base(httpContextAccessor, requestContext)
         {
             TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
             _toastService = Check.NotNull(toastService, nameof(toastService));
             _apaleoOneService = Check.NotNull(apaleoOneService, nameof(apaleoOneService));
+            _apaleoRolesCollector = Check.NotNull(apaleoRolesCollector, nameof(apaleoRolesCollector));
 
             SortedGroupedTracesDictionary = new SortedDictionary<DateTime, List<TraceItemModel>>();
             OverdueTraces = new List<TraceItemModel>();
@@ -70,6 +73,8 @@ namespace Traces.Web.ViewModels
             await LoadOverdueTracesAsync();
 
             UpdateLoadedUntilText();
+
+            await LoadApaleoRolesAsync();
         }
 
         /// <summary>
@@ -170,6 +175,7 @@ namespace Traces.Web.ViewModels
             EditTraceDialogViewModel.Title = traceItemModel.Title;
             EditTraceDialogViewModel.Description = traceItemModel.Description;
             EditTraceDialogViewModel.DueDate = traceItemModel.DueDate;
+            EditTraceDialogViewModel.SelectedRole = traceItemModel.AssignedRole;
 
             EditTraceModalRef?.Show();
         }
@@ -270,6 +276,19 @@ namespace Traces.Web.ViewModels
             else if (OverdueTraces.Contains(trace))
             {
                 OverdueTraces.Remove(trace);
+            }
+        }
+
+        private async Task LoadApaleoRolesAsync()
+        {
+            var roles = await _apaleoRolesCollector.GetRolesAsync();
+
+            EditTraceDialogViewModel.Roles.Clear();
+
+            EditTraceDialogViewModel.Roles.Add(string.Empty);
+            foreach (var role in roles)
+            {
+                EditTraceDialogViewModel.Roles.Add(role);
             }
         }
     }
