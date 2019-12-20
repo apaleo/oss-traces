@@ -18,7 +18,8 @@ namespace Traces.Web.Utils
                 State = dto.State,
                 DueDate = dto.DueDate.ToDateTimeUnspecified(),
                 PropertyId = dto.PropertyId,
-                ReservationId = dto.ReservationId.ValueOr(string.Empty)
+                ReservationId = dto.ReservationId.ValueOr(string.Empty),
+                AssignedRole = dto.AssignedRole.ValueOr(string.Empty)
             };
         }
     }

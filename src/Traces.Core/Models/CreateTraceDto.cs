@@ -14,5 +14,7 @@ namespace Traces.Core.Models
         public string PropertyId { get; set; }
 
         public Option<string> ReservationId { get; set; }
+
+        public Option<string> AssignedRole { get; set; }
     }
 }

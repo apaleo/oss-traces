@@ -18,5 +18,7 @@ namespace Traces.Web.Models
         public string PropertyId { get; set; }
 
         public string ReservationId { get; set; }
+
+        public string AssignedRole { get; set; }
     }
 }

@@ -11,5 +11,7 @@ namespace Traces.Web.Models
         public string Description { get; set; }
 
         public DateTime DueDate { get; set; }
+
+        public string AssignedRole { get; set; }
     }
 }
