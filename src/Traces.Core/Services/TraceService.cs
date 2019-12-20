@@ -164,7 +164,8 @@ namespace Traces.Core.Services
                 Title = createTraceDto.Title,
                 DueDate = createTraceDto.DueDate,
                 PropertyId = createTraceDto.PropertyId,
-                ReservationId = createTraceDto.ReservationId.ValueOrDefault()
+                ReservationId = createTraceDto.ReservationId.ValueOrDefault(),
+                AssignedRole = createTraceDto.AssignedRole.ValueOrDefault()
             };
 
             _traceRepository.Insert(trace);
@@ -213,6 +214,7 @@ namespace Traces.Core.Services
             trace.Description = replaceTraceDto.Description.ValueOrDefault();
             trace.Title = replaceTraceDto.Title;
             trace.DueDate = replaceTraceDto.DueDate;
+            trace.AssignedRole = replaceTraceDto.AssignedRole.ValueOrDefault();
 
             await _traceRepository.SaveAsync();
 
@@ -310,7 +312,8 @@ namespace Traces.Core.Services
             DueDate = trace.DueDate,
             Id = trace.Id,
             PropertyId = trace.PropertyId,
-            ReservationId = trace.ReservationId.SomeNotNull()
+            ReservationId = trace.ReservationId.SomeNotNull(),
+            AssignedRole = trace.AssignedRole.SomeNotNull()
         };
     }
 }
