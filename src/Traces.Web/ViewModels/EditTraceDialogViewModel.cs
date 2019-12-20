@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Traces.Common.Constants;
 
 namespace Traces.Web.Models
 {
@@ -28,7 +29,7 @@ namespace Traces.Web.Models
                 Title = Title,
                 Description = Description,
                 DueDate = DueDate ?? DateTime.MinValue,
-                AssignedRole = SelectedRole
+                AssignedRole = SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText ? null : SelectedRole
             };
 
         public ReplaceTraceItemModel GetReplaceTraceItemModel()
@@ -38,7 +39,7 @@ namespace Traces.Web.Models
                 Title = Title,
                 Description = Description,
                 DueDate = DueDate ?? DateTime.MinValue,
-                AssignedRole = string.IsNullOrWhiteSpace(SelectedRole) ? null : SelectedRole
+                AssignedRole = SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText ? null : SelectedRole
             };
 
         public void ClearCurrentState()

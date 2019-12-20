@@ -285,7 +285,9 @@ namespace Traces.Web.ViewModels
 
             EditTraceDialogViewModel.Roles.Clear();
 
-            EditTraceDialogViewModel.Roles.Add(string.Empty);
+            // This is required so the user can select a no role assigned option
+            EditTraceDialogViewModel.Roles.Add(TextConstants.TracesEditDialogNoRoleAssignedText);
+
             foreach (var role in roles)
             {
                 EditTraceDialogViewModel.Roles.Add(role);

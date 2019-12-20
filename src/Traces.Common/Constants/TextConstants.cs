@@ -44,6 +44,8 @@ namespace Traces.Common.Constants
 
         public const string TracesEditDialogRoleText = "Role";
 
+        public const string TracesEditDialogNoRoleAssignedText = "No role assigned";
+
         public const string TracesTableTitleText = "Title";
 
         public const string TracesTableDescriptionText = "Description";
