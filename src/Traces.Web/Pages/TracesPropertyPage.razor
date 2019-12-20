@@ -28,7 +28,8 @@
                     IsDueDateVisible="true"
                     OnCompleteClick="@TracesPropertyViewModel.CompleteTraceAsync"
                     OnDeleteClick="@TracesPropertyViewModel.DeleteItemAsync"
-                    OnEditClick="@TracesPropertyViewModel.ShowReplaceTraceModal"/>
+                    OnEditClick="@TracesPropertyViewModel.ShowReplaceTraceModal"
+                    OnNavigateClick="@TracesPropertyViewModel.NavigateToReservationAsync"/>
             </Table>
         </section>
     }
@@ -60,7 +61,7 @@
         </Table>
     }
 
-    <section>
+    <section class="pb-3">
         <p>@TracesPropertyViewModel.LoadedUntilDateMessage</p>
         <Button Color="Color.Primary" Clicked="@TracesPropertyViewModel.LoadNextDaysAsync">@string.Format(TextConstants.TracesLoadMoreButtonTextFormat, TracesPropertyViewModel.CurrentDayIncrease)</Button>
     </section>
