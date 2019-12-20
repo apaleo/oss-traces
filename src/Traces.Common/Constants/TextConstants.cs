@@ -66,10 +66,6 @@ namespace Traces.Common.Constants
 
         public const string TracesEditButtonText = "Edit";
 
-        public const string TracesReservationIdNotAvailableText = "-";
-
-        public const string TracesRoleNotAssignedText = "-";
-
         public const string ApaleoSetupLoadingText = "Loading...";
 
         public const string ApaleoSetupLoadingTitle = "Setting things up...";

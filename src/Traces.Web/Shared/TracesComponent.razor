@@ -25,7 +25,7 @@
                     <TableRowCell>
                         @if (string.IsNullOrWhiteSpace(trace.ReservationId))
                         {
-                            <span>@TextConstants.TracesReservationIdNotAvailableText</span>
+                            <span>&mdash;</span>
                         }
                         else
                         {
@@ -36,7 +36,7 @@
                 <TableRowCell>
                     @if (string.IsNullOrWhiteSpace(trace.AssignedRole))
                     {
-                        <span>@TextConstants.TracesRoleNotAssignedText</span>
+                        <span>&mdash;</span>
                     }
                     else
                     {
