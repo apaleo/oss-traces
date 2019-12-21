@@ -4,7 +4,10 @@
 @inject TracesPropertyViewModel TracesPropertyViewModel
 
 <div>
-    <Button class="mb-3" Color="Color.Primary" Clicked="@TracesPropertyViewModel.ShowCreateTraceModal">@TextConstants.TracesAddButtonText</Button>
+    <div class="mb-3">
+        <Button Color="Color.Primary" Clicked="@TracesPropertyViewModel.ShowCreateTraceModal">@TextConstants.TracesAddButtonText</Button>
+        <DatePicker Date="@TracesPropertyViewModel.CurrentFromDate" OnChange="@TracesPropertyViewModel.LoadDateAsync"/>
+    </div>
 
     @if (TracesPropertyViewModel.OverdueTraces != null && TracesPropertyViewModel.OverdueTraces.Any())
     {

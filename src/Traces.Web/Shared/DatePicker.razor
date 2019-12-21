@@ -1,0 +1,14 @@
+<Button Clicked="@SetToday">Today</Button>
+<DateEdit Min="@DateTime.Today" Date="Date" DateChanged="@OnChange"/>
+
+@code {
+    [Parameter]
+    public EventCallback<DateTime?> OnChange { get; set; }
+
+    [Parameter] public DateTime Date { get; set; }
+
+    private async Task SetToday()
+    {
+        await OnChange.InvokeAsync(DateTime.Today);
+    }
+}

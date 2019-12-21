@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Blazored.Toast.Services;
 using Blazorise;
 using Microsoft.AspNetCore.Http;
+using Traces.ApaleoClients.Booking.Models;
 using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Utils;
@@ -55,26 +56,41 @@ namespace Traces.Web.ViewModels
 
         public int CurrentDayIncrease { get; protected set; }
 
-        protected ITraceModifierService TraceModifierService { get; }
+        public DateTime CurrentFromDate { get; protected set; }
 
-        protected DateTime CurrentFromDate { get; set; }
+        protected ITraceModifierService TraceModifierService { get; }
 
         protected DateTime CurrentToDate { get; set; }
 
         public async Task LoadAsync()
         {
             await InitializeContextAsync();
-
-            // On initialization we just load from today to tomorrow
-            var from = DateTime.Today;
-            var to = DateTime.Today.AddDays(1);
-
-            await LoadTracesAsync(from, to);
-            await LoadOverdueTracesAsync();
-
-            UpdateLoadedUntilText();
-
             await LoadApaleoRolesAsync();
+
+            await LoadDateAsync(DateTime.Today);
+        }
+
+        public async Task LoadDateAsync(DateTime? date)
+        {
+            var from = date.GetValueOrDefault(DateTime.Today);
+
+            if (from >= DateTime.Today)
+            {
+                var to = from.AddDays(1);
+
+                await LoadTracesAsync(from, to);
+
+                if (from.Date == DateTime.Today)
+                {
+                    await LoadOverdueTracesAsync();
+                }
+                else
+                {
+                    OverdueTraces.Clear();
+                }
+
+                UpdateLoadedUntilText();
+            }
         }
 
         /// <summary>
