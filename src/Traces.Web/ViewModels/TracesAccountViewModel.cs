@@ -22,7 +22,13 @@ namespace Traces.Web.ViewModels
             IHttpContextAccessor httpContextAccessor,
             IApaleoOneService apaleoOneService,
             IApaleoRolesCollectorService apaleoRolesCollector)
-            : base(traceModifierService, toastService, httpContextAccessor, requestContext, apaleoOneService, apaleoRolesCollector)
+            : base(
+                traceModifierService,
+                toastService,
+                httpContextAccessor,
+                requestContext,
+                apaleoOneService,
+                apaleoRolesCollector)
         {
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
         }
@@ -57,6 +63,27 @@ namespace Traces.Web.ViewModels
                     () => throw new NotImplementedException());
 
                 ShowToastMessage(false, errorMessage);
+            }
+        }
+
+        public override async Task LoadFromDateAsync(DateTime from)
+        {
+            if (from >= DateTime.Today)
+            {
+                var to = from.AddDays(1);
+
+                await LoadTracesAsync(from, to);
+
+                if (from.Date == DateTime.Today)
+                {
+                    await LoadOverdueTracesAsync();
+                }
+                else
+                {
+                    OverdueTraces.Clear();
+                }
+
+                UpdateLoadedUntilText();
             }
         }
 

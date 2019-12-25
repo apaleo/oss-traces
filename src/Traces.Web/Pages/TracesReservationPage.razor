@@ -4,7 +4,10 @@
 @inject TracesReservationViewModel TracesReservationViewModel
 
 <div>
-    <Button class="mb-3" Color="Color.Primary" Clicked="@TracesReservationViewModel.ShowCreateTraceModal">@TextConstants.TracesAddButtonText</Button>
+    <div class="mb-3">
+        <Button Color="Color.Primary" Clicked="@TracesReservationViewModel.ShowCreateTraceModal">@TextConstants.TracesAddButtonText</Button>
+        <DatePicker Date="@TracesReservationViewModel.CurrentFromDate" OnChange="@TracesReservationViewModel.LoadFromDateAsync"/>
+    </div>
 
     @if (TracesReservationViewModel.OverdueTraces != null && TracesReservationViewModel.OverdueTraces.Any())
     {

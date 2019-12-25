@@ -3,6 +3,10 @@
 @using Traces.Web.ViewModels
 @inject TracesAccountViewModel TracesAccountViewModel
 
+<div class="mb-3">
+    <DatePicker Date="@TracesAccountViewModel.CurrentFromDate" OnChange="@TracesAccountViewModel.LoadFromDateAsync"/>
+</div>
+
 @if (TracesAccountViewModel.OverdueTraces != null && TracesAccountViewModel.OverdueTraces.Any())
 {
     <section class="pb-4">

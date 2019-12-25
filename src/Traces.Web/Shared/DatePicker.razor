@@ -1,14 +1,101 @@
-<Button Clicked="@SetToday">Today</Button>
-<DateEdit Min="@DateTime.Today" Date="Date" DateChanged="@OnChange"/>
+@using Traces.Common.Constants
+<style>
+    .date-picker input {
+    width:200px;
+    }
+
+    .date-picker {
+        
+    }
+
+</style>
+
+<div class="py-3 date-picker">
+    <div class="row no-gutters">
+        <Button Clicked="@SetToday">
+            @TextConstants.DatePickerSetTodayButtonText</Button>
+
+        <div class="row no-gutters">
+            <Button class="ml-1" Clicked="@PreviousWeek" IsDisabled="@IsPreviousWeekDisabled">
+                <i class="fa fa-angle-double-left"></i>
+            </Button>
+            <Button class="ml-1" Clicked="@PreviousDay" IsDisabled="@IsPreviousDayDisabled">
+                <i class="fa fa-angle-left"></i>
+            </Button>
+
+            <DateEdit class="ml-1" Min="@DateTime.Today" Date="@DatePickerDate" DateChanged="@OnDateChange"/>
+
+            <Button class="ml-1" Clicked="@NextDay">
+                <i class="fa fa-angle-right"></i>
+            </Button>
+            <Button class="ml-1" Clicked="@NextWeek">
+                <i class="fa fa-angle-double-right"></i>
+            </Button>
+        </div>
+    </div>
+    @if (IsPast)
+    {
+        <div class="text-danger mt-4 ml-3">
+            <i class="fa fa-exclamation-circle"></i>
+            @string.Format(TextConstants.DatePickerErrorDateText, DateTime.Today.ToShortDateString())
+        </div>
+    }
+</div>
 
 @code {
+
     [Parameter]
-    public EventCallback<DateTime?> OnChange { get; set; }
+    public EventCallback<DateTime> OnChange { get; set; }
 
-    [Parameter] public DateTime Date { get; set; }
+    [Parameter]
+    public DateTime Date
+    {
+        set => DatePickerDate = value;
+    }
 
+    private DateTime DatePickerDate { get; set; } = DateTime.Today;
+
+    private bool IsPast => DatePickerDate < DateTime.Today;
+    private bool IsPreviousDayDisabled => DatePickerDate.AddDays(-1) < DateTime.Today;
+    private bool IsPreviousWeekDisabled => DatePickerDate.AddDays(-7) < DateTime.Today;
+    
+    private async Task OnDateChange(DateTime? date)
+    {
+        DateTime newDate = date.GetValueOrDefault(DateTime.Today);
+
+        if (newDate >= DateTime.Today)
+        {
+            await OnChange.InvokeAsync(date.GetValueOrDefault(DateTime.Today));
+        }
+        else
+        {
+            Date = newDate;
+        }
+    }
+    
     private async Task SetToday()
     {
-        await OnChange.InvokeAsync(DateTime.Today);
+        await OnDateChange(DateTime.Today);
     }
+
+    private async Task NextDay()
+    {
+        await OnDateChange(DatePickerDate.AddDays(1));
+    }
+
+    private async Task NextWeek()
+    {
+        await OnDateChange(DatePickerDate.AddDays(7));
+    }
+
+    private async Task PreviousDay()
+    {
+        await OnDateChange(DatePickerDate.AddDays(-1));
+    }
+
+    private async Task PreviousWeek()
+    {
+        await OnDateChange(DatePickerDate.AddDays(-7));
+    }
+
 }

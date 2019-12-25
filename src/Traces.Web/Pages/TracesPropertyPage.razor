@@ -6,7 +6,7 @@
 <div>
     <div class="mb-3">
         <Button Color="Color.Primary" Clicked="@TracesPropertyViewModel.ShowCreateTraceModal">@TextConstants.TracesAddButtonText</Button>
-        <DatePicker Date="@TracesPropertyViewModel.CurrentFromDate" OnChange="@TracesPropertyViewModel.LoadDateAsync"/>
+        <DatePicker Date="@TracesPropertyViewModel.CurrentFromDate" OnChange="@TracesPropertyViewModel.LoadFromDateAsync"/>
     </div>
 
     @if (TracesPropertyViewModel.OverdueTraces != null && TracesPropertyViewModel.OverdueTraces.Any())
