@@ -10,7 +10,7 @@
             @if (IndexViewModel.IsSuccess)
             {
                 <!--This is not a Blazorise Button because we need to navigate outside of the application and Blazor intersects all navigations, but anchors with target="_blank"-->
-                <a href="https://app.apaleo.com/apps/BLUEPRINT-OSS-TRACES-CONNECT-TRACES" target="_self" class="btn btn-success btn-block" role="button" aria-pressed="true">@IndexViewModel.ButtonText</a>
+                <a href="@IndexViewModel.ApaleoRedirectUrl" target="_self" class="btn btn-success btn-block" role="button" aria-pressed="true">@IndexViewModel.ButtonText</a>
             }
             else
             {
