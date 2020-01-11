@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Blazored.Toast.Services;
 using Blazorise;
 using Microsoft.AspNetCore.Http;
-using Traces.ApaleoClients.Booking.Models;
 using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Utils;
