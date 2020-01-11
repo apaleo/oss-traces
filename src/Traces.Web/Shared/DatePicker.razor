@@ -12,10 +12,10 @@
             @TextConstants.DatePickerSetTodayButtonText</Button>
 
         <div class="row no-gutters">
-            <Button class="ml-1" Clicked="@PreviousWeekButtonOnClick" IsDisabled="@IsPreviousWeekButtonOnClickDisabled">
+            <Button class="ml-1" Clicked="@PreviousWeekButtonOnClick" IsDisabled="@IsPreviousWeekDisabled">
                 <i class="fa fa-angle-double-left"></i>
             </Button>
-            <Button class="ml-1" Clicked="@PreviousDayButtonOnClick" IsDisabled="@IsPreviousDayButtonOnClickDisabled">
+            <Button class="ml-1" Clicked="@PreviousDayButtonOnClick" IsDisabled="@IsPreviousDayDisabled">
                 <i class="fa fa-angle-left"></i>
             </Button>
 
@@ -52,8 +52,8 @@
     private DateTime DatePickerDate { get; set; } = DateTime.Today;
 
     private bool IsPast => DatePickerDate < DateTime.Today;
-    private bool IsPreviousDayButtonOnClickDisabled => DatePickerDate.AddDays(-1) < DateTime.Today;
-    private bool IsPreviousWeekButtonOnClickDisabled => DatePickerDate.AddDays(-7) < DateTime.Today;
+    private bool IsPreviousDayDisabled => DatePickerDate.AddDays(-1) < DateTime.Today;
+    private bool IsPreviousWeekDisabled => DatePickerDate.AddDays(-7) < DateTime.Today;
     
     private async Task OnDateChange(DateTime? date)
     {
