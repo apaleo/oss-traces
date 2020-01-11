@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Exceptions;
@@ -12,16 +13,19 @@ namespace Traces.Web.ViewModels
     public class IndexViewModel : BaseViewModel
     {
         private readonly IApaleoSetupService _apaleoSetupService;
+        private readonly IOptions<ApaleoConfig> _apaleoIntegrationConfig;
         private readonly ILogger _logger;
 
         public IndexViewModel(
             IApaleoSetupService apaleoSetupService,
             IHttpContextAccessor httpContextAccessor,
             IRequestContext requestContext,
+            IOptions<ApaleoConfig> apaleoIntegrationConfig,
             ILogger<IndexViewModel> logger)
             : base(httpContextAccessor, requestContext)
         {
             _apaleoSetupService = Check.NotNull(apaleoSetupService, nameof(apaleoSetupService));
+            _apaleoIntegrationConfig = Check.NotNull(apaleoIntegrationConfig, nameof(apaleoIntegrationConfig));
             _logger = Check.NotNull(logger, nameof(logger));
         }
 
@@ -34,6 +38,8 @@ namespace Traces.Web.ViewModels
         public string ButtonText { get; private set; }
 
         public bool IsSuccess { get; private set; }
+
+        public string ApaleoRedirectUrl => $"https://app.apaleo.com/apps/{_apaleoIntegrationConfig.Value.ClientId.ToUpperInvariant()}-{_apaleoIntegrationConfig.Value.IntegrationConfig.DefaultIntegrationCode}";
 
         public async Task TriggerSetupAsync()
         {
