@@ -99,27 +99,6 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        public override async Task LoadFromDateAsync(DateTime from)
-        {
-            if (from >= DateTime.Today)
-            {
-                var to = from.AddDays(1);
-
-                await LoadTracesAsync(from, to);
-
-                if (from.Date == DateTime.Today)
-                {
-                    await LoadOverdueTracesAsync();
-                }
-                else
-                {
-                    OverdueTraces.Clear();
-                }
-
-                UpdateLoadedUntilText();
-            }
-        }
-
         protected override async Task LoadTracesAsync(DateTime from, DateTime to)
         {
             var tracesResult = await _tracesCollectorService.GetTracesForReservationAsync(_currentReservationId, from, to);

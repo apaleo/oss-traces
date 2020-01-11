@@ -1,34 +1,30 @@
 @using Traces.Common.Constants
 <style>
-    .date-picker input {
-    width:200px;
+    .apa-date-picker input {
+        width:200px;
     }
-
-    .date-picker {
-        
-    }
-
 </style>
 
-<div class="py-3 date-picker">
+<div class="py-3 apa-date-picker">
     <div class="row no-gutters">
-        <Button Clicked="@SetToday">
+        <Button Color="Color.Primary" IsOutline="true" Clicked="@SetTodayButtonOnClick">
+            <i class="fa fa-redo"></i>
             @TextConstants.DatePickerSetTodayButtonText</Button>
 
         <div class="row no-gutters">
-            <Button class="ml-1" Clicked="@PreviousWeek" IsDisabled="@IsPreviousWeekDisabled">
+            <Button class="ml-1" Clicked="@PreviousWeekButtonOnClick" IsDisabled="@IsPreviousWeekButtonOnClickDisabled">
                 <i class="fa fa-angle-double-left"></i>
             </Button>
-            <Button class="ml-1" Clicked="@PreviousDay" IsDisabled="@IsPreviousDayDisabled">
+            <Button class="ml-1" Clicked="@PreviousDayButtonOnClick" IsDisabled="@IsPreviousDayButtonOnClickDisabled">
                 <i class="fa fa-angle-left"></i>
             </Button>
 
             <DateEdit class="ml-1" Min="@DateTime.Today" Date="@DatePickerDate" DateChanged="@OnDateChange"/>
 
-            <Button class="ml-1" Clicked="@NextDay">
+            <Button class="ml-1" Clicked="@NextDayButtonOnClick">
                 <i class="fa fa-angle-right"></i>
             </Button>
-            <Button class="ml-1" Clicked="@NextWeek">
+            <Button class="ml-1" Clicked="@NextWeekButtonOnClick">
                 <i class="fa fa-angle-double-right"></i>
             </Button>
         </div>
@@ -56,16 +52,16 @@
     private DateTime DatePickerDate { get; set; } = DateTime.Today;
 
     private bool IsPast => DatePickerDate < DateTime.Today;
-    private bool IsPreviousDayDisabled => DatePickerDate.AddDays(-1) < DateTime.Today;
-    private bool IsPreviousWeekDisabled => DatePickerDate.AddDays(-7) < DateTime.Today;
+    private bool IsPreviousDayButtonOnClickDisabled => DatePickerDate.AddDays(-1) < DateTime.Today;
+    private bool IsPreviousWeekButtonOnClickDisabled => DatePickerDate.AddDays(-7) < DateTime.Today;
     
     private async Task OnDateChange(DateTime? date)
     {
-        DateTime newDate = date.GetValueOrDefault(DateTime.Today);
+        var newDate = date.GetValueOrDefault(DateTime.Today);
 
         if (newDate >= DateTime.Today)
         {
-            await OnChange.InvokeAsync(date.GetValueOrDefault(DateTime.Today));
+            await OnChange.InvokeAsync(newDate);
         }
         else
         {
@@ -73,27 +69,27 @@
         }
     }
     
-    private async Task SetToday()
+    private async Task SetTodayButtonOnClick()
     {
         await OnDateChange(DateTime.Today);
     }
 
-    private async Task NextDay()
+    private async Task NextDayButtonOnClick()
     {
         await OnDateChange(DatePickerDate.AddDays(1));
     }
 
-    private async Task NextWeek()
+    private async Task NextWeekButtonOnClick()
     {
         await OnDateChange(DatePickerDate.AddDays(7));
     }
 
-    private async Task PreviousDay()
+    private async Task PreviousDayButtonOnClick()
     {
         await OnDateChange(DatePickerDate.AddDays(-1));
     }
 
-    private async Task PreviousWeek()
+    private async Task PreviousWeekButtonOnClick()
     {
         await OnDateChange(DatePickerDate.AddDays(-7));
     }
