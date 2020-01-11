@@ -31,8 +31,8 @@
     </div>
     @if (IsPast)
     {
-        <div class="text-danger mt-4 ml-3">
-            <i class="fa fa-exclamation-circle"></i>
+        <div class="text-danger mt-4 ml-2">
+            <i class="fa fa-exclamation-circle ml-1"></i>
             @string.Format(TextConstants.DatePickerErrorDateText, DateTime.Today.ToShortDateString())
         </div>
     }
