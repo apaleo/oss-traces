@@ -55,9 +55,9 @@ namespace Traces.Web.ViewModels
 
         public int CurrentDayIncrease { get; protected set; }
 
-        protected ITraceModifierService TraceModifierService { get; }
+        public DateTime CurrentFromDate { get; protected set; } = DateTime.Today;
 
-        protected DateTime CurrentFromDate { get; set; }
+        protected ITraceModifierService TraceModifierService { get; }
 
         protected DateTime CurrentToDate { get; set; }
 
@@ -75,6 +75,32 @@ namespace Traces.Web.ViewModels
             UpdateLoadedUntilText();
 
             await LoadApaleoRolesAsync();
+        }
+
+        /// <summary>
+        /// The traces for the given from date are loaded. The overdue traces are also loaded if the date is set to today.
+        /// If the param from lies before the date of today, then nothing happens.
+        /// </summary>
+        /// <param name="from">The date that will be used to load the traces.</param>
+        public async Task LoadFromDateAsync(DateTime from)
+        {
+            if (from >= DateTime.Today)
+            {
+                var to = from.AddDays(1);
+
+                await LoadTracesAsync(from, to);
+
+                if (from.Date == DateTime.Today)
+                {
+                    await LoadOverdueTracesAsync();
+                }
+                else
+                {
+                    OverdueTraces.Clear();
+                }
+
+                UpdateLoadedUntilText();
+            }
         }
 
         /// <summary>

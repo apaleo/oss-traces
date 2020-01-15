@@ -1,0 +1,97 @@
+@using Traces.Common.Constants
+<style>
+    .apa-date-picker input {
+        width:200px;
+    }
+</style>
+
+<div class="py-3 apa-date-picker">
+    <div class="row no-gutters">
+        <Button Color="Color.Primary" IsOutline="true" Clicked="@SetTodayButtonOnClick">
+            <i class="fa fa-redo"></i>
+            @TextConstants.DatePickerSetTodayButtonText</Button>
+
+        <div class="row no-gutters">
+            <Button class="ml-1" Clicked="@PreviousWeekButtonOnClick" IsDisabled="@IsPreviousWeekDisabled">
+                <i class="fa fa-angle-double-left"></i>
+            </Button>
+            <Button class="ml-1" Clicked="@PreviousDayButtonOnClick" IsDisabled="@IsPreviousDayDisabled">
+                <i class="fa fa-angle-left"></i>
+            </Button>
+
+            <DateEdit class="ml-1" Min="@DateTime.Today" Date="@DatePickerDate" DateChanged="@OnDateChange"/>
+
+            <Button class="ml-1" Clicked="@NextDayButtonOnClick">
+                <i class="fa fa-angle-right"></i>
+            </Button>
+            <Button class="ml-1" Clicked="@NextWeekButtonOnClick">
+                <i class="fa fa-angle-double-right"></i>
+            </Button>
+        </div>
+    </div>
+    @if (IsPast)
+    {
+        <div class="text-danger mt-4 ml-2">
+            <i class="fa fa-exclamation-circle ml-1"></i>
+            @string.Format(TextConstants.DatePickerErrorDateText, DateTime.Today.ToShortDateString())
+        </div>
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public EventCallback<DateTime> OnChange { get; set; }
+
+    [Parameter]
+    public DateTime Date
+    {
+        set => DatePickerDate = value;
+    }
+
+    private DateTime DatePickerDate { get; set; } = DateTime.Today;
+
+    private bool IsPast => DatePickerDate < DateTime.Today;
+    private bool IsPreviousDayDisabled => DatePickerDate.AddDays(-1) < DateTime.Today;
+    private bool IsPreviousWeekDisabled => DatePickerDate.AddDays(-7) < DateTime.Today;
+    
+    private async Task OnDateChange(DateTime? date)
+    {
+        var newDate = date.GetValueOrDefault(DateTime.Today);
+
+        if (newDate >= DateTime.Today)
+        {
+            await OnChange.InvokeAsync(newDate);
+        }
+        else
+        {
+            Date = newDate;
+        }
+    }
+    
+    private async Task SetTodayButtonOnClick()
+    {
+        await OnDateChange(DateTime.Today);
+    }
+
+    private async Task NextDayButtonOnClick()
+    {
+        await OnDateChange(DatePickerDate.AddDays(1));
+    }
+
+    private async Task NextWeekButtonOnClick()
+    {
+        await OnDateChange(DatePickerDate.AddDays(7));
+    }
+
+    private async Task PreviousDayButtonOnClick()
+    {
+        await OnDateChange(DatePickerDate.AddDays(-1));
+    }
+
+    private async Task PreviousWeekButtonOnClick()
+    {
+        await OnDateChange(DatePickerDate.AddDays(-7));
+    }
+
+}

@@ -46,9 +46,11 @@
                 <TableRowCell class="fit">
                     <div class="d-flex align-items-start">
                         <Button class="mr-2" Color="Color.Primary" IsLoading="@IsLoading" Clicked="@(() => OnComplete(trace))">
+                            <i class="fa fa-check"></i>
                             @TextConstants.TracesCompleteButtonText
                         </Button>
-                        <Button class="mr-2" Color="Color.Secondary" IsLoading="@IsLoading" Clicked="@(() => OnEdit(trace))">
+                        <Button class="mr-2" Color="Color.Secondary" IsOutline="true" IsLoading="@IsLoading" Clicked="@(() => OnEdit(trace))">
+                            <i class="fa fa-edit"></i>
                             @TextConstants.TracesEditButtonText
                         </Button>
                         <Dropdown IsRightAligned="true">

@@ -3,6 +3,10 @@
 @using Traces.Web.ViewModels
 @inject TracesAccountViewModel TracesAccountViewModel
 
+<div class="mb-3">
+    <DatePicker Date="@TracesAccountViewModel.CurrentFromDate" OnChange="@TracesAccountViewModel.LoadFromDateAsync"/>
+</div>
+
 @if (TracesAccountViewModel.OverdueTraces != null && TracesAccountViewModel.OverdueTraces.Any())
 {
     <section class="pb-4">
@@ -64,7 +68,9 @@
 
     <section class="pb-3">
         <p>@TracesAccountViewModel.LoadedUntilDateMessage</p>
-        <Button Color="Color.Primary" Clicked="@TracesAccountViewModel.LoadNextDaysAsync">@string.Format(TextConstants.TracesLoadMoreButtonTextFormat, TracesAccountViewModel.CurrentDayIncrease)</Button>
+        <Button Color="Color.Primary" Clicked="@TracesAccountViewModel.LoadNextDaysAsync">
+            <i class="fa fa-angle-double-right"></i>
+            @string.Format(TextConstants.TracesLoadMoreButtonTextFormat, TracesAccountViewModel.CurrentDayIncrease)</Button>
     </section>
 
     <Modal @ref="@TracesAccountViewModel.EditTraceModalRef">
