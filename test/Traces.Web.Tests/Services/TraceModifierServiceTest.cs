@@ -50,7 +50,7 @@ namespace Traces.Web.Tests.Services
         }
 
         [Fact]
-        public async Task ShouldNotBeAbleToCompleteWhenValidationExceptionIsThrown()
+        public async Task ShouldNotBeAbleToCompleteWhenValidationExceptionIsThrownAsync()
         {
             const string exceptionMessage = "Nop nop nop";
             const int testTraceId = 2;
@@ -92,7 +92,7 @@ namespace Traces.Web.Tests.Services
                 Title = testTraceTitle,
                 Description = testTraceDescription.Some(),
                 DueDate = testTraceDueDate.ToLocalDateTime().Date,
-                State = TraceStateEnum.Active,
+                State = TraceState.Active,
                 PropertyId = testTracePropertyId
             };
 
@@ -115,7 +115,7 @@ namespace Traces.Web.Tests.Services
             result.Id.Should().Be(createdId);
             result.Title.Should().Be(testTraceTitle);
             result.Description.Should().Be(testTraceDescription);
-            result.State.Should().Be(TraceStateEnum.Active);
+            result.State.Should().Be(TraceState.Active);
             result.DueDate.Should().Be(testTraceDueDate);
             result.PropertyId.Should().Be(testTracePropertyId);
         }
@@ -187,7 +187,7 @@ namespace Traces.Web.Tests.Services
         }
 
         [Fact]
-        public async Task ShouldNotReplaceWhenValidationExceptionIsThrown()
+        public async Task ShouldNotReplaceWhenValidationExceptionIsThrownAsync()
         {
             const string exceptionMessage = "Think again";
             const int testReplaceTraceId = 101;
@@ -241,7 +241,7 @@ namespace Traces.Web.Tests.Services
         }
 
         [Fact]
-        public async Task ShouldNotDeleteWhenValidationExceptionIsThrown()
+        public async Task ShouldNotDeleteWhenValidationExceptionIsThrownAsync()
         {
             const string exceptionMessage = "Omg omg";
             const int testTraceId = 89;
@@ -283,7 +283,7 @@ namespace Traces.Web.Tests.Services
                 Id = resultTraceId,
                 Title = testTraceTitle,
                 Description = testTraceDescription.Some(),
-                State = TraceStateEnum.Active,
+                State = TraceState.Active,
                 DueDate = testTraceDueDate.ToLocalDateTime().Date,
                 PropertyId = resultPropertyId,
                 ReservationId = testReservationId.Some()
@@ -306,7 +306,7 @@ namespace Traces.Web.Tests.Services
             resultContent.Id.Should().Be(resultTraceId);
             resultContent.Title.Should().Be(testTraceTitle);
             resultContent.Description.Should().Be(testTraceDescription);
-            resultContent.State.Should().Be(TraceStateEnum.Active);
+            resultContent.State.Should().Be(TraceState.Active);
             resultContent.DueDate.Should().Be(testTraceDueDate);
             resultContent.ReservationId = testReservationId;
         }

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="ApaleosAnalyzerRules" ToolsVersion="14.0">
+<RuleSet Name="AllRules" ToolsVersion="14.0">
   <IncludeAll Action="Error" />
   <Include Path="stylecop.ruleset" Action="Default" />
   <Include Path="codecracker.ruleset" Action="Default" />
-  <Include Path="System.Runtime.Analyzers.ruleset" Action="Default" />
+  <Include Path="FxCopAnalyzers.ruleset" Action="Default" />
+  <Include Path="SonarAnalyzer.ruleset" Action="Default" />
+
+  <Rules AnalyzerId="Lindhart.Analyser.MissingAwaitWarning" RuleNamespace="Lindhart.Analyser.MissingAwaitWarning">
+    <Rule Id="LindhartAnalyserMissingAwaitWarningStrict" Action="Error" />
+  </Rules>
 </RuleSet>

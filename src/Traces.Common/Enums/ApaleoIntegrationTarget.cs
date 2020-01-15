@@ -1,6 +1,6 @@
 namespace Traces.Common.Enums
 {
-    public enum ApaleoIntegrationTargetsEnum
+    public enum ApaleoIntegrationTarget
     {
         AccountMenuApps,
         ReservationDetailsTab,

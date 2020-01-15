@@ -38,38 +38,38 @@ namespace Traces.Core.Services
             return ConvertToTraceDto(traces);
         }
 
-        public async Task<IReadOnlyList<TraceDto>> GetActiveTracesAsync(DateTime from, DateTime to)
+        public async Task<IReadOnlyList<TraceDto>> GetActiveTracesAsync(DateTime from, DateTime toDateTime)
         {
-            if (from > to)
+            if (from > toDateTime)
             {
                 throw new BusinessValidationException(TextConstants.DateIntervalErrorMessage);
             }
 
             var fromLocalDate = LocalDate.FromDateTime(from);
-            var toLocalDate = LocalDate.FromDateTime(to);
+            var toLocalDate = LocalDate.FromDateTime(toDateTime);
 
             var traces = await _traceRepository.GetAllTracesForTenantAsync(t =>
-                t.State == TraceStateEnum.Active &&
+                t.State == TraceState.Active &&
                 t.DueDate >= fromLocalDate &&
                 t.DueDate <= toLocalDate);
 
             return ConvertToTraceDto(traces);
         }
 
-        public async Task<IReadOnlyList<TraceDto>> GetActiveTracesForPropertyAsync(string propertyId, DateTime from, DateTime to)
+        public async Task<IReadOnlyList<TraceDto>> GetActiveTracesForPropertyAsync(string propertyId, DateTime from, DateTime toDateTime)
         {
             Check.NotEmpty(propertyId, nameof(propertyId));
 
-            if (from > to)
+            if (from > toDateTime)
             {
                 throw new BusinessValidationException(TextConstants.DateIntervalErrorMessage);
             }
 
             var fromLocalDate = LocalDate.FromDateTime(from);
-            var toLocalDate = LocalDate.FromDateTime(to);
+            var toLocalDate = LocalDate.FromDateTime(toDateTime);
 
             var propertyTraces = await _traceRepository.GetAllTracesForTenantAsync(t =>
-                t.State == TraceStateEnum.Active &&
+                t.State == TraceState.Active &&
                 t.PropertyId == propertyId &&
                 t.DueDate >= fromLocalDate &&
                 t.DueDate <= toLocalDate);
@@ -77,21 +77,21 @@ namespace Traces.Core.Services
             return ConvertToTraceDto(propertyTraces);
         }
 
-        public async Task<IReadOnlyList<TraceDto>> GetActiveTracesForReservationAsync(string reservationId, DateTime from, DateTime to)
+        public async Task<IReadOnlyList<TraceDto>> GetActiveTracesForReservationAsync(string reservationId, DateTime from, DateTime toDateTime)
         {
             Check.NotEmpty(reservationId, nameof(reservationId));
 
-            if (from > to)
+            if (from > toDateTime)
             {
                 throw new BusinessValidationException(TextConstants.DateIntervalErrorMessage);
             }
 
             var fromLocalDate = LocalDate.FromDateTime(from);
-            var toLocalDate = LocalDate.FromDateTime(to);
+            var toLocalDate = LocalDate.FromDateTime(toDateTime);
 
             var reservationTraces =
                 await _traceRepository.GetAllTracesForTenantAsync(t =>
-                    t.State == TraceStateEnum.Active &&
+                    t.State == TraceState.Active &&
                     t.ReservationId == reservationId &&
                     t.DueDate >= fromLocalDate &&
                     t.DueDate <= toLocalDate);
@@ -103,7 +103,7 @@ namespace Traces.Core.Services
         {
             var todayDate = LocalDate.FromDateTime(DateTime.Today);
             var traces = await _traceRepository.GetAllTracesForTenantAsync(t =>
-                t.State == TraceStateEnum.Active &&
+                t.State == TraceState.Active &&
                 t.DueDate < todayDate);
 
             return ConvertToTraceDto(traces);
@@ -115,7 +115,7 @@ namespace Traces.Core.Services
 
             var todayDate = LocalDate.FromDateTime(DateTime.Today);
             var overdueTracesForProperty = await _traceRepository.GetAllTracesForTenantAsync(t =>
-                t.State == TraceStateEnum.Active &&
+                t.State == TraceState.Active &&
                 t.DueDate < todayDate &&
                 t.PropertyId == propertyId);
 
@@ -128,7 +128,7 @@ namespace Traces.Core.Services
 
             var todayDate = LocalDate.FromDateTime(DateTime.Today);
             var overdueTracesForReservation = await _traceRepository.GetAllTracesForTenantAsync(t =>
-                t.State == TraceStateEnum.Active &&
+                t.State == TraceState.Active &&
                 t.DueDate < todayDate &&
                 t.ReservationId == reservationId);
 
@@ -160,7 +160,7 @@ namespace Traces.Core.Services
             var trace = new Trace
             {
                 Description = createTraceDto.Description.ValueOrDefault(),
-                State = TraceStateEnum.Active,
+                State = TraceState.Active,
                 Title = createTraceDto.Title,
                 DueDate = createTraceDto.DueDate,
                 PropertyId = createTraceDto.PropertyId,
@@ -232,7 +232,7 @@ namespace Traces.Core.Services
             var currentSubjectId = _requestContext.SubjectId;
 
             trace.CompletedDate = SystemClock.Instance.GetCurrentInstant().InUtc().Date;
-            trace.State = TraceStateEnum.Completed;
+            trace.State = TraceState.Completed;
             trace.CompletedBy = currentSubjectId;
 
             await _traceRepository.SaveAsync();
@@ -250,7 +250,7 @@ namespace Traces.Core.Services
             var trace = await _traceRepository.GetAsync(id);
 
             trace.CompletedDate = null;
-            trace.State = TraceStateEnum.Active;
+            trace.State = TraceState.Active;
 
             await _traceRepository.SaveAsync();
 

@@ -18,10 +18,10 @@
     <!-- Static members must appear before non-static -->
     <!-- (often non-static members use static members, hence the order in those cases should be the other way around) -->
     <Rule Id="SA1204" Action="None" />
-    
+
     <!-- Allow underscores for field names -->
     <Rule Id="SA1309" Action="None" />
-    
+
     <!-- Disable Documentation Rules -->
     <Rule Id="SA1600" Action="None" />
     <Rule Id="SA1601" Action="None" />

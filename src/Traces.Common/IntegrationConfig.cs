@@ -7,7 +7,11 @@ namespace Traces.Common
     {
         public string IntegrationBaseAddress { get; set; }
 
+#pragma warning disable CA1056 // This uri needs to be strings because its an option loaded from the appsettings.json file
+
         public string IntegrationIconUrl { get; set; }
+
+#pragma warning restore CA1056 // This uri needs to be strings because its an option loaded from the appsettings.json file
 
         public string IntegrationLabel { get; set; }
 

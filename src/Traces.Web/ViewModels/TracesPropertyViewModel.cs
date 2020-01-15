@@ -95,9 +95,9 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        protected override async Task LoadTracesAsync(DateTime from, DateTime to)
+        protected override async Task LoadTracesAsync(DateTime from, DateTime toDateTime)
         {
-            var tracesResult = await _tracesCollectorService.GetTracesForPropertyAsync(_currentPropertyId, from, to);
+            var tracesResult = await _tracesCollectorService.GetTracesForPropertyAsync(_currentPropertyId, from, toDateTime);
 
             if (tracesResult.Success)
             {
@@ -106,7 +106,7 @@ namespace Traces.Web.ViewModels
                 LoadSortedDictionaryFromList(traces);
 
                 CurrentFromDate = from;
-                CurrentToDate = to;
+                CurrentToDate = toDateTime;
             }
         }
 
