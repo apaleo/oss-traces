@@ -227,7 +227,7 @@ namespace Traces.Web.ViewModels
 
         public abstract Task LoadNextDaysAsync();
 
-        protected abstract Task LoadTracesAsync(DateTime from, DateTime to);
+        protected abstract Task LoadTracesAsync(DateTime from, DateTime toDateTime);
 
         protected abstract Task LoadOverdueTracesAsync();
 

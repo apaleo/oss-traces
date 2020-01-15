@@ -14,7 +14,7 @@ namespace Traces.Core.Models
 
         public LocalDate DueDate { get; set; }
 
-        public TraceStateEnum State { get; set; }
+        public TraceState State { get; set; }
 
         public Option<LocalDate> CompletedDate { get; set; }
 

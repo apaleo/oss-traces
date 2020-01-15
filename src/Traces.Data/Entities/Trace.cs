@@ -15,7 +15,7 @@ namespace Traces.Data.Entities
         public LocalDate DueDate { get; set; }
 
         [Required]
-        public TraceStateEnum State { get; set; }
+        public TraceState State { get; set; }
 
         public LocalDate? CompletedDate { get; set; }
 

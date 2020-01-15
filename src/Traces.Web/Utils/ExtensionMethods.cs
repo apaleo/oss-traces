@@ -4,7 +4,7 @@ using Traces.Web.Models;
 
 namespace Traces.Web.Utils
 {
-    public static class Extensions
+    public static class ExtensionMethods
     {
         public static TraceItemModel ConvertToTraceItemModel(this TraceDto dto)
         {

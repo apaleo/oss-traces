@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Microsoft.CodeAnalysis.FxCopAnalyzers" Description="Microsoft.CodeAnalysis.FxCopAnalyzers Rules" ToolsVersion="14.0">
+  <IncludeAll Action="Error" />
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.FxCopAnalyzers" RuleNamespace="Microsoft.CodeAnalysis.FxCopAnalyzers">
+    <!-- Static members on generic types -->
+    <Rule Id="CA1000" Action="None" />
+
+    <!-- No need to call ConfigureAwait -->
+    <Rule Id="CA2007" Action="None" />
+
+    <!-- Not all exceptions should have all default constructors implemented -->
+    <Rule Id="CA1032" Action="None" />
+
+    <!-- Avoid empty interfaces -->
+    <Rule Id="CA1040" Action="Info" />
+
+    <!-- Validate arguments of public methods - the compiler does it based on optional reference types, but FxCop doesn't know it -->
+    <Rule Id="CA1062" Action="None" />
+
+    <!-- CultureInfo, IFormatProvider, StringComparision required -->
+    <Rule Id="CA1303" Action="None" />
+    <Rule Id="CA1304" Action="None" />
+    <Rule Id="CA1305" Action="None" />
+    <Rule Id="CA1306" Action="None" />
+    <Rule Id="CA1307" Action="None" />
+    <Rule Id="CA1308" Action="None" />
+
+    <!-- Naming rules (suffix / prefix) ... -->
+    <Rule Id="CA1710" Action="None" />
+
+    <!-- Operator-based rules -->
+    <!--<Rule Id="CA2225" Action="None" />-->
+
+    <!-- Allow setting collections (EF Core) -->
+    <!--<Rule Id="CA2227" Action="None" />-->
+
+    <!-- Properties should not return arrays (EF Core) -->
+    <Rule Id="CA1819" Action="None" />
+
+    <!-- Disposable fields should be disposed - doesn't play well with dependency injection -->
+    <Rule Id="CA2213" Action="None" />
+
+    <!-- Avoid uninstantiated internal classes - dependency injection -->
+    <!--<Rule Id="CA1812" Action="None" />-->
+
+    <!-- Implement IDisposable Correctly / Dispose methods should call SuppressFinalize -->
+    <Rule Id="CA1063" Action="None" />
+    <Rule Id="CA1816" Action="None" />
+
+    <!-- Do not use Enumerable methods on indexable collections. Instead use the collection directly - sometimes linq methods are easier to read -->
+    <Rule Id="CA1826" Action="Info" />
+
+    <!-- Initialize reference type static fields inline - in rare cases, a static constructor can make sense -->
+    <Rule Id="CA1810" Action="None" />
+  </Rules>
+</RuleSet>
