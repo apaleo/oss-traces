@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="SonarAnalyzer.CSharp" Description="SonarAnalyzer.CSharp Rules" ToolsVersion="14.0">
+  <IncludeAll Action="Error" />
+  <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
+    <!-- Static members on generic types -->
+    <Rule Id="S2743" Action="None" />
+
+    <!-- Implement IDisposable Correctly / Dispose methods should call SuppressFinalize -->
+    <Rule Id="S3881" Action="None" />
+
+    <!-- Forces you to comply with ISerializable pattern, and we do not want that -->
+    <Rule Id="S3925" Action="None" />
+  </Rules>
+</RuleSet>

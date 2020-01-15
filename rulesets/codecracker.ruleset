@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="CodeCracker Rules" Description="Customize CodeCracker Rules" ToolsVersion="14.0">
+  <IncludeAll Action="Error" />
   <Rules AnalyzerId="CodeCracker.CSharp" RuleNamespace="CodeCracker.CSharp">
     <!-- var rules -->
     <Rule Id="CC0001" Action="None" />
     <Rule Id="CC0105" Action="None" />
+
+    <!-- Verify if delegate is null before invoking it.	False positives with non-nullable reference types. -->
+    <Rule Id="CC0031" Action="None" />
 
     <!-- nameof rule -->
     <Rule Id="CC0021" Action="Info" />
@@ -59,16 +63,9 @@
     <Rule Id="CC0089" Action="Warning" />
 
     <!-- Methods which return Task should have suffix Async -->
-    <Rule Id="CC0061" Action="Info" />
+    <Rule Id="CC0061" Action="Warning" />
 
     <!-- Disposables Should Call Suppress Finalize -->
     <Rule Id="CC0029" Action="Info" />
-
-    <!-- PropertyChangedEventArgsUnnecessaryAllocation -->
-    <Rule Id="CC0106" Action="None"/>
-
-    <!-- TODO: Remove this again -->
-    <Rule Id="CC0022" Action="None" />
-    <Rule Id="CC0091" Action="None"/>
   </Rules>
 </RuleSet>

@@ -25,16 +25,16 @@ namespace Traces.Web.Tests.Services
         private const int FirstTraceId = 1;
         private const string FirstTraceTitle = "FirstTraceTitle";
         private const string FirstTraceDescription = "FirstTraceDescription";
-        private const TraceStateEnum FirstTraceState = TraceStateEnum.Active;
+        private const TraceState FirstTraceState = TraceState.Active;
 
         private const int SecondTraceId = 2;
         private const string SecondTraceTitle = "SecondTraceTitle";
-        private const TraceStateEnum SecondTraceState = TraceStateEnum.Active;
+        private const TraceState SecondTraceState = TraceState.Active;
 
         private const int ThirdTraceId = 3;
         private const string ThirdTraceTitle = "ThirdTraceTitle";
         private const string ThirdTraceDescription = "ThirdTraceDescription";
-        private const TraceStateEnum ThirdTraceState = TraceStateEnum.Completed;
+        private const TraceState ThirdTraceState = TraceState.Completed;
 
         private readonly LocalDate _firstTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
         private readonly LocalDate _secondTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;

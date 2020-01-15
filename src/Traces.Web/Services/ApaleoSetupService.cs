@@ -13,30 +13,29 @@ using Traces.Core.ClientFactories;
 
 namespace Traces.Web.Services
 {
-    internal class ApaleoSetupService : IApaleoSetupService
+    public class ApaleoSetupService : IApaleoSetupService
     {
-        private const int MaxRetryCount = 3;
         private readonly IApaleoClientsFactory _apaleoClientsFactory;
         private readonly IOptions<IntegrationConfig> _integrationConfig;
 
-        private readonly Dictionary<ApaleoIntegrationTargetsEnum, Uri> _apaleoIntegrationTargetsUrlDictionary;
+        private readonly Dictionary<ApaleoIntegrationTarget, Uri> _apaleoIntegrationTargetsUrlDictionary;
 
         public ApaleoSetupService(IApaleoClientsFactory apaleoIntegrationClientsFactory, IOptions<IntegrationConfig> integrationConfig)
         {
             _integrationConfig = Check.NotNull(integrationConfig, nameof(integrationConfig));
             _apaleoClientsFactory = Check.NotNull(apaleoIntegrationClientsFactory, nameof(apaleoIntegrationClientsFactory));
-            _apaleoIntegrationTargetsUrlDictionary = new Dictionary<ApaleoIntegrationTargetsEnum, Uri>
+            _apaleoIntegrationTargetsUrlDictionary = new Dictionary<ApaleoIntegrationTarget, Uri>
             {
                 {
-                    ApaleoIntegrationTargetsEnum.AccountMenuApps,
+                    ApaleoIntegrationTarget.AccountMenuApps,
                     new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.AccountLevelRelativeUrl}")
                 },
                 {
-                    ApaleoIntegrationTargetsEnum.PropertyMenuApps,
+                    ApaleoIntegrationTarget.PropertyMenuApps,
                     new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.PropertyLevelRelativeUrl}")
                 },
                 {
-                    ApaleoIntegrationTargetsEnum.ReservationDetailsTab,
+                    ApaleoIntegrationTarget.ReservationDetailsTab,
                     new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.ReservationLevelRelativeUrl}")
                 }
             };
@@ -49,7 +48,7 @@ namespace Traces.Web.Services
             await CreateApaleoIntegrationsAsync(nonExistentTargetKeys);
         }
 
-        private async Task<IReadOnlyList<ApaleoIntegrationTargetsEnum>> GetMissingIntegrationTargetsAsync()
+        private async Task<IReadOnlyList<ApaleoIntegrationTarget>> GetMissingIntegrationTargetsAsync()
         {
             var integrationApi = _apaleoClientsFactory.GetIntegrationApi();
 
@@ -77,20 +76,18 @@ namespace Traces.Web.Services
             }
         }
 
-        private async Task CreateApaleoIntegrationsAsync(IReadOnlyList<ApaleoIntegrationTargetsEnum> integrationTargets)
+        private async Task CreateApaleoIntegrationsAsync(IReadOnlyList<ApaleoIntegrationTarget> integrationTargets)
         {
             var tasks = integrationTargets.Select(CreateApaleoIntegrationAsync).ToList();
 
             await Task.WhenAll(tasks);
         }
 
-        private async Task CreateApaleoIntegrationAsync(ApaleoIntegrationTargetsEnum integrationTargetEnum)
+        private async Task CreateApaleoIntegrationAsync(ApaleoIntegrationTarget integrationTarget)
         {
             var integrationApi = _apaleoClientsFactory.GetIntegrationApi();
 
-            var integrationTarget = integrationTargetEnum.ToString("G");
-
-            var integrationUrl = _apaleoIntegrationTargetsUrlDictionary[integrationTargetEnum].ToString();
+            var integrationUrl = _apaleoIntegrationTargetsUrlDictionary[integrationTarget].ToString();
 
             var integrationIconUrl =
                 _integrationConfig.Value.IntegrationIconUri.Match(
@@ -106,21 +103,18 @@ namespace Traces.Web.Services
                 SourceUrl = integrationUrl
             };
 
-            using (var responseResult = await integrationApi.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(integrationTarget, createUiIntegrationModel))
+            using (var responseResult = await integrationApi.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(integrationTarget.ToString("G"), createUiIntegrationModel))
             {
-                if (!responseResult.Response.IsSuccessStatusCode)
+                if (!responseResult.Response.IsSuccessStatusCode && !await IntegrationExistsAsync(integrationTarget))
                 {
-                    if (!await IntegrationExistsAsync(integrationTargetEnum))
-                    {
-                        var content = await responseResult.Response.Content.ReadAsStringAsync();
-                        throw new BusinessValidationException(
-                            $"Failed to create integration with {nameof(integrationApi.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync)} with status code: {responseResult.Response.StatusCode} and content: {content}");
-                    }
+                    var content = await responseResult.Response.Content.ReadAsStringAsync();
+                    throw new BusinessValidationException(
+                        $"Failed to create integration with {nameof(integrationApi.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync)} with status code: {responseResult.Response.StatusCode} and content: {content}");
                 }
             }
         }
 
-        private async Task<bool> IntegrationExistsAsync(ApaleoIntegrationTargetsEnum target)
+        private async Task<bool> IntegrationExistsAsync(ApaleoIntegrationTarget target)
         {
             var nonExistingIntegrations = await GetMissingIntegrationTargetsAsync();
 

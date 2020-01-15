@@ -27,20 +27,20 @@ namespace Traces.Core.Tests.Services
         private const int TestActiveTraceId = 1;
         private const string TestActiveTraceDescription = "TestActiveDescription";
         private const string TestActiveTraceTitle = "TestActiveTitle";
-        private const TraceStateEnum TestActiveTraceState = TraceStateEnum.Active;
+        private const TraceState TestActiveTraceState = TraceState.Active;
         private const string TestActivePropertyId = "PROA";
 
         private const int TestOverdueTraceId = 2;
         private const string TestOverdueTraceDescription = "TestObsoleteDescription";
         private const string TestOverdueTraceTitle = "TestObsoleteTitle";
-        private const TraceStateEnum TestOverdueTraceState = TraceStateEnum.Active;
+        private const TraceState TestOverdueTraceState = TraceState.Active;
         private const string TestOverduePropertyId = "PROO";
         private const string TestOverdueReservationId = "RESO";
 
         private const int TestCompletedTraceId = 3;
         private const string TestCompletedTraceDescription = "TestCompletedDescription";
         private const string TestCompletedTraceTitle = "TestCompletedTitle";
-        private const TraceStateEnum TestCompletedTraceState = TraceStateEnum.Completed;
+        private const TraceState TestCompletedTraceState = TraceState.Completed;
         private const string TestCompletedPropertyId = "PROC";
         private const string TestCompletedReservationId = "RESC";
 
@@ -348,7 +348,7 @@ namespace Traces.Core.Tests.Services
             {
                 Id = TestActiveTraceId,
                 Description = TestActiveTraceDescription,
-                State = TraceStateEnum.Active,
+                State = TraceState.Active,
                 Title = TestActiveTraceTitle,
                 DueDate = _testActiveTraceDueDate
             };
@@ -398,7 +398,7 @@ namespace Traces.Core.Tests.Services
                 It.Is<Trace>(t =>
                     t.Description == TestActiveTraceDescription &&
                     t.Title == TestActiveTraceTitle &&
-                    t.State == TraceStateEnum.Active &&
+                    t.State == TraceState.Active &&
                     t.DueDate == _testActiveTraceDueDate &&
                     t.PropertyId == TestActivePropertyId)));
 

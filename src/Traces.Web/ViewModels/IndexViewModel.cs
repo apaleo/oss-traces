@@ -39,7 +39,11 @@ namespace Traces.Web.ViewModels
 
         public bool IsSuccess { get; private set; }
 
+#pragma warning disable CA1056 // We don't know how well blazor will take this as an URI
+
         public string ApaleoRedirectUrl => $"https://app.apaleo.com/apps/{_apaleoIntegrationConfig.Value.ClientId.ToUpperInvariant()}-{_apaleoIntegrationConfig.Value.IntegrationConfig.DefaultIntegrationCode}";
+
+#pragma warning restore CA1056 // We don't know how well blazor will take this as an URI
 
         public async Task TriggerSetupAsync()
         {
