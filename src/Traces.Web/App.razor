@@ -1,4 +1,10 @@
-﻿<Blazorise.ThemeProvider Theme="@theme">
+﻿@using Microsoft.AspNetCore.Http
+@using Traces.Common.Constants
+@using Traces.Common.Utils
+@inject NavigationManager NavigationManager
+@inject IHttpContextAccessor HttpContextAccessor;
+
+<Blazorise.ThemeProvider Theme="@theme">
     <Router AppAssembly="@typeof(Program).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
@@ -18,7 +24,31 @@
     {
         ColorOptions = new ThemeColorOptions
         {
-            Primary = "#F19722"
+            Primary = StyleConstants.PrimaryColor
         }
     };
+
+    protected override void OnInitialized()
+    {
+        AssertCorrectAccountContext();
+    }
+
+    private void AssertCorrectAccountContext()
+    {
+        var urlAccountCode = ApaUrl.ExtractQueryParameterFromManager(NavigationManager, ApaleoOneConstants.AccountCodeQueryParameter);
+        var urlRedirected = ApaUrl.ExtractQueryParameterFromManager(NavigationManager, ApaleoOneConstants.DisableAccountCheckQueryParameter);
+
+        if (!string.IsNullOrWhiteSpace(urlRedirected) || string.IsNullOrWhiteSpace(urlAccountCode))
+        {
+            return;
+        }
+        
+        var user = HttpContextAccessor.HttpContext.User;
+        var userAccountCode = user.Claims.FirstOrDefault(x => x.Type == ApaleoClaims.AccountCode)?.Value;
+        
+        if (!urlAccountCode.Equals(userAccountCode))
+        {
+            NavigationManager.NavigateTo($"{ApaleoOneConstants.LogoutRelativeUrl}?redirectPath={NavigationManager.Uri}", true);
+        }
+    }
 }
