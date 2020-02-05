@@ -12,7 +12,7 @@
     <PackageReference Include="Lindhart.Analyser.MissingAwaitWarning" Version="1.2.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8" />
     <PackageReference Include="Microsoft.CodeAnalysis.VersionCheckAnalyzer" Version="2.9.8" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Razor" Version="3.1.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Razor" Version="3.1.1" />
     <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.8" />
     <PackageReference Include="SecurityCodeScan" Version="3.4.0" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="8.1.0.13383" />
