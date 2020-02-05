@@ -9,6 +9,7 @@ using Traces.Common.Constants;
 using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
+using Traces.Web.Utils;
 
 namespace Traces.Web.ViewModels
 {

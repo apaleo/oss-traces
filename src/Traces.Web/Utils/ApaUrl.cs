@@ -2,7 +2,7 @@ using System;
 using System.Web;
 using Microsoft.AspNetCore.Components;
 
-namespace Traces.Common.Utils
+namespace Traces.Web.Utils
 {
     public static class ApaUrl
     {
@@ -13,6 +13,15 @@ namespace Traces.Common.Utils
             var queryNameValue = HttpUtility.ParseQueryString(uri.Query);
 
             return queryNameValue[parameterKey];
+        }
+
+        public static bool HasQueryParams(string path)
+        {
+            var uri = new Uri(path);
+
+            var queryNameValue = HttpUtility.ParseQueryString(uri.Query);
+
+            return queryNameValue.HasKeys();
         }
     }
 }
