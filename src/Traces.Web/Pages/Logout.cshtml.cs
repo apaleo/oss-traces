@@ -16,7 +16,7 @@ namespace Traces.Web.Pages
 
             var decodedUrl = HttpUtility.UrlDecode(redirectPath);
 
-            if (ApaUrl.HasQueryParams(decodedUrl))
+            if (UrlQueryParameterExtractor.HasQueryParams(decodedUrl))
             {
                 Response.Redirect($"{decodedUrl}&{ApaleoOneConstants.DisableAccountCheckQueryParameter}=true");
             }

@@ -128,6 +128,6 @@ namespace Traces.Web.ViewModels
         }
 
         private void LoadCurrentReservationId()
-            => _currentPropertyId = ApaUrl.ExtractQueryParameterFromManager(_navigationManager, ApaleoOneConstants.PropertyIdQueryParameter);
+            => _currentPropertyId = UrlQueryParameterExtractor.ExtractQueryParameterFromManager(_navigationManager, ApaleoOneConstants.PropertyIdQueryParameter);
     }
 }

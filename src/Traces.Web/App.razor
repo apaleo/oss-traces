@@ -36,8 +36,8 @@
 
     private void AssertCorrectAccountContext()
     {
-        var urlAccountCode = ApaUrl.ExtractQueryParameterFromManager(NavigationManager, ApaleoOneConstants.AccountCodeQueryParameter);
-        var disableCheck = ApaUrl.ExtractQueryParameterFromManager(NavigationManager, ApaleoOneConstants.DisableAccountCheckQueryParameter);
+        var urlAccountCode = UrlQueryParameterExtractor.ExtractQueryParameterFromManager(NavigationManager, ApaleoOneConstants.AccountCodeQueryParameter);
+        var disableCheck = UrlQueryParameterExtractor.ExtractQueryParameterFromManager(NavigationManager, ApaleoOneConstants.DisableAccountCheckQueryParameter);
 
         if (!string.IsNullOrWhiteSpace(disableCheck) || string.IsNullOrWhiteSpace(urlAccountCode))
         {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Traces.Web.Utils
 {
-    public static class ApaUrl
+    public static class UrlQueryParameterExtractor
     {
         public static string ExtractQueryParameterFromManager(NavigationManager navigationManager, string parameterKey)
         {
