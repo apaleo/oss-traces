@@ -10,6 +10,7 @@ using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Enums;
 using Traces.Common.Exceptions;
+using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Core.ClientFactories;
 using Traces.Core.Models;
@@ -182,9 +183,8 @@ namespace Traces.Core.Services
         /// <returns>Id of the new trace</returns>
         public async Task<TraceDto> CreateTraceFromReservationAsync(CreateTraceDto createTraceDto)
         {
-            var reservationId = createTraceDto.ReservationId.Match(
-                v => v,
-                () => throw new BusinessValidationException(TextConstants.NoReservationIdProvidedErrorMessage));
+            var reservationId = createTraceDto.ReservationId.ValueOrException(
+                new BusinessValidationException(TextConstants.NoReservationIdProvidedErrorMessage));
 
             var propertyId = await GetPropertyIdFromReservationIdAsync(reservationId);
 
