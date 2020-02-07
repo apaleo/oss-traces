@@ -7,6 +7,7 @@ using Blazorise;
 using Microsoft.AspNetCore.Http;
 using Traces.Common;
 using Traces.Common.Constants;
+using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
@@ -124,9 +125,7 @@ namespace Traces.Web.ViewModels
             }
             else
             {
-                var errorMessage = replaceResult.ErrorMessage.Match(
-                    v => v,
-                    () => throw new NotImplementedException());
+                var errorMessage = replaceResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
                 ShowToastMessage(false, errorMessage);
             }
@@ -149,9 +148,7 @@ namespace Traces.Web.ViewModels
             }
             else
             {
-                var errorMessage = deleteResult.ErrorMessage.Match(
-                    v => v,
-                    () => throw new NotImplementedException());
+                var errorMessage = deleteResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
                 ShowToastMessage(false, errorMessage);
             }
@@ -169,9 +166,7 @@ namespace Traces.Web.ViewModels
             }
             else
             {
-                var errorMessage = completeResult.ErrorMessage.Match(
-                    v => v,
-                    () => throw new NotImplementedException());
+                var errorMessage = completeResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
                 ShowToastMessage(false, errorMessage);
             }
@@ -186,9 +181,7 @@ namespace Traces.Web.ViewModels
                 return;
             }
 
-            var errorMessage = navigationResult.ErrorMessage.Match(
-                v => v,
-                () => throw new NotImplementedException());
+            var errorMessage = navigationResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
             ShowToastMessage(false, errorMessage);
         }
