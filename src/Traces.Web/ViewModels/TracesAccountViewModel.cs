@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Http;
 using Traces.Common;
+using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
@@ -58,9 +59,7 @@ namespace Traces.Web.ViewModels
             }
             else
             {
-                var errorMessage = tracesResult.ErrorMessage.Match(
-                    v => v,
-                    () => throw new NotImplementedException());
+                var errorMessage = tracesResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
                 ShowToastMessage(false, errorMessage);
             }
