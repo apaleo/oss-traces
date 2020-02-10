@@ -27,6 +27,7 @@ using Traces.Data;
 using Traces.Web.AutoRefresh;
 using Traces.Web.Middlewares;
 using Traces.Web.Services;
+using Traces.Web.Services.Apaleo;
 using Traces.Web.ViewModels;
 
 namespace Traces.Web
@@ -139,6 +140,7 @@ namespace Traces.Web
             services.AddScoped<IApaleoOneService, ApaleoOneService>();
             services.AddScoped<IApaleoSetupService, ApaleoSetupService>();
             services.AddScoped<IApaleoRolesCollectorService, ApaleoRolesCollectorService>();
+            services.AddScoped<IApaleoUserClaimValidatorService, ApaleoUserClaimValidatorService>();
             services.AddScoped<IndexViewModel>();
             services.AddScoped<TracesAccountViewModel>();
             services.AddScoped<TracesReservationViewModel>();

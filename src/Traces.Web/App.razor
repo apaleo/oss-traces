@@ -1,9 +1,6 @@
-﻿@using System.Web
-@using Microsoft.AspNetCore.Http
-@using Traces.Common.Constants
-@using Traces.Web.Utils
-@inject NavigationManager NavigationManager
-@inject IHttpContextAccessor HttpContextAccessor;
+﻿@using Traces.Common.Constants
+@using Traces.Web.Services.Apaleo
+@inject IApaleoUserClaimValidatorService UserClaimValidatorService
 
 <Blazorise.ThemeProvider Theme="@theme">
     <Router AppAssembly="@typeof(Program).Assembly">
@@ -31,26 +28,7 @@
 
     protected override void OnInitialized()
     {
-        AssertCorrectAccountContext();
-    }
-
-    private void AssertCorrectAccountContext()
-    {
-        var urlAccountCode = UrlQueryParameterExtractor.ExtractQueryParameterFromManager(NavigationManager, ApaleoOneConstants.AccountCodeQueryParameter);
-        var disableCheck = UrlQueryParameterExtractor.ExtractQueryParameterFromManager(NavigationManager, ApaleoOneConstants.DisableAccountCheckQueryParameter);
-
-        if (!string.IsNullOrWhiteSpace(disableCheck) || string.IsNullOrWhiteSpace(urlAccountCode))
-        {
-            return;
-        }
-        
-        var user = HttpContextAccessor.HttpContext.User;
-        var userAccountCode = user.Claims.FirstOrDefault(x => x.Type == ApaleoClaims.AccountCode)?.Value;
-        
-        if (!urlAccountCode.Equals(userAccountCode))
-        {
-            var encodedUrl = HttpUtility.UrlEncode(NavigationManager.Uri);
-            NavigationManager.NavigateTo($"{ApaleoOneConstants.LogoutRelativeUrl}?redirectPath={encodedUrl}", true);
-        }
+        UserClaimValidatorService.AssertClaim(ApaleoOneConstants.AccountCodeQueryParameter, ApaleoClaims.AccountCode);
+        UserClaimValidatorService.AssertClaim(ApaleoOneConstants.SubjectIdQueryParameter, ApaleoClaims.SubjectId);
     }
 }
