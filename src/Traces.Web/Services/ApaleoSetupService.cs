@@ -28,15 +28,15 @@ namespace Traces.Web.Services
             {
                 {
                     ApaleoIntegrationTarget.AccountMenuApps,
-                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.AccountLevelRelativeUrl}")
+                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.AccountLevelUrlAbsolutePath}")
                 },
                 {
                     ApaleoIntegrationTarget.PropertyMenuApps,
-                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.PropertyLevelRelativeUrl}")
+                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.PropertyLevelUrlAbsolutePath}")
                 },
                 {
                     ApaleoIntegrationTarget.ReservationDetailsTab,
-                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.ReservationLevelRelativeUrl}")
+                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.ReservationLevelUrlAbsolutePath}")
                 }
             };
         }

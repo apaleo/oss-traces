@@ -1,4 +1,8 @@
-﻿<Blazorise.ThemeProvider Theme="@theme">
+﻿@using Traces.Common.Constants
+@using Traces.Web.Services.Apaleo
+@inject IApaleoUserClaimValidatorService UserClaimValidatorService
+
+<Blazorise.ThemeProvider Theme="@theme">
     <Router AppAssembly="@typeof(Program).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
@@ -18,7 +22,13 @@
     {
         ColorOptions = new ThemeColorOptions
         {
-            Primary = "#F19722"
+            Primary = StyleConstants.PrimaryColor
         }
     };
+
+    protected override void OnInitialized()
+    {
+        UserClaimValidatorService.AssertClaim(ApaleoOneConstants.AccountCodeQueryParameter, ApaleoClaims.AccountCode);
+        UserClaimValidatorService.AssertClaim(ApaleoOneConstants.SubjectIdQueryParameter, ApaleoClaims.SubjectId);
+    }
 }

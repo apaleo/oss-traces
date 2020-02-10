@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web;
 using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +10,7 @@ using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
+using Traces.Web.Utils;
 
 namespace Traces.Web.ViewModels
 {
@@ -125,15 +125,6 @@ namespace Traces.Web.ViewModels
         }
 
         private void LoadCurrentReservationId()
-            => _currentPropertyId = ExtractQueryParameterFromUrl(ApaleoOneConstants.PropertyIdQueryParameter);
-
-        private string ExtractQueryParameterFromUrl(string parameterKey)
-        {
-            var uri = new Uri(_navigationManager.Uri);
-
-            var queryNameValue = HttpUtility.ParseQueryString(uri.Query);
-
-            return queryNameValue[parameterKey];
-        }
+            => _currentPropertyId = UrlQueryParameterExtractor.ExtractQueryParameterFromManager(_navigationManager, ApaleoOneConstants.PropertyIdQueryParameter);
     }
 }
