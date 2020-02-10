@@ -35,7 +35,7 @@ namespace Traces.Web.Services.Apaleo
             if (!extractedQueryParameter.Equals(claimValue))
             {
                 var encodedUrl = HttpUtility.UrlEncode(_navigationManager.Uri);
-                _navigationManager.NavigateTo($"{ApaleoOneConstants.LogoutRelativeUrl}?redirectPath={encodedUrl}", true);
+                _navigationManager.NavigateTo($"{ApaleoOneConstants.LogoutUrlAbsolutePath}?redirectPath={encodedUrl}", true);
             }
         }
     }

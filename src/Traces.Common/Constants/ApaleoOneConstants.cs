@@ -2,13 +2,13 @@ namespace Traces.Common.Constants
 {
     public static class ApaleoOneConstants
     {
-        public const string AccountLevelRelativeUrl = "/traces/account";
+        public const string AccountLevelUrlAbsolutePath = "/traces/account";
 
-        public const string ReservationLevelRelativeUrl = "/traces/reservation";
+        public const string ReservationLevelUrlAbsolutePath = "/traces/reservation";
 
-        public const string PropertyLevelRelativeUrl = "/traces/property";
+        public const string PropertyLevelUrlAbsolutePath = "/traces/property";
 
-        public const string LogoutRelativeUrl = "/logout";
+        public const string LogoutUrlAbsolutePath = "/logout";
 
         public const string SubjectIdQueryParameter = "subjectId";
 
