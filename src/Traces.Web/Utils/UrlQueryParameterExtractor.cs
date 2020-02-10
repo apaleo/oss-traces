@@ -14,14 +14,5 @@ namespace Traces.Web.Utils
 
             return queryNameValue[parameterKey];
         }
-
-        public static bool HasQueryParams(string path)
-        {
-            var uri = new Uri(path);
-
-            var queryNameValue = HttpUtility.ParseQueryString(uri.Query);
-
-            return queryNameValue.HasKeys();
-        }
     }
 }
