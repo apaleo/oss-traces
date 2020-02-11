@@ -35,7 +35,7 @@ namespace Traces.Web.ViewModels
 
         public async Task TestAsync()
         {
-            Console.WriteLine("===== Called test");
+            // TODO remove it before merge
             await NotificationService.ShowSuccessAsync("content");
         }
 

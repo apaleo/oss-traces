@@ -15,8 +15,6 @@ namespace Traces.Web.Services
 
         public async Task ShowNotificationAsync(ApaleoNotificationType type, string content, string title)
         {
-            Console.WriteLine("====== Show notification async");
-
             var message = new ApaleoNotificationMessageModel
             {
                 Title = title,
