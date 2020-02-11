@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Traces.Common;
@@ -23,13 +22,13 @@ namespace Traces.Web.ViewModels
         public TracesPropertyViewModel(
             ITracesCollectorService tracesCollectorService,
             ITraceModifierService traceModifierService,
-            IToastService toastService,
             NavigationManager navigationManager,
             IRequestContext requestContext,
             IHttpContextAccessor httpContextAccessor,
             IApaleoOneNavigationService apaleoOneNavigationService,
-            IApaleoRolesCollectorService apaleoRolesCollector)
-            : base(traceModifierService, toastService, httpContextAccessor, requestContext, apaleoOneNavigationService, apaleoRolesCollector)
+            IApaleoRolesCollectorService apaleoRolesCollector,
+            INotificationService notificationService)
+            : base(traceModifierService, httpContextAccessor, requestContext, apaleoOneNavigationService, apaleoRolesCollector, notificationService)
         {
             _navigationManager = Check.NotNull(navigationManager, nameof(navigationManager));
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
@@ -48,13 +47,13 @@ namespace Traces.Web.ViewModels
             {
                 createResult.Result.MatchSome(AddTraceToDictionary);
 
-                ShowToastMessage(true, TextConstants.TraceCreatedSuccessfullyMessage);
+                await NotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
             }
             else
             {
                 var errorMessage = createResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                ShowToastMessage(false, errorMessage);
+                await NotificationService.ShowErrorAsync(errorMessage);
             }
 
             if (createResult.Success)
@@ -88,7 +87,7 @@ namespace Traces.Web.ViewModels
             {
                 var errorMessage = tracesResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                ShowToastMessage(false, errorMessage);
+                await NotificationService.ShowErrorAsync(errorMessage);
             }
         }
 

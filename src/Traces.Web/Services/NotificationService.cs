@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Blazored.Toast.Services;
 using Microsoft.JSInterop;
 using Traces.Common.Constants;
+using Traces.Common.Utils;
 using Traces.Web.Enums.ApaleoOne;
 
 namespace Traces.Web.Services
@@ -14,9 +15,9 @@ namespace Traces.Web.Services
 
         public NotificationService(IToastService toastService, IApaleoOneNotificationService apaleoOneNotificationService, IJSRuntime jsRuntime)
         {
-            _toastService = toastService;
-            _apaleoOneNotificationService = apaleoOneNotificationService;
-            _jsRuntime = jsRuntime;
+            _toastService = Check.NotNull(toastService, nameof(toastService));
+            _apaleoOneNotificationService = Check.NotNull(apaleoOneNotificationService, nameof(apaleoOneNotificationService));
+            _jsRuntime = Check.NotNull(jsRuntime, nameof(jsRuntime));
         }
 
         public async Task ShowSuccessAsync(string content, string title = TextConstants.SuccessHeaderText)

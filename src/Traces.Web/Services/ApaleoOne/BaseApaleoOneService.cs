@@ -1,6 +1,7 @@
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Traces.Common.Utils;
 
 namespace Traces.Web.Services
 {
@@ -13,7 +14,7 @@ namespace Traces.Web.Services
 
         protected BaseApaleoOneService(IJSRuntime runtime)
         {
-            JsRuntime = runtime;
+            JsRuntime = Check.NotNull(runtime, nameof(runtime));
         }
 
         protected IJSRuntime JsRuntime { get; }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Http;
 using Traces.Common;
 using Traces.Common.Extensions;
@@ -14,12 +13,10 @@ namespace Traces.Web.ViewModels
     public class TracesAccountViewModel : TracesBaseViewModel
     {
         private readonly ITracesCollectorService _tracesCollectorService;
-        private readonly INotificationService _notificationService;
 
         public TracesAccountViewModel(
             ITracesCollectorService tracesCollectorService,
             ITraceModifierService traceModifierService,
-            IToastService toastService,
             IRequestContext requestContext,
             IHttpContextAccessor httpContextAccessor,
             IApaleoOneNavigationService apaleoOneNavigationService,
@@ -27,20 +24,19 @@ namespace Traces.Web.ViewModels
             INotificationService notificationService)
             : base(
                 traceModifierService,
-                toastService,
                 httpContextAccessor,
                 requestContext,
                 apaleoOneNavigationService,
-                apaleoRolesCollector)
+                apaleoRolesCollector,
+                notificationService)
         {
-            _notificationService = notificationService;
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
         }
 
         public async Task TestAsync()
         {
             Console.WriteLine("===== Called test");
-            await _notificationService.ShowSuccessAsync("content");
+            await NotificationService.ShowSuccessAsync("content");
         }
 
         public override async Task LoadNextDaysAsync()
@@ -70,7 +66,7 @@ namespace Traces.Web.ViewModels
             {
                 var errorMessage = tracesResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                ShowToastMessage(false, errorMessage);
+                await NotificationService.ShowErrorAsync(errorMessage);
             }
         }
 

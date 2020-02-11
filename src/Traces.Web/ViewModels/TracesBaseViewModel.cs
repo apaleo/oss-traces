@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Blazored.Toast.Services;
 using Blazorise;
 using Microsoft.AspNetCore.Http;
 using Traces.Common;
@@ -16,23 +15,22 @@ namespace Traces.Web.ViewModels
 {
     public abstract class TracesBaseViewModel : BaseViewModel
     {
-        private readonly IToastService _toastService;
         private readonly IApaleoOneNavigationService _apaleoOneNavigationService;
         private readonly IApaleoRolesCollectorService _apaleoRolesCollector;
 
         protected TracesBaseViewModel(
             ITraceModifierService traceModifierService,
-            IToastService toastService,
             IHttpContextAccessor httpContextAccessor,
             IRequestContext requestContext,
             IApaleoOneNavigationService apaleoOneNavigationService,
-            IApaleoRolesCollectorService apaleoRolesCollector)
+            IApaleoRolesCollectorService apaleoRolesCollector,
+            INotificationService notificationService)
             : base(httpContextAccessor, requestContext)
         {
             TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
-            _toastService = Check.NotNull(toastService, nameof(toastService));
             _apaleoOneNavigationService = Check.NotNull(apaleoOneNavigationService, nameof(apaleoOneNavigationService));
             _apaleoRolesCollector = Check.NotNull(apaleoRolesCollector, nameof(apaleoRolesCollector));
+            NotificationService = Check.NotNull(notificationService, nameof(notificationService));
 
             SortedGroupedTracesDictionary = new SortedDictionary<DateTime, List<TraceItemModel>>();
             OverdueTraces = new List<TraceItemModel>();
@@ -59,6 +57,8 @@ namespace Traces.Web.ViewModels
         public DateTime CurrentFromDate { get; protected set; } = DateTime.Today;
 
         protected ITraceModifierService TraceModifierService { get; }
+
+        protected INotificationService NotificationService { get; }
 
         protected DateTime CurrentToDate { get; set; }
 
@@ -121,13 +121,13 @@ namespace Traces.Web.ViewModels
                 await LoadTracesAsync(CurrentFromDate, CurrentToDate);
                 await LoadOverdueTracesAsync();
 
-                ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
+                await NotificationService.ShowSuccessAsync(TextConstants.TraceUpdatedSuccessfullyMessage);
             }
             else
             {
                 var errorMessage = replaceResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                ShowToastMessage(false, errorMessage);
+                await NotificationService.ShowErrorAsync(errorMessage);
             }
 
             if (replaceResult.Success)
@@ -144,13 +144,13 @@ namespace Traces.Web.ViewModels
             {
                 RemoveTraceFromList(trace);
 
-                ShowToastMessage(true, TextConstants.TraceDeletedSuccessfullyMessage);
+                await NotificationService.ShowSuccessAsync(TextConstants.TraceDeletedSuccessfullyMessage);
             }
             else
             {
                 var errorMessage = deleteResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                ShowToastMessage(false, errorMessage);
+                await NotificationService.ShowErrorAsync(errorMessage);
             }
         }
 
@@ -162,13 +162,13 @@ namespace Traces.Web.ViewModels
             {
                 RemoveTraceFromList(trace);
 
-                ShowToastMessage(true, TextConstants.TraceMarkedAsCompletedMessage);
+                await NotificationService.ShowSuccessAsync(TextConstants.TraceMarkedAsCompletedMessage);
             }
             else
             {
                 var errorMessage = completeResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                ShowToastMessage(false, errorMessage);
+                await NotificationService.ShowErrorAsync(errorMessage);
             }
         }
 
@@ -183,7 +183,7 @@ namespace Traces.Web.ViewModels
 
             var errorMessage = navigationResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-            ShowToastMessage(false, errorMessage);
+            await NotificationService.ShowErrorAsync(errorMessage);
         }
 
         public void ShowReplaceTraceModal(TraceItemModel traceItemModel)
@@ -223,20 +223,6 @@ namespace Traces.Web.ViewModels
         protected abstract Task LoadTracesAsync(DateTime from, DateTime toDateTime);
 
         protected abstract Task LoadOverdueTracesAsync();
-
-        protected void ShowToastMessage(bool success, string message)
-        {
-            var header = success ? TextConstants.SuccessHeaderText : TextConstants.ErrorHeaderText;
-
-            if (success)
-            {
-                _toastService.ShowSuccess(message, header);
-            }
-            else
-            {
-                _toastService.ShowError(message, header);
-            }
-        }
 
         protected void AddTraceToDictionary(TraceItemModel trace)
         {

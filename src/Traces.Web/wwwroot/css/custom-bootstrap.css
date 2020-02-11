@@ -21,3 +21,7 @@
     white-space: nowrap;
     width: 1%;
 }
+
+.blazored-toast-container {
+    z-index: 9999;
+}
