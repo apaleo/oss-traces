@@ -17,7 +17,7 @@ namespace Traces.Web.ViewModels
     public abstract class TracesBaseViewModel : BaseViewModel
     {
         private readonly IToastService _toastService;
-        private readonly IApaleoOneService _apaleoOneService;
+        private readonly IApaleoOneNavigationService _apaleoOneNavigationService;
         private readonly IApaleoRolesCollectorService _apaleoRolesCollector;
 
         protected TracesBaseViewModel(
@@ -25,13 +25,13 @@ namespace Traces.Web.ViewModels
             IToastService toastService,
             IHttpContextAccessor httpContextAccessor,
             IRequestContext requestContext,
-            IApaleoOneService apaleoOneService,
+            IApaleoOneNavigationService apaleoOneNavigationService,
             IApaleoRolesCollectorService apaleoRolesCollector)
             : base(httpContextAccessor, requestContext)
         {
             TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
             _toastService = Check.NotNull(toastService, nameof(toastService));
-            _apaleoOneService = Check.NotNull(apaleoOneService, nameof(apaleoOneService));
+            _apaleoOneNavigationService = Check.NotNull(apaleoOneNavigationService, nameof(apaleoOneNavigationService));
             _apaleoRolesCollector = Check.NotNull(apaleoRolesCollector, nameof(apaleoRolesCollector));
 
             SortedGroupedTracesDictionary = new SortedDictionary<DateTime, List<TraceItemModel>>();
@@ -174,7 +174,7 @@ namespace Traces.Web.ViewModels
 
         public async Task NavigateToReservationAsync(TraceItemModel trace)
         {
-            var navigationResult = await _apaleoOneService.NavigateToReservationAsync(trace);
+            var navigationResult = await _apaleoOneNavigationService.NavigateToReservationAsync(trace);
 
             if (navigationResult.Success)
             {

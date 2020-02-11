@@ -137,10 +137,12 @@ namespace Traces.Web
             services.AddScoped<ITraceService, TraceService>();
             services.AddScoped<ITraceModifierService, TraceModifierService>();
             services.AddScoped<ITracesCollectorService, TracesCollectorService>();
-            services.AddScoped<IApaleoOneService, ApaleoOneService>();
+            services.AddScoped<IApaleoOneNavigationService, ApaleoOneNavigationService>();
+            services.AddScoped<IApaleoOneNotificationService, ApaleoOneNotificationService>();
             services.AddScoped<IApaleoSetupService, ApaleoSetupService>();
             services.AddScoped<IApaleoRolesCollectorService, ApaleoRolesCollectorService>();
             services.AddScoped<IApaleoUserClaimValidatorService, ApaleoUserClaimValidatorService>();
+            services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IndexViewModel>();
             services.AddScoped<TracesAccountViewModel>();
             services.AddScoped<TracesReservationViewModel>();

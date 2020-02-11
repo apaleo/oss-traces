@@ -14,6 +14,7 @@ namespace Traces.Web.ViewModels
     public class TracesAccountViewModel : TracesBaseViewModel
     {
         private readonly ITracesCollectorService _tracesCollectorService;
+        private readonly INotificationService _notificationService;
 
         public TracesAccountViewModel(
             ITracesCollectorService tracesCollectorService,
@@ -21,17 +22,25 @@ namespace Traces.Web.ViewModels
             IToastService toastService,
             IRequestContext requestContext,
             IHttpContextAccessor httpContextAccessor,
-            IApaleoOneService apaleoOneService,
-            IApaleoRolesCollectorService apaleoRolesCollector)
+            IApaleoOneNavigationService apaleoOneNavigationService,
+            IApaleoRolesCollectorService apaleoRolesCollector,
+            INotificationService notificationService)
             : base(
                 traceModifierService,
                 toastService,
                 httpContextAccessor,
                 requestContext,
-                apaleoOneService,
+                apaleoOneNavigationService,
                 apaleoRolesCollector)
         {
+            _notificationService = notificationService;
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
+        }
+
+        public async Task TestAsync()
+        {
+            Console.WriteLine("===== Called test");
+            await _notificationService.ShowSuccessAsync("content");
         }
 
         public override async Task LoadNextDaysAsync()

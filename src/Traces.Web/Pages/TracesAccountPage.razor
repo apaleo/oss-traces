@@ -4,6 +4,7 @@
 @inject TracesAccountViewModel TracesAccountViewModel
 
 <div class="mb-3">
+    <Button Clicked="@TracesAccountViewModel.TestAsync">Test</Button>
     <DatePicker Date="@TracesAccountViewModel.CurrentFromDate" OnChange="@TracesAccountViewModel.LoadFromDateAsync"/>
 </div>
 
