@@ -9,6 +9,8 @@ using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
+using Traces.Web.Services.Apaleo;
+using Traces.Web.Services.ApaleoOne;
 using Traces.Web.Utils;
 
 namespace Traces.Web.ViewModels
@@ -27,8 +29,8 @@ namespace Traces.Web.ViewModels
             IHttpContextAccessor httpContextAccessor,
             IApaleoOneNavigationService apaleoOneNavigationService,
             IApaleoRolesCollectorService apaleoRolesCollector,
-            INotificationService notificationService)
-            : base(traceModifierService, httpContextAccessor, requestContext, apaleoOneNavigationService, apaleoRolesCollector, notificationService)
+            IApaleoOneNotificationService apaleoOneNotificationService)
+            : base(traceModifierService, httpContextAccessor, requestContext, apaleoOneNavigationService, apaleoRolesCollector, apaleoOneNotificationService)
         {
             _navigationManager = Check.NotNull(navigationManager, nameof(navigationManager));
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
@@ -47,13 +49,13 @@ namespace Traces.Web.ViewModels
             {
                 createResult.Result.MatchSome(AddTraceToDictionary);
 
-                await NotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
+                await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
             }
             else
             {
                 var errorMessage = createResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                await NotificationService.ShowErrorAsync(errorMessage);
+                await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
             }
 
             if (createResult.Success)
@@ -91,7 +93,7 @@ namespace Traces.Web.ViewModels
             {
                 var errorMessage = tracesResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                await NotificationService.ShowErrorAsync(errorMessage);
+                await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
             }
         }
 
@@ -112,7 +114,7 @@ namespace Traces.Web.ViewModels
             {
                 var errorMessage = tracesResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                await NotificationService.ShowErrorAsync(errorMessage);
+                await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
             }
         }
 
@@ -135,7 +137,7 @@ namespace Traces.Web.ViewModels
             {
                 var errorMessage = tracesResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                await NotificationService.ShowErrorAsync(errorMessage);
+                await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
             }
         }
 

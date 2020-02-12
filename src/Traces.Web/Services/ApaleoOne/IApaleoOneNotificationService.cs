@@ -1,10 +1,13 @@
 using System.Threading.Tasks;
-using Traces.Web.ApaleoOneConfig;
 
-namespace Traces.Web.Services
+namespace Traces.Web.Services.ApaleoOne
 {
     public interface IApaleoOneNotificationService
     {
-        Task ShowNotificationAsync(ApaleoNotificationType type, string content, string title);
+        Task ShowSuccessAsync(string title, string content = null);
+
+        Task ShowAlertAsync(string title, string content = null);
+
+        Task ShowErrorAsync(string title, string content = null);
     }
 }

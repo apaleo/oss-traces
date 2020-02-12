@@ -10,6 +10,8 @@ using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
+using Traces.Web.Services.Apaleo;
+using Traces.Web.Services.ApaleoOne;
 
 namespace Traces.Web.ViewModels
 {
@@ -24,13 +26,13 @@ namespace Traces.Web.ViewModels
             IRequestContext requestContext,
             IApaleoOneNavigationService apaleoOneNavigationService,
             IApaleoRolesCollectorService apaleoRolesCollector,
-            INotificationService notificationService)
+            IApaleoOneNotificationService apaleoOneNotificationService)
             : base(httpContextAccessor, requestContext)
         {
             TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
             _apaleoOneNavigationService = Check.NotNull(apaleoOneNavigationService, nameof(apaleoOneNavigationService));
             _apaleoRolesCollector = Check.NotNull(apaleoRolesCollector, nameof(apaleoRolesCollector));
-            NotificationService = Check.NotNull(notificationService, nameof(notificationService));
+            ApaleoOneNotificationService = Check.NotNull(apaleoOneNotificationService, nameof(apaleoOneNotificationService));
 
             SortedGroupedTracesDictionary = new SortedDictionary<DateTime, List<TraceItemModel>>();
             OverdueTraces = new List<TraceItemModel>();
@@ -58,7 +60,7 @@ namespace Traces.Web.ViewModels
 
         protected ITraceModifierService TraceModifierService { get; }
 
-        protected INotificationService NotificationService { get; }
+        protected IApaleoOneNotificationService ApaleoOneNotificationService { get; }
 
         protected DateTime CurrentToDate { get; set; }
 
@@ -121,13 +123,13 @@ namespace Traces.Web.ViewModels
                 await LoadTracesAsync(CurrentFromDate, CurrentToDate);
                 await LoadOverdueTracesAsync();
 
-                await NotificationService.ShowSuccessAsync(TextConstants.TraceUpdatedSuccessfullyMessage);
+                await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceUpdatedSuccessfullyMessage);
             }
             else
             {
                 var errorMessage = replaceResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                await NotificationService.ShowErrorAsync(errorMessage);
+                await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
             }
 
             if (replaceResult.Success)
@@ -144,13 +146,13 @@ namespace Traces.Web.ViewModels
             {
                 RemoveTraceFromList(trace);
 
-                await NotificationService.ShowSuccessAsync(TextConstants.TraceDeletedSuccessfullyMessage);
+                await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceDeletedSuccessfullyMessage);
             }
             else
             {
                 var errorMessage = deleteResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                await NotificationService.ShowErrorAsync(errorMessage);
+                await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
             }
         }
 
@@ -162,13 +164,13 @@ namespace Traces.Web.ViewModels
             {
                 RemoveTraceFromList(trace);
 
-                await NotificationService.ShowSuccessAsync(TextConstants.TraceMarkedAsCompletedMessage);
+                await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceMarkedAsCompletedMessage);
             }
             else
             {
                 var errorMessage = completeResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                await NotificationService.ShowErrorAsync(errorMessage);
+                await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
             }
         }
 
@@ -183,7 +185,7 @@ namespace Traces.Web.ViewModels
 
             var errorMessage = navigationResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-            await NotificationService.ShowErrorAsync(errorMessage);
+            await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
         }
 
         public void ShowReplaceTraceModal(TraceItemModel traceItemModel)

@@ -5,7 +5,7 @@ using Traces.Common.Constants;
 using Traces.Common.Exceptions;
 using Traces.Web.Models;
 
-namespace Traces.Web.Services
+namespace Traces.Web.Services.ApaleoOne
 {
     public class ApaleoOneNavigationService : BaseApaleoOneService, IApaleoOneNavigationService
     {

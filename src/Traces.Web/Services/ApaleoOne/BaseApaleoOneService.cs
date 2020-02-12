@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Traces.Common.Utils;
 
-namespace Traces.Web.Services
+namespace Traces.Web.Services.ApaleoOne
 {
     public class BaseApaleoOneService
     {

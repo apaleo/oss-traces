@@ -1,6 +1,5 @@
 using System;
 using System.Net.Http;
-using Blazored.Toast;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
@@ -28,6 +27,7 @@ using Traces.Web.AutoRefresh;
 using Traces.Web.Middlewares;
 using Traces.Web.Services;
 using Traces.Web.Services.Apaleo;
+using Traces.Web.Services.ApaleoOne;
 using Traces.Web.ViewModels;
 
 namespace Traces.Web
@@ -130,8 +130,6 @@ namespace Traces.Web
                     HerokuUtils.ConvertConnectionStringIfSet(Configuration["DATABASE_URL"]) ?? Configuration["ConnectionStrings:DefaultDatabase"],
                     npgSqlOptions => npgSqlOptions.UseNodaTime()));
 
-            services.AddBlazoredToast();
-
             services.AddScoped<IRequestContext, RequestContext>();
             services.AddScoped<ITraceRepository, TraceRepository>();
             services.AddScoped<ITraceService, TraceService>();
@@ -142,7 +140,6 @@ namespace Traces.Web
             services.AddScoped<IApaleoSetupService, ApaleoSetupService>();
             services.AddScoped<IApaleoRolesCollectorService, ApaleoRolesCollectorService>();
             services.AddScoped<IApaleoUserClaimValidatorService, ApaleoUserClaimValidatorService>();
-            services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IndexViewModel>();
             services.AddScoped<TracesAccountViewModel>();
             services.AddScoped<TracesReservationViewModel>();

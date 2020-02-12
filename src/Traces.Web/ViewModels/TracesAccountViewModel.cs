@@ -7,6 +7,8 @@ using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
+using Traces.Web.Services.Apaleo;
+using Traces.Web.Services.ApaleoOne;
 
 namespace Traces.Web.ViewModels
 {
@@ -21,21 +23,21 @@ namespace Traces.Web.ViewModels
             IHttpContextAccessor httpContextAccessor,
             IApaleoOneNavigationService apaleoOneNavigationService,
             IApaleoRolesCollectorService apaleoRolesCollector,
-            INotificationService notificationService)
+            IApaleoOneNotificationService apaleoOneNotificationService)
             : base(
                 traceModifierService,
                 httpContextAccessor,
                 requestContext,
                 apaleoOneNavigationService,
                 apaleoRolesCollector,
-                notificationService)
+                apaleoOneNotificationService)
         {
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
         }
 
         public async Task TestAsync()
         {
-            await NotificationService.ShowSuccessAsync("content");
+            await ApaleoOneNotificationService.ShowSuccessAsync("content");
         }
 
         public override async Task LoadNextDaysAsync()
@@ -65,7 +67,7 @@ namespace Traces.Web.ViewModels
             {
                 var errorMessage = tracesResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                await NotificationService.ShowErrorAsync(errorMessage);
+                await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
             }
         }
 
