@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.JSInterop;
-using Traces.Web.Enums.ApaleoOne;
+using Traces.Web.ApaleoOneConfig;
 using Traces.Web.Models;
 
 namespace Traces.Web.Services

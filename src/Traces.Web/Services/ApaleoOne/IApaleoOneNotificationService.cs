@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Traces.Web.Enums.ApaleoOne;
+using Traces.Web.ApaleoOneConfig;
 
 namespace Traces.Web.Services
 {

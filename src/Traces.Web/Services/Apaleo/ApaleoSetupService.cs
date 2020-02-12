@@ -28,15 +28,15 @@ namespace Traces.Web.Services
             {
                 {
                     ApaleoIntegrationTarget.AccountMenuApps,
-                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.AccountLevelUrlAbsolutePath}")
+                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{AppConstants.AccountLevelUrlAbsolutePath}")
                 },
                 {
                     ApaleoIntegrationTarget.PropertyMenuApps,
-                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.PropertyLevelUrlAbsolutePath}")
+                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{AppConstants.PropertyLevelUrlAbsolutePath}")
                 },
                 {
                     ApaleoIntegrationTarget.ReservationDetailsTab,
-                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{ApaleoOneConstants.ReservationLevelUrlAbsolutePath}")
+                    new Uri($"{_integrationConfig.Value.IntegrationBaseAddress}{AppConstants.ReservationLevelUrlAbsolutePath}")
                 }
             };
         }
@@ -99,7 +99,7 @@ namespace Traces.Web.Services
                 Code = _integrationConfig.Value.DefaultIntegrationCode,
                 Label = _integrationConfig.Value.IntegrationLabel,
                 IconSource = integrationIconUrl,
-                SourceType = ApaleoOneConstants.IntegrationSourceType,
+                SourceType = AppConstants.IntegrationSourceType,
                 SourceUrl = integrationUrl
             };
 

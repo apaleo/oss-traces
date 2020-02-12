@@ -1,4 +1,4 @@
-namespace Traces.Web.Enums.ApaleoOne
+namespace Traces.Web.ApaleoOneConfig
 {
     public sealed class ApaleoNotificationType
     {
@@ -11,10 +11,10 @@ namespace Traces.Web.Enums.ApaleoOne
             Value = value;
         }
 
-        public string Value { get; private set; }
+        public string Value { get; }
 
         public static implicit operator string(ApaleoNotificationType type) => type.Value;
 
-        public new string ToString() => Value;
+        public override string ToString() => Value;
     }
 }

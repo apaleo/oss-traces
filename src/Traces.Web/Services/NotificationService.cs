@@ -3,7 +3,7 @@ using Blazored.Toast.Services;
 using Microsoft.JSInterop;
 using Traces.Common.Constants;
 using Traces.Common.Utils;
-using Traces.Web.Enums.ApaleoOne;
+using Traces.Web.ApaleoOneConfig;
 
 namespace Traces.Web.Services
 {
