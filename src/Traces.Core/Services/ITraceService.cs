@@ -14,13 +14,15 @@ namespace Traces.Core.Services
 
         Task<IReadOnlyList<TraceDto>> GetActiveTracesForPropertyAsync(string propertyId, DateTime from, DateTime toDateTime);
 
-        Task<IReadOnlyList<TraceDto>> GetActiveTracesForReservationAsync(string reservationId, DateTime from, DateTime toDateTime);
+        Task<IReadOnlyList<TraceDto>> GetActiveTracesForReservationAsync(string reservationId, DateTime from);
 
         Task<IReadOnlyList<TraceDto>> GetOverdueTracesAsync();
 
         Task<IReadOnlyList<TraceDto>> GetOverdueTracesForPropertyAsync(string propertyId);
 
         Task<IReadOnlyList<TraceDto>> GetOverdueTracesForReservationAsync(string reservationId);
+
+        Task<IReadOnlyList<TraceDto>> GetCompletedTracesForReservationAsync(string reservationId);
 
         Task<Option<TraceDto>> GetTraceAsync(int id);
 

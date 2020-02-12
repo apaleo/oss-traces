@@ -39,7 +39,7 @@
         </section>
     }
 
-    @if (TracesReservationViewModel.SortedGroupedTracesDictionary != null && TracesReservationViewModel.SortedGroupedTracesDictionary.Any())
+    @if (TracesReservationViewModel.ActiveTracesDictionary != null && TracesReservationViewModel.ActiveTracesDictionary.Any())
     {
         <Table>
             <TableHeader>
@@ -50,7 +50,34 @@
                     <TableHeaderCell></TableHeaderCell>
                 </TableRow>
             </TableHeader>
-            @foreach (var (date, traces) in TracesReservationViewModel.SortedGroupedTracesDictionary)
+            @foreach (var (date, traces) in TracesReservationViewModel.ActiveTracesDictionary)
+            {
+                <TracesComponent
+                    Title="@date.ToShortDateString()"
+                    Traces="@traces"
+                    IsPropertyVisible="false"
+                    IsReservationVisible="false"
+                    IsDueDateVisible="false"
+                    OnCompleteClick="@TracesReservationViewModel.CompleteTraceAsync"
+                    OnDeleteClick="@TracesReservationViewModel.DeleteItemAsync"
+                    OnEditClick="@TracesReservationViewModel.ShowReplaceTraceModal"
+                    OnNavigateClick="@TracesReservationViewModel.NavigateToReservationAsync"/>
+            }
+        </Table>
+    }
+
+     @if (TracesReservationViewModel.CompletedTracesDictionary != null && TracesReservationViewModel.CompletedTracesDictionary.Any())
+    {
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTableAssignedRoleText</TableHeaderCell>
+                    <TableHeaderCell></TableHeaderCell>
+                </TableRow>
+            </TableHeader>
+            @foreach (var (date, traces) in TracesReservationViewModel.CompletedTracesDictionary)
             {
                 <TracesComponent
                     Title="@date.ToShortDateString()"
@@ -105,7 +132,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await TracesReservationViewModel.LoadAsync();
+        await TracesReservationViewModel.InitializeAsync();
         await base.OnInitializedAsync();
     }
 

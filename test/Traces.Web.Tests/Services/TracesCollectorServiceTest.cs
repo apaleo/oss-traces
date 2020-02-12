@@ -88,7 +88,7 @@ namespace Traces.Web.Tests.Services
                     It.Is<DateTime>(dt => dt == _testToDate)))
                 .ReturnsAsync(testTraces);
 
-            var result = await _tracesCollectorService.GetTracesAsync(_testFromDate, _testToDate);
+            var result = await _tracesCollectorService.GetActiveTracesAsync(_testFromDate, _testToDate);
 
             result.Should().NotBeNull();
 
@@ -128,7 +128,7 @@ namespace Traces.Web.Tests.Services
                     It.Is<DateTime>(dt => dt == _testToDate)))
                 .ThrowsAsync(new BusinessValidationException(exceptionMessage));
 
-            var collectorResult = await _tracesCollectorService.GetTracesAsync(_testFromDate, _testToDate);
+            var collectorResult = await _tracesCollectorService.GetActiveTracesAsync(_testFromDate, _testToDate);
 
             collectorResult.Success.Should().BeFalse();
             collectorResult.Result.HasValue.Should().BeFalse();
@@ -174,7 +174,7 @@ namespace Traces.Web.Tests.Services
                 .ReturnsAsync(testTraces);
 
             var result =
-                await _tracesCollectorService.GetTracesForPropertyAsync(PropertyId, testTraceFromDate, testTraceToDate);
+                await _tracesCollectorService.GetActiveTracesForPropertyAsync(PropertyId, testTraceFromDate, testTraceToDate);
 
             result.Success.Should().BeTrue();
 
@@ -224,7 +224,7 @@ namespace Traces.Web.Tests.Services
                 .ReturnsAsync(testTraces);
 
             var result =
-                await _tracesCollectorService.GetTracesForReservationAsync(
+                await _tracesCollectorService.GetActiveTracesForReservationAsync(
                     ReservationId,
                     testTraceFromDate,
                     testTraceToDate);

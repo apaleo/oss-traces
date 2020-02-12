@@ -78,24 +78,17 @@ namespace Traces.Core.Services
             return ConvertToTraceDto(propertyTraces);
         }
 
-        public async Task<IReadOnlyList<TraceDto>> GetActiveTracesForReservationAsync(string reservationId, DateTime from, DateTime toDateTime)
+        public async Task<IReadOnlyList<TraceDto>> GetActiveTracesForReservationAsync(string reservationId, DateTime from)
         {
             Check.NotEmpty(reservationId, nameof(reservationId));
 
-            if (from > toDateTime)
-            {
-                throw new BusinessValidationException(TextConstants.DateIntervalErrorMessage);
-            }
-
             var fromLocalDate = LocalDate.FromDateTime(from);
-            var toLocalDate = LocalDate.FromDateTime(toDateTime);
 
             var reservationTraces =
                 await _traceRepository.GetAllTracesForTenantAsync(t =>
                     t.State == TraceState.Active &&
                     t.ReservationId == reservationId &&
-                    t.DueDate >= fromLocalDate &&
-                    t.DueDate <= toLocalDate);
+                    t.DueDate >= fromLocalDate);
 
             return ConvertToTraceDto(reservationTraces);
         }
@@ -131,6 +124,17 @@ namespace Traces.Core.Services
             var overdueTracesForReservation = await _traceRepository.GetAllTracesForTenantAsync(t =>
                 t.State == TraceState.Active &&
                 t.DueDate < todayDate &&
+                t.ReservationId == reservationId);
+
+            return ConvertToTraceDto(overdueTracesForReservation);
+        }
+
+        public async Task<IReadOnlyList<TraceDto>> GetCompletedTracesForReservationAsync(string reservationId)
+        {
+            Check.NotEmpty(reservationId, nameof(reservationId));
+
+            var overdueTracesForReservation = await _traceRepository.GetAllTracesForTenantAsync(t =>
+                t.State == TraceState.Completed &&
                 t.ReservationId == reservationId);
 
             return ConvertToTraceDto(overdueTracesForReservation);

@@ -8,6 +8,7 @@ using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
+using Traces.Web.Utils;
 
 namespace Traces.Web.ViewModels
 {
@@ -39,7 +40,7 @@ namespace Traces.Web.ViewModels
             var loadFromDate = CurrentToDate.AddDays(1);
             var loadUntilDate = CurrentToDate.AddDays(CurrentDayIncrease);
 
-            var tracesResult = await _tracesCollectorService.GetTracesAsync(loadFromDate, loadUntilDate);
+            var tracesResult = await _tracesCollectorService.GetActiveTracesAsync(loadFromDate, loadUntilDate);
 
             if (tracesResult.Success)
             {
@@ -47,7 +48,7 @@ namespace Traces.Web.ViewModels
 
                 foreach (var trace in traces)
                 {
-                    AddTraceToDictionary(trace);
+                    ActiveTracesDictionary.AddTrace(trace);
                 }
 
                 CurrentToDate = loadUntilDate;
@@ -65,15 +66,15 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        protected override async Task LoadTracesAsync(DateTime from, DateTime toDateTime)
+        protected override async Task LoadActiveTracesAsync(DateTime from, DateTime toDateTime)
         {
-            var tracesResult = await _tracesCollectorService.GetTracesAsync(from, toDateTime);
+            var tracesResult = await _tracesCollectorService.GetActiveTracesAsync(from, toDateTime);
 
             if (tracesResult.Success)
             {
                 var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
 
-                LoadSortedDictionaryFromList(traces);
+                ActiveTracesDictionary.LoadTraces(traces);
 
                 CurrentFromDate = from;
                 CurrentToDate = toDateTime;

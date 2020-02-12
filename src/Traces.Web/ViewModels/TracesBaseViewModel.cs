@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Blazored.Toast.Services;
 using Blazorise;
@@ -11,6 +10,7 @@ using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
+using Traces.Web.Utils;
 
 namespace Traces.Web.ViewModels
 {
@@ -33,28 +33,24 @@ namespace Traces.Web.ViewModels
             _toastService = Check.NotNull(toastService, nameof(toastService));
             _apaleoOneService = Check.NotNull(apaleoOneService, nameof(apaleoOneService));
             _apaleoRolesCollector = Check.NotNull(apaleoRolesCollector, nameof(apaleoRolesCollector));
-
-            SortedGroupedTracesDictionary = new SortedDictionary<DateTime, List<TraceItemModel>>();
-            OverdueTraces = new List<TraceItemModel>();
-            EditTraceDialogViewModel = new EditTraceDialogViewModel();
-            CurrentDayIncrease = 5;
         }
 
-        public EditTraceDialogViewModel EditTraceDialogViewModel { get; }
+        public EditTraceDialogViewModel EditTraceDialogViewModel { get; } = new EditTraceDialogViewModel();
 
         public Modal CreateTraceModalRef { get; set; }
 
         public Modal EditTraceModalRef { get; set; }
 
-        public List<TraceItemModel> OverdueTraces { get; }
+        public List<TraceItemModel> OverdueTraces { get; } = new List<TraceItemModel>();
 
-        public SortedDictionary<DateTime, List<TraceItemModel>> SortedGroupedTracesDictionary { get; }
+        public SortedDictionary<DateTime, List<TraceItemModel>> ActiveTracesDictionary { get; } =
+            new SortedDictionary<DateTime, List<TraceItemModel>>();
 
         public string LoadedUntilDateMessage { get; private set; }
 
         public string LoadMoreDaysText { get; private set; }
 
-        public int CurrentDayIncrease { get; protected set; }
+        public int CurrentDayIncrease { get; protected set; } = 5;
 
         public DateTime CurrentFromDate { get; protected set; } = DateTime.Today;
 
@@ -62,18 +58,11 @@ namespace Traces.Web.ViewModels
 
         protected DateTime CurrentToDate { get; set; }
 
-        public async Task LoadAsync()
+        public async Task InitializeAsync()
         {
             await InitializeContextAsync();
 
-            // On initialization we just load from today to tomorrow
-            var from = DateTime.Today;
-            var to = DateTime.Today.AddDays(1);
-
-            await LoadTracesAsync(from, to);
-            await LoadOverdueTracesAsync();
-
-            UpdateLoadedUntilText();
+            await LoadAsync();
 
             await LoadApaleoRolesAsync();
         }
@@ -89,7 +78,7 @@ namespace Traces.Web.ViewModels
             {
                 var to = from.AddDays(1);
 
-                await LoadTracesAsync(from, to);
+                await LoadActiveTracesAsync(from, to);
 
                 if (from.Date == DateTime.Today)
                 {
@@ -118,7 +107,7 @@ namespace Traces.Web.ViewModels
 
             if (replaceResult.Success)
             {
-                await LoadTracesAsync(CurrentFromDate, CurrentToDate);
+                await LoadActiveTracesAsync(CurrentFromDate, CurrentToDate);
                 await LoadOverdueTracesAsync();
 
                 ShowToastMessage(true, TextConstants.TraceUpdatedSuccessfullyMessage);
@@ -218,11 +207,23 @@ namespace Traces.Web.ViewModels
             EditTraceModalRef?.Hide();
         }
 
-        public abstract Task LoadNextDaysAsync();
+        public virtual Task LoadNextDaysAsync() => throw new NotImplementedException();
 
-        protected abstract Task LoadTracesAsync(DateTime from, DateTime toDateTime);
+        protected abstract Task LoadActiveTracesAsync(DateTime from, DateTime toDateTime);
 
         protected abstract Task LoadOverdueTracesAsync();
+
+        protected virtual async Task LoadAsync()
+        {
+            // On initialization we just load from today to tomorrow
+            var from = DateTime.Today;
+            var to = DateTime.Today.AddDays(1);
+
+            await LoadActiveTracesAsync(from, to);
+            await LoadOverdueTracesAsync();
+
+            UpdateLoadedUntilText();
+        }
 
         protected void ShowToastMessage(bool success, string message)
         {
@@ -238,41 +239,6 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        protected void AddTraceToDictionary(TraceItemModel trace)
-        {
-            if (SortedGroupedTracesDictionary.ContainsKey(trace.DueDate))
-            {
-                var existentTraces = SortedGroupedTracesDictionary[trace.DueDate];
-                if (existentTraces.Exists(item => item.Id == trace.Id))
-                {
-                    return;
-                }
-
-                existentTraces.Add(trace);
-            }
-            else
-            {
-                SortedGroupedTracesDictionary.Add(
-                    trace.DueDate,
-                    new List<TraceItemModel>
-                    {
-                        trace
-                    });
-            }
-        }
-
-        protected void LoadSortedDictionaryFromList(IReadOnlyList<TraceItemModel> traces)
-        {
-            SortedGroupedTracesDictionary.Clear();
-
-            var groupedTraces = traces.GroupBy(x => x.DueDate).ToList();
-
-            foreach (var group in groupedTraces)
-            {
-                SortedGroupedTracesDictionary.Add(group.Key, group.ToList());
-            }
-        }
-
         protected void UpdateLoadedUntilText()
         {
             LoadedUntilDateMessage =
@@ -283,19 +249,8 @@ namespace Traces.Web.ViewModels
 
         private void RemoveTraceFromList(TraceItemModel trace)
         {
-            if (SortedGroupedTracesDictionary.ContainsKey(trace.DueDate))
-            {
-                SortedGroupedTracesDictionary[trace.DueDate].Remove(trace);
-
-                if (SortedGroupedTracesDictionary[trace.DueDate].Count == 0)
-                {
-                    SortedGroupedTracesDictionary.Remove(trace.DueDate);
-                }
-            }
-            else if (OverdueTraces.Contains(trace))
-            {
-                OverdueTraces.Remove(trace);
-            }
+            ActiveTracesDictionary.RemoveTrace(trace);
+            OverdueTraces.Remove(trace);
         }
 
         private async Task LoadApaleoRolesAsync()

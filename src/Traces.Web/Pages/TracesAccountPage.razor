@@ -37,7 +37,7 @@
 }
 
 <div>
-    @if (TracesAccountViewModel.SortedGroupedTracesDictionary != null && TracesAccountViewModel.SortedGroupedTracesDictionary.Any())
+    @if (TracesAccountViewModel.ActiveTracesDictionary != null && TracesAccountViewModel.ActiveTracesDictionary.Any())
     {
         <Table>
             <TableHeader>
@@ -50,7 +50,7 @@
                     <TableHeaderCell></TableHeaderCell>
                 </TableRow>
             </TableHeader>
-            @foreach (var (date, traces) in TracesAccountViewModel.SortedGroupedTracesDictionary)
+            @foreach (var (date, traces) in TracesAccountViewModel.ActiveTracesDictionary)
             {
                 <TracesComponent
                     Title="@date.ToShortDateString()"
@@ -91,7 +91,7 @@
 {
     protected override async Task OnInitializedAsync()
     {
-        await TracesAccountViewModel.LoadAsync();
+        await TracesAccountViewModel.InitializeAsync();
         await base.OnInitializedAsync();
     }
 }

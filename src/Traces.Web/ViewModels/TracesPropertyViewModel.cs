@@ -46,7 +46,7 @@ namespace Traces.Web.ViewModels
 
             if (createResult.Success)
             {
-                createResult.Result.MatchSome(AddTraceToDictionary);
+                createResult.Result.MatchSome(ActiveTracesDictionary.AddTrace);
 
                 ShowToastMessage(true, TextConstants.TraceCreatedSuccessfullyMessage);
             }
@@ -68,7 +68,7 @@ namespace Traces.Web.ViewModels
             var loadFromDate = CurrentToDate.AddDays(1);
             var loadUntilDate = CurrentToDate.AddDays(CurrentDayIncrease);
 
-            var tracesResult = await _tracesCollectorService.GetTracesForPropertyAsync(_currentPropertyId, loadFromDate, loadUntilDate);
+            var tracesResult = await _tracesCollectorService.GetActiveTracesForPropertyAsync(_currentPropertyId, loadFromDate, loadUntilDate);
 
             if (tracesResult.Success)
             {
@@ -76,7 +76,7 @@ namespace Traces.Web.ViewModels
 
                 foreach (var trace in traces)
                 {
-                    AddTraceToDictionary(trace);
+                    ActiveTracesDictionary.AddTrace(trace);
                 }
 
                 CurrentToDate = loadUntilDate;
@@ -92,15 +92,15 @@ namespace Traces.Web.ViewModels
             }
         }
 
-        protected override async Task LoadTracesAsync(DateTime from, DateTime toDateTime)
+        protected override async Task LoadActiveTracesAsync(DateTime from, DateTime toDateTime)
         {
-            var tracesResult = await _tracesCollectorService.GetTracesForPropertyAsync(_currentPropertyId, from, toDateTime);
+            var tracesResult = await _tracesCollectorService.GetActiveTracesForPropertyAsync(_currentPropertyId, from, toDateTime);
 
             if (tracesResult.Success)
             {
                 var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
 
-                LoadSortedDictionaryFromList(traces);
+                ActiveTracesDictionary.LoadTraces(traces);
 
                 CurrentFromDate = from;
                 CurrentToDate = toDateTime;
