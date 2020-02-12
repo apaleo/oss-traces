@@ -35,11 +35,6 @@ namespace Traces.Web.ViewModels
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
         }
 
-        public async Task TestAsync()
-        {
-            await ApaleoOneNotificationService.ShowSuccessAsync("content");
-        }
-
         public override async Task LoadNextDaysAsync()
         {
             var loadFromDate = CurrentToDate.AddDays(1);
