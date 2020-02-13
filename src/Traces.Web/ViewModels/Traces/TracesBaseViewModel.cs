@@ -17,7 +17,6 @@ namespace Traces.Web.ViewModels.Traces
 {
     public abstract class TracesBaseViewModel : BaseViewModel
     {
-        private readonly IApaleoOneNavigationService _apaleoOneNavigationService;
         private readonly IApaleoRolesCollectorService _apaleoRolesCollector;
 
         protected TracesBaseViewModel(
@@ -30,7 +29,7 @@ namespace Traces.Web.ViewModels.Traces
             : base(httpContextAccessor, requestContext)
         {
             TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
-            _apaleoOneNavigationService = Check.NotNull(apaleoOneNavigationService, nameof(apaleoOneNavigationService));
+            ApaleoOneNavigationService = Check.NotNull(apaleoOneNavigationService, nameof(apaleoOneNavigationService));
             _apaleoRolesCollector = Check.NotNull(apaleoRolesCollector, nameof(apaleoRolesCollector));
             ApaleoOneNotificationService = Check.NotNull(apaleoOneNotificationService, nameof(apaleoOneNotificationService));
         }
@@ -46,19 +45,11 @@ namespace Traces.Web.ViewModels.Traces
         public SortedDictionary<DateTime, List<TraceItemModel>> ActiveTracesDictionary { get; } =
             new SortedDictionary<DateTime, List<TraceItemModel>>();
 
-        public string LoadedUntilDateMessage { get; private set; }
-
-        public string LoadMoreDaysText { get; private set; }
-
-        public int CurrentDayIncrease { get; protected set; } = 5;
-
-        public DateTime CurrentFromDate { get; protected set; } = DateTime.Today;
-
         protected ITraceModifierService TraceModifierService { get; }
 
         protected IApaleoOneNotificationService ApaleoOneNotificationService { get; }
 
-        protected DateTime CurrentToDate { get; set; }
+        protected IApaleoOneNavigationService ApaleoOneNavigationService { get; }
 
         public async Task InitializeAsync()
         {
@@ -67,32 +58,6 @@ namespace Traces.Web.ViewModels.Traces
             await LoadAsync();
 
             await LoadApaleoRolesAsync();
-        }
-
-        /// <summary>
-        /// The traces for the given from date are loaded. The overdue traces are also loaded if the date is set to today.
-        /// If the param from lies before the date of today, then nothing happens.
-        /// </summary>
-        /// <param name="from">The date that will be used to load the traces.</param>
-        public async Task LoadFromDateAsync(DateTime from)
-        {
-            if (from >= DateTime.Today)
-            {
-                var to = from.AddDays(1);
-
-                await LoadActiveTracesAsync(from, to);
-
-                if (from.Date == DateTime.Today)
-                {
-                    await LoadOverdueTracesAsync();
-                }
-                else
-                {
-                    OverdueTraces.Clear();
-                }
-
-                UpdateLoadedUntilText();
-            }
         }
 
         /// <summary>
@@ -109,8 +74,7 @@ namespace Traces.Web.ViewModels.Traces
 
             if (replaceResult.Success)
             {
-                await LoadActiveTracesAsync(CurrentFromDate, CurrentToDate);
-                await LoadOverdueTracesAsync();
+                await RefreshAsync();
 
                 await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceUpdatedSuccessfullyMessage);
             }
@@ -163,20 +127,6 @@ namespace Traces.Web.ViewModels.Traces
             }
         }
 
-        public async Task NavigateToReservationAsync(TraceItemModel trace)
-        {
-            var navigationResult = await _apaleoOneNavigationService.NavigateToReservationAsync(trace);
-
-            if (navigationResult.Success)
-            {
-                return;
-            }
-
-            var errorMessage = navigationResult.ErrorMessage.ValueOrException(new NotImplementedException());
-
-            await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-        }
-
         public void ShowReplaceTraceModal(TraceItemModel traceItemModel)
         {
             EditTraceDialogViewModel.ClearCurrentState();
@@ -209,31 +159,28 @@ namespace Traces.Web.ViewModels.Traces
             EditTraceModalRef?.Hide();
         }
 
-        public virtual Task LoadNextDaysAsync() => throw new NotImplementedException();
-
-        protected abstract Task LoadActiveTracesAsync(DateTime from, DateTime toDateTime);
-
-        protected abstract Task LoadOverdueTracesAsync();
-
-        protected virtual async Task LoadAsync()
+        protected async Task LoadOverdueTracesAsync()
         {
-            // On initialization we just load from today to tomorrow
-            var from = DateTime.Today;
-            var to = DateTime.Today.AddDays(1);
+            var tracesResult = await GetOverdueTracesAsync();
 
-            await LoadActiveTracesAsync(from, to);
-            await LoadOverdueTracesAsync();
+            if (tracesResult.Success)
+            {
+                OverdueTraces.Clear();
 
-            UpdateLoadedUntilText();
+                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                foreach (var trace in traces)
+                {
+                    OverdueTraces.Add(trace);
+                }
+            }
         }
 
-        protected void UpdateLoadedUntilText()
-        {
-            LoadedUntilDateMessage =
-                string.Format(TextConstants.TracesLoadedUntilTextFormat, CurrentToDate.ToShortDateString());
+        protected abstract Task LoadAsync();
 
-            LoadMoreDaysText = string.Format(TextConstants.TracesLoadMoreButtonTextFormat, CurrentDayIncrease);
-        }
+        protected abstract Task RefreshAsync();
+
+        protected abstract Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsync();
 
         private void RemoveTraceFromList(TraceItemModel trace)
         {

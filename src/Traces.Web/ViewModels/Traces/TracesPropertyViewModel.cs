@@ -15,7 +15,7 @@ using Traces.Web.Utils;
 
 namespace Traces.Web.ViewModels.Traces
 {
-    public class TracesPropertyViewModel : TracesBaseViewModel
+    public class TracesPropertyViewModel : TracesDateAwareViewModel
     {
         private readonly ITracesCollectorService _tracesCollectorService;
         private readonly NavigationManager _navigationManager;
@@ -64,66 +64,9 @@ namespace Traces.Web.ViewModels.Traces
             }
         }
 
-        public override async Task LoadNextDaysAsync()
-        {
-            var loadFromDate = CurrentToDate.AddDays(1);
-            var loadUntilDate = CurrentToDate.AddDays(CurrentDayIncrease);
+        protected override async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsync() => await _tracesCollectorService.GetOverdueTracesForPropertyAsync(_currentPropertyId);
 
-            var tracesResult = await _tracesCollectorService.GetActiveTracesForPropertyAsync(_currentPropertyId, loadFromDate, loadUntilDate);
-
-            if (tracesResult.Success)
-            {
-                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
-
-                foreach (var trace in traces)
-                {
-                    ActiveTracesDictionary.AddTrace(trace);
-                }
-
-                CurrentToDate = loadUntilDate;
-                CurrentDayIncrease = 7;
-
-                UpdateLoadedUntilText();
-            }
-            else
-            {
-                var errorMessage = tracesResult.ErrorMessage.ValueOrException(new NotImplementedException());
-
-                await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-            }
-        }
-
-        protected override async Task LoadActiveTracesAsync(DateTime from, DateTime toDateTime)
-        {
-            var tracesResult = await _tracesCollectorService.GetActiveTracesForPropertyAsync(_currentPropertyId, from, toDateTime);
-
-            if (tracesResult.Success)
-            {
-                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
-
-                ActiveTracesDictionary.LoadTraces(traces);
-
-                CurrentFromDate = from;
-                CurrentToDate = toDateTime;
-            }
-        }
-
-        protected override async Task LoadOverdueTracesAsync()
-        {
-            var tracesResult = await _tracesCollectorService.GetOverdueTracesForPropertyAsync(_currentPropertyId);
-
-            if (tracesResult.Success)
-            {
-                OverdueTraces.Clear();
-
-                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
-
-                foreach (var trace in traces)
-                {
-                    OverdueTraces.Add(trace);
-                }
-            }
-        }
+        protected override async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetActiveTracesAsync(DateTime from, DateTime toDateTime) => await _tracesCollectorService.GetActiveTracesForPropertyAsync(_currentPropertyId, from, toDateTime);
 
         private void LoadCurrentReservationId()
             => _currentPropertyId = UrlQueryParameterExtractor.ExtractQueryParameterFromManager(_navigationManager, AppConstants.PropertyIdQueryParameter);

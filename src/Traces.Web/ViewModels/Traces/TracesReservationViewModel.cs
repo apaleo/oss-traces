@@ -68,17 +68,19 @@ namespace Traces.Web.ViewModels.Traces
 
         protected override async Task LoadAsync()
         {
-            // On initialization we just load from today to tomorrow
-            var from = DateTime.Today;
-
-            await LoadActiveTracesAsync(from, from);
+            await LoadActiveTracesAsync(DateTime.Today);
             await LoadCompletedTracesAsync();
             await LoadOverdueTracesAsync();
-
-            UpdateLoadedUntilText();
         }
 
-        protected override async Task LoadActiveTracesAsync(DateTime from, DateTime toDateTime)
+        protected override async Task RefreshAsync()
+        {
+            await LoadAsync();
+        }
+
+        protected override async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsync() => await _tracesCollectorService.GetOverdueTracesForReservationAsync(_currentReservationId);
+
+        private async Task LoadActiveTracesAsync(DateTime from)
         {
             var tracesResult = await _tracesCollectorService.GetActiveTracesForReservationAsync(_currentReservationId, from);
 
@@ -87,32 +89,6 @@ namespace Traces.Web.ViewModels.Traces
                 var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
 
                 ActiveTracesDictionary.LoadTraces(traces);
-
-                CurrentFromDate = from;
-                CurrentToDate = toDateTime;
-            }
-            else
-            {
-                var errorMessage = tracesResult.ErrorMessage.ValueOrException(new NotImplementedException());
-
-                await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-            }
-        }
-
-        protected override async Task LoadOverdueTracesAsync()
-        {
-            var tracesResult = await _tracesCollectorService.GetOverdueTracesForReservationAsync(_currentReservationId);
-
-            if (tracesResult.Success)
-            {
-                OverdueTraces.Clear();
-
-                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
-
-                foreach (var trace in traces)
-                {
-                    OverdueTraces.Add(trace);
-                }
             }
             else
             {
