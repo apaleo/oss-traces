@@ -18,10 +18,6 @@ namespace Traces.Common.Constants
 
         public const string TraceDeletedSuccessfullyMessage = "Trace deleted successfully.";
 
-        public const string SuccessHeaderText = "Success";
-
-        public const string ErrorHeaderText = "Oops";
-
         public const string CreateTraceModalTitle = "Create trace";
 
         public const string EditTraceModalTitle = "Update trace";
@@ -93,6 +89,9 @@ namespace Traces.Common.Constants
 
         public const string ApaleoOneNavigationNotPossible =
             "Navigation to reservation is not possible right now, there is some information missing.";
+
+        public const string ApaleoOneNotificationNotPossible =
+            "Notification is not possible right now, there is some information missing.";
 
         public const string FetchingDataFromApaleoForTracesErrorMessage =
             "There was an issue creating this trace. Unfortunately there was an issue fetching the data from the apaleo services.";

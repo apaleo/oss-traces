@@ -28,7 +28,7 @@
 
     protected override void OnInitialized()
     {
-        UserClaimValidatorService.AssertClaim(ApaleoOneConstants.AccountCodeQueryParameter, ApaleoClaims.AccountCode);
-        UserClaimValidatorService.AssertClaim(ApaleoOneConstants.SubjectIdQueryParameter, ApaleoClaims.SubjectId);
+        UserClaimValidatorService.AssertClaim(AppConstants.AccountCodeQueryParameter, ApaleoClaims.AccountCode);
+        UserClaimValidatorService.AssertClaim(AppConstants.SubjectIdQueryParameter, ApaleoClaims.SubjectId);
     }
 }
