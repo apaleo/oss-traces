@@ -39,7 +39,8 @@ namespace Traces.Web.ViewModels.Traces
             LoadCurrentReservationId();
         }
 
-        public SortedDictionary<DateTime, List<TraceItemModel>> CompletedTracesDictionary { get; } = new SortedDictionary<DateTime, List<TraceItemModel>>();
+        public SortedDictionary<DateTime, List<TraceItemModel>> CompletedTracesDictionary { get; } =
+            new SortedDictionary<DateTime, List<TraceItemModel>>(new DescendingComparer<DateTime>());
 
         public bool IsCompletedTracesVisible { get; set; } = false;
 
