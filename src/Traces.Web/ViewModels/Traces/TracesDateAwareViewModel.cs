@@ -105,7 +105,7 @@ namespace Traces.Web.ViewModels.Traces
             }
         }
 
-        protected override async Task LoadAsync()
+        protected override async Task LoadTracesAsync()
         {
             // On initialization we just load from today to tomorrow
             var from = DateTime.Today;

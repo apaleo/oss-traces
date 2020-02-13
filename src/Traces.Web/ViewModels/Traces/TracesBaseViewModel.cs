@@ -55,7 +55,7 @@ namespace Traces.Web.ViewModels.Traces
         {
             await InitializeContextAsync();
 
-            await LoadAsync();
+            await LoadTracesAsync();
 
             await LoadApaleoRolesAsync();
         }
@@ -181,7 +181,7 @@ namespace Traces.Web.ViewModels.Traces
             RemoveTraceFromList(trace);
         }
 
-        protected abstract Task LoadAsync();
+        protected abstract Task LoadTracesAsync();
 
         protected abstract Task RefreshAsync();
 

@@ -118,9 +118,9 @@ namespace Traces.Web.Services
         {
             try
             {
-                var overdueTraces = await _traceService.GetCompletedTracesForReservationAsync(reservationId);
+                var completedTraces = await _traceService.GetCompletedTracesForReservationAsync(reservationId);
 
-                return SuccessModelFromTraceDtoList(overdueTraces);
+                return SuccessModelFromTraceDtoList(completedTraces);
             }
             catch (BusinessValidationException ex)
             {

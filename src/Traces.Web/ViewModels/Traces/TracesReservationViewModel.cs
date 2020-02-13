@@ -74,7 +74,7 @@ namespace Traces.Web.ViewModels.Traces
             }
         }
 
-        protected override async Task LoadAsync()
+        protected override async Task LoadTracesAsync()
         {
             await LoadActiveTracesAsync(DateTime.Today);
             await LoadCompletedTracesAsync();
@@ -85,7 +85,7 @@ namespace Traces.Web.ViewModels.Traces
 
         protected override async Task RefreshAsync()
         {
-            await LoadAsync();
+            await LoadTracesAsync();
         }
 
         protected override void CompleteTraceInList(TraceItemModel trace)

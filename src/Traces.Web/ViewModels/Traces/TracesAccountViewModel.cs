@@ -36,6 +36,6 @@ namespace Traces.Web.ViewModels.Traces
 
         protected override async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsync() => await _tracesCollectorService.GetOverdueTracesAsync();
 
-        protected override async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetActiveTracesAsync(DateTime @from, DateTime toDateTime) => await _tracesCollectorService.GetActiveTracesAsync(from, toDateTime);
+        protected override async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetActiveTracesAsync(DateTime from, DateTime toDateTime) => await _tracesCollectorService.GetActiveTracesAsync(from, toDateTime);
     }
 }
