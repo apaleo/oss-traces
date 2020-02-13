@@ -115,7 +115,7 @@ namespace Traces.Web.ViewModels.Traces
 
             if (completeResult.Success)
             {
-                RemoveTraceFromList(trace);
+                CompleteTraceInList(trace);
 
                 await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceMarkedAsCompletedMessage);
             }
@@ -174,6 +174,11 @@ namespace Traces.Web.ViewModels.Traces
                     OverdueTraces.Add(trace);
                 }
             }
+        }
+
+        protected virtual void CompleteTraceInList(TraceItemModel trace)
+        {
+            RemoveTraceFromList(trace);
         }
 
         protected abstract Task LoadAsync();

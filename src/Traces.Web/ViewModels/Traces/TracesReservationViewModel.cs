@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
@@ -40,6 +41,12 @@ namespace Traces.Web.ViewModels.Traces
 
         public SortedDictionary<DateTime, List<TraceItemModel>> CompletedTracesDictionary { get; } = new SortedDictionary<DateTime, List<TraceItemModel>>();
 
+        public bool IsCompletedTracesVisible { get; set; } = false;
+
+        public bool HasCompletedTraces => CompletedTracesDictionary.Count > 0;
+
+        public string CompletedTracesCheckBoxText { get; set; }
+
         public override async Task CreateTraceItemAsync()
         {
             var createTraceItemModel = EditTraceDialogViewModel.GetCreateTraceItemModel();
@@ -71,11 +78,20 @@ namespace Traces.Web.ViewModels.Traces
             await LoadActiveTracesAsync(DateTime.Today);
             await LoadCompletedTracesAsync();
             await LoadOverdueTracesAsync();
+
+            UpdateCompletedTracesText();
         }
 
         protected override async Task RefreshAsync()
         {
             await LoadAsync();
+        }
+
+        protected override void CompleteTraceInList(TraceItemModel trace)
+        {
+            base.CompleteTraceInList(trace);
+            CompletedTracesDictionary.AddTrace(trace);
+            UpdateCompletedTracesText();
         }
 
         protected override async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsync() => await _tracesCollectorService.GetOverdueTracesForReservationAsync(_currentReservationId);
@@ -114,6 +130,14 @@ namespace Traces.Web.ViewModels.Traces
 
                 await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
             }
+        }
+
+        private void UpdateCompletedTracesText()
+        {
+            var elementCount = CompletedTracesDictionary.Values.Sum(list => list.Count);
+
+            CompletedTracesCheckBoxText =
+                string.Format(TextConstants.TracesShowCompletedCheckboxTextFormat, elementCount);
         }
 
         private void LoadCurrentReservationId()

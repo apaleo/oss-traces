@@ -62,6 +62,8 @@ namespace Traces.Common.Constants
 
         public const string TracesEditButtonText = "Edit";
 
+        public const string TracesShowCompletedCheckboxTextFormat = "Show {0} completed trace(s)";
+
         public const string DatePickerSetTodayButtonText = "Today";
 
         public const string DatePickerErrorDateText = "Please select a date that is no earlier than {0}";
