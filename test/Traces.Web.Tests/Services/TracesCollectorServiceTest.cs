@@ -214,20 +214,13 @@ namespace Traces.Web.Tests.Services
                 }
             };
 
-            var testTraceFromDate = DateTime.Today;
-            var testTraceToDate = DateTime.Today.AddDays(1);
-
             _traceServiceMock.Setup(x => x.GetActiveTracesForReservationAsync(
-                    It.Is<string>(v => v == ReservationId),
-                    It.Is<DateTime>(v => v == testTraceFromDate),
-                    It.Is<DateTime>(v => v == testTraceToDate)))
+                    It.Is<string>(v => v == ReservationId)))
                 .ReturnsAsync(testTraces);
 
             var result =
                 await _tracesCollectorService.GetActiveTracesForReservationAsync(
-                    ReservationId,
-                    testTraceFromDate,
-                    testTraceToDate);
+                    ReservationId);
 
             result.Success.Should().BeTrue();
 

@@ -78,11 +78,11 @@ namespace Traces.Core.Services
             return ConvertToTraceDto(propertyTraces);
         }
 
-        public async Task<IReadOnlyList<TraceDto>> GetActiveTracesForReservationAsync(string reservationId, DateTime from)
+        public async Task<IReadOnlyList<TraceDto>> GetActiveTracesForReservationAsync(string reservationId)
         {
             Check.NotEmpty(reservationId, nameof(reservationId));
 
-            var fromLocalDate = LocalDate.FromDateTime(from);
+            var fromLocalDate = LocalDate.FromDateTime(DateTime.Today);
 
             var reservationTraces =
                 await _traceRepository.GetAllTracesForTenantAsync(t =>

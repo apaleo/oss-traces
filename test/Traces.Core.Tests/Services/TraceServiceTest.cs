@@ -316,7 +316,7 @@ namespace Traces.Core.Tests.Services
                     testCompletedTrace
                 });
 
-            var result = await _traceService.GetActiveTracesForReservationAsync(TestCompletedReservationId, _testFromDate, _testToDate);
+            var result = await _traceService.GetActiveTracesForReservationAsync(TestCompletedReservationId);
 
             result.Should().HaveCount(1);
 
@@ -328,17 +328,6 @@ namespace Traces.Core.Tests.Services
             result[0].CompletedDate.ValueOrFailure().Should().Be(_testCompletedDate);
             result[0].PropertyId.Should().Be(TestCompletedPropertyId);
             result[0].ReservationId.ValueOrFailure().Should().Be(TestCompletedReservationId);
-        }
-
-        [Fact]
-        public async Task ShouldFailToGetReservationTracesWhenDateIntervalIsInvalidAsync()
-        {
-            var result = await Assert.ThrowsAsync<BusinessValidationException>(() =>
-                _traceService.GetActiveTracesForReservationAsync(TestCompletedReservationId, _testToDate, _testFromDate));
-
-            result.Message.Should()
-                .Be(
-                    "The provided date interval is invalid. The end of the interval must be greater than the beginning");
         }
 
         [Fact]

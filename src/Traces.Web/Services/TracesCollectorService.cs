@@ -84,17 +84,17 @@ namespace Traces.Web.Services
             }
         }
 
-        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetActiveTracesForReservationAsync(string reservationId, DateTime from)
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetActiveTracesForReservationAsync(string reservationId)
         {
             try
             {
-                var traceDtos = await _traceService.GetActiveTracesForReservationAsync(reservationId, from);
+                var traceDtos = await _traceService.GetActiveTracesForReservationAsync(reservationId);
 
                 return SuccessModelFromTraceDtoList(traceDtos);
             }
             catch (BusinessValidationException ex)
             {
-                _logger.LogWarning(ex, $"{nameof(TracesCollectorService)}.{nameof(GetActiveTracesForReservationAsync)} - Exception while trying to get traces for reservation with Id {reservationId} and date from {from}");
+                _logger.LogWarning(ex, $"{nameof(TracesCollectorService)}.{nameof(GetActiveTracesForReservationAsync)} - Exception while trying to get traces for reservation with Id {reservationId}");
                 return FailModelWithErrorMessage(ex.Message);
             }
         }

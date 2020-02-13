@@ -76,7 +76,7 @@ namespace Traces.Web.ViewModels.Traces
 
         protected override async Task LoadTracesAsync()
         {
-            await LoadActiveTracesAsync(DateTime.Today);
+            await LoadActiveTracesAsync();
             await LoadCompletedTracesAsync();
             await LoadOverdueTracesAsync();
 
@@ -97,9 +97,9 @@ namespace Traces.Web.ViewModels.Traces
 
         protected override async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsync() => await _tracesCollectorService.GetOverdueTracesForReservationAsync(_currentReservationId);
 
-        private async Task LoadActiveTracesAsync(DateTime from)
+        private async Task LoadActiveTracesAsync()
         {
-            var tracesResult = await _tracesCollectorService.GetActiveTracesForReservationAsync(_currentReservationId, from);
+            var tracesResult = await _tracesCollectorService.GetActiveTracesForReservationAsync(_currentReservationId);
 
             if (tracesResult.Success)
             {
