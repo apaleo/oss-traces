@@ -6,7 +6,7 @@ using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Exceptions;
 using Traces.Common.Utils;
-using Traces.Web.Services;
+using Traces.Web.Services.Apaleo;
 
 namespace Traces.Web.ViewModels
 {

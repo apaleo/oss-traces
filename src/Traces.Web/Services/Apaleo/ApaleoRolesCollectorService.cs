@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Traces.Common.Utils;
 using Traces.Core.ClientFactories;
 
-namespace Traces.Web.Services
+namespace Traces.Web.Services.Apaleo
 {
     public class ApaleoRolesCollectorService : IApaleoRolesCollectorService
     {

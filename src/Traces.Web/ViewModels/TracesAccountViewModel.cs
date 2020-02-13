@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Http;
 using Traces.Common;
 using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
+using Traces.Web.Services.Apaleo;
+using Traces.Web.Services.ApaleoOne;
 
 namespace Traces.Web.ViewModels
 {
@@ -18,18 +19,18 @@ namespace Traces.Web.ViewModels
         public TracesAccountViewModel(
             ITracesCollectorService tracesCollectorService,
             ITraceModifierService traceModifierService,
-            IToastService toastService,
             IRequestContext requestContext,
             IHttpContextAccessor httpContextAccessor,
-            IApaleoOneService apaleoOneService,
-            IApaleoRolesCollectorService apaleoRolesCollector)
+            IApaleoOneNavigationService apaleoOneNavigationService,
+            IApaleoRolesCollectorService apaleoRolesCollector,
+            IApaleoOneNotificationService apaleoOneNotificationService)
             : base(
                 traceModifierService,
-                toastService,
                 httpContextAccessor,
                 requestContext,
-                apaleoOneService,
-                apaleoRolesCollector)
+                apaleoOneNavigationService,
+                apaleoRolesCollector,
+                apaleoOneNotificationService)
         {
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
         }
@@ -61,7 +62,7 @@ namespace Traces.Web.ViewModels
             {
                 var errorMessage = tracesResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
-                ShowToastMessage(false, errorMessage);
+                await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
             }
         }
 

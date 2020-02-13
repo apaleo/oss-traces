@@ -1,26 +1,17 @@
 using System.Threading.Tasks;
 using Microsoft.JSInterop;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Optional;
 using Traces.Common.Constants;
 using Traces.Common.Exceptions;
 using Traces.Web.Models;
 
-namespace Traces.Web.Services
+namespace Traces.Web.Services.ApaleoOne
 {
-    public class ApaleoOneService : IApaleoOneService
+    public class ApaleoOneNavigationService : BaseApaleoOneService, IApaleoOneNavigationService
     {
-        private readonly IJSRuntime _jsRuntime;
-
-        private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
+        public ApaleoOneNavigationService(IJSRuntime runtime)
+            : base(runtime)
         {
-            ContractResolver = new CamelCasePropertyNamesContractResolver()
-        };
-
-        public ApaleoOneService(IJSRuntime runtime)
-        {
-            _jsRuntime = runtime;
         }
 
         public async Task<ResultModel<bool>> NavigateToReservationAsync(TraceItemModel traceItemModel)
@@ -40,9 +31,9 @@ namespace Traces.Web.Services
                     Id = traceItemModel.ReservationId
                 };
 
-                var messageString = JsonConvert.SerializeObject(message, _jsonSerializerSettings);
+                var messageString = SerializeObject(message);
 
-                await _jsRuntime.InvokeVoidAsync("parent.postMessage", messageString, "*");
+                await JsRuntime.InvokeVoidAsync("parent.postMessage", messageString, "*");
 
                 return new ResultModel<bool>
                 {

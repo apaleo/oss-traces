@@ -1,6 +1,6 @@
 namespace Traces.Common.Constants
 {
-    public static class ApaleoOneConstants
+    public static class AppConstants
     {
         public const string AccountLevelUrlAbsolutePath = "/traces/account";
 
