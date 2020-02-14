@@ -20,7 +20,6 @@
                         <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
-                        <TableHeaderCell>@TextConstants.TracesTablePropertyText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableReservationText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableAssignedRoleText</TableHeaderCell>
                         <TableHeaderCell></TableHeaderCell>
@@ -29,7 +28,7 @@
                 <TracesComponent
                     Title="@TextConstants.OverdueTracesTitleText"
                     Traces="@TracesPropertyViewModel.OverdueTraces"
-                    IsPropertyVisible="true"
+                    IsPropertyVisible="false"
                     IsReservationVisible="true"
                     IsDueDateVisible="true"
                     OnCompleteClick="@TracesPropertyViewModel.CompleteTraceAsync"
