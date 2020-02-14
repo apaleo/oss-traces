@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Blazorise.Bootstrap" Version="0.8.8.2" />
+      <PackageReference Include="Blazorise.Bootstrap" Version="0.8.8.3" />
       <PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.8.8.2" />
       <PackageReference Include="Humanizer.Core" Version="2.7.9" />
       <PackageReference Include="IdentityModel" Version="4.1.1" />
