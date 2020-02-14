@@ -133,11 +133,11 @@ namespace Traces.Core.Services
         {
             Check.NotEmpty(reservationId, nameof(reservationId));
 
-            var overdueTracesForReservation = await _traceRepository.GetAllTracesForTenantAsync(t =>
+            var completedTracesForReservation = await _traceRepository.GetAllTracesForTenantAsync(t =>
                 t.State == TraceState.Completed &&
                 t.ReservationId == reservationId);
 
-            return ConvertToTraceDto(overdueTracesForReservation);
+            return ConvertToTraceDto(completedTracesForReservation);
         }
 
         public async Task<Option<TraceDto>> GetTraceAsync(int id)

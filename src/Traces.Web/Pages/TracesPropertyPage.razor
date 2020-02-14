@@ -12,7 +12,7 @@
         <DatePicker Date="@TracesPropertyViewModel.CurrentFromDate" OnChange="@TracesPropertyViewModel.LoadFromDateAsync"/>
     </div>
 
-    @if (TracesPropertyViewModel.OverdueTraces != null && TracesPropertyViewModel.OverdueTraces.Any())
+    @if (TracesPropertyViewModel.OverdueTraces?.Any() == true)
     {
         <section class="pb-4">
             <Table>
@@ -41,7 +41,7 @@
         </section>
     }
 
-    @if (TracesPropertyViewModel.ActiveTracesDictionary != null && TracesPropertyViewModel.ActiveTracesDictionary.Any())
+    @if (TracesPropertyViewModel.ActiveTracesDictionary?.Any() == true)
     {
         <Table>
             <TableHeader>
