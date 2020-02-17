@@ -98,6 +98,24 @@ namespace Traces.Web.ViewModels.Traces
             }
         }
 
+        public async Task RevertCompleteItemAsync(TraceItemModel trace)
+        {
+            var deleteResult = await TraceModifierService.RevertCompleteTraceAsync(trace.Id);
+
+            if (deleteResult.Success)
+            {
+                await RefreshAsync();
+
+                await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceRevertedCompleteSuccessfullyMessage);
+            }
+            else
+            {
+                var errorMessage = deleteResult.ErrorMessage.ValueOrException(new NotImplementedException());
+
+                await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
+            }
+        }
+
         public async Task CompleteTraceAsync(TraceItemModel trace)
         {
             var completeResult = await TraceModifierService.MarkTraceAsCompleteAsync(trace.Id);

@@ -42,7 +42,9 @@
                         IsDueDateVisible="false"
                         OnCompleteClick="@TracesReservationViewModel.CompleteTraceAsync"
                         OnDeleteClick="@TracesReservationViewModel.DeleteItemAsync"
-                        OnEditClick="@TracesReservationViewModel.ShowReplaceTraceModal"/>
+                        OnEditClick="@TracesReservationViewModel.ShowReplaceTraceModal"
+                        OnRevertCompleteClick="@TracesReservationViewModel.RevertCompleteItemAsync"
+                        />
                 }
             </Table>
         }
