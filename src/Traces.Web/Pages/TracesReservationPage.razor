@@ -1,5 +1,4 @@
 @page "/traces/reservation"
-@using Humanizer
 @using Traces.Common.Constants
 @using Traces.Web.ViewModels.Traces
 @inject TracesReservationViewModel TracesReservationViewModel
@@ -15,17 +14,14 @@
             </div>
         }
 
-        @if (!@TracesReservationViewModel.IsCompletedTracesVisible)
-        {
-            <Button Color="Color.Primary" Clicked="@TracesReservationViewModel.ShowCreateTraceModal">
-                <i class="fa fa-plus"></i>
-                @TextConstants.TracesAddButtonText</Button>
-        }
+        <Button Color="Color.Primary" Clicked="@TracesReservationViewModel.ShowCreateTraceModal">
+            <i class="fa fa-plus"></i>
+            @TextConstants.TracesAddButtonText</Button>
     </div>
 
     @if (TracesReservationViewModel.IsCompletedTracesVisible)
     {
-        @if (TracesReservationViewModel.CompletedTracesDictionary?.Any() == true)
+        @if (TracesReservationViewModel.AllTracesDictionary?.Any() == true)
         {
             <Table>
                 <TableHeader>
@@ -36,32 +32,17 @@
                         <TableHeaderCell></TableHeaderCell>
                     </TableRow>
                 </TableHeader>
-                @foreach (var (date, traces) in TracesReservationViewModel.CompletedTracesDictionary)
+                @foreach (var (date, traces) in TracesReservationViewModel.AllTracesDictionary)
                 {
-                    <h4 class="mt-2 ml-2">@date.ToShortDateString()</h4>
-
-                    @if (traces != null && traces.Any())
-                    {
-                        <TableBody>
-                            @foreach (var trace in traces)
-                            {
-                                <TableRow>
-                                    <TableRowCell>@trace.Title</TableRowCell>
-                                    <TableRowCell>@trace.Description</TableRowCell>
-                                    <TableRowCell>
-                                        @if (string.IsNullOrWhiteSpace(trace.AssignedRole))
-                                        {
-                                            <span>&mdash;</span>
-                                        }
-                                        else
-                                        {
-                                            @trace.AssignedRole.Humanize()
-                                        }
-                                    </TableRowCell>
-                                </TableRow>
-                            }
-                        </TableBody>
-                    }
+                    <TracesComponent
+                        Title="@date.ToShortDateString()"
+                        Traces="@traces"
+                        IsPropertyVisible="false"
+                        IsReservationVisible="false"
+                        IsDueDateVisible="false"
+                        OnCompleteClick="@TracesReservationViewModel.CompleteTraceAsync"
+                        OnDeleteClick="@TracesReservationViewModel.DeleteItemAsync"
+                        OnEditClick="@TracesReservationViewModel.ShowReplaceTraceModal"/>
                 }
             </Table>
         }
@@ -77,7 +58,6 @@
                             <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
                             <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
                             <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
-                            <TableHeaderCell>@TextConstants.TracesTablePropertyText</TableHeaderCell>
                             <TableHeaderCell>@TextConstants.TracesTableAssignedRoleText</TableHeaderCell>
                             <TableHeaderCell></TableHeaderCell>
                         </TableRow>
@@ -85,7 +65,7 @@
                     <TracesComponent
                         Title="@TextConstants.OverdueTracesTitleText"
                         Traces="@TracesReservationViewModel.OverdueTraces"
-                        IsPropertyVisible="true"
+                        IsPropertyVisible="false"
                         IsReservationVisible="false"
                         IsDueDateVisible="true"
                         OnCompleteClick="@TracesReservationViewModel.CompleteTraceAsync"

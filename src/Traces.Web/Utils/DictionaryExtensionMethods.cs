@@ -54,5 +54,13 @@ namespace Traces.Web.Utils
                 }
             }
         }
+
+        public static void SortValues(this SortedDictionary<DateTime, List<TraceItemModel>> dictionary, IComparer<TraceItemModel> comparer)
+        {
+            foreach (var traceItemModels in dictionary.Values)
+            {
+                traceItemModels.Sort(comparer);
+            }
+        }
     }
 }

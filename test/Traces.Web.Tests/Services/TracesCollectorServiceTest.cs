@@ -214,12 +214,12 @@ namespace Traces.Web.Tests.Services
                 }
             };
 
-            _traceServiceMock.Setup(x => x.GetActiveTracesForReservationAsync(
+            _traceServiceMock.Setup(x => x.GetAllTracesForReservationAsync(
                     It.Is<string>(v => v == ReservationId)))
                 .ReturnsAsync(testTraces);
 
             var result =
-                await _tracesCollectorService.GetActiveTracesForReservationAsync(
+                await _tracesCollectorService.GetAllTracesForReservationAsync(
                     ReservationId);
 
             result.Success.Should().BeTrue();
@@ -362,11 +362,11 @@ namespace Traces.Web.Tests.Services
                 }
             };
 
-            _traceServiceMock.Setup(x => x.GetOverdueTracesForReservationAsync(
+            _traceServiceMock.Setup(x => x.GetAllTracesForReservationAsync(
                     It.Is<string>(v => v == ReservationId)))
                 .ReturnsAsync(testTraces);
 
-            var result = await _tracesCollectorService.GetOverdueTracesForReservationAsync(ReservationId);
+            var result = await _tracesCollectorService.GetAllTracesForReservationAsync(ReservationId);
 
             result.Success.Should().BeTrue();
 

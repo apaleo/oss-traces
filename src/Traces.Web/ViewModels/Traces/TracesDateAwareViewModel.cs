@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Extensions;
+using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
 using Traces.Web.Services.Apaleo;
@@ -22,9 +23,15 @@ namespace Traces.Web.ViewModels.Traces
             IApaleoOneNavigationService apaleoOneNavigationService,
             IApaleoRolesCollectorService apaleoRolesCollector,
             IApaleoOneNotificationService apaleoOneNotificationService)
-            : base(traceModifierService, httpContextAccessor, requestContext, apaleoOneNavigationService, apaleoRolesCollector, apaleoOneNotificationService)
+            : base(traceModifierService, httpContextAccessor, requestContext, apaleoRolesCollector, apaleoOneNotificationService)
         {
+            ApaleoOneNavigationService = Check.NotNull(apaleoOneNavigationService, nameof(apaleoOneNavigationService));
         }
+
+        public SortedDictionary<DateTime, List<TraceItemModel>> ActiveTracesDictionary { get; } =
+            new SortedDictionary<DateTime, List<TraceItemModel>>();
+
+        public List<TraceItemModel> OverdueTraces { get; } = new List<TraceItemModel>();
 
         public string LoadedUntilDateMessage { get; private set; }
 
@@ -35,6 +42,8 @@ namespace Traces.Web.ViewModels.Traces
         public DateTime CurrentFromDate { get; private set; } = DateTime.Today;
 
         public DateTime CurrentToDate { get; set; }
+
+        private IApaleoOneNavigationService ApaleoOneNavigationService { get; }
 
         /// <summary>
         /// The traces for the given from date are loaded. The overdue traces are also loaded if the date is set to today.
@@ -124,6 +133,25 @@ namespace Traces.Web.ViewModels.Traces
         }
 
         protected abstract Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetActiveTracesAsync(DateTime from, DateTime toDateTime);
+
+        protected abstract Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsync();
+
+        private async Task LoadOverdueTracesAsync()
+        {
+            var tracesResult = await GetOverdueTracesAsync();
+
+            if (tracesResult.Success)
+            {
+                OverdueTraces.Clear();
+
+                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                foreach (var trace in traces)
+                {
+                    OverdueTraces.Add(trace);
+                }
+            }
+        }
 
         private async Task LoadActiveTracesAsync(DateTime from, DateTime toDateTime)
         {

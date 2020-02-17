@@ -316,7 +316,7 @@ namespace Traces.Core.Tests.Services
                     testCompletedTrace
                 });
 
-            var result = await _traceService.GetActiveTracesForReservationAsync(TestCompletedReservationId);
+            var result = await _traceService.GetAllTracesForReservationAsync(TestCompletedReservationId);
 
             result.Should().HaveCount(1);
 

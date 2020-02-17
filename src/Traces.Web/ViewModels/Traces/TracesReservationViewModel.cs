@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Traces.Common;
 using Traces.Common.Constants;
+using Traces.Common.Enums;
 using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Web.Models;
@@ -28,10 +29,9 @@ namespace Traces.Web.ViewModels.Traces
             NavigationManager navigationManager,
             IRequestContext requestContext,
             IHttpContextAccessor httpContextAccessor,
-            IApaleoOneNavigationService apaleoOneNavigationService,
             IApaleoRolesCollectorService apaleoRolesCollector,
             IApaleoOneNotificationService apaleoOneNotificationService)
-            : base(traceModifierService, httpContextAccessor, requestContext, apaleoOneNavigationService, apaleoRolesCollector, apaleoOneNotificationService)
+            : base(traceModifierService, httpContextAccessor, requestContext, apaleoRolesCollector, apaleoOneNotificationService)
         {
             _navigationManager = Check.NotNull(navigationManager, nameof(navigationManager));
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
@@ -39,12 +39,15 @@ namespace Traces.Web.ViewModels.Traces
             LoadCurrentReservationId();
         }
 
-        public SortedDictionary<DateTime, List<TraceItemModel>> CompletedTracesDictionary { get; } =
-            new SortedDictionary<DateTime, List<TraceItemModel>>(new DescendingComparer<DateTime>());
+        public SortedDictionary<DateTime, List<TraceItemModel>> AllTracesDictionary { get; } = new SortedDictionary<DateTime, List<TraceItemModel>>();
+
+        public SortedDictionary<DateTime, List<TraceItemModel>> ActiveTracesDictionary { get; } = new SortedDictionary<DateTime, List<TraceItemModel>>();
+
+        public List<TraceItemModel> OverdueTraces { get; private set; } = new List<TraceItemModel>();
 
         public bool IsCompletedTracesVisible { get; set; } = false;
 
-        public bool HasCompletedTraces => CompletedTracesDictionary.Count > 0;
+        public bool HasCompletedTraces { get; private set; } = false;
 
         public string CompletedTracesCheckBoxText { get; set; }
 
@@ -57,7 +60,7 @@ namespace Traces.Web.ViewModels.Traces
 
             if (createResult.Success)
             {
-                createResult.Result.MatchSome(ActiveTracesDictionary.AddTrace);
+                await RefreshAsync();
 
                 await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
             }
@@ -76,9 +79,23 @@ namespace Traces.Web.ViewModels.Traces
 
         protected override async Task LoadTracesAsync()
         {
-            await LoadActiveTracesAsync();
-            await LoadCompletedTracesAsync();
-            await LoadOverdueTracesAsync();
+            await LoadAllTracesAsync();
+
+            ActiveTracesDictionary.LoadTraces(
+                AllTracesDictionary
+                    .Values
+                    .SelectMany(list => list)
+                    .Where(trace => trace.State == TraceState.Active && trace.DueDate >= DateTime.Today)
+                    .ToList());
+
+            OverdueTraces =
+                AllTracesDictionary
+                    .Values
+                    .SelectMany(list => list)
+                    .Where(trace => trace.State == TraceState.Active && trace.DueDate < DateTime.Today)
+                    .ToList();
+
+            AllTracesDictionary.SortValues(new TraceStateComparer());
 
             UpdateCompletedTracesText();
         }
@@ -88,42 +105,15 @@ namespace Traces.Web.ViewModels.Traces
             await LoadTracesAsync();
         }
 
-        protected override void CompleteTraceInList(TraceItemModel trace)
+        private async Task LoadAllTracesAsync()
         {
-            base.CompleteTraceInList(trace);
-            CompletedTracesDictionary.AddTrace(trace);
-            UpdateCompletedTracesText();
-        }
-
-        protected override async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsync() => await _tracesCollectorService.GetOverdueTracesForReservationAsync(_currentReservationId);
-
-        private async Task LoadActiveTracesAsync()
-        {
-            var tracesResult = await _tracesCollectorService.GetActiveTracesForReservationAsync(_currentReservationId);
+            var tracesResult = await _tracesCollectorService.GetAllTracesForReservationAsync(_currentReservationId);
 
             if (tracesResult.Success)
             {
                 var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
 
-                ActiveTracesDictionary.LoadTraces(traces);
-            }
-            else
-            {
-                var errorMessage = tracesResult.ErrorMessage.ValueOrException(new NotImplementedException());
-
-                await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-            }
-        }
-
-        private async Task LoadCompletedTracesAsync()
-        {
-            var tracesResult = await _tracesCollectorService.GetCompletedTracesForReservationAsync(_currentReservationId);
-
-            if (tracesResult.Success)
-            {
-                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
-
-                CompletedTracesDictionary.LoadTraces(traces);
+                AllTracesDictionary.LoadTraces(traces);
             }
             else
             {
@@ -135,7 +125,14 @@ namespace Traces.Web.ViewModels.Traces
 
         private void UpdateCompletedTracesText()
         {
-            var elementCount = CompletedTracesDictionary.Values.Sum(list => list.Count);
+            var elementCount = AllTracesDictionary
+                .Values
+                .SelectMany(list => list)
+                .Where(trace => trace.State == TraceState.Completed)
+                .ToList()
+                .Count;
+
+            HasCompletedTraces = elementCount > 0;
 
             CompletedTracesCheckBoxText =
                 string.Format(TextConstants.TracesShowCompletedCheckboxTextFormat, elementCount);

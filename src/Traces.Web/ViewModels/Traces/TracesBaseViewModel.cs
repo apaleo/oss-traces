@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blazorise;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +10,6 @@ using Traces.Web.Models;
 using Traces.Web.Services;
 using Traces.Web.Services.Apaleo;
 using Traces.Web.Services.ApaleoOne;
-using Traces.Web.Utils;
 
 namespace Traces.Web.ViewModels.Traces
 {
@@ -23,13 +21,11 @@ namespace Traces.Web.ViewModels.Traces
             ITraceModifierService traceModifierService,
             IHttpContextAccessor httpContextAccessor,
             IRequestContext requestContext,
-            IApaleoOneNavigationService apaleoOneNavigationService,
             IApaleoRolesCollectorService apaleoRolesCollector,
             IApaleoOneNotificationService apaleoOneNotificationService)
             : base(httpContextAccessor, requestContext)
         {
             TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
-            ApaleoOneNavigationService = Check.NotNull(apaleoOneNavigationService, nameof(apaleoOneNavigationService));
             _apaleoRolesCollector = Check.NotNull(apaleoRolesCollector, nameof(apaleoRolesCollector));
             ApaleoOneNotificationService = Check.NotNull(apaleoOneNotificationService, nameof(apaleoOneNotificationService));
         }
@@ -40,16 +36,9 @@ namespace Traces.Web.ViewModels.Traces
 
         public Modal EditTraceModalRef { get; set; }
 
-        public List<TraceItemModel> OverdueTraces { get; } = new List<TraceItemModel>();
-
-        public SortedDictionary<DateTime, List<TraceItemModel>> ActiveTracesDictionary { get; } =
-            new SortedDictionary<DateTime, List<TraceItemModel>>();
-
         protected ITraceModifierService TraceModifierService { get; }
 
         protected IApaleoOneNotificationService ApaleoOneNotificationService { get; }
-
-        protected IApaleoOneNavigationService ApaleoOneNavigationService { get; }
 
         public async Task InitializeAsync()
         {
@@ -97,7 +86,7 @@ namespace Traces.Web.ViewModels.Traces
 
             if (deleteResult.Success)
             {
-                RemoveTraceFromList(trace);
+                await RefreshAsync();
 
                 await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceDeletedSuccessfullyMessage);
             }
@@ -115,7 +104,7 @@ namespace Traces.Web.ViewModels.Traces
 
             if (completeResult.Success)
             {
-                CompleteTraceInList(trace);
+                await RefreshAsync();
 
                 await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceMarkedAsCompletedMessage);
             }
@@ -159,39 +148,9 @@ namespace Traces.Web.ViewModels.Traces
             EditTraceModalRef?.Hide();
         }
 
-        protected async Task LoadOverdueTracesAsync()
-        {
-            var tracesResult = await GetOverdueTracesAsync();
-
-            if (tracesResult.Success)
-            {
-                OverdueTraces.Clear();
-
-                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
-
-                foreach (var trace in traces)
-                {
-                    OverdueTraces.Add(trace);
-                }
-            }
-        }
-
-        protected virtual void CompleteTraceInList(TraceItemModel trace)
-        {
-            RemoveTraceFromList(trace);
-        }
-
         protected abstract Task LoadTracesAsync();
 
         protected abstract Task RefreshAsync();
-
-        protected abstract Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesAsync();
-
-        private void RemoveTraceFromList(TraceItemModel trace)
-        {
-            ActiveTracesDictionary.RemoveTrace(trace);
-            OverdueTraces.Remove(trace);
-        }
 
         private async Task LoadApaleoRolesAsync()
         {

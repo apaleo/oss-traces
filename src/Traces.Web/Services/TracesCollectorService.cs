@@ -84,47 +84,17 @@ namespace Traces.Web.Services
             }
         }
 
-        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetActiveTracesForReservationAsync(string reservationId)
+        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetAllTracesForReservationAsync(string reservationId)
         {
             try
             {
-                var traceDtos = await _traceService.GetActiveTracesForReservationAsync(reservationId);
+                var allTraces = await _traceService.GetAllTracesForReservationAsync(reservationId);
 
-                return SuccessModelFromTraceDtoList(traceDtos);
+                return SuccessModelFromTraceDtoList(allTraces);
             }
             catch (BusinessValidationException ex)
             {
-                _logger.LogWarning(ex, $"{nameof(TracesCollectorService)}.{nameof(GetActiveTracesForReservationAsync)} - Exception while trying to get traces for reservation with Id {reservationId}");
-                return FailModelWithErrorMessage(ex.Message);
-            }
-        }
-
-        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesForReservationAsync(string reservationId)
-        {
-            try
-            {
-                var overdueTraces = await _traceService.GetOverdueTracesForReservationAsync(reservationId);
-
-                return SuccessModelFromTraceDtoList(overdueTraces);
-            }
-            catch (BusinessValidationException ex)
-            {
-                _logger.LogWarning(ex, $"{nameof(TracesCollectorService)}.{nameof(GetOverdueTracesForReservationAsync)} - Exception while trying to get overdue traces for reservation with Id {reservationId}");
-                return FailModelWithErrorMessage(ex.Message);
-            }
-        }
-
-        public async Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetCompletedTracesForReservationAsync(string reservationId)
-        {
-            try
-            {
-                var completedTraces = await _traceService.GetCompletedTracesForReservationAsync(reservationId);
-
-                return SuccessModelFromTraceDtoList(completedTraces);
-            }
-            catch (BusinessValidationException ex)
-            {
-                _logger.LogWarning(ex, $"{nameof(TracesCollectorService)}.{nameof(GetCompletedTracesForReservationAsync)} - Exception while trying to get completed traces for reservation with Id {reservationId}");
+                _logger.LogWarning(ex, $"{nameof(TracesCollectorService)}.{nameof(GetAllTracesForReservationAsync)} - Exception while trying to get all traces for reservation with Id {reservationId}");
                 return FailModelWithErrorMessage(ex.Message);
             }
         }

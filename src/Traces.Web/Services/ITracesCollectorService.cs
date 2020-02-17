@@ -15,10 +15,6 @@ namespace Traces.Web.Services
 
         Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesForPropertyAsync(string propertyId);
 
-        Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetActiveTracesForReservationAsync(string reservationId);
-
-        Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetOverdueTracesForReservationAsync(string reservationId);
-
-        Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetCompletedTracesForReservationAsync(string reservationId);
+        Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetAllTracesForReservationAsync(string reservationId);
     }
 }
