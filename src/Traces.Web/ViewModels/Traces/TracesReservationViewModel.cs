@@ -83,15 +83,13 @@ namespace Traces.Web.ViewModels.Traces
 
             ActiveTracesDictionary.LoadTraces(
                 AllTracesDictionary
-                    .Values
-                    .SelectMany(list => list)
+                    .SelectMany(dict => dict.Value)
                     .Where(trace => trace.State == TraceState.Active && trace.DueDate >= DateTime.Today)
                     .ToList());
 
             OverdueTraces =
                 AllTracesDictionary
-                    .Values
-                    .SelectMany(list => list)
+                    .SelectMany(dict => dict.Value)
                     .Where(trace => trace.State == TraceState.Active && trace.DueDate < DateTime.Today)
                     .ToList();
 
@@ -126,8 +124,7 @@ namespace Traces.Web.ViewModels.Traces
         private void UpdateCompletedTracesText()
         {
             var elementCount = AllTracesDictionary
-                .Values
-                .SelectMany(list => list)
+                .SelectMany(dict => dict.Value)
                 .Where(trace => trace.State == TraceState.Completed)
                 .ToList()
                 .Count;

@@ -188,7 +188,7 @@ namespace Traces.Web.Services
             }
             catch (BusinessValidationException ex)
             {
-                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(DeleteTraceAsync)} - Exception while reverting complete trace with id {id}");
+                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(RevertCompleteTraceAsync)} - Exception while reverting complete trace with id {id}");
 
                 return new ResultModel<bool>
                 {
