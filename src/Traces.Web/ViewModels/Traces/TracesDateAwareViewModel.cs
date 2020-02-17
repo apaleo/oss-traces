@@ -57,15 +57,7 @@ namespace Traces.Web.ViewModels.Traces
                 var to = from.AddDays(1);
 
                 await LoadActiveTracesAsync(from, to);
-
-                if (from.Date == DateTime.Today)
-                {
-                    await LoadOverdueTracesAsync();
-                }
-                else
-                {
-                    OverdueTraces.Clear();
-                }
+                await LoadOverdueTracesAsync();
 
                 UpdateLoadedUntilText();
             }
@@ -138,18 +130,25 @@ namespace Traces.Web.ViewModels.Traces
 
         private async Task LoadOverdueTracesAsync()
         {
-            var tracesResult = await GetOverdueTracesAsync();
+            if (CurrentFromDate == DateTime.Today)
+            {
+                var tracesResult = await GetOverdueTracesAsync();
 
-            if (tracesResult.Success)
+                if (tracesResult.Success)
+                {
+                    OverdueTraces.Clear();
+
+                    var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
+
+                    foreach (var trace in traces)
+                    {
+                        OverdueTraces.Add(trace);
+                    }
+                }
+            }
+            else
             {
                 OverdueTraces.Clear();
-
-                var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
-
-                foreach (var trace in traces)
-                {
-                    OverdueTraces.Add(trace);
-                }
             }
         }
 
