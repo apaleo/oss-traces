@@ -131,6 +131,11 @@ namespace Traces.Web.ViewModels.Traces
 
             HasCompletedTraces = elementCount > 0;
 
+            if (!HasCompletedTraces)
+            {
+                IsCompletedTracesVisible = false;
+            }
+
             CompletedTracesCheckBoxText =
                 string.Format(TextConstants.TracesShowCompletedCheckboxTextFormat, elementCount);
         }
