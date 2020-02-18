@@ -66,7 +66,7 @@ namespace Traces.Common.Constants
 
         public const string TracesEditButtonText = "Edit";
 
-        public const string TracesShowCompletedCheckboxTextFormat = "Also show {0} completed trace(s)";
+        public const string TracesShowCompletedCheckboxTextFormat = "Show all traces, including {0} completed";
 
         public const string DatePickerSetTodayButtonText = "Today";
 
