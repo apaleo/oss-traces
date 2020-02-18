@@ -130,6 +130,7 @@ namespace Traces.Web.ViewModels.Traces
                 .Count;
 
             HasCompletedTraces = elementCount > 0;
+
             if (!HasCompletedTraces)
             {
                 IsCompletedTracesVisible = false;
