@@ -30,7 +30,7 @@ namespace Traces.Web.Utils
             }
         }
 
-        public static void LoadTraces(this SortedDictionary<DateTime, List<TraceItemModel>> dictionary, IReadOnlyList<TraceItemModel> traces)
+        public static void AddTracesRange(this SortedDictionary<DateTime, List<TraceItemModel>> dictionary, IReadOnlyList<TraceItemModel> traces)
         {
             dictionary.Clear();
 

@@ -81,7 +81,7 @@ namespace Traces.Web.ViewModels.Traces
         {
             await LoadAllTracesAsync();
 
-            ActiveTracesDictionary.LoadTraces(
+            ActiveTracesDictionary.AddTracesRange(
                 AllTracesDictionary
                     .SelectMany(dict => dict.Value)
                     .Where(trace => trace.State == TraceState.Active && trace.DueDate >= DateTime.Today)
@@ -111,7 +111,7 @@ namespace Traces.Web.ViewModels.Traces
             {
                 var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
 
-                AllTracesDictionary.LoadTraces(traces);
+                AllTracesDictionary.AddTracesRange(traces);
             }
             else
             {

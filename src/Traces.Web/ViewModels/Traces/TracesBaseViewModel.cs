@@ -100,9 +100,9 @@ namespace Traces.Web.ViewModels.Traces
 
         public async Task RevertCompleteItemAsync(TraceItemModel trace)
         {
-            var deleteResult = await TraceModifierService.RevertCompleteTraceAsync(trace.Id);
+            var revertResult = await TraceModifierService.RevertCompleteTraceAsync(trace.Id);
 
-            if (deleteResult.Success)
+            if (revertResult.Success)
             {
                 await RefreshAsync();
 
@@ -110,7 +110,7 @@ namespace Traces.Web.ViewModels.Traces
             }
             else
             {
-                var errorMessage = deleteResult.ErrorMessage.ValueOrException(new NotImplementedException());
+                var errorMessage = revertResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
                 await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
             }

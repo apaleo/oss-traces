@@ -160,7 +160,7 @@ namespace Traces.Web.ViewModels.Traces
             {
                 var traces = tracesResult.Result.ValueOr(new List<TraceItemModel>());
 
-                ActiveTracesDictionary.LoadTraces(traces);
+                ActiveTracesDictionary.AddTracesRange(traces);
 
                 CurrentFromDate = from;
                 CurrentToDate = toDateTime;
