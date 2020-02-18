@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Traces.Common.Constants;
+using Traces.Web.Models;
 
-namespace Traces.Web.Models
+namespace Traces.Web.ViewModels
 {
     public class EditTraceDialogViewModel
     {

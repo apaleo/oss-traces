@@ -1,5 +1,6 @@
 @using Humanizer
 @using Traces.Common.Constants
+@using Traces.Common.Enums
 @using Traces.Web.Models
 
 <h4 class="mt-2 ml-2">@Title</h4>
@@ -9,7 +10,7 @@
     <TableBody>
         @foreach (var trace in Traces)
         {
-            <TableRow>
+            <TableRow class="@(trace.State == TraceState.Completed ? "text-muted" : "")">
                 <TableRowCell>@trace.Title</TableRowCell>
                 <TableRowCell>@trace.Description</TableRowCell>
                 @if (IsDueDateVisible)
@@ -44,24 +45,35 @@
                     }
                 </TableRowCell>
                 <TableRowCell class="fit">
-                    <div class="d-flex align-items-start">
-                        <Button class="mr-2" Color="Color.Primary" IsLoading="@IsLoading" Clicked="@(() => OnComplete(trace))">
-                            <i class="fa fa-check"></i>
-                            @TextConstants.TracesCompleteButtonText
-                        </Button>
-                        <Button class="mr-2" Color="Color.Secondary" IsOutline="true" IsLoading="@IsLoading" Clicked="@(() => OnEdit(trace))">
-                            <i class="fa fa-edit"></i>
-                            @TextConstants.TracesEditButtonText
-                        </Button>
-                        <Dropdown IsRightAligned="true">
-                            <DropdownToggle>
-                            </DropdownToggle>
-                            <DropdownMenu IsRightAligned="true">
-                                <DropdownItem class="text-danger" Clicked="@(() => OnDelete(trace))">
-                                    @TextConstants.TracesDeleteButtonText
-                                </DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
+
+                    <div class="d-flex justify-content-end">
+                        @if (trace.State == TraceState.Active)
+                        {
+                            <Button class="mr-2" Color="Color.Primary" IsLoading="@IsLoading" Clicked="@(() => OnComplete(trace))">
+                                <i class="fa fa-check"></i>
+                                @TextConstants.TracesCompleteButtonText
+                            </Button>
+                            <Button class="mr-2" Color="Color.Secondary" IsOutline="true" IsLoading="@IsLoading" Clicked="@(() => OnEdit(trace))">
+                                <i class="fa fa-edit"></i>
+                                @TextConstants.TracesEditButtonText
+                            </Button>
+                            <Dropdown IsRightAligned="true">
+                                <DropdownToggle>
+                                </DropdownToggle>
+                                <DropdownMenu IsRightAligned="true">
+                                    <DropdownItem class="text-danger" Clicked="@(() => OnDelete(trace))">
+                                        @TextConstants.TracesDeleteButtonText
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        }
+                        else
+                        {
+                            <Button class="mr-2" Color="Color.Secondary" IsOutline="true" IsLoading="@IsLoading" Clicked="@(() => OnRevertComplete(trace))">
+                                <i class="fa fa-history"></i>
+                                @TextConstants.TracesRevertCompleteButtonText
+                            </Button>
+                        }
                     </div>
                 </TableRowCell>
             </TableRow>
@@ -81,9 +93,12 @@
 
     [Parameter]
     public EventCallback<TraceItemModel> OnCompleteClick { get; set; }
-    
+
     [Parameter]
     public EventCallback<TraceItemModel> OnNavigateClick { get; set; }
+
+    [Parameter]
+    public EventCallback<TraceItemModel> OnRevertCompleteClick { get; set; }
 
     [Parameter]
     public string Title { get; set; }
@@ -119,6 +134,15 @@
         IsLoading = true;
 
         await OnDeleteClick.InvokeAsync(trace);
+
+        IsLoading = false;
+    }
+
+    private async Task OnRevertComplete(TraceItemModel trace)
+    {
+        IsLoading = true;
+
+        await OnRevertCompleteClick.InvokeAsync(trace);
 
         IsLoading = false;
     }

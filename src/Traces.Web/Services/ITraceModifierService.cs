@@ -14,5 +14,7 @@ namespace Traces.Web.Services
         Task<ResultModel<bool>> ReplaceTraceAsync(ReplaceTraceItemModel replaceTraceItemModel);
 
         Task<ResultModel<bool>> DeleteTraceAsync(int id);
+
+        Task<ResultModel<bool>> RevertCompleteTraceAsync(int id);
     }
 }

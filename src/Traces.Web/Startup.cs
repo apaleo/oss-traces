@@ -29,6 +29,7 @@ using Traces.Web.Services;
 using Traces.Web.Services.Apaleo;
 using Traces.Web.Services.ApaleoOne;
 using Traces.Web.ViewModels;
+using Traces.Web.ViewModels.Traces;
 
 namespace Traces.Web
 {

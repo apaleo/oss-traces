@@ -78,28 +78,6 @@ namespace Traces.Core.Services
             return ConvertToTraceDto(propertyTraces);
         }
 
-        public async Task<IReadOnlyList<TraceDto>> GetActiveTracesForReservationAsync(string reservationId, DateTime from, DateTime toDateTime)
-        {
-            Check.NotEmpty(reservationId, nameof(reservationId));
-
-            if (from > toDateTime)
-            {
-                throw new BusinessValidationException(TextConstants.DateIntervalErrorMessage);
-            }
-
-            var fromLocalDate = LocalDate.FromDateTime(from);
-            var toLocalDate = LocalDate.FromDateTime(toDateTime);
-
-            var reservationTraces =
-                await _traceRepository.GetAllTracesForTenantAsync(t =>
-                    t.State == TraceState.Active &&
-                    t.ReservationId == reservationId &&
-                    t.DueDate >= fromLocalDate &&
-                    t.DueDate <= toLocalDate);
-
-            return ConvertToTraceDto(reservationTraces);
-        }
-
         public async Task<IReadOnlyList<TraceDto>> GetOverdueTracesAsync()
         {
             var todayDate = LocalDate.FromDateTime(DateTime.Today);
@@ -123,17 +101,14 @@ namespace Traces.Core.Services
             return ConvertToTraceDto(overdueTracesForProperty);
         }
 
-        public async Task<IReadOnlyList<TraceDto>> GetOverdueTracesForReservationAsync(string reservationId)
+        public async Task<IReadOnlyList<TraceDto>> GetAllTracesForReservationAsync(string reservationId)
         {
             Check.NotEmpty(reservationId, nameof(reservationId));
 
-            var todayDate = LocalDate.FromDateTime(DateTime.Today);
-            var overdueTracesForReservation = await _traceRepository.GetAllTracesForTenantAsync(t =>
-                t.State == TraceState.Active &&
-                t.DueDate < todayDate &&
+            var allTracesForReservation = await _traceRepository.GetAllTracesForTenantAsync(t =>
                 t.ReservationId == reservationId);
 
-            return ConvertToTraceDto(overdueTracesForReservation);
+            return ConvertToTraceDto(allTracesForReservation);
         }
 
         public async Task<Option<TraceDto>> GetTraceAsync(int id)

@@ -1,13 +1,14 @@
 @page "/traces/account"
 @using Traces.Common.Constants
 @using Traces.Web.ViewModels
+@using Traces.Web.ViewModels.Traces
 @inject TracesAccountViewModel TracesAccountViewModel
 
 <div class="mb-3">
     <DatePicker Date="@TracesAccountViewModel.CurrentFromDate" OnChange="@TracesAccountViewModel.LoadFromDateAsync"/>
 </div>
 
-@if (TracesAccountViewModel.OverdueTraces != null && TracesAccountViewModel.OverdueTraces.Any())
+@if (TracesAccountViewModel.OverdueTraces?.Any() == true)
 {
     <section class="pb-4">
         <Table>
@@ -37,7 +38,7 @@
 }
 
 <div>
-    @if (TracesAccountViewModel.SortedGroupedTracesDictionary != null && TracesAccountViewModel.SortedGroupedTracesDictionary.Any())
+    @if (TracesAccountViewModel.ActiveTracesDictionary?.Any() == true)
     {
         <Table>
             <TableHeader>
@@ -50,7 +51,7 @@
                     <TableHeaderCell></TableHeaderCell>
                 </TableRow>
             </TableHeader>
-            @foreach (var (date, traces) in TracesAccountViewModel.SortedGroupedTracesDictionary)
+            @foreach (var (date, traces) in TracesAccountViewModel.ActiveTracesDictionary)
             {
                 <TracesComponent
                     Title="@date.ToShortDateString()"
@@ -91,7 +92,7 @@
 {
     protected override async Task OnInitializedAsync()
     {
-        await TracesAccountViewModel.LoadAsync();
+        await TracesAccountViewModel.InitializeAsync();
         await base.OnInitializedAsync();
     }
 }

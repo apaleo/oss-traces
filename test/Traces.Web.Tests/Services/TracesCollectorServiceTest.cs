@@ -88,7 +88,7 @@ namespace Traces.Web.Tests.Services
                     It.Is<DateTime>(dt => dt == _testToDate)))
                 .ReturnsAsync(testTraces);
 
-            var result = await _tracesCollectorService.GetTracesAsync(_testFromDate, _testToDate);
+            var result = await _tracesCollectorService.GetActiveTracesAsync(_testFromDate, _testToDate);
 
             result.Should().NotBeNull();
 
@@ -128,7 +128,7 @@ namespace Traces.Web.Tests.Services
                     It.Is<DateTime>(dt => dt == _testToDate)))
                 .ThrowsAsync(new BusinessValidationException(exceptionMessage));
 
-            var collectorResult = await _tracesCollectorService.GetTracesAsync(_testFromDate, _testToDate);
+            var collectorResult = await _tracesCollectorService.GetActiveTracesAsync(_testFromDate, _testToDate);
 
             collectorResult.Success.Should().BeFalse();
             collectorResult.Result.HasValue.Should().BeFalse();
@@ -174,7 +174,7 @@ namespace Traces.Web.Tests.Services
                 .ReturnsAsync(testTraces);
 
             var result =
-                await _tracesCollectorService.GetTracesForPropertyAsync(PropertyId, testTraceFromDate, testTraceToDate);
+                await _tracesCollectorService.GetActiveTracesForPropertyAsync(PropertyId, testTraceFromDate, testTraceToDate);
 
             result.Success.Should().BeTrue();
 
@@ -214,20 +214,13 @@ namespace Traces.Web.Tests.Services
                 }
             };
 
-            var testTraceFromDate = DateTime.Today;
-            var testTraceToDate = DateTime.Today.AddDays(1);
-
-            _traceServiceMock.Setup(x => x.GetActiveTracesForReservationAsync(
-                    It.Is<string>(v => v == ReservationId),
-                    It.Is<DateTime>(v => v == testTraceFromDate),
-                    It.Is<DateTime>(v => v == testTraceToDate)))
+            _traceServiceMock.Setup(x => x.GetAllTracesForReservationAsync(
+                    It.Is<string>(v => v == ReservationId)))
                 .ReturnsAsync(testTraces);
 
             var result =
-                await _tracesCollectorService.GetTracesForReservationAsync(
-                    ReservationId,
-                    testTraceFromDate,
-                    testTraceToDate);
+                await _tracesCollectorService.GetAllTracesForReservationAsync(
+                    ReservationId);
 
             result.Success.Should().BeTrue();
 
@@ -369,11 +362,11 @@ namespace Traces.Web.Tests.Services
                 }
             };
 
-            _traceServiceMock.Setup(x => x.GetOverdueTracesForReservationAsync(
+            _traceServiceMock.Setup(x => x.GetAllTracesForReservationAsync(
                     It.Is<string>(v => v == ReservationId)))
                 .ReturnsAsync(testTraces);
 
-            var result = await _tracesCollectorService.GetOverdueTracesForReservationAsync(ReservationId);
+            var result = await _tracesCollectorService.GetAllTracesForReservationAsync(ReservationId);
 
             result.Success.Should().BeTrue();
 

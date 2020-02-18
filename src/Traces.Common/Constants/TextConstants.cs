@@ -18,6 +18,8 @@ namespace Traces.Common.Constants
 
         public const string TraceDeletedSuccessfullyMessage = "Trace deleted successfully.";
 
+        public const string TraceRevertedCompleteSuccessfullyMessage = "Trace reverted complete successfully.";
+
         public const string CreateTraceModalTitle = "Create trace";
 
         public const string EditTraceModalTitle = "Update trace";
@@ -60,7 +62,11 @@ namespace Traces.Common.Constants
 
         public const string TracesCompleteButtonText = "Mark as complete";
 
+        public const string TracesRevertCompleteButtonText = "Revert complete";
+
         public const string TracesEditButtonText = "Edit";
+
+        public const string TracesShowCompletedCheckboxTextFormat = "Show all traces, including {0} completed";
 
         public const string DatePickerSetTodayButtonText = "Today";
 

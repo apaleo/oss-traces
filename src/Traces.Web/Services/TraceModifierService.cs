@@ -173,5 +173,29 @@ namespace Traces.Web.Services
                 };
             }
         }
+
+        public async Task<ResultModel<bool>> RevertCompleteTraceAsync(int id)
+        {
+            try
+            {
+                var revertedResult = await _traceService.RevertCompleteAsync(id);
+
+                return new ResultModel<bool>
+                {
+                    Result = revertedResult.Some(),
+                    Success = true
+                };
+            }
+            catch (BusinessValidationException ex)
+            {
+                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(RevertCompleteTraceAsync)} - Exception while reverting complete trace with id {id}");
+
+                return new ResultModel<bool>
+                {
+                    Success = false,
+                    ErrorMessage = ex.Message.Some()
+                };
+            }
+        }
     }
 }
