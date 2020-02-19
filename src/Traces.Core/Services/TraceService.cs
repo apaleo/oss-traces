@@ -225,6 +225,7 @@ namespace Traces.Core.Services
             var trace = await _traceRepository.GetAsync(id);
 
             trace.CompletedDate = null;
+            trace.CompletedBy = null;
             trace.State = TraceState.Active;
 
             await _traceRepository.SaveAsync();
@@ -248,6 +249,19 @@ namespace Traces.Core.Services
 
             return deleted;
         }
+
+        public static TraceDto TraceToDto(Trace trace) => new TraceDto
+        {
+            Description = trace.Description.SomeNotNull(),
+            State = trace.State,
+            Title = trace.Title,
+            CompletedDate = trace.CompletedDate?.Some() ?? Option.None<LocalDate>(),
+            DueDate = trace.DueDate,
+            Id = trace.Id,
+            PropertyId = trace.PropertyId,
+            ReservationId = trace.ReservationId.SomeNotNull(),
+            AssignedRole = trace.AssignedRole.SomeNotNull()
+        };
 
         private async Task<string> GetPropertyIdFromReservationIdAsync(string reservationId)
         {
@@ -277,18 +291,5 @@ namespace Traces.Core.Services
             var tracesDto = traces.Select(TraceToDto).ToList();
             return tracesDto;
         }
-
-        private static TraceDto TraceToDto(Trace trace) => new TraceDto
-        {
-            Description = trace.Description.SomeNotNull(),
-            State = trace.State,
-            Title = trace.Title,
-            CompletedDate = trace.CompletedDate?.Some() ?? Option.None<LocalDate>(),
-            DueDate = trace.DueDate,
-            Id = trace.Id,
-            PropertyId = trace.PropertyId,
-            ReservationId = trace.ReservationId.SomeNotNull(),
-            AssignedRole = trace.AssignedRole.SomeNotNull()
-        };
     }
 }

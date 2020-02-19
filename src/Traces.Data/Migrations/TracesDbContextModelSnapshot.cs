@@ -88,6 +88,9 @@ namespace Traces.Data.Migrations
                     b.Property<Instant>("CreatedUtc")
                         .HasColumnType("timestamp");
 
+                    b.Property<Guid>("FileGuid")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("MimeType")
                         .IsRequired()
                         .HasColumnType("text");
@@ -103,8 +106,8 @@ namespace Traces.Data.Migrations
                     b.Property<Guid>("PublicId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Size")
-                        .HasColumnType("integer");
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("TenantId")
                         .IsRequired()

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Traces.Data.Entities
 {
@@ -12,10 +13,13 @@ namespace Traces.Data.Entities
         public string MimeType { get; set; }
 
         [Required]
-        public int Size { get; set; }
+        public long Size { get; set; }
 
         [Required]
         public Guid PublicId { get; set; }
+
+        [Required]
+        public Guid FileGuid { get; set; }
 
         [Required]
         public string Path { get; set; }
@@ -23,7 +27,9 @@ namespace Traces.Data.Entities
         [Required]
         public string CreatedBy { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(Trace))]
+        public int TraceId { get; set; }
+
         public Trace Trace { get; set; }
     }
 }

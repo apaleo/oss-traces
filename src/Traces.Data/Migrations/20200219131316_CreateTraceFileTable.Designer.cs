@@ -11,8 +11,8 @@ using Traces.Data;
 namespace Traces.Data.Migrations
 {
     [DbContext(typeof(TracesDbContext))]
-    [Migration("20200218125740_CreateFileTable")]
-    partial class CreateFileTable
+    [Migration("20200219131316_CreateTraceFileTable")]
+    partial class CreateTraceFileTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -90,6 +90,9 @@ namespace Traces.Data.Migrations
                     b.Property<Instant>("CreatedUtc")
                         .HasColumnType("timestamp");
 
+                    b.Property<Guid>("FileGuid")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("MimeType")
                         .IsRequired()
                         .HasColumnType("text");
@@ -105,8 +108,8 @@ namespace Traces.Data.Migrations
                     b.Property<Guid>("PublicId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Size")
-                        .HasColumnType("integer");
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("TenantId")
                         .IsRequired()

@@ -22,6 +22,7 @@ using Traces.Common.Utils;
 using Traces.Core.ClientFactories;
 using Traces.Core.Repositories;
 using Traces.Core.Services;
+using Traces.Core.Services.Files;
 using Traces.Data;
 using Traces.Web.AutoRefresh;
 using Traces.Web.Middlewares;
@@ -133,7 +134,11 @@ namespace Traces.Web
 
             services.AddScoped<IRequestContext, RequestContext>();
             services.AddScoped<ITraceRepository, TraceRepository>();
+            services.AddScoped<ITraceFileRepository, TraceFileRepository>();
             services.AddScoped<ITraceService, TraceService>();
+            services.AddScoped<ITraceFileService, TraceFileService>();
+
+            services.AddScoped<IFileService, FileService>();
             services.AddScoped<ITraceModifierService, TraceModifierService>();
             services.AddScoped<ITracesCollectorService, TracesCollectorService>();
             services.AddScoped<IApaleoOneNavigationService, ApaleoOneNavigationService>();

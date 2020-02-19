@@ -5,7 +5,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Traces.Data.Migrations
 {
-    public partial class CreateFileTable : Migration
+    public partial class CreateTraceFileTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,8 +20,9 @@ namespace Traces.Data.Migrations
                     TenantId = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     MimeType = table.Column<string>(nullable: false),
-                    Size = table.Column<int>(nullable: false),
+                    Size = table.Column<long>(nullable: false),
                     PublicId = table.Column<Guid>(nullable: false),
+                    FileGuid = table.Column<Guid>(nullable: false),
                     Path = table.Column<string>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: false),
                     TraceId = table.Column<int>(nullable: false)
