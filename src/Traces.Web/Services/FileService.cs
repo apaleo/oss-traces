@@ -2,10 +2,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Optional;
 using Traces.Common.Exceptions;
-using Traces.Core.Models.TraceFile;
+using Traces.Core.Models.File;
 using Traces.Core.Services.Files;
 using Traces.Web.Models;
-using Traces.Web.Models.TraceFile;
+using Traces.Web.Models.File;
 using Traces.Web.Utils;
 
 namespace Traces.Web.Services
@@ -30,7 +30,8 @@ namespace Traces.Web.Services
                     Name = createTraceFileItemModel.Name,
                     Size = createTraceFileItemModel.Size,
                     TraceId = createTraceFileItemModel.TraceId,
-                    MimeType = createTraceFileItemModel.MimeType
+                    MimeType = createTraceFileItemModel.MimeType,
+                    Data = createTraceFileItemModel.Data
                 };
 
                 var traceFileDto = await _traceFileService.CreateTraceFileAsync(createTraceFileDto);
@@ -48,6 +49,32 @@ namespace Traces.Web.Services
                 _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(CreateTraceFileAsync)} - Exception while trying to create trace file");
 
                 return new ResultModel<TraceFileItemModel>
+                {
+                    Success = false,
+                    ErrorMessage = ex.Message.Some()
+                };
+            }
+        }
+
+        public async Task<ResultModel<SavedFileItemModel>> GetSavedFileFromPublicIdAsync(string publicId)
+        {
+            try
+            {
+                var savedFileDto = await _traceFileService.GetSavedFileFromPublicIdAsync(publicId);
+
+                var savedFileItemModel = savedFileDto.ConvertToSavedFileItemModel();
+
+                return new ResultModel<SavedFileItemModel>
+                {
+                    Result = savedFileItemModel.Some(),
+                    Success = true
+                };
+            }
+            catch (BusinessValidationException ex)
+            {
+                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(GetSavedFileFromPublicIdAsync)} - Exception while trying to get saved trace file");
+
+                return new ResultModel<SavedFileItemModel>
                 {
                     Success = false,
                     ErrorMessage = ex.Message.Some()

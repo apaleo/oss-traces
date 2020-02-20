@@ -16,6 +16,8 @@ namespace Traces.Core.Repositories
 
         Task<TraceFile> GetAsync(int id);
 
+        Task<TraceFile> GetByPublicIdAsync(string publicId);
+
         void Insert(TraceFile traceFile);
 
         Task<bool> DeleteAsync(int id);

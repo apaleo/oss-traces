@@ -31,6 +31,9 @@ namespace Traces.Core.Repositories
         public async Task<TraceFile> GetAsync(int id) =>
             await _dbContext.TraceFile.FirstOrDefaultAsync(t => t.Id == id);
 
+        public async Task<TraceFile> GetByPublicIdAsync(string publicId) =>
+            await _dbContext.TraceFile.FirstOrDefaultAsync(t => t.PublicId.ToString() == publicId);
+
         public void Insert(TraceFile traceFile)
         {
             Check.NotNull(traceFile, nameof(traceFile));

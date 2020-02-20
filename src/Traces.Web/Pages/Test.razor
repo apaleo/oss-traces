@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Http
 @using Traces.Common
 @using Traces.Common.Constants
-@using Traces.Web.Models.TraceFile
+@using Traces.Web.Models.File
 @using Traces.Web.Services
 @inject IFileService FileService;
 @inject IHttpContextAccessor HttpContextAccessor
@@ -41,19 +41,17 @@
     {
         numLines = 0;
 
-    /*
-
-        var memoryStream = await file.ReadAllAsync(2097152);
-        await memoryStream.CopyToAsync(new FileStream(@"WriteLines.png", FileMode.Create));
+        var data = await file.ReadAllAsync(2097152);
         
-        numLines = memoryStream.Length;
-        */
+        numLines = data.Length;
+
         await FileService.CreateTraceFileAsync(new CreateTraceFileItemModel
         {
             Name = file.Name,
             Size = file.Size,
             MimeType = file.Type,
-            TraceId = 152
+            TraceId = 152,
+            Data = data
         });
     }
     

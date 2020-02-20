@@ -1,8 +1,8 @@
 using Traces.Common.Utils;
 using Traces.Core.Models;
-using Traces.Core.Models.TraceFile;
+using Traces.Core.Models.File;
 using Traces.Web.Models;
-using Traces.Web.Models.TraceFile;
+using Traces.Web.Models.File;
 
 namespace Traces.Web.Utils
 {
@@ -35,10 +35,21 @@ namespace Traces.Web.Utils
                 Name = dto.Name,
                 Path = dto.Path,
                 Size = dto.Size,
-                Trace = dto.Trace.ConvertToTraceItemModel(),
                 CreatedBy = dto.CreatedBy,
                 MimeType = dto.MimeType,
-                PublicId = dto.PublicId
+                PublicId = dto.PublicId,
+                TraceId = dto.TraceId
+            };
+        }
+
+        public static SavedFileItemModel ConvertToSavedFileItemModel(this SavedFileDto dto)
+        {
+            Check.NotNull(dto, nameof(dto));
+
+            return new SavedFileItemModel
+            {
+                Data = dto.Data,
+                TraceFile = dto.TraceFile.ConvertToTraceFileItemModel()
             };
         }
     }

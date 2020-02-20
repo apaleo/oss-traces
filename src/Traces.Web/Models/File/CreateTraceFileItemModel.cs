@@ -1,6 +1,8 @@
-namespace Traces.Core.Models.TraceFile
+using System.IO;
+
+namespace Traces.Web.Models.File
 {
-    public class CreateTraceFileDto
+    public class CreateTraceFileItemModel
     {
         public string Name { get; set; }
 
@@ -9,5 +11,7 @@ namespace Traces.Core.Models.TraceFile
         public long Size { get; set; }
 
         public int TraceId { get; set; }
+
+        public MemoryStream Data { get; set; }
     }
 }

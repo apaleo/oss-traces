@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Exceptions;
 using Traces.Common.Utils;
-using Traces.Core.Models.TraceFile;
+using Traces.Core.Models.File;
 using Traces.Core.Repositories;
 using Traces.Data.Entities;
 
@@ -28,8 +28,10 @@ namespace Traces.Core.Services.Files
 
             if (string.IsNullOrWhiteSpace(createTraceFileDto.Name) ||
                 string.IsNullOrWhiteSpace(createTraceFileDto.MimeType) ||
-                createTraceFileDto.Size <= 0 || createTraceFileDto.Size > 2097152 ||
-                createTraceFileDto.TraceId <= 0
+                createTraceFileDto.Size <= 0 ||
+                createTraceFileDto.Size > 2097152 ||
+                createTraceFileDto.TraceId <= 0 ||
+                createTraceFileDto.Data == null
             )
             {
                 throw new BusinessValidationException("Error create trace file" + TextConstants.CreateTraceWithoutTitleOrFutureDateErrorMessage);
@@ -37,7 +39,7 @@ namespace Traces.Core.Services.Files
 
             var tenantId = _requestContext.TenantId;
             var fileGuid = Guid.NewGuid();
-            var path = $"/files/{tenantId}/{fileGuid}/{createTraceFileDto.Name}";
+            var path = $"./files/{tenantId}/{fileGuid}/{createTraceFileDto.Name}";
             var currentSubjectId = _requestContext.SubjectId;
 
             var traceFile = new TraceFile
@@ -56,12 +58,27 @@ namespace Traces.Core.Services.Files
 
             await _traceFileRepository.SaveAsync();
 
-            return TraceFileToDto(await _traceFileRepository.GetAsync(traceFile.Id));
+            var newTraceFile = await _traceFileRepository.GetAsync(traceFile.Id);
+
+            await CreateFileAsync(newTraceFile, createTraceFileDto.Data);
+
+            return TraceFileToDto(newTraceFile);
         }
 
-        public Task<IReadOnlyList<TraceFileDto>> GetAllTraceFilesForTraceAsync(string id)
+        public async Task<SavedFileDto> GetSavedFileFromPublicIdAsync(string publicId)
         {
-            throw new System.NotImplementedException();
+            if (!await _traceFileRepository.ExistsAsync(t => t.PublicId.ToString() == publicId))
+            {
+                throw new BusinessValidationException("Error" + TextConstants.CreateTraceWithoutTitleOrFutureDateErrorMessage);
+            }
+
+            var traceFile = await _traceFileRepository.GetByPublicIdAsync(publicId);
+
+            return new SavedFileDto
+            {
+                TraceFile = TraceFileToDto(traceFile),
+                Data = File.ReadAllBytes(traceFile.Path)
+            };
         }
 
         public static TraceFileDto TraceFileToDto(TraceFile traceFile) => new TraceFileDto
@@ -70,11 +87,21 @@ namespace Traces.Core.Services.Files
             Name = traceFile.Name,
             Path = traceFile.Path,
             Size = traceFile.Size,
-            Trace = TraceService.TraceToDto(traceFile.Trace),
             CreatedBy = traceFile.CreatedBy,
             MimeType = traceFile.MimeType,
             PublicId = traceFile.PublicId,
-            FileGuid = traceFile.FileGuid
+            FileGuid = traceFile.FileGuid,
+            TraceId = traceFile.TraceId
         };
+
+        private static async Task CreateFileAsync(TraceFile traceFile, MemoryStream data)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(traceFile.Path));
+
+            using (var fileStream = new FileStream(traceFile.Path, FileMode.Create))
+            {
+                await data.CopyToAsync(fileStream);
+            }
+        }
     }
 }

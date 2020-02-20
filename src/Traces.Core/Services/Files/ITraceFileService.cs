@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Traces.Core.Models.TraceFile;
+using Traces.Core.Models.File;
 
 namespace Traces.Core.Services.Files
 {
@@ -8,6 +7,6 @@ namespace Traces.Core.Services.Files
     {
         Task<TraceFileDto> CreateTraceFileAsync(CreateTraceFileDto createTraceFileDto);
 
-        Task<IReadOnlyList<TraceFileDto>> GetAllTraceFilesForTraceAsync(string id);
+        Task<SavedFileDto> GetSavedFileFromPublicIdAsync(string publicId);
     }
 }

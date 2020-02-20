@@ -1,6 +1,6 @@
 using System;
 
-namespace Traces.Web.Models.TraceFile
+namespace Traces.Web.Models.File
 {
     public class TraceFileItemModel
     {
@@ -18,6 +18,6 @@ namespace Traces.Web.Models.TraceFile
 
         public string CreatedBy { get; set; }
 
-        public TraceItemModel Trace { get; set; }
+        public int TraceId { get; set; }
     }
 }
