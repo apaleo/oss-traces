@@ -18,12 +18,13 @@ namespace Traces.Web.ViewModels.Traces
     {
         protected TracesDateAwareViewModel(
             ITraceModifierService traceModifierService,
+            IFileService fileService,
             IHttpContextAccessor httpContextAccessor,
             IRequestContext requestContext,
             IApaleoOneNavigationService apaleoOneNavigationService,
             IApaleoRolesCollectorService apaleoRolesCollector,
             IApaleoOneNotificationService apaleoOneNotificationService)
-            : base(traceModifierService, httpContextAccessor, requestContext, apaleoRolesCollector, apaleoOneNotificationService)
+            : base(traceModifierService, fileService, httpContextAccessor, requestContext, apaleoRolesCollector, apaleoOneNotificationService)
         {
             ApaleoOneNavigationService = Check.NotNull(apaleoOneNavigationService, nameof(apaleoOneNavigationService));
         }

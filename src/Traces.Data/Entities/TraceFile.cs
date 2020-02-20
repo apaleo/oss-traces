@@ -7,6 +7,7 @@ namespace Traces.Data.Entities
     public class TraceFile : BaseEntity
     {
         [Required]
+        [Range(1, 255)]
         public string Name { get; set; }
 
         [Required]

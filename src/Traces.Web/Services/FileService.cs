@@ -2,11 +2,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Optional;
 using Traces.Common.Exceptions;
-using Traces.Core.Models.File;
 using Traces.Core.Services.Files;
 using Traces.Web.Models;
 using Traces.Web.Models.File;
-using Traces.Web.Utils;
+using Traces.Web.Utils.Converters.TraceFile;
 
 namespace Traces.Web.Services
 {
@@ -21,24 +20,17 @@ namespace Traces.Web.Services
             _traceFileService = traceFileService;
         }
 
-        public async Task<ResultModel<TraceFileItemModel>> CreateTraceFileAsync(CreateTraceFileItemModel createTraceFileItemModel)
+        public async Task<ResultModel<TraceFileItemModel[]>> CreateTraceFileAsync(CreateTraceFileItemModel[] createTraceFileItemModelArray)
         {
             try
             {
-                var createTraceFileDto = new CreateTraceFileDto
-                {
-                    Name = createTraceFileItemModel.Name,
-                    Size = createTraceFileItemModel.Size,
-                    TraceId = createTraceFileItemModel.TraceId,
-                    MimeType = createTraceFileItemModel.MimeType,
-                    Data = createTraceFileItemModel.Data
-                };
+                var createTraceFileDtoArray = createTraceFileItemModelArray.ConvertToCreateTraceFileDtoArray();
 
-                var traceFileDto = await _traceFileService.CreateTraceFileAsync(createTraceFileDto);
+                var traceFileDtoArray = await _traceFileService.CreateTraceFileAsync(createTraceFileDtoArray);
 
-                var traceFileItemModel = traceFileDto.ConvertToTraceFileItemModel();
+                var traceFileItemModel = traceFileDtoArray.ConvertToTraceFileItemModelArray();
 
-                return new ResultModel<TraceFileItemModel>
+                return new ResultModel<TraceFileItemModel[]>
                 {
                     Result = traceFileItemModel.Some(),
                     Success = true
@@ -48,7 +40,7 @@ namespace Traces.Web.Services
             {
                 _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(CreateTraceFileAsync)} - Exception while trying to create trace file");
 
-                return new ResultModel<TraceFileItemModel>
+                return new ResultModel<TraceFileItemModel[]>
                 {
                     Success = false,
                     ErrorMessage = ex.Message.Some()

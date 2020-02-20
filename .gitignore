@@ -9,6 +9,7 @@
 *.userosscache
 *.sln.docstates
 *.blob
+*/Traces.Web/files/*
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

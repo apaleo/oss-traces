@@ -30,8 +30,9 @@ namespace Traces.Web.ViewModels.Traces
             IRequestContext requestContext,
             IHttpContextAccessor httpContextAccessor,
             IApaleoRolesCollectorService apaleoRolesCollector,
-            IApaleoOneNotificationService apaleoOneNotificationService)
-            : base(traceModifierService, httpContextAccessor, requestContext, apaleoRolesCollector, apaleoOneNotificationService)
+            IApaleoOneNotificationService apaleoOneNotificationService,
+            IFileService fileService)
+            : base(traceModifierService, fileService, httpContextAccessor, requestContext, apaleoRolesCollector, apaleoOneNotificationService)
         {
             _navigationManager = Check.NotNull(navigationManager, nameof(navigationManager));
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
@@ -56,9 +57,9 @@ namespace Traces.Web.ViewModels.Traces
             var createTraceItemModel = EditTraceDialogViewModel.GetCreateTraceItemModel();
             createTraceItemModel.ReservationId = _currentReservationId;
 
-            var createResult = await TraceModifierService.CreateTraceWithReservationIdAsync(createTraceItemModel);
+            var createTraceResult = await TraceModifierService.CreateTraceWithReservationIdAsync(createTraceItemModel);
 
-            if (createResult.Success)
+            if (createTraceResult.Success)
             {
                 await RefreshAsync();
 
@@ -66,13 +67,15 @@ namespace Traces.Web.ViewModels.Traces
             }
             else
             {
-                var errorMessage = createResult.ErrorMessage.ValueOrException(new NotImplementedException());
+                var errorMessage = createTraceResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
                 await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
             }
 
-            if (createResult.Success)
+            if (createTraceResult.Success)
             {
+                await CreateTraceFileAsync(createTraceResult.Result.ValueOrException(new InvalidOperationException()).Id);
+
                 HideCreateTraceModal();
             }
         }

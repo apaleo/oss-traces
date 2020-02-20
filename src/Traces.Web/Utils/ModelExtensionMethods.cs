@@ -1,8 +1,6 @@
 using Traces.Common.Utils;
 using Traces.Core.Models;
-using Traces.Core.Models.File;
 using Traces.Web.Models;
-using Traces.Web.Models.File;
 
 namespace Traces.Web.Utils
 {
@@ -22,34 +20,6 @@ namespace Traces.Web.Utils
                 PropertyId = dto.PropertyId,
                 ReservationId = dto.ReservationId.ValueOr(string.Empty),
                 AssignedRole = dto.AssignedRole.ValueOr(string.Empty)
-            };
-        }
-
-        public static TraceFileItemModel ConvertToTraceFileItemModel(this TraceFileDto dto)
-        {
-            Check.NotNull(dto, nameof(dto));
-
-            return new TraceFileItemModel
-            {
-                Id = dto.Id,
-                Name = dto.Name,
-                Path = dto.Path,
-                Size = dto.Size,
-                CreatedBy = dto.CreatedBy,
-                MimeType = dto.MimeType,
-                PublicId = dto.PublicId,
-                TraceId = dto.TraceId
-            };
-        }
-
-        public static SavedFileItemModel ConvertToSavedFileItemModel(this SavedFileDto dto)
-        {
-            Check.NotNull(dto, nameof(dto));
-
-            return new SavedFileItemModel
-            {
-                Data = dto.Data,
-                TraceFile = dto.TraceFile.ConvertToTraceFileItemModel()
             };
         }
     }

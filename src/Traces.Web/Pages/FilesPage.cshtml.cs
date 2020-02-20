@@ -23,6 +23,11 @@ namespace Traces.Web.Pages
 
             var result = await _fileService.GetSavedFileFromPublicIdAsync(publicId);
 
+            if (!result.Success)
+            {
+                return new NotFoundResult();
+            }
+
             var savedFile = result.Result.ValueOr(new SavedFileItemModel());
 
             return File(savedFile.Data, savedFile.TraceFile.MimeType, savedFile.TraceFile.Name);

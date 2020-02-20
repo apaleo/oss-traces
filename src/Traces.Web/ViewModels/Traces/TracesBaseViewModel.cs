@@ -19,6 +19,7 @@ namespace Traces.Web.ViewModels.Traces
 
         protected TracesBaseViewModel(
             ITraceModifierService traceModifierService,
+            IFileService fileService,
             IHttpContextAccessor httpContextAccessor,
             IRequestContext requestContext,
             IApaleoRolesCollectorService apaleoRolesCollector,
@@ -26,8 +27,10 @@ namespace Traces.Web.ViewModels.Traces
             : base(httpContextAccessor, requestContext)
         {
             TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
-            _apaleoRolesCollector = Check.NotNull(apaleoRolesCollector, nameof(apaleoRolesCollector));
+            FileService = Check.NotNull(fileService, nameof(fileService));
             ApaleoOneNotificationService = Check.NotNull(apaleoOneNotificationService, nameof(apaleoOneNotificationService));
+
+            _apaleoRolesCollector = Check.NotNull(apaleoRolesCollector, nameof(apaleoRolesCollector));
         }
 
         public EditTraceDialogViewModel EditTraceDialogViewModel { get; } = new EditTraceDialogViewModel();
@@ -39,6 +42,8 @@ namespace Traces.Web.ViewModels.Traces
         protected ITraceModifierService TraceModifierService { get; }
 
         protected IApaleoOneNotificationService ApaleoOneNotificationService { get; }
+
+        protected IFileService FileService { get; }
 
         public async Task InitializeAsync()
         {
@@ -76,6 +81,8 @@ namespace Traces.Web.ViewModels.Traces
 
             if (replaceResult.Success)
             {
+                await CreateTraceFileAsync(replaceTraceItemModel.Id);
+
                 HideEditTraceModal();
             }
         }
@@ -164,6 +171,15 @@ namespace Traces.Web.ViewModels.Traces
         {
             EditTraceDialogViewModel.ClearCurrentState();
             EditTraceModalRef?.Hide();
+        }
+
+        protected async Task CreateTraceFileAsync(int traceId)
+        {
+            var createTraceFileModelArray = EditTraceDialogViewModel.GetCreateTraceFileItemModelArray(traceId);
+            if (createTraceFileModelArray.Length > 0)
+            {
+                await FileService.CreateTraceFileAsync(createTraceFileModelArray);
+            }
         }
 
         protected abstract Task LoadTracesAsync();

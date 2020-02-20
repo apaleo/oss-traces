@@ -18,6 +18,7 @@ namespace Traces.Web.ViewModels.Traces
         public TracesAccountViewModel(
             ITracesCollectorService tracesCollectorService,
             ITraceModifierService traceModifierService,
+            IFileService fileService,
             IRequestContext requestContext,
             IHttpContextAccessor httpContextAccessor,
             IApaleoOneNavigationService apaleoOneNavigationService,
@@ -25,6 +26,7 @@ namespace Traces.Web.ViewModels.Traces
             IApaleoOneNotificationService apaleoOneNotificationService)
             : base(
                 traceModifierService,
+                fileService,
                 httpContextAccessor,
                 requestContext,
                 apaleoOneNavigationService,

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Traces.Common;
@@ -7,6 +8,7 @@ using Traces.Common.Exceptions;
 using Traces.Common.Utils;
 using Traces.Core.Models.File;
 using Traces.Core.Repositories;
+using Traces.Core.Validators;
 using Traces.Data.Entities;
 
 namespace Traces.Core.Services.Files
@@ -22,25 +24,42 @@ namespace Traces.Core.Services.Files
             _requestContext = Check.NotNull(requestContext, nameof(requestContext));
         }
 
+        public async Task<TraceFileDto[]> CreateTraceFileAsync(CreateTraceFileDto[] createTraceFileDtoArray)
+        {
+            Check.NotNull(createTraceFileDtoArray, nameof(createTraceFileDtoArray));
+
+            foreach (var createTraceFileDto in createTraceFileDtoArray)
+            {
+                if (!createTraceFileDto.IsValid())
+                {
+                    throw new BusinessValidationException("Error create trace file" + TextConstants.CreateTraceWithoutTitleOrFutureDateErrorMessage);
+                }
+            }
+
+            List<TraceFileDto> dtos = new List<TraceFileDto>();
+
+            foreach (var createTraceFileDto in createTraceFileDtoArray)
+            {
+                var traceFileDto = await CreateTraceFileAsync(createTraceFileDto);
+                dtos.Add(traceFileDto);
+            }
+
+            return dtos.ToArray();
+        }
+
         public async Task<TraceFileDto> CreateTraceFileAsync(CreateTraceFileDto createTraceFileDto)
         {
             Check.NotNull(createTraceFileDto, nameof(createTraceFileDto));
 
-            if (string.IsNullOrWhiteSpace(createTraceFileDto.Name) ||
-                string.IsNullOrWhiteSpace(createTraceFileDto.MimeType) ||
-                createTraceFileDto.Size <= 0 ||
-                createTraceFileDto.Size > 2097152 ||
-                createTraceFileDto.TraceId <= 0 ||
-                createTraceFileDto.Data == null
-            )
+            if (!createTraceFileDto.IsValid())
             {
                 throw new BusinessValidationException("Error create trace file" + TextConstants.CreateTraceWithoutTitleOrFutureDateErrorMessage);
             }
 
             var tenantId = _requestContext.TenantId;
             var fileGuid = Guid.NewGuid();
-            var path = $"./files/{tenantId}/{fileGuid}/{createTraceFileDto.Name}";
             var currentSubjectId = _requestContext.SubjectId;
+            var path = $"./files/{tenantId}/{fileGuid}/{createTraceFileDto.Name}";
 
             var traceFile = new TraceFile
             {

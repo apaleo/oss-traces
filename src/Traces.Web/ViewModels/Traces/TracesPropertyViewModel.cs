@@ -24,13 +24,14 @@ namespace Traces.Web.ViewModels.Traces
         public TracesPropertyViewModel(
             ITracesCollectorService tracesCollectorService,
             ITraceModifierService traceModifierService,
+            IFileService fileService,
             NavigationManager navigationManager,
             IRequestContext requestContext,
             IHttpContextAccessor httpContextAccessor,
             IApaleoOneNavigationService apaleoOneNavigationService,
             IApaleoRolesCollectorService apaleoRolesCollector,
             IApaleoOneNotificationService apaleoOneNotificationService)
-            : base(traceModifierService, httpContextAccessor, requestContext, apaleoOneNavigationService, apaleoRolesCollector, apaleoOneNotificationService)
+            : base(traceModifierService, fileService, httpContextAccessor, requestContext, apaleoOneNavigationService, apaleoRolesCollector, apaleoOneNotificationService)
         {
             _navigationManager = Check.NotNull(navigationManager, nameof(navigationManager));
             _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
