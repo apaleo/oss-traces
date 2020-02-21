@@ -1,7 +1,7 @@
 @using System.IO
 @using Humanizer
 @using Traces.Common.Constants
-@using Traces.Web.Models.File
+@using Traces.Web.Models.Files
 @using Traces.Web.Services
 @using Traces.Web.ViewModels
 @inject IFileService FileService;
@@ -35,6 +35,23 @@
                     <SelectItem Value="@role">@role.Humanize()</SelectItem>
                 }
             </SelectEdit>
+        </FieldBody>
+    </Field>
+    <Field>
+        <FieldLabel>Files</FieldLabel>
+        <FieldBody>
+            @for (int i = 1; i <= EditTraceDialogVm.TraceFiles.Count; i++)
+            {
+                var file = EditTraceDialogVm.TraceFiles[i - 1];
+                var index = i;
+
+                <div class="d-flex align-items-start mt-2">
+                    <span class="mr-2 mt-2">@index.</span>
+                    <div class="d-flex flex-fill flex-column">
+                        <a href="/files/@file.PublicId" target="_blank">@file.Name</a>
+                    </div>
+                </div>
+            }
         </FieldBody>
     </Field>
     <Field>

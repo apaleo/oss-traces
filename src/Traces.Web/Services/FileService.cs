@@ -4,8 +4,8 @@ using Optional;
 using Traces.Common.Exceptions;
 using Traces.Core.Services.Files;
 using Traces.Web.Models;
-using Traces.Web.Models.File;
-using Traces.Web.Utils.Converters.TraceFile;
+using Traces.Web.Models.Files;
+using Traces.Web.Utils.Converters.Files;
 
 namespace Traces.Web.Services
 {

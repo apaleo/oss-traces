@@ -2,18 +2,13 @@ using System;
 using System.Collections.Generic;
 using Traces.Common.Constants;
 using Traces.Web.Models;
-using Traces.Web.Models.File;
-using Traces.Web.Utils.Converters.TraceFile;
+using Traces.Web.Models.Files;
+using Traces.Web.Utils.Converters.Files;
 
 namespace Traces.Web.ViewModels
 {
     public class EditTraceDialogViewModel
     {
-        public EditTraceDialogViewModel()
-        {
-            Roles = new List<string>();
-        }
-
         public int Id { get; set; }
 
         public string Title { get; set; }
@@ -24,9 +19,11 @@ namespace Traces.Web.ViewModels
 
         public string SelectedRole { get; set; }
 
-        public List<FileToUploadModel> FilesToUpload { get; private set; } = new List<FileToUploadModel>();
+        public List<FileToUploadModel> FilesToUpload { get; set; } = new List<FileToUploadModel>();
 
-        public List<string> Roles { get; }
+        public List<TraceFileItemModel> TraceFiles { get; set; } = new List<TraceFileItemModel>();
+
+        public List<string> Roles { get; } = new List<string>();
 
         public CreateTraceItemModel GetCreateTraceItemModel()
             => new CreateTraceItemModel
@@ -64,7 +61,9 @@ namespace Traces.Web.ViewModels
             Description = string.Empty;
             DueDate = null;
             SelectedRole = string.Empty;
-            FilesToUpload = new List<FileToUploadModel>();
+            Roles.Clear();
+            FilesToUpload.Clear();
+            TraceFiles.Clear();
         }
     }
 }

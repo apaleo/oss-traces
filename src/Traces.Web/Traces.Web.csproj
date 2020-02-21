@@ -4,6 +4,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <NoWarn>CA2227</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
@@ -26,6 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="files\KWGV" />
       <Folder Include="wwwroot\js\iframe-resizer" />
     </ItemGroup>
 

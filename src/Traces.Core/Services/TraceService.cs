@@ -15,6 +15,7 @@ using Traces.Common.Utils;
 using Traces.Core.ClientFactories;
 using Traces.Core.Models;
 using Traces.Core.Repositories;
+using Traces.Core.Services.Files;
 using Traces.Data.Entities;
 
 namespace Traces.Core.Services
@@ -260,7 +261,8 @@ namespace Traces.Core.Services
             Id = trace.Id,
             PropertyId = trace.PropertyId,
             ReservationId = trace.ReservationId.SomeNotNull(),
-            AssignedRole = trace.AssignedRole.SomeNotNull()
+            AssignedRole = trace.AssignedRole.SomeNotNull(),
+            Files = TraceFileService.ConvertToTraceFileDto(trace.Files).SomeNotNull()
         };
 
         private async Task<string> GetPropertyIdFromReservationIdAsync(string reservationId)

@@ -1,4 +1,4 @@
-using Traces.Core.Models.File;
+using Traces.Core.Models.Files;
 
 namespace Traces.Core.Validators
 {

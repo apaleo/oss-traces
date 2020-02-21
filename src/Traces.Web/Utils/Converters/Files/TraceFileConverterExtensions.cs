@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Traces.Common.Utils;
-using Traces.Core.Models.File;
-using Traces.Web.Models.File;
+using Traces.Core.Models.Files;
+using Traces.Web.Models.Files;
 
-namespace Traces.Web.Utils.Converters.TraceFile
+namespace Traces.Web.Utils.Converters.Files
 {
     public static class TraceFileConverterExtensions
     {
@@ -12,6 +12,13 @@ namespace Traces.Web.Utils.Converters.TraceFile
             Check.NotNull(dtoArray, nameof(dtoArray));
 
             return new List<TraceFileDto>(dtoArray).ConvertAll(model => model.ConvertToTraceFileItemModel()).ToArray();
+        }
+
+        public static List<TraceFileItemModel> ConvertToTraceFileItemModelArray(this List<TraceFileDto> dtoArray)
+        {
+            Check.NotNull(dtoArray, nameof(dtoArray));
+
+            return new List<TraceFileDto>(dtoArray).ConvertAll(model => model.ConvertToTraceFileItemModel());
         }
 
         public static TraceFileItemModel ConvertToTraceFileItemModel(this TraceFileDto dto)

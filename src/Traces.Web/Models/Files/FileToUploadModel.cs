@@ -1,7 +1,7 @@
 using System.IO;
 using BlazorInputFile;
 
-namespace Traces.Web.Models.File
+namespace Traces.Web.Models.Files
 {
     public class FileToUploadModel
     {

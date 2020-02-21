@@ -150,6 +150,7 @@ namespace Traces.Web.ViewModels.Traces
             EditTraceDialogViewModel.Description = traceItemModel.Description;
             EditTraceDialogViewModel.DueDate = traceItemModel.DueDate;
             EditTraceDialogViewModel.SelectedRole = traceItemModel.AssignedRole;
+            EditTraceDialogViewModel.TraceFiles = traceItemModel.Files;
 
             EditTraceModalRef?.Show();
         }

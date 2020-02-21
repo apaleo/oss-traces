@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Traces.Web.Models;
-using Traces.Web.Models.File;
+using Traces.Web.Models.Files;
 
 namespace Traces.Web.Services
 {

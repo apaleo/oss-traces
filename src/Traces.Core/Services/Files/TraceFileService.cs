@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Exceptions;
 using Traces.Common.Utils;
-using Traces.Core.Models.File;
+using Traces.Core.Models.Files;
 using Traces.Core.Repositories;
 using Traces.Core.Validators;
 using Traces.Data.Entities;
@@ -112,6 +113,12 @@ namespace Traces.Core.Services.Files
             FileGuid = traceFile.FileGuid,
             TraceId = traceFile.TraceId
         };
+
+        public static List<TraceFileDto> ConvertToTraceFileDto(List<TraceFile> files)
+        {
+            var traceFilesDto = files.Select(TraceFileToDto).ToList();
+            return traceFilesDto;
+        }
 
         private static async Task CreateFileAsync(TraceFile traceFile, MemoryStream data)
         {

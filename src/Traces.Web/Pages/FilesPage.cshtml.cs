@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Traces.Common;
-using Traces.Web.Models.File;
+using Traces.Web.Models.Files;
 using Traces.Web.Services;
 using Traces.Web.ViewModels;
 

@@ -1,4 +1,4 @@
-namespace Traces.Core.Models.File
+namespace Traces.Core.Models.Files
 {
     public class SavedFileDto
     {

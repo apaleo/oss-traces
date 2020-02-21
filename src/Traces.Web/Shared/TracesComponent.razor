@@ -45,7 +45,10 @@
                     }
                 </TableRowCell>
                 <TableRowCell class="fit">
-
+                    @if (trace.Files.Count > 0)
+                    {
+                        <span>@trace.Files.Count Files</span>
+                    }
                     <div class="d-flex justify-content-end">
                         @if (trace.State == TraceState.Active)
                         {
