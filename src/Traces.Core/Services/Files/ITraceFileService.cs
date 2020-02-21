@@ -9,5 +9,7 @@ namespace Traces.Core.Services.Files
         Task<IReadOnlyList<TraceFileDto>> CreateTraceFileAsync(IReadOnlyList<CreateTraceFileDto> createTraceFileDtos);
 
         Task<SavedFileDto> GetSavedFileFromPublicIdAsync(string publicId);
+
+        Task<bool> DeleteTraceFileAsync(int id);
     }
 }

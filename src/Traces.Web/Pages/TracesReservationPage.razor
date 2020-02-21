@@ -29,6 +29,7 @@
                         <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableAssignedRoleText</TableHeaderCell>
+                        <TableHeaderCell>@TextConstants.TracesTableFilesCountText</TableHeaderCell>
                         <TableHeaderCell></TableHeaderCell>
                     </TableRow>
                 </TableHeader>
@@ -60,6 +61,7 @@
                             <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
                             <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
                             <TableHeaderCell>@TextConstants.TracesTableAssignedRoleText</TableHeaderCell>
+                            <TableHeaderCell>@TextConstants.TracesTableFilesCountText</TableHeaderCell>
                             <TableHeaderCell></TableHeaderCell>
                         </TableRow>
                     </TableHeader>
@@ -84,6 +86,7 @@
                         <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableAssignedRoleText</TableHeaderCell>
+                        <TableHeaderCell>@TextConstants.TracesTableFilesCountText</TableHeaderCell>
                         <TableHeaderCell></TableHeaderCell>
                     </TableRow>
                 </TableHeader>
@@ -114,7 +117,7 @@
             <ModalBody>
                 @if (TracesReservationViewModel.EditTraceModalRef.IsOpen)
                 {
-                    <EditTraceDialog EditTraceDialogVm="@TracesReservationViewModel.EditTraceDialogViewModel" OnClose="@TracesReservationViewModel.HideEditTraceModal" OnSubmit="@TracesReservationViewModel.EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
+                    <EditTraceDialog EditTraceDialogVm="@TracesReservationViewModel.EditTraceDialogViewModel" OnClose="@TracesReservationViewModel.HideEditTraceModal" OnSubmit="@TracesReservationViewModel.EditTraceItemAsync" OnDelete="@TracesReservationViewModel.DeleteTraceFileAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
                 }
             </ModalBody>
         </ModalContent>

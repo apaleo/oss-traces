@@ -34,7 +34,7 @@ namespace Traces.Core.Services.Files
             {
                 if (!createTraceFileDto.IsValid())
                 {
-                    throw new BusinessValidationException("Error create trace file" + TextConstants.CreateTraceWithoutTitleOrFutureDateErrorMessage);
+                    throw new BusinessValidationException(TextConstants.CreateTraceFileInvalidErrorMessage);
                 }
             }
 
@@ -55,7 +55,7 @@ namespace Traces.Core.Services.Files
 
             if (!createTraceFileDto.IsValid())
             {
-                throw new BusinessValidationException("Error create trace file" + TextConstants.CreateTraceWithoutTitleOrFutureDateErrorMessage);
+                throw new BusinessValidationException(TextConstants.CreateTraceFileInvalidErrorMessage);
             }
 
             var tenantId = _requestContext.TenantId;
@@ -90,7 +90,7 @@ namespace Traces.Core.Services.Files
         {
             if (!await _traceFileRepository.ExistsAsync(t => t.PublicId.ToString() == publicId))
             {
-                throw new BusinessValidationException("Error" + TextConstants.CreateTraceWithoutTitleOrFutureDateErrorMessage);
+                throw new BusinessValidationException(string.Format(TextConstants.TraceFileCouldNotBeFoundErrorMessageFormat, publicId));
             }
 
             var traceFile = await _traceFileRepository.GetByPublicIdAsync(publicId);
@@ -102,6 +102,26 @@ namespace Traces.Core.Services.Files
             };
         }
 
+        public async Task<bool> DeleteTraceFileAsync(int id)
+        {
+            if (!await _traceFileRepository.ExistsAsync(t => t.Id == id))
+            {
+                throw new BusinessValidationException(string.Format(TextConstants.TraceCouldNotBeFoundErrorMessageFormat, id));
+            }
+
+            var traceFile = await _traceFileRepository.GetAsync(id);
+            var deleted = await _traceFileRepository.DeleteAsync(id);
+
+            if (deleted)
+            {
+                await _traceFileRepository.SaveAsync();
+            }
+
+            DeleteFile(traceFile);
+
+            return deleted;
+        }
+
         private static async Task CreateFileAsync(TraceFile traceFile, MemoryStream data)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(traceFile.Path));
@@ -110,6 +130,13 @@ namespace Traces.Core.Services.Files
             {
                 await data.CopyToAsync(fileStream);
             }
+        }
+
+        private static void DeleteFile(TraceFile traceFile)
+        {
+            var directoryPath = Path.GetDirectoryName(traceFile.Path);
+
+            Directory.Delete(directoryPath, true);
         }
     }
 }

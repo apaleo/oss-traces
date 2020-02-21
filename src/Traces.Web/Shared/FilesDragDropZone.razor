@@ -1,4 +1,5 @@
 @using System.IO
+@using Traces.Common.Constants
 @using Traces.Common.Utils
 @using Traces.Web.Enums
 @using Traces.Web.Models.Files
@@ -9,7 +10,7 @@
     <InputFile multiple OnChange="@HandleFileSelectedAsync"/>
     <span>
         <i class="fa fa-file-upload"></i>
-        Drag and drop files here or click to select
+        @TextConstants.UploadFileText
     </span>
 </div>
 
@@ -24,12 +25,12 @@
             <div class="d-flex mt-1">
                 @if (file.HasInvalidSize)
                 {
-                    <small class="text-danger">Allowed max size is 2 MB, but it was @file.SizeInMbFormatted</small>
+                    <small class="text-danger">@string.Format(TextConstants.InvalidUploadSizeErrorMessageFormat, UnitConverter.ByteToMIB(AppConstants.MaxFileSizeInBytes), file.SizeInMbFormatted)</small>
                 }
                 else
                 {
-                    <small class="text-muted mr-auto">Size @file.SizeInMbFormatted</small>
-                    <small class="text-muted">Progress @file.ProgressFormatted</small>
+                    <small class="text-muted mr-auto">@string.Format(TextConstants.UploadFileSize, file.SizeInMbFormatted)</small>
+                    <small class="text-muted">@string.Format(TextConstants.UploadFileProgress,file.ProgressFormatted)</small>
                 }
             </div>
         </div>
@@ -40,7 +41,7 @@
 {
     [Parameter]
     public EventCallback<List<FileToUploadModel>> OnChange { get; set; }
-    
+
     [Parameter]
     public EventCallback<bool> OnLoadingChanged { get; set; }
 
@@ -72,14 +73,14 @@
         await OnChange.InvokeAsync(Files);
 
         await OnLoadingChanged.InvokeAsync(false);
-        
+
 
         StateHasChanged();
     }
 
     bool Validate(FileToUploadModel file)
     {
-        if (UnitConverter.ByteToMIB(file.Entry.Size) > 2)
+        if (file.Entry.Size > AppConstants.MaxFileSizeInBytes)
         {
             file.State = FileToUploadState.InvalidSize;
             return false;

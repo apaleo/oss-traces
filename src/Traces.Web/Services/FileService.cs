@@ -74,5 +74,29 @@ namespace Traces.Web.Services
                 };
             }
         }
+
+        public async Task<ResultModel<bool>> DeleteTraceFileAsync(int id)
+        {
+            try
+            {
+                var deleteResult = await _traceFileService.DeleteTraceFileAsync(id);
+
+                return new ResultModel<bool>
+                {
+                    Result = deleteResult.Some(),
+                    Success = true
+                };
+            }
+            catch (BusinessValidationException ex)
+            {
+                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(DeleteTraceFileAsync)} - Exception while deleting trace file with id {id}");
+
+                return new ResultModel<bool>
+                {
+                    Success = false,
+                    ErrorMessage = ex.Message.Some()
+                };
+            }
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace Traces.Web.Services
         Task<ResultModel<IReadOnlyList<TraceFileItemModel>>> CreateTraceFileAsync(IReadOnlyList<CreateTraceFileItemModel> createTraceFileItemModels);
 
         Task<ResultModel<SavedFileItemModel>> GetSavedFileFromPublicIdAsync(string publicId);
+
+        Task<ResultModel<bool>> DeleteTraceFileAsync(int id);
     }
 }

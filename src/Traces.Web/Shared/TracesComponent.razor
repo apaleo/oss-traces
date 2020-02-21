@@ -44,11 +44,13 @@
                         @trace.AssignedRole.Humanize()
                     }
                 </TableRowCell>
-                <TableRowCell class="fit">
+                <TableRowCell>
                     @if (trace.Files.Count > 0)
                     {
-                        <span>@trace.Files.Count Files</span>
+                        @trace.Files.Count
                     }
+                </TableRowCell>
+                <TableRowCell class="fit">
                     <div class="d-flex justify-content-end">
                         @if (trace.State == TraceState.Active)
                         {

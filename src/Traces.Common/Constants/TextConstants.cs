@@ -44,6 +44,8 @@ namespace Traces.Common.Constants
 
         public const string TracesEditDialogNoRoleAssignedText = "No role assigned";
 
+        public const string TracesEditDialogFilesText = "Files";
+
         public const string TracesTableTitleText = "Title";
 
         public const string TracesTableDescriptionText = "Description";
@@ -56,6 +58,8 @@ namespace Traces.Common.Constants
 
         public const string TracesTableAssignedRoleText = "Assigned role";
 
+        public const string TracesTableFilesCountText = "Files";
+
         public const string TracesLoadedUntilTextFormat = "Tasks loaded until {0}";
 
         public const string TracesLoadMoreButtonTextFormat = "Load tasks for the next {0} days";
@@ -65,6 +69,8 @@ namespace Traces.Common.Constants
         public const string TracesRevertCompleteButtonText = "Revert complete";
 
         public const string TracesEditButtonText = "Edit";
+
+        public const string TracesCloseButtonText = "Close";
 
         public const string TracesShowCompletedCheckboxTextFormat = "Show all traces, including {0} completed";
 
@@ -107,5 +113,17 @@ namespace Traces.Common.Constants
 
         public const string DateIntervalErrorMessage =
             "The provided date interval is invalid. The end of the interval must be greater than the beginning";
+
+        public const string UploadFileText = "Drag and drop files here or click to select";
+
+        public const string InvalidUploadSizeErrorMessageFormat = "Allowed max size is {0}, but it was {1}.";
+
+        public const string UploadFileSize = "Size {0}";
+
+        public const string UploadFileProgress = "Progress {0}";
+
+        public const string CreateTraceFileInvalidErrorMessage = "The given file is invalid.";
+
+        public const string TraceFileCouldNotBeFoundErrorMessageFormat = "The trace file with public id {0} could not be found.";
     }
 }

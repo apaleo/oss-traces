@@ -1,3 +1,4 @@
+using Traces.Common.Constants;
 using Traces.Core.Models.Files;
 
 namespace Traces.Core.Validators
@@ -9,7 +10,7 @@ namespace Traces.Core.Validators
             if (string.IsNullOrWhiteSpace(createTraceFileDto.Name) ||
                 string.IsNullOrWhiteSpace(createTraceFileDto.MimeType) ||
                 createTraceFileDto.Size <= 0 ||
-                createTraceFileDto.Size > 2097152 ||
+                createTraceFileDto.Size > AppConstants.MaxFileSizeInBytes ||
                 createTraceFileDto.TraceId < 0 ||
                 createTraceFileDto.Data == null
             )

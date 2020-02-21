@@ -1,6 +1,5 @@
 @page "/traces/property"
 @using Traces.Common.Constants
-@using Traces.Web.ViewModels
 @using Traces.Web.ViewModels.Traces
 @inject TracesPropertyViewModel TracesPropertyViewModel
 
@@ -23,6 +22,7 @@
                         <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableReservationText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableAssignedRoleText</TableHeaderCell>
+                        <TableHeaderCell>@TextConstants.TracesTableFilesCountText</TableHeaderCell>
                         <TableHeaderCell></TableHeaderCell>
                     </TableRow>
                 </TableHeader>
@@ -49,6 +49,7 @@
                     <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
                     <TableHeaderCell>@TextConstants.TracesTableReservationText</TableHeaderCell>
                     <TableHeaderCell>@TextConstants.TracesTableAssignedRoleText</TableHeaderCell>
+                    <TableHeaderCell>@TextConstants.TracesTableFilesCountText</TableHeaderCell>
                     <TableHeaderCell></TableHeaderCell>
                 </TableRow>
             </TableHeader>
@@ -83,7 +84,10 @@
                 <CloseButton Clicked="@TracesPropertyViewModel.HideEditTraceModal"/>
             </ModalHeader>
             <ModalBody>
-                <EditTraceDialog EditTraceDialogVm="@TracesPropertyViewModel.EditTraceDialogViewModel" OnClose="@TracesPropertyViewModel.HideEditTraceModal" OnSubmit="@TracesPropertyViewModel.EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
+                @if (@TracesPropertyViewModel.EditTraceModalRef.IsOpen)
+                {
+                    <EditTraceDialog EditTraceDialogVm="@TracesPropertyViewModel.EditTraceDialogViewModel" OnClose="@TracesPropertyViewModel.HideEditTraceModal" OnSubmit="@TracesPropertyViewModel.EditTraceItemAsync" OnDelete="@TracesPropertyViewModel.DeleteTraceFileAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
+                }
             </ModalBody>
         </ModalContent>
     </Modal>
@@ -96,7 +100,10 @@
                 <CloseButton Clicked="@TracesPropertyViewModel.HideCreateTraceModal"/>
             </ModalHeader>
             <ModalBody>
-                <EditTraceDialog EditTraceDialogVm="@TracesPropertyViewModel.EditTraceDialogViewModel" OnClose="@TracesPropertyViewModel.HideCreateTraceModal" OnSubmit="@TracesPropertyViewModel.CreateTraceItemAsync" SubmitButtonText="@TextConstants.CreateTraceButtonText"/>
+                @if (@TracesPropertyViewModel.CreateTraceModalRef.IsOpen)
+                {
+                    <EditTraceDialog EditTraceDialogVm="@TracesPropertyViewModel.EditTraceDialogViewModel" OnClose="@TracesPropertyViewModel.HideCreateTraceModal" OnSubmit="@TracesPropertyViewModel.CreateTraceItemAsync" SubmitButtonText="@TextConstants.CreateTraceButtonText"/>
+                }
             </ModalBody>
         </ModalContent>
     </Modal>
