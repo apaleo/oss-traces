@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Traces.Common.Constants;
 using Traces.Web.Models;
 using Traces.Web.Models.Files;
@@ -38,7 +39,11 @@ namespace Traces.Web.ViewModels
                         : SelectedRole
             };
 
-        public CreateTraceFileItemModel[] GetCreateTraceFileItemModelArray(int traceId) => FilesToUpload.ToArray().ConvertToCreateTraceFileItemModelArray(traceId);
+        public CreateTraceFileItemModel[] GetCreateTraceFileItemModelArray(int traceId)
+            => FilesToUpload
+                .Where(file => file.IsValid)
+                .ToArray()
+                .ConvertToCreateTraceFileItemModelArray(traceId);
 
         public ReplaceTraceItemModel GetReplaceTraceItemModel()
             => new ReplaceTraceItemModel
@@ -61,9 +66,9 @@ namespace Traces.Web.ViewModels
             Description = string.Empty;
             DueDate = null;
             SelectedRole = string.Empty;
-            Roles.Clear();
-            FilesToUpload.Clear();
-            TraceFiles.Clear();
+
+            FilesToUpload = new List<FileToUploadModel>();
+            TraceFiles = new List<TraceFileItemModel>();
         }
     }
 }

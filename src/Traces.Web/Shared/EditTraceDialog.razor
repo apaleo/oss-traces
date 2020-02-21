@@ -1,4 +1,3 @@
-@using System.IO
 @using Humanizer
 @using Traces.Common.Constants
 @using Traces.Web.Models.Files
@@ -40,50 +39,32 @@
     <Field>
         <FieldLabel>Files</FieldLabel>
         <FieldBody>
-            @for (int i = 1; i <= EditTraceDialogVm.TraceFiles.Count; i++)
+            @for (int i = 0; i < EditTraceDialogVm.TraceFiles.Count; i++)
             {
-                var file = EditTraceDialogVm.TraceFiles[i - 1];
-                var index = i;
+                var file = EditTraceDialogVm.TraceFiles[i];
+                var index = i + 1;
 
-                <div class="d-flex align-items-start mt-2">
+                <div class="d-flex align-items-start mb-2">
                     <span class="mr-2 mt-2">@index.</span>
-                    <div class="d-flex flex-fill flex-column">
-                        <a href="/files/@file.PublicId" target="_blank">@file.Name</a>
+                    <a class="mt-2" href="/files/@file.PublicId" target="_blank">@file.Name</a>
+                    <div class="d-flex flex-fill justify-content-end">
+                        <Button Color="Color.Danger" IsOutline="true" PreventDefaultOnSubmit="true" Clicked="@OnDelete">Delete</Button>
                     </div>
                 </div>
             }
-        </FieldBody>
-    </Field>
-    <Field>
-        <FieldBody>
-            <!-- TODO: reset state -->
-            <InputFile multiple OnChange="HandleFileSelectedAsync"/>
 
-            @for (int i = 1; i <= EditTraceDialogVm.FilesToUpload.Count; i++)
-            {
-                var file = EditTraceDialogVm.FilesToUpload[i - 1];
-                var index = i;
-
-                <div class="d-flex align-items-start mt-2">
-                    <span class="mr-2 mt-2">@index.</span>
-                    <div class="d-flex flex-fill flex-column">
-                        <TextEdit @bind-Text="@file.Name">
-                        </TextEdit>
-                        <small class="text-muted mt-1">Progress @((100.0 * file.Entry.Data.Position / file.Entry.Size).ToString("0"))%</small>
-                    </div>
-                </div>
-            }
+            <FilesDragDropZone OnChange="@HandleFileChanged" OnLoadingChanged="@HandleLoadingChanged"></FilesDragDropZone>
         </FieldBody>
     </Field>
     <ModalFooter>
-        <Button Color="Color.Primary" IsDisabled="@_isLoading" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" IsLoading="@_isLoading" Clicked="@OnCreateOrEditButtonClick">@SubmitButtonText</Button>
+        <Button Color="Color.Primary" IsDisabled="@_loading" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" IsLoading="@_loading" Clicked="@OnCreateOrEditButtonClick">@SubmitButtonText</Button>
         <Button Color="Color.Secondary" PreventDefaultOnSubmit="true" Clicked="@OnClose">Close</Button>
     </ModalFooter>
 </Form>
 
 @code
 {
-    private bool _isLoading;
+    private bool _loading;
 
     [Parameter]
     public EventCallback OnClose { get; set; }
@@ -92,54 +73,33 @@
     public EventCallback OnSubmit { get; set; }
 
     [Parameter]
+    public EventCallback OnDelete { get; set; }
+
+    [Parameter]
     public EditTraceDialogViewModel EditTraceDialogVm { get; set; }
 
     [Parameter]
     public string SubmitButtonText { get; set; }
 
-    async void HandleFileSelectedAsync(IFileListEntry[] fileListEntries)
+    void HandleFileChanged(List<FileToUploadModel> files)
     {
-        EditTraceDialogVm.FilesToUpload.Clear();
+        EditTraceDialogVm.FilesToUpload = files;
+    }
 
-        foreach (var entry in fileListEntries)
-        {
-            EditTraceDialogVm.FilesToUpload.Add(new FileToUploadModel
-            {
-                Name = entry.Name,
-                Entry = entry
-            });
-        }
-
-        _isLoading = true;
-
-        foreach (var file in EditTraceDialogVm.FilesToUpload)
-        {
-            await UploadAsync(file);
-        }
-
-        _isLoading = false;
-
+    void HandleLoadingChanged(bool loading)
+    {
+        _loading = loading;
+        
         StateHasChanged();
     }
-
-    async Task UploadAsync(FileToUploadModel file)
-    {
-        file.Entry.OnDataRead += (sender, eventArgs) => InvokeAsync(StateHasChanged);
-
-        var ms = new MemoryStream();
-        await file.Entry.Data.CopyToAsync(ms);
-
-        file.Data = ms;
-        file.Data.Position = 0;
-    }
-
+    
     async void OnCreateOrEditButtonClick()
     {
-        _isLoading = true;
+        _loading = true;
 
         await OnSubmit.InvokeAsync(null);
 
-        _isLoading = false;
+        _loading = false;
 
         StateHasChanged();
     }
