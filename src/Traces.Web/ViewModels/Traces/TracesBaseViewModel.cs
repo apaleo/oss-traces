@@ -81,9 +81,11 @@ namespace Traces.Web.ViewModels.Traces
 
             if (replaceResult.Success)
             {
-                await CreateTraceFileAsync(replaceTraceItemModel.Id);
-
-                HideEditTraceModal();
+                var filesResult = await CreateTraceFileAsync(replaceTraceItemModel.Id);
+                if (filesResult)
+                {
+                    HideEditTraceModal();
+                }
             }
         }
 
@@ -174,13 +176,29 @@ namespace Traces.Web.ViewModels.Traces
             EditTraceModalRef?.Hide();
         }
 
-        protected async Task CreateTraceFileAsync(int traceId)
+        protected async Task<bool> CreateTraceFileAsync(int traceId)
         {
-            var createTraceFileModelArray = EditTraceDialogViewModel.GetCreateTraceFileItemModelArray(traceId);
-            if (createTraceFileModelArray.Length > 0)
+            var createTraceFileModels = EditTraceDialogViewModel.GetCreateTraceFileItemModels(traceId);
+            if (createTraceFileModels.Count > 0)
             {
-                await FileService.CreateTraceFileAsync(createTraceFileModelArray);
+                var result = await FileService.CreateTraceFileAsync(createTraceFileModels);
+                if (result.Success)
+                {
+                    await RefreshAsync();
+
+                    await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
+                }
+                else
+                {
+                    var errorMessage = result.ErrorMessage.ValueOrException(new NotImplementedException());
+
+                    await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
+
+                    return false;
+                }
             }
+
+            return true;
         }
 
         protected abstract Task LoadTracesAsync();

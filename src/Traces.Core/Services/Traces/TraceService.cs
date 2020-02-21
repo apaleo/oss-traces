@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using NodaTime;
 using Optional;
@@ -13,12 +12,12 @@ using Traces.Common.Exceptions;
 using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Core.ClientFactories;
+using Traces.Core.Converters;
 using Traces.Core.Models;
 using Traces.Core.Repositories;
-using Traces.Core.Services.Files;
 using Traces.Data.Entities;
 
-namespace Traces.Core.Services
+namespace Traces.Core.Services.Traces
 {
     public class TraceService : ITraceService
     {
@@ -37,7 +36,7 @@ namespace Traces.Core.Services
         {
             var traces = await _traceRepository.GetAllForTenantAsync();
 
-            return ConvertToTraceDto(traces);
+            return traces.ConvertToDto();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetActiveTracesAsync(DateTime from, DateTime toDateTime)
@@ -55,7 +54,7 @@ namespace Traces.Core.Services
                 t.DueDate >= fromLocalDate &&
                 t.DueDate <= toLocalDate);
 
-            return ConvertToTraceDto(traces);
+            return traces.ConvertToDto();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetActiveTracesForPropertyAsync(string propertyId, DateTime from, DateTime toDateTime)
@@ -76,7 +75,7 @@ namespace Traces.Core.Services
                 t.DueDate >= fromLocalDate &&
                 t.DueDate <= toLocalDate);
 
-            return ConvertToTraceDto(propertyTraces);
+            return propertyTraces.ConvertToDto();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetOverdueTracesAsync()
@@ -86,7 +85,7 @@ namespace Traces.Core.Services
                 t.State == TraceState.Active &&
                 t.DueDate < todayDate);
 
-            return ConvertToTraceDto(traces);
+            return traces.ConvertToDto();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetOverdueTracesForPropertyAsync(string propertyId)
@@ -99,7 +98,7 @@ namespace Traces.Core.Services
                 t.DueDate < todayDate &&
                 t.PropertyId == propertyId);
 
-            return ConvertToTraceDto(overdueTracesForProperty);
+            return overdueTracesForProperty.ConvertToDto();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetAllTracesForReservationAsync(string reservationId)
@@ -109,7 +108,7 @@ namespace Traces.Core.Services
             var allTracesForReservation = await _traceRepository.GetAllTracesForTenantAsync(t =>
                 t.ReservationId == reservationId);
 
-            return ConvertToTraceDto(allTracesForReservation);
+            return allTracesForReservation.ConvertToDto();
         }
 
         public async Task<Option<TraceDto>> GetTraceAsync(int id)
@@ -121,7 +120,7 @@ namespace Traces.Core.Services
 
             var trace = await _traceRepository.GetAsync(id);
 
-            return TraceToDto(trace).Some();
+            return trace.ConvertToDto().Some();
         }
 
         public async Task<TraceDto> CreateTraceAsync(CreateTraceDto createTraceDto)
@@ -149,7 +148,7 @@ namespace Traces.Core.Services
 
             await _traceRepository.SaveAsync();
 
-            return TraceToDto(trace);
+            return trace.ConvertToDto();
         }
 
         /// <summary>
@@ -251,20 +250,6 @@ namespace Traces.Core.Services
             return deleted;
         }
 
-        public static TraceDto TraceToDto(Trace trace) => new TraceDto
-        {
-            Description = trace.Description.SomeNotNull(),
-            State = trace.State,
-            Title = trace.Title,
-            CompletedDate = trace.CompletedDate?.Some() ?? Option.None<LocalDate>(),
-            DueDate = trace.DueDate,
-            Id = trace.Id,
-            PropertyId = trace.PropertyId,
-            ReservationId = trace.ReservationId.SomeNotNull(),
-            AssignedRole = trace.AssignedRole.SomeNotNull(),
-            Files = TraceFileService.ConvertToTraceFileDto(trace.Files).SomeNotNull()
-        };
-
         private async Task<string> GetPropertyIdFromReservationIdAsync(string reservationId)
         {
             var apiClient = _apaleoClientsFactory.GetBookingApi();
@@ -286,12 +271,6 @@ namespace Traces.Core.Services
                     throw new BusinessValidationException(TextConstants.FetchingDataFromApaleoForTracesErrorMessage);
                 }
             }
-        }
-
-        private static IReadOnlyList<TraceDto> ConvertToTraceDto(IReadOnlyList<Trace> traces)
-        {
-            var tracesDto = traces.Select(TraceToDto).ToList();
-            return tracesDto;
         }
     }
 }

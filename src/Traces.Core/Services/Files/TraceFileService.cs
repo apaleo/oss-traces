@@ -7,6 +7,7 @@ using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Exceptions;
 using Traces.Common.Utils;
+using Traces.Core.Converters;
 using Traces.Core.Models.Files;
 using Traces.Core.Repositories;
 using Traces.Core.Validators;
@@ -25,11 +26,11 @@ namespace Traces.Core.Services.Files
             _requestContext = Check.NotNull(requestContext, nameof(requestContext));
         }
 
-        public async Task<TraceFileDto[]> CreateTraceFileAsync(CreateTraceFileDto[] createTraceFileDtoArray)
+        public async Task<IReadOnlyList<TraceFileDto>> CreateTraceFileAsync(IReadOnlyList<CreateTraceFileDto> createTraceFileDtos)
         {
-            Check.NotNull(createTraceFileDtoArray, nameof(createTraceFileDtoArray));
+            Check.NotNull(createTraceFileDtos, nameof(createTraceFileDtos));
 
-            foreach (var createTraceFileDto in createTraceFileDtoArray)
+            foreach (var createTraceFileDto in createTraceFileDtos)
             {
                 if (!createTraceFileDto.IsValid())
                 {
@@ -39,13 +40,13 @@ namespace Traces.Core.Services.Files
 
             List<TraceFileDto> dtos = new List<TraceFileDto>();
 
-            foreach (var createTraceFileDto in createTraceFileDtoArray)
+            foreach (var createTraceFileDto in createTraceFileDtos)
             {
                 var traceFileDto = await CreateTraceFileAsync(createTraceFileDto);
                 dtos.Add(traceFileDto);
             }
 
-            return dtos.ToArray();
+            return dtos.ToList();
         }
 
         public async Task<TraceFileDto> CreateTraceFileAsync(CreateTraceFileDto createTraceFileDto)
@@ -82,7 +83,7 @@ namespace Traces.Core.Services.Files
 
             await CreateFileAsync(newTraceFile, createTraceFileDto.Data);
 
-            return TraceFileToDto(newTraceFile);
+            return newTraceFile.ConvertToDto();
         }
 
         public async Task<SavedFileDto> GetSavedFileFromPublicIdAsync(string publicId)
@@ -96,28 +97,9 @@ namespace Traces.Core.Services.Files
 
             return new SavedFileDto
             {
-                TraceFile = TraceFileToDto(traceFile),
+                TraceFile = traceFile.ConvertToDto(),
                 Data = File.ReadAllBytes(traceFile.Path)
             };
-        }
-
-        public static TraceFileDto TraceFileToDto(TraceFile traceFile) => new TraceFileDto
-        {
-            Id = traceFile.Id,
-            Name = traceFile.Name,
-            Path = traceFile.Path,
-            Size = traceFile.Size,
-            CreatedBy = traceFile.CreatedBy,
-            MimeType = traceFile.MimeType,
-            PublicId = traceFile.PublicId,
-            FileGuid = traceFile.FileGuid,
-            TraceId = traceFile.TraceId
-        };
-
-        public static List<TraceFileDto> ConvertToTraceFileDto(List<TraceFile> files)
-        {
-            var traceFilesDto = files.Select(TraceFileToDto).ToList();
-            return traceFilesDto;
         }
 
         private static async Task CreateFileAsync(TraceFile traceFile, MemoryStream data)

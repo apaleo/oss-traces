@@ -1,16 +1,15 @@
-using System;
 using System.Collections.Generic;
 using Traces.Common.Utils;
 using Traces.Core.Models;
 using Traces.Core.Models.Files;
+using Traces.Web.Converters.Files;
 using Traces.Web.Models;
-using Traces.Web.Utils.Converters.Files;
 
-namespace Traces.Web.Utils
+namespace Traces.Web.Converters.Traces
 {
     public static class ModelExtensionMethods
     {
-        public static TraceItemModel ConvertToTraceItemModel(this TraceDto dto)
+        public static TraceItemModel ConvertToItemModel(this TraceDto dto)
         {
             Check.NotNull(dto, nameof(dto));
 
@@ -24,7 +23,7 @@ namespace Traces.Web.Utils
                 PropertyId = dto.PropertyId,
                 ReservationId = dto.ReservationId.ValueOr(string.Empty),
                 AssignedRole = dto.AssignedRole.ValueOr(string.Empty),
-                Files = dto.Files.ValueOr(new List<TraceFileDto>()).ConvertToTraceFileItemModelArray()
+                Files = dto.Files.ValueOr(new List<TraceFileDto>()).ConvertToItemModel()
             };
         }
     }

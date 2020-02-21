@@ -26,6 +26,6 @@ namespace Traces.Core.Models
 
         public Option<string> AssignedRole { get; set; }
 
-        public Option<List<TraceFileDto>> Files { get; set; }
+        public Option<IReadOnlyList<TraceFileDto>> Files { get; set; }
     }
 }

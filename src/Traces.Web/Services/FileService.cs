@@ -1,11 +1,12 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Optional;
 using Traces.Common.Exceptions;
 using Traces.Core.Services.Files;
+using Traces.Web.Converters.Files;
 using Traces.Web.Models;
 using Traces.Web.Models.Files;
-using Traces.Web.Utils.Converters.Files;
 
 namespace Traces.Web.Services
 {
@@ -20,19 +21,19 @@ namespace Traces.Web.Services
             _traceFileService = traceFileService;
         }
 
-        public async Task<ResultModel<TraceFileItemModel[]>> CreateTraceFileAsync(CreateTraceFileItemModel[] createTraceFileItemModelArray)
+        public async Task<ResultModel<IReadOnlyList<TraceFileItemModel>>> CreateTraceFileAsync(IReadOnlyList<CreateTraceFileItemModel> createTraceFileItemModels)
         {
             try
             {
-                var createTraceFileDtoArray = createTraceFileItemModelArray.ConvertToCreateTraceFileDtoArray();
+                var createTraceFileDtos = createTraceFileItemModels.ConvertToDto();
 
-                var traceFileDtoArray = await _traceFileService.CreateTraceFileAsync(createTraceFileDtoArray);
+                var traceFileDtos = await _traceFileService.CreateTraceFileAsync(createTraceFileDtos);
 
-                var traceFileItemModel = traceFileDtoArray.ConvertToTraceFileItemModelArray();
+                var traceFileItemModels = traceFileDtos.ConvertToItemModel();
 
-                return new ResultModel<TraceFileItemModel[]>
+                return new ResultModel<IReadOnlyList<TraceFileItemModel>>
                 {
-                    Result = traceFileItemModel.Some(),
+                    Result = traceFileItemModels.Some(),
                     Success = true
                 };
             }
@@ -40,7 +41,7 @@ namespace Traces.Web.Services
             {
                 _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(CreateTraceFileAsync)} - Exception while trying to create trace file");
 
-                return new ResultModel<TraceFileItemModel[]>
+                return new ResultModel<IReadOnlyList<TraceFileItemModel>>
                 {
                     Success = false,
                     ErrorMessage = ex.Message.Some()

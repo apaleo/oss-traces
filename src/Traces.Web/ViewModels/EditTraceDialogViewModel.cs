@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Traces.Common.Constants;
+using Traces.Web.Converters.Files;
 using Traces.Web.Models;
 using Traces.Web.Models.Files;
-using Traces.Web.Utils.Converters.Files;
 
 namespace Traces.Web.ViewModels
 {
@@ -20,9 +20,9 @@ namespace Traces.Web.ViewModels
 
         public string SelectedRole { get; set; }
 
-        public List<FileToUploadModel> FilesToUpload { get; set; } = new List<FileToUploadModel>();
+        public IReadOnlyList<FileToUploadModel> FilesToUpload { get; set; } = new List<FileToUploadModel>();
 
-        public List<TraceFileItemModel> TraceFiles { get; set; } = new List<TraceFileItemModel>();
+        public IReadOnlyList<TraceFileItemModel> TraceFiles { get; set; } = new List<TraceFileItemModel>();
 
         public List<string> Roles { get; } = new List<string>();
 
@@ -39,11 +39,11 @@ namespace Traces.Web.ViewModels
                         : SelectedRole
             };
 
-        public CreateTraceFileItemModel[] GetCreateTraceFileItemModelArray(int traceId)
+        public IReadOnlyList<CreateTraceFileItemModel> GetCreateTraceFileItemModels(int traceId)
             => FilesToUpload
                 .Where(file => file.IsValid)
-                .ToArray()
-                .ConvertToCreateTraceFileItemModelArray(traceId);
+                .ToList()
+                .ConvertToCreateTraceFileItemModel(traceId);
 
         public ReplaceTraceItemModel GetReplaceTraceItemModel()
             => new ReplaceTraceItemModel

@@ -1,4 +1,4 @@
-namespace Traces.Web.Utils.Converters
+namespace Traces.Common.Utils
 {
     public static class UnitConverter
     {

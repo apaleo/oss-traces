@@ -29,6 +29,6 @@ namespace Traces.Data.Entities
 
         public string AssignedRole { get; set; }
 
-        public List<TraceFile> Files { get; }
+        public IReadOnlyList<TraceFile> Files { get; set; } = new List<TraceFile>();
     }
 }

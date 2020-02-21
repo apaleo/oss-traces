@@ -23,6 +23,6 @@ namespace Traces.Web.Models
 
         public string AssignedRole { get; set; }
 
-        public List<TraceFileItemModel> Files { get; set; }
+        public IReadOnlyList<TraceFileItemModel> Files { get; set; }
     }
 }

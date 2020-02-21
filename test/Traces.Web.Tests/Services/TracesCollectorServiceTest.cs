@@ -12,6 +12,7 @@ using Traces.Common.Enums;
 using Traces.Common.Exceptions;
 using Traces.Core.Models;
 using Traces.Core.Services;
+using Traces.Core.Services.Traces;
 using Traces.Testing;
 using Traces.Web.Services;
 using Xunit;

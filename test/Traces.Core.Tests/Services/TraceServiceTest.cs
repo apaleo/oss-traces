@@ -15,6 +15,7 @@ using Traces.Core.ClientFactories;
 using Traces.Core.Models;
 using Traces.Core.Repositories;
 using Traces.Core.Services;
+using Traces.Core.Services.Traces;
 using Traces.Data.Entities;
 using Traces.Testing;
 using Xunit;
