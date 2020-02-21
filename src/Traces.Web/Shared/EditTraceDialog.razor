@@ -77,7 +77,7 @@
     </Field>
     <ModalFooter>
         <Button Color="Color.Primary" IsDisabled="@_isLoading" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" IsLoading="@_isLoading" Clicked="@OnCreateOrEditButtonClick">@SubmitButtonText</Button>
-        <Button Color="Color.Secondary" PreventDefaultOnSubmit="true" IsLoading="@_isLoading" Clicked="@OnClose">Close</Button>
+        <Button Color="Color.Secondary" PreventDefaultOnSubmit="true" Clicked="@OnClose">Close</Button>
     </ModalFooter>
 </Form>
 
@@ -130,6 +130,7 @@
         await file.Entry.Data.CopyToAsync(ms);
 
         file.Data = ms;
+        file.Data.Position = 0;
     }
 
     async void OnCreateOrEditButtonClick()
