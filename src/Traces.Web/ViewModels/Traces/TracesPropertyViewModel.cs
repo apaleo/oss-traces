@@ -62,7 +62,7 @@ namespace Traces.Web.ViewModels.Traces
             if (createResult.Success)
             {
                 await CreateTraceFileAsync(createResult.Result.ValueOrException(new NotImplementedException()).Id);
-                await DeleteTraceFileRangeAsync();
+                await DeleteTraceFilesAsync();
 
                 HideCreateTraceModal();
             }

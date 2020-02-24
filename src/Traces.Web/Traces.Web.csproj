@@ -27,7 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="files\KWGV" />
       <Folder Include="wwwroot\js\iframe-resizer" />
     </ItemGroup>
 

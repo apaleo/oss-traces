@@ -1,6 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Traces.Common;
+using Traces.Common.Extensions;
 using Traces.Web.Models.Files;
 using Traces.Web.Services;
 using Traces.Web.ViewModels;
@@ -28,7 +30,7 @@ namespace Traces.Web.Pages
                 return new NotFoundResult();
             }
 
-            var savedFile = result.Result.ValueOr(new SavedFileItemModel());
+            var savedFile = result.Result.ValueOrException(new NotImplementedException());
 
             return File(savedFile.Data, savedFile.TraceFile.MimeType, savedFile.TraceFile.Name);
         }

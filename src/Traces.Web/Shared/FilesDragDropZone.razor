@@ -30,7 +30,7 @@
                 else
                 {
                     <small class="text-muted mr-auto">@string.Format(TextConstants.UploadFileSize, file.SizeInMbFormatted)</small>
-                    <small class="text-muted">@string.Format(TextConstants.UploadFileProgress,file.ProgressFormatted)</small>
+                    <small class="text-muted">@string.Format(TextConstants.UploadFileProgress, file.ProgressFormatted)</small>
                 }
             </div>
         </div>
@@ -74,7 +74,6 @@
 
         await OnLoadingChanged.InvokeAsync(false);
 
-
         StateHasChanged();
     }
 
@@ -87,16 +86,23 @@
         }
 
         file.State = FileToUploadState.Valid;
+
         return true;
     }
 
     async Task UploadAsync(FileToUploadModel file)
     {
-        file.Entry.OnDataRead += (sender, eventArgs) => InvokeAsync(StateHasChanged);
+        file.Entry.OnDataRead += RefreshAsync;
 
         file.Data = new MemoryStream();
         await file.Entry.Data.CopyToAsync(file.Data);
 
         file.Data.Position = 0;
+        file.Entry.OnDataRead -= RefreshAsync;
+    }
+
+    async void RefreshAsync(object o, EventArgs args)
+    {
+        await InvokeAsync(StateHasChanged);
     }
 }

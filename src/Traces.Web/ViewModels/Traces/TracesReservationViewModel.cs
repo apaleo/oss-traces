@@ -57,9 +57,9 @@ namespace Traces.Web.ViewModels.Traces
             var createTraceItemModel = EditTraceDialogViewModel.GetCreateTraceItemModel();
             createTraceItemModel.ReservationId = _currentReservationId;
 
-            var createTraceResult = await TraceModifierService.CreateTraceWithReservationIdAsync(createTraceItemModel);
+            var createResult = await TraceModifierService.CreateTraceWithReservationIdAsync(createTraceItemModel);
 
-            if (createTraceResult.Success)
+            if (createResult.Success)
             {
                 await RefreshAsync();
 
@@ -67,15 +67,15 @@ namespace Traces.Web.ViewModels.Traces
             }
             else
             {
-                var errorMessage = createTraceResult.ErrorMessage.ValueOrException(new NotImplementedException());
+                var errorMessage = createResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
                 await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
             }
 
-            if (createTraceResult.Success)
+            if (createResult.Success)
             {
-                await CreateTraceFileAsync(createTraceResult.Result.ValueOrException(new NotImplementedException()).Id);
-                await DeleteTraceFileRangeAsync();
+                await CreateTraceFileAsync(createResult.Result.ValueOrException(new NotImplementedException()).Id);
+                await DeleteTraceFilesAsync();
 
                 HideCreateTraceModal();
             }

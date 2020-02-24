@@ -243,7 +243,7 @@ namespace Traces.Core.Services.Traces
                 throw new BusinessValidationException(string.Format(TextConstants.TraceCouldNotBeFoundErrorMessageFormat, id));
             }
 
-            await _traceFileService.DeleteTraceFileByTraceIdAsync(id);
+            await _traceFileService.DeleteTraceFileRangeAsync(traceFile => traceFile.TraceId == id);
 
             var deleted = await _traceRepository.DeleteAsync(id);
 

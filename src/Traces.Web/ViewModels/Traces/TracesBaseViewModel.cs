@@ -27,10 +27,9 @@ namespace Traces.Web.ViewModels.Traces
             : base(httpContextAccessor, requestContext)
         {
             TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
+            _apaleoRolesCollector = Check.NotNull(apaleoRolesCollector, nameof(apaleoRolesCollector));
             FileService = Check.NotNull(fileService, nameof(fileService));
             ApaleoOneNotificationService = Check.NotNull(apaleoOneNotificationService, nameof(apaleoOneNotificationService));
-
-            _apaleoRolesCollector = Check.NotNull(apaleoRolesCollector, nameof(apaleoRolesCollector));
         }
 
         public EditTraceDialogViewModel EditTraceDialogViewModel { get; } = new EditTraceDialogViewModel();
@@ -82,7 +81,7 @@ namespace Traces.Web.ViewModels.Traces
             if (replaceResult.Success)
             {
                 var filesCreatedResult = await CreateTraceFileAsync(replaceTraceItemModel.Id);
-                var filesDeletedResult = await DeleteTraceFileRangeAsync();
+                var filesDeletedResult = await DeleteTraceFilesAsync();
                 if (filesCreatedResult && filesDeletedResult)
                 {
                     HideEditTraceModal();
@@ -200,7 +199,7 @@ namespace Traces.Web.ViewModels.Traces
             return true;
         }
 
-        public async Task<bool> DeleteTraceFileRangeAsync()
+        public async Task<bool> DeleteTraceFilesAsync()
         {
             var traceFileIds = EditTraceDialogViewModel.GetTraceFilesToDelete();
             if (traceFileIds.Count > 0)

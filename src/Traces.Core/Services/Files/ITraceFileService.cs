@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Traces.Core.Models.Files;
+using Traces.Data.Entities;
 
 namespace Traces.Core.Services.Files
 {
@@ -10,8 +13,6 @@ namespace Traces.Core.Services.Files
 
         Task<SavedFileDto> GetSavedFileFromPublicIdAsync(string publicId);
 
-        Task<bool> DeleteTraceFileRangeAsync(IReadOnlyList<int> ids);
-
-        Task<bool> DeleteTraceFileByTraceIdAsync(int traceId);
+        Task<bool> DeleteTraceFileRangeAsync(Expression<Func<TraceFile, bool>> expression);
     }
 }

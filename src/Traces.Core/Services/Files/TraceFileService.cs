@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Traces.Common;
 using Traces.Common.Constants;
@@ -90,7 +91,7 @@ namespace Traces.Core.Services.Files
         {
             if (!await _traceFileRepository.ExistsAsync(t => t.PublicId.ToString() == publicId))
             {
-                throw new BusinessValidationException(string.Format(TextConstants.TraceFileCouldNotBeFoundErrorMessageFormat, publicId));
+                throw new BusinessValidationException(string.Format(TextConstants.TraceFilePublicIdCouldNotBeFoundErrorMessageFormat, publicId));
             }
 
             var traceFile = await _traceFileRepository.GetByPublicIdAsync(publicId);
@@ -102,31 +103,12 @@ namespace Traces.Core.Services.Files
             };
         }
 
-        public async Task<bool> DeleteTraceFileRangeAsync(IReadOnlyList<int> ids)
+        public async Task<bool> DeleteTraceFileRangeAsync(Expression<Func<TraceFile, bool>> expression)
         {
-            var traceFiles = await _traceFileRepository.GetAllTraceFilesForTenantAsync(traceFile => ids.Contains(traceFile.Id));
+            var traceFiles = await _traceFileRepository.GetAllTraceFilesForTenantAsync(expression);
             if (traceFiles.Count > 0)
             {
-                var deleted = await _traceFileRepository.DeleteRangeAsync(traceFile => ids.Contains(traceFile.Id));
-
-                if (deleted)
-                {
-                    DeleteFileRange(traceFiles);
-                    await _traceFileRepository.SaveAsync();
-                }
-
-                return deleted;
-            }
-
-            return true;
-        }
-
-        public async Task<bool> DeleteTraceFileByTraceIdAsync(int traceId)
-        {
-            var traceFiles = await _traceFileRepository.GetAllTraceFilesForTenantAsync(traceFile => traceFile.TraceId == traceId);
-            if (traceFiles.Count > 0)
-            {
-                var deleted = await _traceFileRepository.DeleteRangeAsync(traceFile => traceFile.TraceId == traceId);
+                var deleted = await _traceFileRepository.DeleteRangeAsync(expression);
 
                 if (deleted)
                 {
