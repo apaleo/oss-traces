@@ -25,7 +25,7 @@ namespace Traces.Core.Repositories
         public async Task<IReadOnlyList<TraceFile>> GetAllForTenantAsync() =>
             await _dbContext.TraceFile.ToListAsync();
 
-        public async Task<IReadOnlyList<TraceFile>> GetAllTracesForTenantAsync(Expression<Func<TraceFile, bool>> expression) =>
+        public async Task<IReadOnlyList<TraceFile>> GetAllTraceFilesForTenantAsync(Expression<Func<TraceFile, bool>> expression) =>
             await _dbContext.TraceFile.Where(expression).ToListAsync();
 
         public async Task<TraceFile> GetAsync(int id) =>
@@ -51,6 +51,20 @@ namespace Traces.Core.Repositories
             }
 
             _dbContext.Remove(entity);
+
+            return true;
+        }
+
+        public async Task<bool> DeleteByTraceIdAsync(int traceId)
+        {
+            var traceFiles = await GetAllTraceFilesForTenantAsync(traceFile => traceFile.TraceId == traceId);
+
+            if (!traceFiles.Any())
+            {
+                return false;
+            }
+
+            _dbContext.TraceFile.RemoveRange(traceFiles);
 
             return true;
         }

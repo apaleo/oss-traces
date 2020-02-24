@@ -12,7 +12,7 @@ namespace Traces.Core.Repositories
 
         Task<IReadOnlyList<TraceFile>> GetAllForTenantAsync();
 
-        Task<IReadOnlyList<TraceFile>> GetAllTracesForTenantAsync(Expression<Func<TraceFile, bool>> expression);
+        Task<IReadOnlyList<TraceFile>> GetAllTraceFilesForTenantAsync(Expression<Func<TraceFile, bool>> expression);
 
         Task<TraceFile> GetAsync(int id);
 
@@ -21,6 +21,8 @@ namespace Traces.Core.Repositories
         void Insert(TraceFile traceFile);
 
         Task<bool> DeleteAsync(int id);
+
+        Task<bool> DeleteByTraceIdAsync(int traceId);
 
         Task SaveAsync();
     }

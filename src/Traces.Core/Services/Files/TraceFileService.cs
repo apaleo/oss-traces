@@ -106,7 +106,7 @@ namespace Traces.Core.Services.Files
         {
             if (!await _traceFileRepository.ExistsAsync(t => t.Id == id))
             {
-                throw new BusinessValidationException(string.Format(TextConstants.TraceCouldNotBeFoundErrorMessageFormat, id));
+                throw new BusinessValidationException(string.Format(TextConstants.TraceFileCouldNotBeFoundErrorMessageFormat, id));
             }
 
             var traceFile = await _traceFileRepository.GetAsync(id);
@@ -114,10 +114,23 @@ namespace Traces.Core.Services.Files
 
             if (deleted)
             {
+                DeleteFile(traceFile);
                 await _traceFileRepository.SaveAsync();
             }
 
-            DeleteFile(traceFile);
+            return deleted;
+        }
+
+        public async Task<bool> DeleteTraceFileByTraceIdAsync(int traceId)
+        {
+            var traceFiles = await _traceFileRepository.GetAllTraceFilesForTenantAsync(traceFile => traceFile.TraceId == traceId);
+            var deleted = await _traceFileRepository.DeleteByTraceIdAsync(traceId);
+
+            if (deleted)
+            {
+                DeleteFileRange(traceFiles);
+                await _traceFileRepository.SaveAsync();
+            }
 
             return deleted;
         }
@@ -137,6 +150,14 @@ namespace Traces.Core.Services.Files
             var directoryPath = Path.GetDirectoryName(traceFile.Path);
 
             Directory.Delete(directoryPath, true);
+        }
+
+        private static void DeleteFileRange(IReadOnlyList<TraceFile> traceFiles)
+        {
+            foreach (var traceFile in traceFiles)
+            {
+                DeleteFile(traceFile);
+            }
         }
     }
 }

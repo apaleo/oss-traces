@@ -15,6 +15,7 @@ using Traces.Core.ClientFactories;
 using Traces.Core.Converters;
 using Traces.Core.Models;
 using Traces.Core.Repositories;
+using Traces.Core.Services.Files;
 using Traces.Data.Entities;
 
 namespace Traces.Core.Services.Traces
@@ -24,9 +25,11 @@ namespace Traces.Core.Services.Traces
         private readonly ITraceRepository _traceRepository;
         private readonly IRequestContext _requestContext;
         private readonly IApaleoClientsFactory _apaleoClientsFactory;
+        private readonly ITraceFileService _traceFileService;
 
-        public TraceService(ITraceRepository traceRepository, IRequestContext requestContext, IApaleoClientsFactory apaleoClientsFactory)
+        public TraceService(ITraceRepository traceRepository, IRequestContext requestContext, IApaleoClientsFactory apaleoClientsFactory, ITraceFileService traceFileService)
         {
+            _traceFileService = traceFileService;
             _traceRepository = Check.NotNull(traceRepository, nameof(traceRepository));
             _requestContext = Check.NotNull(requestContext, nameof(requestContext));
             _apaleoClientsFactory = Check.NotNull(apaleoClientsFactory, nameof(apaleoClientsFactory));
@@ -239,6 +242,8 @@ namespace Traces.Core.Services.Traces
             {
                 throw new BusinessValidationException(string.Format(TextConstants.TraceCouldNotBeFoundErrorMessageFormat, id));
             }
+
+            await _traceFileService.DeleteTraceFileByTraceIdAsync(id);
 
             var deleted = await _traceRepository.DeleteAsync(id);
 
