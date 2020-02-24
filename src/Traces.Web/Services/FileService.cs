@@ -75,11 +75,11 @@ namespace Traces.Web.Services
             }
         }
 
-        public async Task<ResultModel<bool>> DeleteTraceFileAsync(int id)
+        public async Task<ResultModel<bool>> DeleteTraceFileRangeAsync(IReadOnlyList<int> ids)
         {
             try
             {
-                var deleteResult = await _traceFileService.DeleteTraceFileAsync(id);
+                var deleteResult = await _traceFileService.DeleteTraceFileRangeAsync(ids);
 
                 return new ResultModel<bool>
                 {
@@ -89,7 +89,7 @@ namespace Traces.Web.Services
             }
             catch (BusinessValidationException ex)
             {
-                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(DeleteTraceFileAsync)} - Exception while deleting trace file with id {id}");
+                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(DeleteTraceFileRangeAsync)} - Exception while deleting trace files with id {ids}");
 
                 return new ResultModel<bool>
                 {

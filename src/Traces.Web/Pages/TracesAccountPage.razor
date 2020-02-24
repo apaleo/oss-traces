@@ -85,7 +85,7 @@
             <ModalBody>
                 @if (@TracesAccountViewModel.EditTraceModalRef.IsOpen)
                 {
-                    <EditTraceDialog EditTraceDialogVm="@TracesAccountViewModel.EditTraceDialogViewModel" OnClose="@TracesAccountViewModel.HideEditTraceModal" OnSubmit="@TracesAccountViewModel.EditTraceItemAsync" OnDelete="@TracesAccountViewModel.DeleteTraceFileAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
+                    <EditTraceDialog EditTraceDialogVm="@TracesAccountViewModel.EditTraceDialogViewModel" OnClose="@TracesAccountViewModel.HideEditTraceModal" OnSubmit="@TracesAccountViewModel.EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
                 }
             </ModalBody>
         </ModalContent>

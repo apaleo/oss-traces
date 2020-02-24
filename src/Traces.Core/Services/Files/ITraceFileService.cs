@@ -10,7 +10,7 @@ namespace Traces.Core.Services.Files
 
         Task<SavedFileDto> GetSavedFileFromPublicIdAsync(string publicId);
 
-        Task<bool> DeleteTraceFileAsync(int id);
+        Task<bool> DeleteTraceFileRangeAsync(IReadOnlyList<int> ids);
 
         Task<bool> DeleteTraceFileByTraceIdAsync(int traceId);
     }

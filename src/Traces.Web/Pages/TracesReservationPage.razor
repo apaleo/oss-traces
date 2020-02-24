@@ -117,7 +117,7 @@
             <ModalBody>
                 @if (TracesReservationViewModel.EditTraceModalRef.IsOpen)
                 {
-                    <EditTraceDialog EditTraceDialogVm="@TracesReservationViewModel.EditTraceDialogViewModel" OnClose="@TracesReservationViewModel.HideEditTraceModal" OnSubmit="@TracesReservationViewModel.EditTraceItemAsync" OnDelete="@TracesReservationViewModel.DeleteTraceFileAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
+                    <EditTraceDialog EditTraceDialogVm="@TracesReservationViewModel.EditTraceDialogViewModel" OnClose="@TracesReservationViewModel.HideEditTraceModal" OnSubmit="@TracesReservationViewModel.EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
                 }
             </ModalBody>
         </ModalContent>

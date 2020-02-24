@@ -41,23 +41,9 @@ namespace Traces.Core.Repositories
             _dbContext.Add(traceFile);
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteRangeAsync(Expression<Func<TraceFile, bool>> expression)
         {
-            var entity = await _dbContext.TraceFile.FirstOrDefaultAsync(x => x.Id == id);
-
-            if (entity == null)
-            {
-                return false;
-            }
-
-            _dbContext.Remove(entity);
-
-            return true;
-        }
-
-        public async Task<bool> DeleteByTraceIdAsync(int traceId)
-        {
-            var traceFiles = await GetAllTraceFilesForTenantAsync(traceFile => traceFile.TraceId == traceId);
+            var traceFiles = await GetAllTraceFilesForTenantAsync(expression);
 
             if (!traceFiles.Any())
             {

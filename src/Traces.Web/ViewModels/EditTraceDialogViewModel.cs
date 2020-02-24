@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Traces.Common.Constants;
 using Traces.Web.Converters.Files;
+using Traces.Web.Enums;
 using Traces.Web.Models;
 using Traces.Web.Models.Files;
 
@@ -39,12 +40,6 @@ namespace Traces.Web.ViewModels
                         : SelectedRole
             };
 
-        public IReadOnlyList<CreateTraceFileItemModel> GetCreateTraceFileItemModels(int traceId)
-            => FilesToUpload
-                .Where(file => file.IsValid)
-                .ToList()
-                .ConvertToCreateTraceFileItemModel(traceId);
-
         public ReplaceTraceItemModel GetReplaceTraceItemModel()
             => new ReplaceTraceItemModel
             {
@@ -58,6 +53,18 @@ namespace Traces.Web.ViewModels
                         ? null
                         : SelectedRole
             };
+
+        public IReadOnlyList<CreateTraceFileItemModel> GetCreateTraceFileItemModels(int traceId)
+            => FilesToUpload
+                .Where(file => file.IsValid)
+                .ToList()
+                .ConvertToCreateTraceFileItemModel(traceId);
+
+        public IReadOnlyList<int> GetTraceFilesToDelete()
+            => TraceFiles
+                .Where(file => file.State == TraceFileItemModelState.ShouldDelete)
+                .Select(file => file.Id)
+                .ToList();
 
         public void ClearCurrentState()
         {

@@ -20,9 +20,7 @@ namespace Traces.Core.Repositories
 
         void Insert(TraceFile traceFile);
 
-        Task<bool> DeleteAsync(int id);
-
-        Task<bool> DeleteByTraceIdAsync(int traceId);
+        Task<bool> DeleteRangeAsync(Expression<Func<TraceFile, bool>> expression);
 
         Task SaveAsync();
     }

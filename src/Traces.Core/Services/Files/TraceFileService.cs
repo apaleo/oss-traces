@@ -102,37 +102,42 @@ namespace Traces.Core.Services.Files
             };
         }
 
-        public async Task<bool> DeleteTraceFileAsync(int id)
+        public async Task<bool> DeleteTraceFileRangeAsync(IReadOnlyList<int> ids)
         {
-            if (!await _traceFileRepository.ExistsAsync(t => t.Id == id))
+            var traceFiles = await _traceFileRepository.GetAllTraceFilesForTenantAsync(traceFile => ids.Contains(traceFile.Id));
+            if (traceFiles.Count > 0)
             {
-                throw new BusinessValidationException(string.Format(TextConstants.TraceFileCouldNotBeFoundErrorMessageFormat, id));
+                var deleted = await _traceFileRepository.DeleteRangeAsync(traceFile => ids.Contains(traceFile.Id));
+
+                if (deleted)
+                {
+                    DeleteFileRange(traceFiles);
+                    await _traceFileRepository.SaveAsync();
+                }
+
+                return deleted;
             }
 
-            var traceFile = await _traceFileRepository.GetAsync(id);
-            var deleted = await _traceFileRepository.DeleteAsync(id);
-
-            if (deleted)
-            {
-                DeleteFile(traceFile);
-                await _traceFileRepository.SaveAsync();
-            }
-
-            return deleted;
+            return true;
         }
 
         public async Task<bool> DeleteTraceFileByTraceIdAsync(int traceId)
         {
             var traceFiles = await _traceFileRepository.GetAllTraceFilesForTenantAsync(traceFile => traceFile.TraceId == traceId);
-            var deleted = await _traceFileRepository.DeleteByTraceIdAsync(traceId);
-
-            if (deleted)
+            if (traceFiles.Count > 0)
             {
-                DeleteFileRange(traceFiles);
-                await _traceFileRepository.SaveAsync();
+                var deleted = await _traceFileRepository.DeleteRangeAsync(traceFile => traceFile.TraceId == traceId);
+
+                if (deleted)
+                {
+                    DeleteFileRange(traceFiles);
+                    await _traceFileRepository.SaveAsync();
+                }
+
+                return deleted;
             }
 
-            return deleted;
+            return true;
         }
 
         private static async Task CreateFileAsync(TraceFile traceFile, MemoryStream data)

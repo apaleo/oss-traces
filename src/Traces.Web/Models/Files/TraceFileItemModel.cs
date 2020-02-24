@@ -1,4 +1,5 @@
 using System;
+using Traces.Web.Enums;
 
 namespace Traces.Web.Models.Files
 {
@@ -19,5 +20,9 @@ namespace Traces.Web.Models.Files
         public string CreatedBy { get; set; }
 
         public int TraceId { get; set; }
+
+        public TraceFileItemModelState State { get; set; } = TraceFileItemModelState.NoChanges;
+
+        public bool HasStateChanges => State != TraceFileItemModelState.NoChanges;
     }
 }

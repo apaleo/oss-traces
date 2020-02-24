@@ -1,5 +1,6 @@
 @using Humanizer
 @using Traces.Common.Constants
+@using Traces.Web.Enums
 @using Traces.Web.Models.Files
 @using Traces.Web.Services
 @using Traces.Web.ViewModels
@@ -44,11 +45,26 @@
                 var file = EditTraceDialogVm.TraceFiles[i];
                 var index = i + 1;
 
-                <div class="d-flex align-items-start mb-2">
-                    <span class="mr-2 mt-2">@index.</span>
-                    <a class="mt-2" href="/files/@file.PublicId" target="_blank">@file.Name</a>
-                    <div class="d-flex flex-fill justify-content-end">
-                        <Button Color="Color.Danger" IsOutline="true" PreventDefaultOnSubmit="true" Clicked="@(() => OnDeleteClick(file))">@TextConstants.TracesDeleteButtonText</Button>
+                <div class="d-flex align-items-start mb-2 @(file.HasStateChanges ? "trace-file-deleted" : "")">
+                    <div class="mt-2 d-flex flex-fill">
+                        <span class="mr-2">@index.</span>
+                        <div class="d-flex flex-column">
+                            <a class="trace-file-url" href="/files/@file.PublicId" target="_blank">@file.Name</a>
+                            @if (file.State == TraceFileItemModelState.ShouldDelete)
+                            {
+                                <small>@TextConstants.TraceFileWillBeDeletedMessage</small>
+                            }
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        @if (file.HasStateChanges)
+                        {
+                            <Button Color="Color.Secondary" IsOutline="true" PreventDefaultOnSubmit="true" Clicked="@(() => OnUndoDeleteClick(file))">@TextConstants.TracesUndoDeleteButtonText</Button>
+                        }
+                        else
+                        {
+                            <Button Color="Color.Danger" IsOutline="true" PreventDefaultOnSubmit="true" Clicked="@(() => OnDeleteClick(file))">@TextConstants.TracesDeleteButtonText</Button>
+                        }
                     </div>
                 </div>
             }
@@ -71,9 +87,6 @@
 
     [Parameter]
     public EventCallback OnSubmit { get; set; }
-
-    [Parameter]
-    public EventCallback<int> OnDelete { get; set; }
 
     [Parameter]
     public EditTraceDialogViewModel EditTraceDialogVm { get; set; }
@@ -104,11 +117,22 @@
         StateHasChanged();
     }
 
-    async Task OnDeleteClick(TraceFileItemModel traceFileItemModel)
+    void OnDeleteClick(TraceFileItemModel traceFileItemModel)
     {
         _loading = true;
 
-        await OnDelete.InvokeAsync(traceFileItemModel.Id);
+        traceFileItemModel.State = TraceFileItemModelState.ShouldDelete;
+
+        _loading = false;
+
+        StateHasChanged();
+    }
+
+    void OnUndoDeleteClick(TraceFileItemModel traceFileItemModel)
+    {
+        _loading = true;
+
+        traceFileItemModel.State = TraceFileItemModelState.NoChanges;
 
         _loading = false;
 

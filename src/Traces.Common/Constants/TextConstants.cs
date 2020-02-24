@@ -34,6 +34,8 @@ namespace Traces.Common.Constants
 
         public const string TracesDeleteButtonText = "Delete";
 
+        public const string TracesUndoDeleteButtonText = "Undo";
+
         public const string TracesEditDialogTitleText = "Title";
 
         public const string TracesEditDialogDescriptionText = "Description";
@@ -125,5 +127,7 @@ namespace Traces.Common.Constants
         public const string CreateTraceFileInvalidErrorMessage = "The given file is invalid.";
 
         public const string TraceFileCouldNotBeFoundErrorMessageFormat = "The trace file with public id {0} could not be found.";
+
+        public const string TraceFileWillBeDeletedMessage = "This file will be deleted.";
     }
 }
