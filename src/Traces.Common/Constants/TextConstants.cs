@@ -118,7 +118,7 @@ namespace Traces.Common.Constants
 
         public const string UploadFileText = "Drag and drop files here or click to select";
 
-        public const string InvalidUploadSizeErrorMessageFormat = "Allowed max size is {0}, but it was {1}.";
+        public const string InvalidUploadSizeErrorMessageFormat = "Allowed max size is {0}, but the file size was {1}. This file will not be uploaded.";
 
         public const string UploadFileSize = "Size {0}";
 

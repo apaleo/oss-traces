@@ -25,7 +25,7 @@
             <div class="d-flex mt-1">
                 @if (file.HasInvalidSize)
                 {
-                    <small class="text-danger">@string.Format(TextConstants.InvalidUploadSizeErrorMessageFormat, UnitConverter.ByteToMIB(AppConstants.MaxFileSizeInBytes), file.SizeInMbFormatted)</small>
+                    <small class="text-danger">@string.Format(TextConstants.InvalidUploadSizeErrorMessageFormat, $"{UnitConverter.ByteToMIB(AppConstants.MaxFileSizeInBytes)} MB", file.SizeInMbFormatted)</small>
                 }
                 else
                 {
