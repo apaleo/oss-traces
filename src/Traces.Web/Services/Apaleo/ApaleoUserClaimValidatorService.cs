@@ -1,7 +1,8 @@
-using System.Linq;
+using System.Security.Claims;
 using System.Web;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
+using Optional.Collections;
 using Traces.Common.Constants;
 using Traces.Web.Utils;
 
@@ -23,20 +24,27 @@ namespace Traces.Web.Services.Apaleo
         public void AssertClaim(string queryParameter, string claimType)
         {
             var extractedQueryParameter = UrlQueryParameterExtractor.ExtractQueryParameterFromManager(_navigationManager, queryParameter);
-
             if (string.IsNullOrWhiteSpace(extractedQueryParameter))
             {
                 return;
             }
 
             var user = _httpContextAccessor.HttpContext.User;
-            var claimValue = user.Claims.FirstOrDefault(x => x.Type == claimType)?.Value;
-
-            if (!extractedQueryParameter.Equals(claimValue))
+            if (user == null || !user.Identity.IsAuthenticated)
             {
-                var encodedUrl = HttpUtility.UrlEncode(_navigationManager.Uri);
-                _navigationManager.NavigateTo($"{AppConstants.LogoutUrlAbsolutePath}?redirectPath={encodedUrl}", true);
+                return;
             }
+
+            var optionClaim = user.Claims.FirstOrNone(x => x.Type == claimType);
+            var value = optionClaim.ValueOr(new Claim(claimType, string.Empty)).Value;
+
+            if (string.IsNullOrWhiteSpace(value) || extractedQueryParameter.Equals(value))
+            {
+                return;
+            }
+
+            var encodedUrl = HttpUtility.UrlEncode(_navigationManager.Uri);
+            _navigationManager.NavigateTo($"{AppConstants.LogoutUrlAbsolutePath}?redirectPath={encodedUrl}", true);
         }
     }
 }

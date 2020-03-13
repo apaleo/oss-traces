@@ -35,12 +35,15 @@ namespace Traces.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -48,7 +51,13 @@ namespace Traces.Web
         {
             services.AddRazorPages(options => options.Conventions.AuthorizeFolder("/"));
 
-            services.AddServerSideBlazor();
+            services.AddServerSideBlazor().AddCircuitOptions(o =>
+            {
+                if (Environment.IsDevelopment() || Environment.IsStaging())
+                {
+                    o.DetailedErrors = true;
+                }
+            });
 
             services.AddBlazorise(options => { options.ChangeTextOnKeyPress = false; })
                 .AddBootstrapProviders()
@@ -67,7 +76,7 @@ namespace Traces.Web
                     IsReadOnlyRequest(request)
                         ? HttpPolicyExtensions.HandleTransientHttpError()
                             .WaitAndRetryAsync(3, t => TimeSpan.FromSeconds(Math.Pow(2, t)))
-                        : (IAsyncPolicy<HttpResponseMessage>)Policy.NoOpAsync<HttpResponseMessage>())
+                        : (IAsyncPolicy<HttpResponseMessage>) Policy.NoOpAsync<HttpResponseMessage>())
                 .AddTransientHttpErrorPolicy(policy => policy.AdvancedCircuitBreakerAsync(
                     failureThreshold: 0.5,
                     samplingDuration: TimeSpan.FromSeconds(10),
