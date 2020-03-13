@@ -28,7 +28,6 @@ namespace Traces.Web.Services.Apaleo
 
         public void AssertClaim(string queryParameter, string claimType)
         {
-            _logger.LogInformation("================== Tracing ==================");
             _logger.LogInformation($"AssertClaim called with parameters: <{queryParameter}>, <{claimType}>");
 
             var extractedQueryParameter = UrlQueryParameterExtractor.ExtractQueryParameterFromManager(_navigationManager, queryParameter);
@@ -55,9 +54,15 @@ namespace Traces.Web.Services.Apaleo
             var value = optionClaim.ValueOr(new Claim(claimType, string.Empty)).Value;
             _logger.LogInformation($"value of claim: <{value}>");
 
-            if (string.IsNullOrWhiteSpace(value) || extractedQueryParameter.Equals(value))
+            if (string.IsNullOrWhiteSpace(value))
             {
-                _logger.LogInformation($"RETURN: value (<{value}>) is null or whitespace or extractedQueryParameter(<{extractedQueryParameter}>) equals value(<{value}>)");
+                _logger.LogInformation($"RETURN: value (<{value}>) is null, empty, or whitespace");
+                return;
+            }
+
+            if (extractedQueryParameter == value)
+            {
+                _logger.LogInformation($"RETURN: extractedQueryParameter(<{extractedQueryParameter}>) equals value(<{value}>)");
                 return;
             }
 
