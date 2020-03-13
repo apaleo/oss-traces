@@ -76,7 +76,7 @@ namespace Traces.Web
                     IsReadOnlyRequest(request)
                         ? HttpPolicyExtensions.HandleTransientHttpError()
                             .WaitAndRetryAsync(3, t => TimeSpan.FromSeconds(Math.Pow(2, t)))
-                        : (IAsyncPolicy<HttpResponseMessage>) Policy.NoOpAsync<HttpResponseMessage>())
+                        : (IAsyncPolicy<HttpResponseMessage>)Policy.NoOpAsync<HttpResponseMessage>())
                 .AddTransientHttpErrorPolicy(policy => policy.AdvancedCircuitBreakerAsync(
                     failureThreshold: 0.5,
                     samplingDuration: TimeSpan.FromSeconds(10),
