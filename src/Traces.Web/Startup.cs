@@ -35,15 +35,12 @@ namespace Traces.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
-
-        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -51,13 +48,7 @@ namespace Traces.Web
         {
             services.AddRazorPages(options => options.Conventions.AuthorizeFolder("/"));
 
-            services.AddServerSideBlazor().AddCircuitOptions(o =>
-            {
-                if (Environment.IsDevelopment() || Environment.IsStaging())
-                {
-                    o.DetailedErrors = true;
-                }
-            });
+            services.AddServerSideBlazor();
 
             services.AddBlazorise(options => { options.ChangeTextOnKeyPress = false; })
                 .AddBootstrapProviders()
