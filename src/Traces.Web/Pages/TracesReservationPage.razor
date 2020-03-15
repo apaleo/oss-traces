@@ -1,27 +1,27 @@
 @page "/traces/reservation"
 @using Traces.Common.Constants
 @using Traces.Web.ViewModels.Traces
-@inject TracesReservationViewModel TracesReservationViewModel
+@inherits TracesReservationViewModel
 
 <div>
     <div class="mb-3">
-        @if (TracesReservationViewModel.HasCompletedTraces)
+        @if (HasCompletedTraces)
         {
             <div class="mb-3">
-                <CheckEdit @bind-Checked="@TracesReservationViewModel.IsCompletedTracesVisible">
-                    @TracesReservationViewModel.CompletedTracesCheckBoxText
+                <CheckEdit @bind-Checked="@IsCompletedTracesVisible">
+                    @CompletedTracesCheckBoxText
                 </CheckEdit>
             </div>
         }
 
-        <Button Color="Color.Primary" Clicked="@TracesReservationViewModel.ShowCreateTraceModal">
+        <Button Color="Color.Primary" Clicked="@ShowCreateTraceModal">
             <i class="fa fa-plus"></i>
             @TextConstants.TracesAddButtonText</Button>
     </div>
 
-    @if (TracesReservationViewModel.IsCompletedTracesVisible)
+    @if (IsCompletedTracesVisible)
     {
-        @if (TracesReservationViewModel.AllTracesDictionary?.Any() == true)
+        @if (AllTracesDictionary?.Any() == true)
         {
             <Table>
                 <TableHeader>
@@ -32,7 +32,7 @@
                         <TableHeaderCell></TableHeaderCell>
                     </TableRow>
                 </TableHeader>
-                @foreach (var (date, traces) in TracesReservationViewModel.AllTracesDictionary)
+                @foreach (var (date, traces) in AllTracesDictionary)
                 {
                     <TracesComponent
                         Title="@date.ToShortDateString()"
@@ -40,10 +40,10 @@
                         IsPropertyVisible="false"
                         IsReservationVisible="false"
                         IsDueDateVisible="false"
-                        OnCompleteClick="@TracesReservationViewModel.CompleteTraceAsync"
-                        OnDeleteClick="@TracesReservationViewModel.DeleteItemAsync"
-                        OnEditClick="@TracesReservationViewModel.ShowReplaceTraceModal"
-                        OnRevertCompleteClick="@TracesReservationViewModel.RevertCompleteItemAsync"
+                        OnCompleteClick="@CompleteTraceAsync"
+                        OnDeleteClick="@DeleteItemAsync"
+                        OnEditClick="@ShowReplaceTraceModal"
+                        OnRevertCompleteClick="@RevertCompleteItemAsync"
                         />
                 }
             </Table>
@@ -51,7 +51,7 @@
     }
     else
     {
-        @if (TracesReservationViewModel.OverdueTraces?.Any() == true)
+        @if (OverdueTraces?.Any() == true)
         {
             <section class="pb-4">
                 <Table>
@@ -66,18 +66,18 @@
                     </TableHeader>
                     <TracesComponent
                         Title="@TextConstants.OverdueTracesTitleText"
-                        Traces="@TracesReservationViewModel.OverdueTraces"
+                        Traces="@OverdueTraces"
                         IsPropertyVisible="false"
                         IsReservationVisible="false"
                         IsDueDateVisible="true"
-                        OnCompleteClick="@TracesReservationViewModel.CompleteTraceAsync"
-                        OnDeleteClick="@TracesReservationViewModel.DeleteItemAsync"
-                        OnEditClick="@TracesReservationViewModel.ShowReplaceTraceModal"/>
+                        OnCompleteClick="@CompleteTraceAsync"
+                        OnDeleteClick="@DeleteItemAsync"
+                        OnEditClick="@ShowReplaceTraceModal"/>
                 </Table>
             </section>
         }
 
-        @if (TracesReservationViewModel.ActiveTracesDictionary?.Any() == true)
+        @if (ActiveTracesDictionary?.Any() == true)
         {
             <Table>
                 <TableHeader>
@@ -88,7 +88,7 @@
                         <TableHeaderCell></TableHeaderCell>
                     </TableRow>
                 </TableHeader>
-                @foreach (var (date, traces) in TracesReservationViewModel.ActiveTracesDictionary)
+                @foreach (var (date, traces) in ActiveTracesDictionary)
                 {
                     <TracesComponent
                         Title="@date.ToShortDateString()"
@@ -96,48 +96,37 @@
                         IsPropertyVisible="false"
                         IsReservationVisible="false"
                         IsDueDateVisible="false"
-                        OnCompleteClick="@TracesReservationViewModel.CompleteTraceAsync"
-                        OnDeleteClick="@TracesReservationViewModel.DeleteItemAsync"
-                        OnEditClick="@TracesReservationViewModel.ShowReplaceTraceModal"/>
+                        OnCompleteClick="@CompleteTraceAsync"
+                        OnDeleteClick="@DeleteItemAsync"
+                        OnEditClick="@ShowReplaceTraceModal"/>
                 }
             </Table>
         }
     }
 
-    <Modal @ref="@TracesReservationViewModel.EditTraceModalRef">
+    <Modal @ref="@EditTraceModalRef">
         <ModalBackdrop/>
         <ModalContent IsCentered="true" Size="ModalSize.Large">
             <ModalHeader>
                 <ModalTitle>@TextConstants.EditTraceModalTitle</ModalTitle>
-                <CloseButton Clicked="@TracesReservationViewModel.HideEditTraceModal"/>
+                <CloseButton Clicked="@HideEditTraceModal"/>
             </ModalHeader>
             <ModalBody>
-                <EditTraceDialog EditTraceDialogVm="@TracesReservationViewModel.EditTraceDialogViewModel" OnClose="@TracesReservationViewModel.HideEditTraceModal" OnSubmit="@TracesReservationViewModel.EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
+                <EditTraceDialog EditTraceDialogVm="@EditTraceDialogViewModel" OnClose="@HideEditTraceModal" OnSubmit="@EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
             </ModalBody>
         </ModalContent>
     </Modal>
 
-    <Modal @ref="@TracesReservationViewModel.CreateTraceModalRef">
+    <Modal @ref="@CreateTraceModalRef">
         <ModalBackdrop/>
         <ModalContent IsCentered="true" Size="ModalSize.Large">
             <ModalHeader>
                 <ModalTitle>@TextConstants.CreateTraceModalTitle</ModalTitle>
-                <CloseButton Clicked="@TracesReservationViewModel.HideCreateTraceModal"/>
+                <CloseButton Clicked="@HideCreateTraceModal"/>
             </ModalHeader>
             <ModalBody>
-                <EditTraceDialog EditTraceDialogVm="@TracesReservationViewModel.EditTraceDialogViewModel" OnClose="@TracesReservationViewModel.HideCreateTraceModal" OnSubmit="@TracesReservationViewModel.CreateTraceItemAsync" SubmitButtonText="@TextConstants.CreateTraceButtonText"/>
+                <EditTraceDialog EditTraceDialogVm="@EditTraceDialogViewModel" OnClose="@HideCreateTraceModal" OnSubmit="@CreateTraceItemAsync" SubmitButtonText="@TextConstants.CreateTraceButtonText"/>
             </ModalBody>
         </ModalContent>
     </Modal>
 </div>
-
-@code
-{
-
-    protected override async Task OnInitializedAsync()
-    {
-        await TracesReservationViewModel.InitializeAsync();
-        await base.OnInitializedAsync();
-    }
-
-}
