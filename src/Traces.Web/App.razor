@@ -26,9 +26,9 @@
         }
     };
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        UserClaimValidatorService.AssertClaim(AppConstants.AccountCodeQueryParameter, ApaleoClaims.AccountCode);
-        UserClaimValidatorService.AssertClaim(AppConstants.SubjectIdQueryParameter, ApaleoClaims.SubjectId);
+        await UserClaimValidatorService.AssertClaimAsync(AppConstants.AccountCodeQueryParameter, ApaleoClaims.AccountCode);
+        await UserClaimValidatorService.AssertClaimAsync(AppConstants.SubjectIdQueryParameter, ApaleoClaims.SubjectId);
     }
 }
