@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace Traces.Web.Services.Apaleo
 {
     public interface IApaleoUserClaimValidatorService
     {
-        void AssertClaim(string queryParameter, string claimType);
+        Task AssertClaimAsync(string queryParameter, string claimType);
     }
 }
