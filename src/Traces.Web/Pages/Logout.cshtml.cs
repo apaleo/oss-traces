@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Authentication;
@@ -10,7 +9,6 @@ namespace Traces.Web.Pages
     {
         public async Task OnGetAsync(string redirectPath = "/")
         {
-            Console.WriteLine("====== Signing out");
             await HttpContext.SignOutAsync();
 
             var decodedUrl = HttpUtility.UrlDecode(redirectPath);

@@ -54,15 +54,14 @@ namespace Traces.Web
             var user = authenticationState.User;
             Logger.LogInformation($"RequestContext is init: {RequestContext.IsInitialized}");
             Logger.LogInformation($"User is authenticated: {user.Identity.IsAuthenticated}");
+            Logger.LogInformation($"Access Token: {AccessToken}");
 
             if (RequestContext.IsInitialized || !user.Identity.IsAuthenticated)
             {
                 return;
             }
 
-            var accessToken = AccessToken;
-            Logger.LogInformation($"Access Token: {accessToken}");
-            RequestContext.Initialize(user.Claims.ToList(), accessToken);
+            RequestContext.Initialize(user.Claims.ToList(), AccessToken);
             Logger.LogInformation($"RequestContext is ready");
         }
     }
