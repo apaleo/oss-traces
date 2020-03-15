@@ -1,7 +1,8 @@
 using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 using Optional.Collections;
 using Traces.Common.Constants;
@@ -13,20 +14,20 @@ namespace Traces.Web.Services.Apaleo
     public class ApaleoUserClaimValidatorService : IApaleoUserClaimValidatorService
     {
         private readonly NavigationManager _navigationManager;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly AuthenticationStateProvider _authenticationStateProvider;
         private readonly ILogger _logger;
 
         public ApaleoUserClaimValidatorService(
             NavigationManager navigationManager,
-            IHttpContextAccessor httpContextAccessor,
+            AuthenticationStateProvider authenticationStateProvider,
             ILogger<ApaleoUserClaimValidatorService> logger)
         {
             _navigationManager = Check.NotNull(navigationManager, nameof(navigationManager));
-            _httpContextAccessor = Check.NotNull(httpContextAccessor, nameof(httpContextAccessor));
+            _authenticationStateProvider = Check.NotNull(authenticationStateProvider, nameof(authenticationStateProvider));
             _logger = Check.NotNull(logger, nameof(logger));
         }
 
-        public void AssertClaim(string queryParameter, string claimType)
+        public async Task AssertClaimAsync(string queryParameter, string claimType)
         {
             _logger.LogInformation($"AssertClaim called with parameters: <{queryParameter}>, <{claimType}>");
 
@@ -39,10 +40,11 @@ namespace Traces.Web.Services.Apaleo
 
             _logger.LogInformation($"extractedQueryParameter is <{extractedQueryParameter}>");
 
-            var user = _httpContextAccessor.HttpContext.User;
-            if (user == null || !user.Identity.IsAuthenticated)
+            var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authenticationState.User;
+            if (!user.Identity.IsAuthenticated)
             {
-                _logger.LogInformation($"RETURN: user is null or unauthenticated");
+                _logger.LogInformation($"RETURN: user is not authenticated");
                 return;
             }
 
