@@ -14,8 +14,7 @@ namespace Traces.Web.Pages
         {
             if (User.Identity.IsAuthenticated)
             {
-                var token = await HttpContext.GetTokenAsync(SecurityConstants.AccessToken);
-                AccessToken = token;
+                AccessToken = await HttpContext.GetTokenAsync(SecurityConstants.AccessToken);
             }
 
             return Page();

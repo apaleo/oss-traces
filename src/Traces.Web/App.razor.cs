@@ -52,9 +52,7 @@ namespace Traces.Web
         {
             var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             var user = authenticationState.User;
-            Logger.LogInformation($"RequestContext is init: {RequestContext.IsInitialized}");
-            Logger.LogInformation($"User is authenticated: {user.Identity.IsAuthenticated}");
-            Logger.LogInformation($"Access Token: {AccessToken}");
+            Logger.LogInformation($"RequestContext is init: {RequestContext.IsInitialized}. User is authenticated: {user.Identity.IsAuthenticated}. Access Token is null or whitespace: {string.IsNullOrWhiteSpace(AccessToken)}");
 
             if (RequestContext.IsInitialized || !user.Identity.IsAuthenticated)
             {

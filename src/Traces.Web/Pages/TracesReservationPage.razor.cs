@@ -10,9 +10,9 @@ using Traces.Web.Models;
 using Traces.Web.Services;
 using Traces.Web.Utils;
 
-namespace Traces.Web.ViewModels.Traces
+namespace Traces.Web.Pages
 {
-    public class TracesReservationViewModel : TracesBaseViewModel
+    public partial class TracesReservationPage
     {
         private string _currentReservationId;
 

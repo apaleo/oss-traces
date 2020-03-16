@@ -8,9 +8,9 @@ using Traces.Web.Models;
 using Traces.Web.Services;
 using Traces.Web.Utils;
 
-namespace Traces.Web.ViewModels.Traces
+namespace Traces.Web.Pages
 {
-    public class TracesPropertyViewModel : TracesDateAwareViewModel
+    public partial class TracesPropertyPage
     {
         private string _currentPropertyId;
 

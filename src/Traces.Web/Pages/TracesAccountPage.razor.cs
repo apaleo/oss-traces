@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Components;
 using Traces.Web.Models;
 using Traces.Web.Services;
 
-namespace Traces.Web.ViewModels.Traces
+namespace Traces.Web.Pages
 {
-    public class TracesAccountViewModel : TracesDateAwareViewModel
+    public partial class TracesAccountPage
     {
         [Inject]
         private ITracesCollectorService TracesCollectorService { get; set; }
