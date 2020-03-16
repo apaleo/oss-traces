@@ -1,8 +1,4 @@
-﻿@using Traces.Common.Constants
-@using Traces.Web.Services.Apaleo
-@inject IApaleoUserClaimValidatorService UserClaimValidatorService
-
-<Blazorise.ThemeProvider Theme="@theme">
+﻿<Blazorise.ThemeProvider Theme="@_theme">
     <Router AppAssembly="@typeof(Program).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
@@ -16,19 +12,3 @@
         </NotFound>
     </Router>
 </Blazorise.ThemeProvider>
-
-@code{
-    private Theme theme = new Theme
-    {
-        ColorOptions = new ThemeColorOptions
-        {
-            Primary = StyleConstants.PrimaryColor
-        }
-    };
-
-    protected override async Task OnInitializedAsync()
-    {
-        await UserClaimValidatorService.AssertClaimAsync(AppConstants.AccountCodeQueryParameter, ApaleoClaims.AccountCode);
-        await UserClaimValidatorService.AssertClaimAsync(AppConstants.SubjectIdQueryParameter, ApaleoClaims.SubjectId);
-    }
-}

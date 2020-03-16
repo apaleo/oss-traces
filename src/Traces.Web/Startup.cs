@@ -28,8 +28,6 @@ using Traces.Web.Middlewares;
 using Traces.Web.Services;
 using Traces.Web.Services.Apaleo;
 using Traces.Web.Services.ApaleoOne;
-using Traces.Web.ViewModels;
-using Traces.Web.ViewModels.Traces;
 
 namespace Traces.Web
 {
@@ -141,10 +139,6 @@ namespace Traces.Web
             services.AddScoped<IApaleoSetupService, ApaleoSetupService>();
             services.AddScoped<IApaleoRolesCollectorService, ApaleoRolesCollectorService>();
             services.AddScoped<IApaleoUserClaimValidatorService, ApaleoUserClaimValidatorService>();
-            services.AddScoped<IndexViewModel>();
-            services.AddScoped<TracesAccountViewModel>();
-            services.AddScoped<TracesReservationViewModel>();
-            services.AddScoped<TracesPropertyViewModel>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
