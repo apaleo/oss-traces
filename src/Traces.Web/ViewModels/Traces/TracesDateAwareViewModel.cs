@@ -101,6 +101,8 @@ namespace Traces.Web.ViewModels.Traces
             await LoadOverdueTracesAsync();
 
             UpdateLoadedUntilText();
+
+            StateHasChanged();
         }
 
         protected override async Task RefreshAsync()
