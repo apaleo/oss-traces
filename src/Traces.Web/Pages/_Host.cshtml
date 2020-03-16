@@ -18,7 +18,7 @@
 </head>
 <body>
     <app>
-        <component type="typeof(App)" render-mode="Server" param-AccessToken="Model.AccessToken" />
+        @(await Html.RenderComponentAsync<App>(RenderMode.Server, new {AccessToken = Model.AccessToken}))
     </app>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
