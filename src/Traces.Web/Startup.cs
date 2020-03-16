@@ -130,6 +130,7 @@ namespace Traces.Web
                     npgSqlOptions => npgSqlOptions.UseNodaTime()));
 
             services.AddScoped<IRequestContext, RequestContext>();
+            services.AddScoped<TokenStorageService, TokenStorageService>();
             services.AddScoped<ITraceRepository, TraceRepository>();
             services.AddScoped<ITraceService, TraceService>();
             services.AddScoped<ITraceModifierService, TraceModifierService>();

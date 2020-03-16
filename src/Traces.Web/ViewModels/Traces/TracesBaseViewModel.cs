@@ -11,7 +11,7 @@ using Traces.Web.Services.ApaleoOne;
 
 namespace Traces.Web.ViewModels.Traces
 {
-    public abstract class TracesBaseViewModel : ComponentBase
+    public abstract class TracesBaseViewModel : ApaleoBaseComponent
     {
         public EditTraceDialogViewModel EditTraceDialogViewModel { get; } = new EditTraceDialogViewModel();
 
@@ -147,6 +147,8 @@ namespace Traces.Web.ViewModels.Traces
 
         protected override async Task OnInitializedAsync()
         {
+            await InitializeContextAsync();
+
             await LoadTracesAsync();
 
             await LoadApaleoRolesAsync();
