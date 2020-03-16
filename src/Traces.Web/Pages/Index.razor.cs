@@ -7,9 +7,9 @@ using Traces.Common.Constants;
 using Traces.Common.Exceptions;
 using Traces.Web.Services.Apaleo;
 
-namespace Traces.Web.ViewModels
+namespace Traces.Web.Pages
 {
-    public class IndexViewModel : ComponentBase
+    public partial class Index
     {
         public bool IsLoading { get; private set; }
 
@@ -34,7 +34,7 @@ namespace Traces.Web.ViewModels
         private IOptions<ApaleoConfig> ApaleoIntegrationConfig { get; set; }
 
         [Inject]
-        private ILogger<IndexViewModel> Logger { get; set; }
+        private ILogger<Index> Logger { get; set; }
 
         public async Task TriggerSetupAsync()
         {
@@ -57,10 +57,17 @@ namespace Traces.Web.ViewModels
                 Title = TextConstants.ApaleoSetupErrorTitle;
                 Message = TextConstants.ApaleoSetupErrorMessage;
                 ButtonText = TextConstants.ApaleoSetupButtonTryAgainText;
-                Logger.LogError(ex, $"{nameof(IndexViewModel)} There was an issue while trying to setup the traces UI integrations");
+                Logger.LogError(ex, $"{nameof(Index)} There was an issue while trying to setup the traces UI integrations");
             }
 
             IsLoading = false;
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await TriggerSetupAsync();
+
+            await base.OnInitializedAsync();
         }
     }
 }

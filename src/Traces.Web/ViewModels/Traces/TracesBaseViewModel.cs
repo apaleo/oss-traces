@@ -151,6 +151,8 @@ namespace Traces.Web.ViewModels.Traces
 
             await LoadApaleoRolesAsync();
 
+            StateHasChanged();
+
             await base.OnInitializedAsync();
         }
 

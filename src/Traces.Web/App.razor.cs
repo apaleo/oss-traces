@@ -10,7 +10,7 @@ using Traces.Web.Services.Apaleo;
 
 namespace Traces.Web
 {
-    public partial class App : ComponentBase
+    public partial class App
     {
         private readonly Theme _theme = new Theme
         {
