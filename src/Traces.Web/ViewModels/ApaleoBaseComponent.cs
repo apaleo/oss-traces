@@ -17,7 +17,7 @@ namespace Traces.Web.ViewModels
         private IRequestContext RequestContext { get; set; }
 
         [Inject]
-        private TokenStorageService TokenStorageService { get; set; }
+        private ITokenStorageService TokenStorageService { get; set; }
 
         [Inject]
         private ILogger<ApaleoBaseComponent> Logger { get; set; }

@@ -24,7 +24,7 @@ namespace Traces.Web
         private IApaleoUserClaimValidatorService UserClaimValidatorService { get; set; }
 
         [Inject]
-        private TokenStorageService TokenStorageService { get; set; }
+        private ITokenStorageService TokenStorageService { get; set; }
 
         protected override void OnInitialized()
         {
