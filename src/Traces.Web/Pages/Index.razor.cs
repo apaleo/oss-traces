@@ -65,6 +65,7 @@ namespace Traces.Web.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            await InitializeContextAsync();
             await TriggerSetupAsync();
 
             await base.OnInitializedAsync();
