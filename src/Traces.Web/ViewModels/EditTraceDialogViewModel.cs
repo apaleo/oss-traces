@@ -21,7 +21,7 @@ namespace Traces.Web.ViewModels
 
         public string SelectedRole { get; set; }
 
-        public IReadOnlyList<FileToUploadModel> FilesToUpload { get; set; } = new List<FileToUploadModel>();
+        public List<FileToUploadModel> FilesToUpload { get; set; } = new List<FileToUploadModel>();
 
         public IReadOnlyList<TraceFileItemModel> TraceFiles { get; set; } = new List<TraceFileItemModel>();
 
@@ -54,13 +54,13 @@ namespace Traces.Web.ViewModels
                         : SelectedRole
             };
 
-        public IReadOnlyList<CreateTraceFileItemModel> GetCreateTraceFileItemModels(int traceId)
+        public List<CreateTraceFileItemModel> GetCreateTraceFileItemModels(int traceId)
             => FilesToUpload
                 .Where(file => file.IsValid)
                 .ToList()
                 .ToCreateTraceFileItemModelList(traceId);
 
-        public IReadOnlyList<int> GetTraceFilesToDelete()
+        public List<int> GetTraceFilesToDelete()
             => TraceFiles
                 .Where(file => file.State == TraceFileItemModelState.ShouldDelete)
                 .Select(file => file.Id)

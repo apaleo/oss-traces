@@ -16,7 +16,7 @@ namespace Traces.Web.Extensions.Files
             TraceId = createTraceFileItemModel.TraceId
         };
 
-        public static IReadOnlyList<CreateTraceFileDto> ToCreateTraceFileDtoList(this IReadOnlyList<CreateTraceFileItemModel> createTraceFileItemModels)
+        public static List<CreateTraceFileDto> ToCreateTraceFileDtoList(this List<CreateTraceFileItemModel> createTraceFileItemModels)
             => createTraceFileItemModels.Select(ToCreateTraceFileDto).ToList();
     }
 }

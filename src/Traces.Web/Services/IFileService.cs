@@ -7,7 +7,7 @@ namespace Traces.Web.Services
 {
     public interface IFileService
     {
-        Task<ResultModel<IReadOnlyList<TraceFileItemModel>>> CreateTraceFileAsync(IReadOnlyList<CreateTraceFileItemModel> createTraceFileItemModels);
+        Task<ResultModel<IReadOnlyList<TraceFileItemModel>>> CreateTraceFileAsync(List<CreateTraceFileItemModel> createTraceFileItemModels);
 
         Task<ResultModel<SavedFileItemModel>> GetSavedFileFromPublicIdAsync(string publicId);
 

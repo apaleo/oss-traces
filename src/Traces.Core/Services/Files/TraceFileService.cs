@@ -27,7 +27,7 @@ namespace Traces.Core.Services.Files
             _requestContext = Check.NotNull(requestContext, nameof(requestContext));
         }
 
-        public async Task<IReadOnlyList<TraceFileDto>> CreateTraceFileAsync(IReadOnlyList<CreateTraceFileDto> createTraceFileDtos)
+        public async Task<IReadOnlyList<TraceFileDto>> CreateTraceFileAsync(List<CreateTraceFileDto> createTraceFileDtos)
         {
             Check.NotNull(createTraceFileDtos, nameof(createTraceFileDtos));
 
@@ -72,8 +72,7 @@ namespace Traces.Core.Services.Files
                 MimeType = createTraceFileDto.MimeType,
                 TraceId = createTraceFileDto.TraceId,
                 Path = path,
-                PublicId = Guid.NewGuid(),
-                FileGuid = fileGuid
+                PublicId = Guid.NewGuid()
             };
 
             _traceFileRepository.Insert(traceFile);

@@ -22,7 +22,6 @@ namespace Traces.Data.Migrations
                     MimeType = table.Column<string>(nullable: false),
                     Size = table.Column<long>(nullable: false),
                     PublicId = table.Column<Guid>(nullable: false),
-                    FileGuid = table.Column<Guid>(nullable: false),
                     Path = table.Column<string>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: false),
                     TraceId = table.Column<int>(nullable: false)

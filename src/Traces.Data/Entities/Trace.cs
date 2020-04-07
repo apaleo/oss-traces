@@ -29,6 +29,7 @@ namespace Traces.Data.Entities
 
         public string AssignedRole { get; set; }
 
-        public IReadOnlyList<TraceFile> Files { get; set; } = new List<TraceFile>();
+        // initialization needed, otherwise EF returns null
+        public List<TraceFile> Files { get; } = new List<TraceFile>();
     }
 }

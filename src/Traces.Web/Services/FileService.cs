@@ -22,7 +22,7 @@ namespace Traces.Web.Services
             _traceFileService = traceFileService;
         }
 
-        public async Task<ResultModel<IReadOnlyList<TraceFileItemModel>>> CreateTraceFileAsync(IReadOnlyList<CreateTraceFileItemModel> createTraceFileItemModels)
+        public async Task<ResultModel<IReadOnlyList<TraceFileItemModel>>> CreateTraceFileAsync(List<CreateTraceFileItemModel> createTraceFileItemModels)
         {
             try
             {

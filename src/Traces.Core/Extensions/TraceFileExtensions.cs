@@ -16,7 +16,6 @@ namespace Traces.Core.Extensions
             CreatedBy = traceFile.CreatedBy,
             MimeType = traceFile.MimeType,
             PublicId = traceFile.PublicId,
-            FileGuid = traceFile.FileGuid,
             TraceId = traceFile.TraceId
         };
 

@@ -15,7 +15,7 @@ namespace Traces.Web.Extensions.Files
             TraceId = traceId
         };
 
-        public static IReadOnlyList<CreateTraceFileItemModel> ToCreateTraceFileItemModelList(this IReadOnlyList<FileToUploadModel> fileToUploadModels, int traceId)
+        public static List<CreateTraceFileItemModel> ToCreateTraceFileItemModelList(this List<FileToUploadModel> fileToUploadModels, int traceId)
             => fileToUploadModels.Select(file => ToCreateTraceFileItemModel(file, traceId)).ToList();
     }
 }

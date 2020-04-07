@@ -25,6 +25,12 @@ namespace Traces.Data
                 .Property(t => t.Id)
                 .UseHiLo();
 
+            modelBuilder
+                .Entity<Trace>()
+                .HasMany(t => t.Files)
+                .WithOne(tf => tf.Trace)
+                .OnDelete(DeleteBehavior.Cascade);
+
             base.OnModelCreating(modelBuilder);
         }
     }

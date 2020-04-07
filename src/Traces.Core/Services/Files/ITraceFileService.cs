@@ -9,7 +9,7 @@ namespace Traces.Core.Services.Files
 {
     public interface ITraceFileService
     {
-        Task<IReadOnlyList<TraceFileDto>> CreateTraceFileAsync(IReadOnlyList<CreateTraceFileDto> createTraceFileDtos);
+        Task<IReadOnlyList<TraceFileDto>> CreateTraceFileAsync(List<CreateTraceFileDto> createTraceFileDtos);
 
         Task<SavedFileDto> GetSavedFileFromPublicIdAsync(string publicId);
 

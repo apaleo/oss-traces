@@ -88,9 +88,6 @@ namespace Traces.Data.Migrations
                     b.Property<Instant>("CreatedUtc")
                         .HasColumnType("timestamp");
 
-                    b.Property<Guid>("FileGuid")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("MimeType")
                         .IsRequired()
                         .HasColumnType("text");
