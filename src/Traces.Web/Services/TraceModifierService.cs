@@ -6,7 +6,7 @@ using Traces.Common.Exceptions;
 using Traces.Common.Utils;
 using Traces.Core.Models;
 using Traces.Core.Services.Traces;
-using Traces.Web.Converters.Traces;
+using Traces.Web.Extensions.Traces;
 using Traces.Web.Models;
 
 namespace Traces.Web.Services
@@ -63,7 +63,7 @@ namespace Traces.Web.Services
 
                 var traceDto = await _traceService.CreateTraceAsync(createTraceDto);
 
-                var traceItemModel = traceDto.ConvertToItemModel();
+                var traceItemModel = traceDto.ToTraceItemModel();
 
                 return new ResultModel<TraceItemModel>
                 {
@@ -98,7 +98,7 @@ namespace Traces.Web.Services
 
                 var traceDto = await _traceService.CreateTraceFromReservationAsync(createTraceDto);
 
-                var traceItemModel = traceDto.ConvertToItemModel();
+                var traceItemModel = traceDto.ToTraceItemModel();
 
                 return new ResultModel<TraceItemModel>
                 {

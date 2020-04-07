@@ -12,7 +12,7 @@ using Traces.Common.Exceptions;
 using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Core.ClientFactories;
-using Traces.Core.Converters;
+using Traces.Core.Extensions;
 using Traces.Core.Models;
 using Traces.Core.Repositories;
 using Traces.Core.Services.Files;
@@ -39,7 +39,7 @@ namespace Traces.Core.Services.Traces
         {
             var traces = await _traceRepository.GetAllForTenantAsync();
 
-            return traces.ConvertToDto();
+            return traces.ToTraceDtoList();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetActiveTracesAsync(DateTime from, DateTime toDateTime)
@@ -57,7 +57,7 @@ namespace Traces.Core.Services.Traces
                 t.DueDate >= fromLocalDate &&
                 t.DueDate <= toLocalDate);
 
-            return traces.ConvertToDto();
+            return traces.ToTraceDtoList();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetActiveTracesForPropertyAsync(string propertyId, DateTime from, DateTime toDateTime)
@@ -78,7 +78,7 @@ namespace Traces.Core.Services.Traces
                 t.DueDate >= fromLocalDate &&
                 t.DueDate <= toLocalDate);
 
-            return propertyTraces.ConvertToDto();
+            return propertyTraces.ToTraceDtoList();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetOverdueTracesAsync()
@@ -88,7 +88,7 @@ namespace Traces.Core.Services.Traces
                 t.State == TraceState.Active &&
                 t.DueDate < todayDate);
 
-            return traces.ConvertToDto();
+            return traces.ToTraceDtoList();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetOverdueTracesForPropertyAsync(string propertyId)
@@ -101,7 +101,7 @@ namespace Traces.Core.Services.Traces
                 t.DueDate < todayDate &&
                 t.PropertyId == propertyId);
 
-            return overdueTracesForProperty.ConvertToDto();
+            return overdueTracesForProperty.ToTraceDtoList();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetAllTracesForReservationAsync(string reservationId)
@@ -111,7 +111,7 @@ namespace Traces.Core.Services.Traces
             var allTracesForReservation = await _traceRepository.GetAllTracesForTenantAsync(t =>
                 t.ReservationId == reservationId);
 
-            return allTracesForReservation.ConvertToDto();
+            return allTracesForReservation.ToTraceDtoList();
         }
 
         public async Task<Option<TraceDto>> GetTraceAsync(int id)
@@ -123,7 +123,7 @@ namespace Traces.Core.Services.Traces
 
             var trace = await _traceRepository.GetAsync(id);
 
-            return trace.ConvertToDto().Some();
+            return trace.ToTraceDto().Some();
         }
 
         public async Task<TraceDto> CreateTraceAsync(CreateTraceDto createTraceDto)
@@ -151,7 +151,7 @@ namespace Traces.Core.Services.Traces
 
             await _traceRepository.SaveAsync();
 
-            return trace.ConvertToDto();
+            return trace.ToTraceDto();
         }
 
         /// <summary>

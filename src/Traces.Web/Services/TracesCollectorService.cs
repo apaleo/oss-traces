@@ -8,7 +8,7 @@ using Traces.Common.Exceptions;
 using Traces.Common.Utils;
 using Traces.Core.Models;
 using Traces.Core.Services.Traces;
-using Traces.Web.Converters.Traces;
+using Traces.Web.Extensions.Traces;
 using Traces.Web.Models;
 
 namespace Traces.Web.Services
@@ -116,6 +116,6 @@ namespace Traces.Web.Services
             };
 
         private static IReadOnlyList<TraceItemModel> TraceDtosToModels(IReadOnlyList<TraceDto> traceDtos) =>
-            traceDtos.Select(t => t.ConvertToItemModel()).ToList();
+            traceDtos.Select(t => t.ToTraceItemModel()).ToList();
     }
 }

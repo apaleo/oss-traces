@@ -3,11 +3,11 @@ using System.Linq;
 using Traces.Core.Models.Files;
 using Traces.Data.Entities;
 
-namespace Traces.Core.Converters
+namespace Traces.Core.Extensions
 {
-    public static class TraceFileConverters
+    public static class TraceFileExtensions
     {
-        public static TraceFileDto ConvertToDto(this TraceFile traceFile) => new TraceFileDto
+        public static TraceFileDto ToTraceFileDto(this TraceFile traceFile) => new TraceFileDto
         {
             Id = traceFile.Id,
             Name = traceFile.Name,
@@ -20,6 +20,6 @@ namespace Traces.Core.Converters
             TraceId = traceFile.TraceId
         };
 
-        public static IReadOnlyList<TraceFileDto> ConvertToDto(this IReadOnlyList<TraceFile> traceFiles) => traceFiles.Select(ConvertToDto).ToList();
+        public static IReadOnlyList<TraceFileDto> ToTraceFileDtoList(this IReadOnlyList<TraceFile> traceFiles) => traceFiles.Select(ToTraceFileDto).ToList();
     }
 }

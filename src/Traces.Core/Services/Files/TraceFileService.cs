@@ -8,7 +8,7 @@ using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Exceptions;
 using Traces.Common.Utils;
-using Traces.Core.Converters;
+using Traces.Core.Extensions;
 using Traces.Core.Models.Files;
 using Traces.Core.Repositories;
 using Traces.Core.Validators;
@@ -84,7 +84,7 @@ namespace Traces.Core.Services.Files
 
             await CreateFileAsync(newTraceFile, createTraceFileDto.Data);
 
-            return newTraceFile.ConvertToDto();
+            return newTraceFile.ToTraceFileDto();
         }
 
         public async Task<SavedFileDto> GetSavedFileFromPublicIdAsync(string publicId)
@@ -98,7 +98,7 @@ namespace Traces.Core.Services.Files
 
             return new SavedFileDto
             {
-                TraceFile = traceFile.ConvertToDto(),
+                TraceFile = traceFile.ToTraceFileDto(),
                 Data = File.ReadAllBytes(traceFile.Path)
             };
         }
@@ -106,7 +106,7 @@ namespace Traces.Core.Services.Files
         public async Task<bool> DeleteTraceFileRangeAsync(Expression<Func<TraceFile, bool>> expression)
         {
             var traceFiles = await _traceFileRepository.GetAllTraceFilesForTenantAsync(expression);
-            if (traceFiles.Count > 0)
+            if (traceFiles.Any())
             {
                 var deleted = await _traceFileRepository.DeleteRangeAsync(expression);
 

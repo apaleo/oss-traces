@@ -3,11 +3,11 @@ using System.Linq;
 using Traces.Core.Models.Files;
 using Traces.Web.Models.Files;
 
-namespace Traces.Web.Converters.Files
+namespace Traces.Web.Extensions.Files
 {
-    public static class TraceFileDtoConverters
+    public static class TraceFileDtoExtensions
     {
-        public static TraceFileItemModel ConvertToItemModel(this TraceFileDto traceFileDto) => new TraceFileItemModel
+        public static TraceFileItemModel ToTraceFileItemModel(this TraceFileDto traceFileDto) => new TraceFileItemModel
         {
             Id = traceFileDto.Id,
             Name = traceFileDto.Name,
@@ -19,7 +19,7 @@ namespace Traces.Web.Converters.Files
             TraceId = traceFileDto.TraceId
         };
 
-        public static IReadOnlyList<TraceFileItemModel> ConvertToItemModel(this IReadOnlyList<TraceFileDto> traceFileDtos)
-            => traceFileDtos.Select(ConvertToItemModel).ToList();
+        public static IReadOnlyList<TraceFileItemModel> ToTraceFileItemModelList(this IReadOnlyList<TraceFileDto> traceFileDtos)
+            => traceFileDtos.Select(ToTraceFileItemModel).ToList();
     }
 }

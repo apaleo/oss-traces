@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Traces.Common.Constants;
-using Traces.Web.Converters.Files;
 using Traces.Web.Enums;
+using Traces.Web.Extensions.Files;
 using Traces.Web.Models;
 using Traces.Web.Models.Files;
 
@@ -58,7 +58,7 @@ namespace Traces.Web.ViewModels
             => FilesToUpload
                 .Where(file => file.IsValid)
                 .ToList()
-                .ConvertToCreateTraceFileItemModel(traceId);
+                .ToCreateTraceFileItemModelList(traceId);
 
         public IReadOnlyList<int> GetTraceFilesToDelete()
             => TraceFiles

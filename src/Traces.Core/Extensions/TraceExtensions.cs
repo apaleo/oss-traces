@@ -5,11 +5,11 @@ using Optional;
 using Traces.Core.Models;
 using Traces.Data.Entities;
 
-namespace Traces.Core.Converters
+namespace Traces.Core.Extensions
 {
-    public static class TraceConverters
+    public static class TraceExtensions
     {
-        public static TraceDto ConvertToDto(this Trace trace) => new TraceDto
+        public static TraceDto ToTraceDto(this Trace trace) => new TraceDto
         {
             Description = trace.Description.SomeNotNull(),
             State = trace.State,
@@ -20,9 +20,9 @@ namespace Traces.Core.Converters
             PropertyId = trace.PropertyId,
             ReservationId = trace.ReservationId.SomeNotNull(),
             AssignedRole = trace.AssignedRole.SomeNotNull(),
-            Files = trace.Files.ConvertToDto().SomeNotNull()
+            Files = trace.Files.ToTraceFileDtoList().SomeNotNull()
         };
 
-        public static IReadOnlyList<TraceDto> ConvertToDto(this IReadOnlyList<Trace> traces) => traces.Select(ConvertToDto).ToList();
+        public static IReadOnlyList<TraceDto> ToTraceDtoList(this IReadOnlyList<Trace> traces) => traces.Select(ToTraceDto).ToList();
     }
 }

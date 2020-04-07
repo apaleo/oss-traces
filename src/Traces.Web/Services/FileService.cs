@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Optional;
 using Traces.Common.Exceptions;
 using Traces.Core.Services.Files;
-using Traces.Web.Converters.Files;
+using Traces.Web.Extensions.Files;
 using Traces.Web.Models;
 using Traces.Web.Models.Files;
 
@@ -26,11 +26,11 @@ namespace Traces.Web.Services
         {
             try
             {
-                var createTraceFileDtos = createTraceFileItemModels.ConvertToDto();
+                var createTraceFileDtos = createTraceFileItemModels.ToCreateTraceFileDtoList();
 
                 var traceFileDtos = await _traceFileService.CreateTraceFileAsync(createTraceFileDtos);
 
-                var traceFileItemModels = traceFileDtos.ConvertToItemModel();
+                var traceFileItemModels = traceFileDtos.ToTraceFileItemModelList();
 
                 return new ResultModel<IReadOnlyList<TraceFileItemModel>>
                 {
@@ -56,7 +56,7 @@ namespace Traces.Web.Services
             {
                 var savedFileDto = await _traceFileService.GetSavedFileFromPublicIdAsync(publicId);
 
-                var savedFileItemModel = savedFileDto.ConvertToSavedFileItemModel();
+                var savedFileItemModel = savedFileDto.ToSavedFileItemModel();
 
                 return new ResultModel<SavedFileItemModel>
                 {
