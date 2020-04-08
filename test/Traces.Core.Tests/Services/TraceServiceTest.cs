@@ -14,7 +14,6 @@ using Traces.Common.Exceptions;
 using Traces.Core.ClientFactories;
 using Traces.Core.Models;
 using Traces.Core.Repositories;
-using Traces.Core.Services.Files;
 using Traces.Core.Services.Traces;
 using Traces.Data.Entities;
 using Traces.Testing;
@@ -55,7 +54,6 @@ namespace Traces.Core.Tests.Services
         private readonly Mock<ITraceRepository> _traceRepositoryMock;
         private readonly Mock<IRequestContext> _requestContextMock;
         private readonly Mock<IApaleoClientsFactory> _apaleoClientFactoryMock;
-        private readonly Mock<ITraceFileService> _traceFileServiceMock;
         private readonly ITraceService _traceService;
 
         public TraceServiceTest()
@@ -63,8 +61,8 @@ namespace Traces.Core.Tests.Services
             _traceRepositoryMock = MockRepository.Create<ITraceRepository>();
             _requestContextMock = MockRepository.Create<IRequestContext>();
             _apaleoClientFactoryMock = MockRepository.Create<IApaleoClientsFactory>();
-            _traceFileServiceMock = MockRepository.Create<ITraceFileService>();
-            _traceService = new TraceService(_traceRepositoryMock.Object, _requestContextMock.Object, _apaleoClientFactoryMock.Object, _traceFileServiceMock.Object);
+
+            _traceService = new TraceService(_traceRepositoryMock.Object, _requestContextMock.Object, _apaleoClientFactoryMock.Object);
         }
 
         [Fact]

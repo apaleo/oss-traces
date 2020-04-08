@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Traces.Common;
+using Microsoft.AspNetCore.Components;
 using Traces.Common.Constants;
 using Traces.Common.Extensions;
-using Traces.Common.Utils;
 using Traces.Web.Models;
-using Traces.Web.Services;
-using Traces.Web.Services.Apaleo;
 using Traces.Web.Services.ApaleoOne;
 using Traces.Web.Utils;
 
@@ -16,19 +12,6 @@ namespace Traces.Web.ViewModels.Traces
 {
     public abstract class TracesDateAwareViewModel : TracesBaseViewModel
     {
-        protected TracesDateAwareViewModel(
-            ITraceModifierService traceModifierService,
-            IFileService fileService,
-            IHttpContextAccessor httpContextAccessor,
-            IRequestContext requestContext,
-            IApaleoOneNavigationService apaleoOneNavigationService,
-            IApaleoRolesCollectorService apaleoRolesCollector,
-            IApaleoOneNotificationService apaleoOneNotificationService)
-            : base(traceModifierService, fileService, httpContextAccessor, requestContext, apaleoRolesCollector, apaleoOneNotificationService)
-        {
-            ApaleoOneNavigationService = Check.NotNull(apaleoOneNavigationService, nameof(apaleoOneNavigationService));
-        }
-
         public SortedDictionary<DateTime, List<TraceItemModel>> ActiveTracesDictionary { get; } =
             new SortedDictionary<DateTime, List<TraceItemModel>>();
 
@@ -44,7 +27,8 @@ namespace Traces.Web.ViewModels.Traces
 
         public DateTime CurrentToDate { get; set; }
 
-        private IApaleoOneNavigationService ApaleoOneNavigationService { get; }
+        [Inject]
+        private IApaleoOneNavigationService ApaleoOneNavigationService { get; set; }
 
         /// <summary>
         /// The traces for the given from date are loaded. The overdue traces are also loaded if the date is set to today.
@@ -117,6 +101,8 @@ namespace Traces.Web.ViewModels.Traces
             await LoadOverdueTracesAsync();
 
             UpdateLoadedUntilText();
+
+            StateHasChanged();
         }
 
         protected override async Task RefreshAsync()

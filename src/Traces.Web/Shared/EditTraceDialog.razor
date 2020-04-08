@@ -96,7 +96,8 @@
 
     void HandleFileChanged(List<FileToUploadModel> files)
     {
-        EditTraceDialogVm.FilesToUpload = files;
+        EditTraceDialogVm.FilesToUpload.Clear();
+        EditTraceDialogVm.FilesToUpload.AddRange(files);
     }
 
     void HandleLoadingChanged(bool loading)

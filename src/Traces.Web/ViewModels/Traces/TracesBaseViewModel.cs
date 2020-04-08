@@ -1,11 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Blazorise;
-using Microsoft.AspNetCore.Http;
-using Traces.Common;
+using Microsoft.AspNetCore.Components;
 using Traces.Common.Constants;
 using Traces.Common.Extensions;
-using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
 using Traces.Web.Services.Apaleo;
@@ -13,45 +11,25 @@ using Traces.Web.Services.ApaleoOne;
 
 namespace Traces.Web.ViewModels.Traces
 {
-    public abstract class TracesBaseViewModel : BaseViewModel
+    public abstract class TracesBaseViewModel : ApaleoBaseComponent
     {
-        private readonly IApaleoRolesCollectorService _apaleoRolesCollector;
-
-        protected TracesBaseViewModel(
-            ITraceModifierService traceModifierService,
-            IFileService fileService,
-            IHttpContextAccessor httpContextAccessor,
-            IRequestContext requestContext,
-            IApaleoRolesCollectorService apaleoRolesCollector,
-            IApaleoOneNotificationService apaleoOneNotificationService)
-            : base(httpContextAccessor, requestContext)
-        {
-            TraceModifierService = Check.NotNull(traceModifierService, nameof(traceModifierService));
-            _apaleoRolesCollector = Check.NotNull(apaleoRolesCollector, nameof(apaleoRolesCollector));
-            FileService = Check.NotNull(fileService, nameof(fileService));
-            ApaleoOneNotificationService = Check.NotNull(apaleoOneNotificationService, nameof(apaleoOneNotificationService));
-        }
-
         public EditTraceDialogViewModel EditTraceDialogViewModel { get; } = new EditTraceDialogViewModel();
 
         public Modal CreateTraceModalRef { get; set; }
 
         public Modal EditTraceModalRef { get; set; }
 
-        protected ITraceModifierService TraceModifierService { get; }
+        [Inject]
+        protected ITraceModifierService TraceModifierService { get; set; }
 
-        protected IApaleoOneNotificationService ApaleoOneNotificationService { get; }
+        [Inject]
+        protected IApaleoOneNotificationService ApaleoOneNotificationService { get; set; }
 
+        [Inject]
         protected IFileService FileService { get; }
 
-        public async Task InitializeAsync()
-        {
-            await InitializeContextAsync();
-
-            await LoadTracesAsync();
-
-            await LoadApaleoRolesAsync();
-        }
+        [Inject]
+        private IApaleoRolesCollectorService ApaleoRolesCollector { get; set; }
 
         /// <summary>
         /// Currently each viewmodel that can create a trace should override this method.
@@ -222,13 +200,24 @@ namespace Traces.Web.ViewModels.Traces
             return true;
         }
 
+        protected override async Task OnInitializedAsync()
+        {
+            await InitializeContextAsync();
+
+            await LoadTracesAsync();
+
+            await LoadApaleoRolesAsync();
+
+            await base.OnInitializedAsync();
+        }
+
         protected abstract Task LoadTracesAsync();
 
         protected abstract Task RefreshAsync();
 
         private async Task LoadApaleoRolesAsync()
         {
-            var roles = await _apaleoRolesCollector.GetRolesAsync();
+            var roles = await ApaleoRolesCollector.GetRolesAsync();
 
             EditTraceDialogViewModel.Roles.Clear();
 

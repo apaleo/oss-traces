@@ -21,7 +21,7 @@ namespace Traces.Web.ViewModels
 
         public string SelectedRole { get; set; }
 
-        public List<FileToUploadModel> FilesToUpload { get; set; } = new List<FileToUploadModel>();
+        public List<FileToUploadModel> FilesToUpload { get; } = new List<FileToUploadModel>();
 
         public IReadOnlyList<TraceFileItemModel> TraceFiles { get; set; } = new List<TraceFileItemModel>();
 
@@ -37,7 +37,7 @@ namespace Traces.Web.ViewModels
                     string.IsNullOrWhiteSpace(SelectedRole) ||
                     SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText
                         ? null
-                        : SelectedRole
+                        : SelectedRole,
             };
 
         public ReplaceTraceItemModel GetReplaceTraceItemModel()
@@ -51,7 +51,7 @@ namespace Traces.Web.ViewModels
                     string.IsNullOrWhiteSpace(SelectedRole) ||
                     SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText
                         ? null
-                        : SelectedRole
+                        : SelectedRole,
             };
 
         public List<CreateTraceFileItemModel> GetCreateTraceFileItemModels(int traceId)
@@ -74,7 +74,7 @@ namespace Traces.Web.ViewModels
             DueDate = null;
             SelectedRole = string.Empty;
 
-            FilesToUpload = new List<FileToUploadModel>();
+            FilesToUpload.Clear();
             TraceFiles = new List<TraceFileItemModel>();
         }
     }

@@ -3,42 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http;
-using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Enums;
 using Traces.Common.Extensions;
-using Traces.Common.Utils;
 using Traces.Web.Models;
 using Traces.Web.Services;
-using Traces.Web.Services.Apaleo;
-using Traces.Web.Services.ApaleoOne;
 using Traces.Web.Utils;
 
-namespace Traces.Web.ViewModels.Traces
+namespace Traces.Web.Pages
 {
-    public class TracesReservationViewModel : TracesBaseViewModel
+    public partial class TracesReservationPage
     {
-        private readonly ITracesCollectorService _tracesCollectorService;
-        private readonly NavigationManager _navigationManager;
         private string _currentReservationId;
-
-        public TracesReservationViewModel(
-            ITracesCollectorService tracesCollectorService,
-            ITraceModifierService traceModifierService,
-            NavigationManager navigationManager,
-            IRequestContext requestContext,
-            IHttpContextAccessor httpContextAccessor,
-            IApaleoRolesCollectorService apaleoRolesCollector,
-            IApaleoOneNotificationService apaleoOneNotificationService,
-            IFileService fileService)
-            : base(traceModifierService, fileService, httpContextAccessor, requestContext, apaleoRolesCollector, apaleoOneNotificationService)
-        {
-            _navigationManager = Check.NotNull(navigationManager, nameof(navigationManager));
-            _tracesCollectorService = Check.NotNull(tracesCollectorService, nameof(tracesCollectorService));
-
-            LoadCurrentReservationId();
-        }
 
         public SortedDictionary<DateTime, List<TraceItemModel>> AllTracesDictionary { get; } = new SortedDictionary<DateTime, List<TraceItemModel>>();
 
@@ -51,6 +27,12 @@ namespace Traces.Web.ViewModels.Traces
         public bool HasCompletedTraces { get; private set; } = false;
 
         public string CompletedTracesCheckBoxText { get; set; }
+
+        [Inject]
+        private ITracesCollectorService TracesCollectorService { get; set; }
+
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
 
         public override async Task CreateTraceItemAsync()
         {
@@ -81,6 +63,12 @@ namespace Traces.Web.ViewModels.Traces
             }
         }
 
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            LoadCurrentReservationId();
+        }
+
         protected override async Task LoadTracesAsync()
         {
             await LoadAllTracesAsync();
@@ -109,7 +97,7 @@ namespace Traces.Web.ViewModels.Traces
 
         private async Task LoadAllTracesAsync()
         {
-            var tracesResult = await _tracesCollectorService.GetAllTracesForReservationAsync(_currentReservationId);
+            var tracesResult = await TracesCollectorService.GetAllTracesForReservationAsync(_currentReservationId);
 
             if (tracesResult.Success)
             {
@@ -145,6 +133,6 @@ namespace Traces.Web.ViewModels.Traces
         }
 
         private void LoadCurrentReservationId()
-            => _currentReservationId = UrlQueryParameterExtractor.ExtractQueryParameterFromManager(_navigationManager, AppConstants.ReservationIdQueryParameter);
+            => _currentReservationId = UrlQueryParameterExtractor.ExtractQueryParameterFromManager(NavigationManager, AppConstants.ReservationIdQueryParameter);
     }
 }

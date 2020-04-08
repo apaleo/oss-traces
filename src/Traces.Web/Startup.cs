@@ -29,8 +29,6 @@ using Traces.Web.Middlewares;
 using Traces.Web.Services;
 using Traces.Web.Services.Apaleo;
 using Traces.Web.Services.ApaleoOne;
-using Traces.Web.ViewModels;
-using Traces.Web.ViewModels.Traces;
 
 namespace Traces.Web
 {
@@ -133,6 +131,7 @@ namespace Traces.Web
                     npgSqlOptions => npgSqlOptions.UseNodaTime()));
 
             services.AddScoped<IRequestContext, RequestContext>();
+            services.AddScoped<ITokenStorageService, TokenStorageService>();
             services.AddScoped<ITraceRepository, TraceRepository>();
             services.AddScoped<ITraceFileRepository, TraceFileRepository>();
             services.AddScoped<ITraceService, TraceService>();
@@ -146,10 +145,6 @@ namespace Traces.Web
             services.AddScoped<IApaleoSetupService, ApaleoSetupService>();
             services.AddScoped<IApaleoRolesCollectorService, ApaleoRolesCollectorService>();
             services.AddScoped<IApaleoUserClaimValidatorService, ApaleoUserClaimValidatorService>();
-            services.AddScoped<IndexViewModel>();
-            services.AddScoped<TracesAccountViewModel>();
-            services.AddScoped<TracesReservationViewModel>();
-            services.AddScoped<TracesPropertyViewModel>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
