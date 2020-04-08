@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Optional;
@@ -76,11 +76,11 @@ namespace Traces.Web.Services
             }
         }
 
-        public async Task<ResultModel<bool>> DeleteTraceFileRangeAsync(IReadOnlyList<int> ids)
+        public async Task<ResultModel<bool>> DeleteTraceFileRangeAsync(List<int> ids)
         {
             try
             {
-                var deleteResult = await _traceFileService.DeleteTraceFileRangeAsync(traceFile => ids.Contains(traceFile.Id));
+                var deleteResult = await _traceFileService.DeleteTraceFileRangeAsync(ids);
 
                 return new ResultModel<bool>
                 {

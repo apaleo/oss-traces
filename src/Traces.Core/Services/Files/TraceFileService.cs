@@ -64,7 +64,7 @@ namespace Traces.Core.Services.Files
             var tenantId = _requestContext.TenantId;
             var fileGuid = Guid.NewGuid();
             var currentSubjectId = _requestContext.SubjectId;
-            var path = $"./files/{tenantId}/{fileGuid}/{createTraceFileDto.Name}";
+            var path = $"files/{tenantId}/{fileGuid}/{createTraceFileDto.Name}";
 
             var traceFile = new TraceFile
             {
@@ -105,8 +105,10 @@ namespace Traces.Core.Services.Files
             };
         }
 
-        public async Task<bool> DeleteTraceFileRangeAsync(Expression<Func<TraceFile, bool>> expression)
+        public async Task<bool> DeleteTraceFileRangeAsync(List<int> ids)
         {
+            Expression<Func<TraceFile, bool>> expression = traceFile => ids.Contains(traceFile.Id);
+
             var traceFiles = await _traceFileRepository.GetAllTraceFilesForTenantAsync(expression);
             if (traceFiles.Any())
             {

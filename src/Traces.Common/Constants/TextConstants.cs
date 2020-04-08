@@ -129,5 +129,11 @@ namespace Traces.Common.Constants
         public const string TraceFilePublicIdCouldNotBeFoundErrorMessageFormat = "The trace file with public id {0} could not be found.";
 
         public const string TraceFileWillBeDeletedMessage = "This file will be deleted.";
+
+        public const string FileCreateExceptionMessage = "The file couldn't be created";
+
+        public const string FileGetExceptionMessage = "The file couldn't be accessed";
+
+        public const string FileDeleteExceptionMessage = "The file(s) couldn't be deleted";
     }
 }

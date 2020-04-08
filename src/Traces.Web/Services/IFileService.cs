@@ -11,6 +11,6 @@ namespace Traces.Web.Services
 
         Task<ResultModel<SavedFileItemModel>> GetSavedFileFromPublicIdAsync(string publicId);
 
-        Task<ResultModel<bool>> DeleteTraceFileRangeAsync(IReadOnlyList<int> ids);
+        Task<ResultModel<bool>> DeleteTraceFileRangeAsync(List<int> ids);
     }
 }

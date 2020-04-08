@@ -136,7 +136,7 @@ namespace Traces.Web
             services.AddScoped<ITraceFileRepository, TraceFileRepository>();
             services.AddScoped<ITraceService, TraceService>();
             services.AddScoped<ITraceFileService, TraceFileService>();
-            services.AddScoped<IFileManagerService, FileManagerService>();
+            services.AddScoped<IFileManagerService, S3Service>();
 
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<ITraceModifierService, TraceModifierService>();
