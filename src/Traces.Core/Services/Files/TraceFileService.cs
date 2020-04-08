@@ -20,9 +20,11 @@ namespace Traces.Core.Services.Files
     {
         private readonly ITraceFileRepository _traceFileRepository;
         private readonly IRequestContext _requestContext;
+        private readonly IFileManagerService _fileManagerService;
 
-        public TraceFileService(ITraceFileRepository traceFileRepository, IRequestContext requestContext)
+        public TraceFileService(ITraceFileRepository traceFileRepository, IRequestContext requestContext, IFileManagerService fileManagerService)
         {
+            _fileManagerService = fileManagerService;
             _traceFileRepository = Check.NotNull(traceFileRepository, nameof(traceFileRepository));
             _requestContext = Check.NotNull(requestContext, nameof(requestContext));
         }
@@ -75,13 +77,13 @@ namespace Traces.Core.Services.Files
                 PublicId = Guid.NewGuid()
             };
 
+            await _fileManagerService.CreateFileAsync(traceFile, createTraceFileDto.Data);
+
             _traceFileRepository.Insert(traceFile);
 
             await _traceFileRepository.SaveAsync();
 
             var newTraceFile = await _traceFileRepository.GetAsync(traceFile.Id);
-
-            await CreateFileAsync(newTraceFile, createTraceFileDto.Data);
 
             return newTraceFile.ToTraceFileDto();
         }
@@ -94,11 +96,12 @@ namespace Traces.Core.Services.Files
             }
 
             var traceFile = await _traceFileRepository.GetByPublicIdAsync(publicId);
+            var memoryStream = await _fileManagerService.GetFileAsync(traceFile);
 
             return new SavedFileDto
             {
                 TraceFile = traceFile.ToTraceFileDto(),
-                Data = File.ReadAllBytes(traceFile.Path)
+                Data = memoryStream.ToArray()
             };
         }
 
@@ -111,7 +114,7 @@ namespace Traces.Core.Services.Files
 
                 if (deleted)
                 {
-                    DeleteFileRange(traceFiles);
+                    await _fileManagerService.DeleteFileRangeAsync(traceFiles);
                     await _traceFileRepository.SaveAsync();
                 }
 
@@ -119,31 +122,6 @@ namespace Traces.Core.Services.Files
             }
 
             return true;
-        }
-
-        private static async Task CreateFileAsync(TraceFile traceFile, MemoryStream data)
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(traceFile.Path));
-
-            using (var fileStream = new FileStream(traceFile.Path, FileMode.Create))
-            {
-                await data.CopyToAsync(fileStream);
-            }
-        }
-
-        private static void DeleteFile(TraceFile traceFile)
-        {
-            var directoryPath = Path.GetDirectoryName(traceFile.Path);
-
-            Directory.Delete(directoryPath, true);
-        }
-
-        private static void DeleteFileRange(IReadOnlyList<TraceFile> traceFiles)
-        {
-            foreach (var traceFile in traceFiles)
-            {
-                DeleteFile(traceFile);
-            }
         }
     }
 }
