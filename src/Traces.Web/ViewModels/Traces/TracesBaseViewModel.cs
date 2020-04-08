@@ -26,7 +26,7 @@ namespace Traces.Web.ViewModels.Traces
         protected IApaleoOneNotificationService ApaleoOneNotificationService { get; set; }
 
         [Inject]
-        protected IFileService FileService { get; }
+        protected IFileService FileService { get; set; }
 
         [Inject]
         private IApaleoRolesCollectorService ApaleoRolesCollector { get; set; }
