@@ -11,7 +11,7 @@ using Traces.Data;
 namespace Traces.Data.Migrations
 {
     [DbContext(typeof(TracesDbContext))]
-    [Migration("20200407142351_CreateTraceFileTable")]
+    [Migration("20200409122219_CreateTraceFileTable")]
     partial class CreateTraceFileTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,7 +19,7 @@ namespace Traces.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.1")
+                .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("Relational:Sequence:.EntityFrameworkHiLoSequence", "'EntityFrameworkHiLoSequence', '', '1', '10', '', '', 'Int64', 'False'");
 

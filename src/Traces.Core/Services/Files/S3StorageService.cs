@@ -12,7 +12,7 @@ using Traces.Data.Entities;
 
 namespace Traces.Core.Services.Files
 {
-    public class S3Service : IFileManagerService, System.IDisposable
+    public class S3StorageService : IFileStorageService, System.IDisposable
     {
         private const string BucketName = "oss-traces.apaleo-local";
 

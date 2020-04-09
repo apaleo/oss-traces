@@ -5,7 +5,7 @@ using Traces.Data.Entities;
 
 namespace Traces.Core.Services.Files
 {
-    public interface IFileManagerService
+    public interface IFileStorageService
     {
         Task CreateFileAsync(TraceFile traceFile, MemoryStream data);
 

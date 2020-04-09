@@ -28,8 +28,7 @@ namespace Traces.Data
             modelBuilder
                 .Entity<Trace>()
                 .HasMany(t => t.Files)
-                .WithOne(tf => tf.Trace)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(tf => tf.Trace);
 
             base.OnModelCreating(modelBuilder);
         }

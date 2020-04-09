@@ -20,11 +20,11 @@ namespace Traces.Core.Services.Files
     {
         private readonly ITraceFileRepository _traceFileRepository;
         private readonly IRequestContext _requestContext;
-        private readonly IFileManagerService _fileManagerService;
+        private readonly IFileStorageService _fileStorageService;
 
-        public TraceFileService(ITraceFileRepository traceFileRepository, IRequestContext requestContext, IFileManagerService fileManagerService)
+        public TraceFileService(ITraceFileRepository traceFileRepository, IRequestContext requestContext, IFileStorageService fileStorageService)
         {
-            _fileManagerService = fileManagerService;
+            _fileStorageService = fileStorageService;
             _traceFileRepository = Check.NotNull(traceFileRepository, nameof(traceFileRepository));
             _requestContext = Check.NotNull(requestContext, nameof(requestContext));
         }
@@ -77,7 +77,7 @@ namespace Traces.Core.Services.Files
                 PublicId = Guid.NewGuid()
             };
 
-            await _fileManagerService.CreateFileAsync(traceFile, createTraceFileDto.Data);
+            await _fileStorageService.CreateFileAsync(traceFile, createTraceFileDto.Data);
 
             _traceFileRepository.Insert(traceFile);
 
@@ -96,7 +96,7 @@ namespace Traces.Core.Services.Files
             }
 
             var traceFile = await _traceFileRepository.GetByPublicIdAsync(publicId);
-            var memoryStream = await _fileManagerService.GetFileAsync(traceFile);
+            var memoryStream = await _fileStorageService.GetFileAsync(traceFile);
 
             return new SavedFileDto
             {
@@ -116,7 +116,7 @@ namespace Traces.Core.Services.Files
 
                 if (deleted)
                 {
-                    await _fileManagerService.DeleteFileRangeAsync(traceFiles);
+                    await _fileStorageService.DeleteFileRangeAsync(traceFiles);
                     await _traceFileRepository.SaveAsync();
                 }
 
