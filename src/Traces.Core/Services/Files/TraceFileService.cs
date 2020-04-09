@@ -97,11 +97,13 @@ namespace Traces.Core.Services.Files
 
             var traceFile = await _traceFileRepository.GetByPublicIdAsync(publicId);
             var memoryStream = await _fileStorageService.GetFileAsync(traceFile);
+            var data = memoryStream.ToArray();
+            await memoryStream.DisposeAsync();
 
             return new SavedFileDto
             {
                 TraceFile = traceFile.ToTraceFileDto(),
-                Data = memoryStream.ToArray()
+                Data = data
             };
         }
 
@@ -112,11 +114,11 @@ namespace Traces.Core.Services.Files
             var traceFiles = await _traceFileRepository.GetAllTraceFilesForTenantAsync(expression);
             if (traceFiles.Any())
             {
+                await _fileStorageService.DeleteFileRangeAsync(traceFiles);
                 var deleted = await _traceFileRepository.DeleteRangeAsync(expression);
 
                 if (deleted)
                 {
-                    await _fileStorageService.DeleteFileRangeAsync(traceFiles);
                     await _traceFileRepository.SaveAsync();
                 }
 

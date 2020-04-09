@@ -138,7 +138,15 @@ namespace Traces.Web
             services.AddScoped<ITraceFileRepository, TraceFileRepository>();
             services.AddScoped<ITraceService, TraceService>();
             services.AddScoped<ITraceFileService, TraceFileService>();
-            services.AddScoped<IFileStorageService, S3StorageService>();
+
+            if (Convert.ToBoolean(Configuration["Storage:Local:IsEnabled"]))
+            {
+                services.AddScoped<IFileStorageService, LocalFileStorageService>();
+            }
+            else
+            {
+                services.AddScoped<IFileStorageService, S3StorageService>();
+            }
 
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<ITraceModifierService, TraceModifierService>();
