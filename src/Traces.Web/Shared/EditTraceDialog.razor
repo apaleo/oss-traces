@@ -45,7 +45,7 @@
                 var file = EditTraceDialogVm.TraceFiles[i];
                 var index = i + 1;
 
-                <div class="d-flex align-items-start mb-2 @(file.HasStateChanges ? "trace-file-deleted" : "")">
+                <div class="d-flex align-items-start mb-2 @(file.IsStateChanged ? "trace-file-deleted" : "")">
                     <div class="mt-2 d-flex flex-fill">
                         <span class="mr-2">@index.</span>
                         <div class="d-flex flex-column">
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
-                        @if (file.HasStateChanges)
+                        @if (file.IsStateChanged)
                         {
                             <Button Color="Color.Secondary" IsOutline="true" PreventDefaultOnSubmit="true" Clicked="@(() => OnUndoDeleteClick(file))">@TextConstants.TracesUndoDeleteButtonText</Button>
                         }
@@ -73,14 +73,14 @@
         </FieldBody>
     </Field>
     <ModalFooter>
-        <Button Color="Color.Primary" IsDisabled="@_loading" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" IsLoading="@_loading" Clicked="@OnCreateOrEditButtonClick">@SubmitButtonText</Button>
+        <Button Color="Color.Primary" IsDisabled="@_isLoading" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" IsLoading="@_isLoading" Clicked="@OnCreateOrEditButtonClick">@SubmitButtonText</Button>
         <Button Color="Color.Secondary" PreventDefaultOnSubmit="true" Clicked="@OnClose">@TextConstants.TracesCloseButtonText</Button>
     </ModalFooter>
 </Form>
 
 @code
 {
-    private bool _loading;
+    private bool _isLoading;
 
     [Parameter]
     public EventCallback OnClose { get; set; }
@@ -102,40 +102,40 @@
 
     void HandleLoadingChanged(bool loading)
     {
-        _loading = loading;
+        _isLoading = loading;
 
         StateHasChanged();
     }
 
     async Task OnCreateOrEditButtonClick()
     {
-        _loading = true;
+        _isLoading = true;
 
         await OnSubmit.InvokeAsync(null);
 
-        _loading = false;
+        _isLoading = false;
 
         StateHasChanged();
     }
 
     void OnDeleteClick(TraceFileItemModel traceFileItemModel)
     {
-        _loading = true;
+        _isLoading = true;
 
         traceFileItemModel.State = TraceFileItemModelState.ShouldDelete;
 
-        _loading = false;
+        _isLoading = false;
 
         StateHasChanged();
     }
 
     void OnUndoDeleteClick(TraceFileItemModel traceFileItemModel)
     {
-        _loading = true;
+        _isLoading = true;
 
         traceFileItemModel.State = TraceFileItemModelState.NoChanges;
 
-        _loading = false;
+        _isLoading = false;
 
         StateHasChanged();
     }

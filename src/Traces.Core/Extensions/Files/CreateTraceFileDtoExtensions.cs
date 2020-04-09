@@ -1,9 +1,9 @@
 using Traces.Common.Constants;
 using Traces.Core.Models.Files;
 
-namespace Traces.Core.Validators
+namespace Traces.Core.Extensions.Files
 {
-    public static class TraceFileValidators
+    public static class CreateTraceFileDtoExtensions
     {
         public static bool IsValid(this CreateTraceFileDto createTraceFileDto)
         {

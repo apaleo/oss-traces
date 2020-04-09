@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -40,7 +39,7 @@ namespace Traces.Web.Services
             }
             catch (BusinessValidationException ex)
             {
-                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(CreateTraceFileAsync)} - Exception while trying to create trace file");
+                _logger.LogWarning(ex, $"{nameof(FileService)}.{nameof(CreateTraceFileAsync)} - Exception while trying to create trace file");
 
                 return new ResultModel<IReadOnlyList<TraceFileItemModel>>
                 {
@@ -66,7 +65,7 @@ namespace Traces.Web.Services
             }
             catch (BusinessValidationException ex)
             {
-                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(GetSavedFileFromPublicIdAsync)} - Exception while trying to get saved trace file");
+                _logger.LogWarning(ex, $"{nameof(FileService)}.{nameof(GetSavedFileFromPublicIdAsync)} - Exception while trying to get saved trace file");
 
                 return new ResultModel<SavedFileItemModel>
                 {
@@ -90,7 +89,7 @@ namespace Traces.Web.Services
             }
             catch (BusinessValidationException ex)
             {
-                _logger.LogWarning(ex, $"{nameof(TraceModifierService)}.{nameof(DeleteTraceFileRangeAsync)} - Exception while deleting trace files with id {ids}");
+                _logger.LogWarning(ex, $"{nameof(FileService)}.{nameof(DeleteTraceFileRangeAsync)} - Exception while deleting trace files with id {ids}");
 
                 return new ResultModel<bool>
                 {

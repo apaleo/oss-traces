@@ -14,8 +14,6 @@ namespace Traces.Core.Models.Files
 
         public Guid PublicId { get; set; }
 
-        public Guid FileGuid { get; set; }
-
         public string Path { get; set; }
 
         public string CreatedBy { get; set; }

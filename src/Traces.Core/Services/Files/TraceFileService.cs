@@ -1,17 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Exceptions;
 using Traces.Common.Utils;
-using Traces.Core.Extensions;
+using Traces.Core.Extensions.Files;
 using Traces.Core.Models.Files;
 using Traces.Core.Repositories;
-using Traces.Core.Validators;
 using Traces.Data.Entities;
 
 namespace Traces.Core.Services.Files
@@ -109,13 +106,11 @@ namespace Traces.Core.Services.Files
 
         public async Task<bool> DeleteTraceFileRangeAsync(List<int> ids)
         {
-            Expression<Func<TraceFile, bool>> expression = traceFile => ids.Contains(traceFile.Id);
-
-            var traceFiles = await _traceFileRepository.GetAllTraceFilesForTenantAsync(expression);
+            var traceFiles = await _traceFileRepository.GetAllTraceFilesForTenantAsync(traceFile => ids.Contains(traceFile.Id));
             if (traceFiles.Any())
             {
                 await _fileStorageService.DeleteFileRangeAsync(traceFiles);
-                var deleted = await _traceFileRepository.DeleteRangeAsync(expression);
+                var deleted = await _traceFileRepository.DeleteRangeAsync(ids);
 
                 if (deleted)
                 {

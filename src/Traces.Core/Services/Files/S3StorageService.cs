@@ -52,10 +52,10 @@ namespace Traces.Core.Services.Files
         {
             try
             {
-                GetObjectResponse response = await _s3Client.GetObjectAsync(_s3Config.Value.BucketName, traceFile.Path);
-                MemoryStream memoryStream = new MemoryStream();
+                var response = await _s3Client.GetObjectAsync(_s3Config.Value.BucketName, traceFile.Path);
+                var memoryStream = new MemoryStream();
 
-                using (Stream responseStream = response.ResponseStream)
+                using (var responseStream = response.ResponseStream)
                 {
                     responseStream.CopyTo(memoryStream);
                 }

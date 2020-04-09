@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using NodaTime;
 using Optional;
+using Traces.Core.Extensions.Files;
 using Traces.Core.Models;
-using Traces.Data.Entities;
 
-namespace Traces.Core.Extensions
+namespace Traces.Core.Extensions.Traces
 {
     public static class TraceExtensions
     {
-        public static TraceDto ToTraceDto(this Trace trace) => new TraceDto
+        public static TraceDto ToTraceDto(this Data.Entities.Trace trace) => new TraceDto
         {
             Description = trace.Description.SomeNotNull(),
             State = trace.State,
@@ -23,6 +23,6 @@ namespace Traces.Core.Extensions
             Files = trace.Files.ToTraceFileDtoList().SomeNotNull()
         };
 
-        public static IReadOnlyList<TraceDto> ToTraceDtoList(this IReadOnlyList<Trace> traces) => traces.Select(ToTraceDto).ToList();
+        public static IReadOnlyList<TraceDto> ToTraceDtoList(this IReadOnlyList<Data.Entities.Trace> traces) => traces.Select(ToTraceDto).ToList();
     }
 }

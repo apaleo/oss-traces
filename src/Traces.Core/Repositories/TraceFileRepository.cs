@@ -41,9 +41,9 @@ namespace Traces.Core.Repositories
             _dbContext.Add(traceFile);
         }
 
-        public async Task<bool> DeleteRangeAsync(Expression<Func<TraceFile, bool>> expression)
+        public async Task<bool> DeleteRangeAsync(List<int> ids)
         {
-            var traceFiles = await GetAllTraceFilesForTenantAsync(expression);
+            var traceFiles = await GetAllTraceFilesForTenantAsync(tf => ids.Contains(tf.Id));
 
             if (!traceFiles.Any())
             {

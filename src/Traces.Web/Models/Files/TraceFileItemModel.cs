@@ -23,6 +23,6 @@ namespace Traces.Web.Models.Files
 
         public TraceFileItemModelState State { get; set; } = TraceFileItemModelState.NoChanges;
 
-        public bool HasStateChanges => State != TraceFileItemModelState.NoChanges;
+        public bool IsStateChanged => State != TraceFileItemModelState.NoChanges;
     }
 }

@@ -32,6 +32,9 @@ namespace Traces.Web.Pages
                 createResult.Result.MatchSome(ActiveTracesDictionary.AddTrace);
 
                 await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
+
+                await CreateTraceFileAsync(createResult.Result.ValueOrException(new NotImplementedException()).Id);
+                await DeleteTraceFilesAsync();
             }
             else
             {
@@ -42,8 +45,7 @@ namespace Traces.Web.Pages
 
             if (createResult.Success)
             {
-                await CreateTraceFileAsync(createResult.Result.ValueOrException(new NotImplementedException()).Id);
-                await DeleteTraceFilesAsync();
+                createResult.Result.MatchSome(async trace => await CreateTraceFileAsync(trace.Id));
 
                 HideCreateTraceModal();
             }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Blazorise;
 using Microsoft.AspNetCore.Components;
@@ -58,12 +59,10 @@ namespace Traces.Web.ViewModels.Traces
 
             if (replaceResult.Success)
             {
-                var filesCreatedResult = await CreateTraceFileAsync(replaceTraceItemModel.Id);
-                var filesDeletedResult = await DeleteTraceFilesAsync();
-                if (filesCreatedResult && filesDeletedResult)
-                {
-                    HideEditTraceModal();
-                }
+                await CreateTraceFileAsync(replaceTraceItemModel.Id);
+                await DeleteTraceFilesAsync();
+
+                HideEditTraceModal();
             }
         }
 
@@ -177,10 +176,10 @@ namespace Traces.Web.ViewModels.Traces
             return true;
         }
 
-        public async Task<bool> DeleteTraceFilesAsync()
+        protected async Task<bool> DeleteTraceFilesAsync()
         {
             var traceFileIds = EditTraceDialogViewModel.GetTraceFilesToDelete();
-            if (traceFileIds.Count > 0)
+            if (traceFileIds.Any())
             {
                 var result = await FileService.DeleteTraceFileRangeAsync(traceFileIds);
                 if (result.Success)

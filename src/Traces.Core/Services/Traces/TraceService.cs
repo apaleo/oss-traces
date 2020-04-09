@@ -13,7 +13,7 @@ using Traces.Common.Exceptions;
 using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Core.ClientFactories;
-using Traces.Core.Extensions;
+using Traces.Core.Extensions.Traces;
 using Traces.Core.Models;
 using Traces.Core.Repositories;
 using Traces.Core.Services.Files;
