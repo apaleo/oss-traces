@@ -6,6 +6,10 @@ using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Exceptions;
 using Traces.Data.Entities;
@@ -14,14 +18,20 @@ namespace Traces.Core.Services.Files
 {
     public class S3StorageService : IFileStorageService, System.IDisposable
     {
-        private const string BucketName = "oss-traces.apaleo-local";
+        private readonly IOptions<S3Config> _s3Config;
 
-        private readonly IAmazonS3 _s3Client = new AmazonS3Client(new AmazonS3Config
+        private readonly IAmazonS3 _s3Client;
+
+        public S3StorageService(IOptions<S3Config> s3Config, IWebHostEnvironment env)
         {
-            RegionEndpoint = RegionEndpoint.EUWest1,
-            ServiceURL = "http://localhost:4572",
-            ForcePathStyle = true
-        });
+            _s3Config = s3Config;
+            _s3Client = new AmazonS3Client(new AmazonS3Config
+            {
+                RegionEndpoint = RegionEndpoint.GetBySystemName(_s3Config.Value.Region),
+                ServiceURL = env.IsDevelopment() ? "http://localhost:4572" : null,
+                ForcePathStyle = env.IsDevelopment()
+            });
+        }
 
         public async Task CreateFileAsync(TraceFile traceFile, MemoryStream data)
         {
@@ -29,7 +39,7 @@ namespace Traces.Core.Services.Files
             {
                 using (var fileTransferUtility = new TransferUtility(_s3Client))
                 {
-                    await fileTransferUtility.UploadAsync(data, BucketName, traceFile.Path);
+                    await fileTransferUtility.UploadAsync(data, _s3Config.Value.BucketName, traceFile.Path);
                 }
             }
             catch (AmazonS3Exception e)
@@ -42,7 +52,7 @@ namespace Traces.Core.Services.Files
         {
             try
             {
-                GetObjectResponse response = await _s3Client.GetObjectAsync(BucketName, traceFile.Path);
+                GetObjectResponse response = await _s3Client.GetObjectAsync(_s3Config.Value.BucketName, traceFile.Path);
                 MemoryStream memoryStream = new MemoryStream();
 
                 using (Stream responseStream = response.ResponseStream)
@@ -69,7 +79,7 @@ namespace Traces.Core.Services.Files
             {
                 await _s3Client.DeleteObjectsAsync(new DeleteObjectsRequest
                 {
-                    BucketName = BucketName,
+                    BucketName = _s3Config.Value.BucketName,
                     Objects = keysAndVersions
                 });
             }

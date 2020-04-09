@@ -58,6 +58,8 @@ namespace Traces.Web
             services.Configure<IntegrationConfig>(Configuration.GetSection("apaleo:IntegrationConfig"));
             services.Configure<ServicesUriConfig>(Configuration.GetSection("apaleo:ServicesUri"));
             services.Configure<ApaleoConfig>(Configuration.GetSection("apaleo"));
+            services.Configure<S3Config>(Configuration.GetSection("Storage:S3"));
+            services.Configure<StorageConfig>(Configuration.GetSection("Storage"));
 
             // Here we have a retry policy only for read-only requests such as GET or HEAD
             // In addition there is a waiting time for the circuit breaker to avoid too many requests per second to the apaleo api
