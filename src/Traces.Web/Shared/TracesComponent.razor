@@ -54,11 +54,11 @@
                     <div class="d-flex justify-content-end">
                         @if (trace.State == TraceState.Active)
                         {
-                            <Button class="mr-2" Color="Color.Primary" IsLoading="@IsLoading" Clicked="@(() => OnComplete(trace))">
+                            <Button class="mr-2" Color="Color.Primary" IsDisabled="@IsLoading" IsLoading="@IsLoading" Clicked="@(() => OnComplete(trace))">
                                 <i class="fa fa-check"></i>
                                 @TextConstants.TracesCompleteButtonText
                             </Button>
-                            <Button class="mr-2" Color="Color.Secondary" IsOutline="true" IsLoading="@IsLoading" Clicked="@(() => OnEdit(trace))">
+                            <Button class="mr-2" Color="Color.Secondary" IsOutline="true" IsDisabled="@IsLoading" IsLoading="@IsLoading" Clicked="@(() => OnEdit(trace))">
                                 <i class="fa fa-edit"></i>
                                 @TextConstants.TracesEditButtonText
                             </Button>
@@ -74,7 +74,7 @@
                         }
                         else
                         {
-                            <Button class="mr-2" Color="Color.Secondary" IsOutline="true" IsLoading="@IsLoading" Clicked="@(() => OnRevertComplete(trace))">
+                            <Button class="mr-2" Color="Color.Secondary" IsOutline="true" IsDisabled="@IsLoading" IsLoading="@IsLoading" Clicked="@(() => OnRevertComplete(trace))">
                                 <i class="fa fa-history"></i>
                                 @TextConstants.TracesRevertCompleteButtonText
                             </Button>

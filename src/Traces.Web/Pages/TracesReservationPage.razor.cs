@@ -43,22 +43,19 @@ namespace Traces.Web.Pages
 
             if (createResult.Success)
             {
+                await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
+
                 await RefreshAsync();
 
-                await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
+                createResult.Result.MatchSome(async trace => await CreateTraceFileAsync(trace.Id));
+
+                HideCreateTraceModal();
             }
             else
             {
                 var errorMessage = createResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
                 await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-            }
-
-            if (createResult.Success)
-            {
-                createResult.Result.MatchSome(async trace => await CreateTraceFileAsync(trace.Id));
-
-                HideCreateTraceModal();
             }
         }
 
@@ -92,6 +89,8 @@ namespace Traces.Web.Pages
         protected override async Task RefreshAsync()
         {
             await LoadTracesAsync();
+
+            StateHasChanged();
         }
 
         private async Task LoadAllTracesAsync()

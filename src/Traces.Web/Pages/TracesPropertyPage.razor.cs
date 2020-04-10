@@ -29,25 +29,21 @@ namespace Traces.Web.Pages
 
             if (createResult.Success)
             {
-                createResult.Result.MatchSome(ActiveTracesDictionary.AddTrace);
-
                 await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
 
-                await CreateTraceFileAsync(createResult.Result.ValueOrException(new NotImplementedException()).Id);
-                await DeleteTraceFilesAsync();
+                createResult.Result.MatchSome(async trace =>
+                {
+                    ActiveTracesDictionary.AddTrace(trace);
+                    await CreateTraceFileAsync(trace.Id);
+                });
+
+                HideCreateTraceModal();
             }
             else
             {
                 var errorMessage = createResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
                 await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-            }
-
-            if (createResult.Success)
-            {
-                createResult.Result.MatchSome(async trace => await CreateTraceFileAsync(trace.Id));
-
-                HideCreateTraceModal();
             }
         }
 

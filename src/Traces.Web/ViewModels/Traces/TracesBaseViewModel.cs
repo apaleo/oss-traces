@@ -46,23 +46,20 @@ namespace Traces.Web.ViewModels.Traces
 
             if (replaceResult.Success)
             {
+                await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceUpdatedSuccessfullyMessage);
+
                 await RefreshAsync();
 
-                await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceUpdatedSuccessfullyMessage);
+                await CreateTraceFileAsync(replaceTraceItemModel.Id);
+                await DeleteTraceFilesAsync();
+
+                HideEditTraceModal();
             }
             else
             {
                 var errorMessage = replaceResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
                 await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-            }
-
-            if (replaceResult.Success)
-            {
-                await CreateTraceFileAsync(replaceTraceItemModel.Id);
-                await DeleteTraceFilesAsync();
-
-                HideEditTraceModal();
             }
         }
 
@@ -153,7 +150,7 @@ namespace Traces.Web.ViewModels.Traces
             EditTraceModalRef?.Hide();
         }
 
-        public async Task<bool> CreateTraceFileAsync(int traceId)
+        public async Task CreateTraceFileAsync(int traceId)
         {
             var createTraceFileModels = EditTraceDialogViewModel.GetCreateTraceFileItemModels(traceId);
             if (createTraceFileModels.Count > 0)
@@ -168,15 +165,11 @@ namespace Traces.Web.ViewModels.Traces
                     var errorMessage = result.ErrorMessage.ValueOrException(new NotImplementedException());
 
                     await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-
-                    return false;
                 }
             }
-
-            return true;
         }
 
-        protected async Task<bool> DeleteTraceFilesAsync()
+        protected async Task DeleteTraceFilesAsync()
         {
             var traceFileIds = EditTraceDialogViewModel.GetTraceFilesToDelete();
             if (traceFileIds.Any())
@@ -191,12 +184,8 @@ namespace Traces.Web.ViewModels.Traces
                     var errorMessage = result.ErrorMessage.ValueOrException(new NotImplementedException());
 
                     await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-
-                    return false;
                 }
             }
-
-            return true;
         }
 
         protected override async Task OnInitializedAsync()
