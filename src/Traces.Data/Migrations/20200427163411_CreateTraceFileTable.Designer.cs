@@ -11,7 +11,7 @@ using Traces.Data;
 namespace Traces.Data.Migrations
 {
     [DbContext(typeof(TracesDbContext))]
-    [Migration("20200409122219_CreateTraceFileTable")]
+    [Migration("20200427163411_CreateTraceFileTable")]
     partial class CreateTraceFileTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

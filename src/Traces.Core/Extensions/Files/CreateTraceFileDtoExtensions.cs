@@ -15,7 +15,6 @@ namespace Traces.Core.Extensions.Files
                 string.IsNullOrWhiteSpace(createTraceFileDto.MimeType) ||
                 createTraceFileDto.Size <= 0 ||
                 createTraceFileDto.Size > AppConstants.MaxFileSizeInBytes ||
-                createTraceFileDto.TraceId < 0 ||
                 createTraceFileDto.Data == null
             )
             {
@@ -51,7 +50,6 @@ namespace Traces.Core.Extensions.Files
                 Size = dto.Size,
                 CreatedBy = currentSubjectId,
                 MimeType = dto.MimeType,
-                TraceId = dto.TraceId,
                 Path = path,
                 PublicId = Guid.NewGuid()
             };
