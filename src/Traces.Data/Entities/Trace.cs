@@ -1,3 +1,4 @@
+#pragma warning disable CA2227 // Can be disabled in models
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NodaTime;
@@ -29,7 +30,6 @@ namespace Traces.Data.Entities
 
         public string AssignedRole { get; set; }
 
-        // initialization needed, otherwise EF returns null
-        public List<TraceFile> Files { get; } = new List<TraceFile>();
+        public List<TraceFile> Files { get; set; }
     }
 }

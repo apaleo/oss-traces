@@ -47,8 +47,6 @@ namespace Traces.Web.Pages
 
                 await RefreshAsync();
 
-                createResult.Result.MatchSome(async trace => await CreateTraceFileAsync(trace.Id));
-
                 HideCreateTraceModal();
             }
             else

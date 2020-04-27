@@ -137,6 +137,9 @@ namespace Traces.Core.Services.Traces
                 throw new BusinessValidationException(TextConstants.CreateTraceWithoutTitleOrFutureDateErrorMessage);
             }
 
+            var traceFiles = new List<TraceFile>();
+            createTraceDto.FilesToUpload.MatchSome(async files => { traceFiles.AddRange(await this._traceFileService.UploadStorageFilesAsync(files)); });
+
             var trace = new Trace
             {
                 Description = createTraceDto.Description.ValueOrDefault(),
@@ -145,7 +148,8 @@ namespace Traces.Core.Services.Traces
                 DueDate = createTraceDto.DueDate,
                 PropertyId = createTraceDto.PropertyId,
                 ReservationId = createTraceDto.ReservationId.ValueOrDefault(),
-                AssignedRole = createTraceDto.AssignedRole.ValueOrDefault()
+                AssignedRole = createTraceDto.AssignedRole.ValueOrDefault(),
+                Files = traceFiles
             };
 
             _traceRepository.Insert(trace);
@@ -190,10 +194,15 @@ namespace Traces.Core.Services.Traces
 
             var trace = await _traceRepository.GetAsync(id);
 
+            var traceFiles = trace.Files ?? new List<TraceFile>();
+            replaceTraceDto.FilesToDelete.MatchSome(ids => { traceFiles.RemoveAll(traceFile => ids.Contains(traceFile.Id)); });
+            replaceTraceDto.FilesToUpload.MatchSome(async files => { traceFiles.AddRange(await this._traceFileService.UploadStorageFilesAsync(files)); });
+
             trace.Description = replaceTraceDto.Description.ValueOrDefault();
             trace.Title = replaceTraceDto.Title;
             trace.DueDate = replaceTraceDto.DueDate;
             trace.AssignedRole = replaceTraceDto.AssignedRole.ValueOrDefault();
+            trace.Files = traceFiles;
 
             await _traceRepository.SaveAsync();
 
@@ -245,7 +254,12 @@ namespace Traces.Core.Services.Traces
             }
 
             var trace = await _traceRepository.GetAsync(id);
-            await _traceFileService.DeleteTraceFileRangeAsync(trace.Files.Select(tf => tf.Id).ToList());
+            if (trace.Files != null)
+            {
+                await _traceFileService.DeleteStorageFilesAsync(trace.Files.Select(tf => tf.Id).ToList());
+                trace.Files = null;
+                await _traceRepository.SaveAsync();
+            }
 
             var deleted = await _traceRepository.DeleteAsync(id);
 

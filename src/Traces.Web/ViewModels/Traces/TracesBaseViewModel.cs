@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Blazorise;
 using Microsoft.AspNetCore.Components;
@@ -27,9 +26,6 @@ namespace Traces.Web.ViewModels.Traces
         protected IApaleoOneNotificationService ApaleoOneNotificationService { get; set; }
 
         [Inject]
-        protected IFileService FileService { get; set; }
-
-        [Inject]
         private IApaleoRolesCollectorService ApaleoRolesCollector { get; set; }
 
         /// <summary>
@@ -49,9 +45,6 @@ namespace Traces.Web.ViewModels.Traces
                 await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceUpdatedSuccessfullyMessage);
 
                 await RefreshAsync();
-
-                await CreateTraceFileAsync(replaceTraceItemModel.Id);
-                await DeleteTraceFilesAsync();
 
                 HideEditTraceModal();
             }
@@ -148,44 +141,6 @@ namespace Traces.Web.ViewModels.Traces
         {
             EditTraceDialogViewModel.ClearCurrentState();
             EditTraceModalRef?.Hide();
-        }
-
-        public async Task CreateTraceFileAsync(int traceId)
-        {
-            var createTraceFileModels = EditTraceDialogViewModel.GetCreateTraceFileItemModels(traceId);
-            if (createTraceFileModels.Count > 0)
-            {
-                var result = await FileService.CreateTraceFileAsync(createTraceFileModels);
-                if (result.Success)
-                {
-                    await RefreshAsync();
-                }
-                else
-                {
-                    var errorMessage = result.ErrorMessage.ValueOrException(new NotImplementedException());
-
-                    await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-                }
-            }
-        }
-
-        protected async Task DeleteTraceFilesAsync()
-        {
-            var traceFileIds = EditTraceDialogViewModel.GetTraceFilesToDelete();
-            if (traceFileIds.Any())
-            {
-                var result = await FileService.DeleteTraceFileRangeAsync(traceFileIds);
-                if (result.Success)
-                {
-                    await RefreshAsync();
-                }
-                else
-                {
-                    var errorMessage = result.ErrorMessage.ValueOrException(new NotImplementedException());
-
-                    await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-                }
-            }
         }
 
         protected override async Task OnInitializedAsync()

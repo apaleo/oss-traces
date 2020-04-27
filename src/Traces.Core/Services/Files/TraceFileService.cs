@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,73 +15,33 @@ namespace Traces.Core.Services.Files
     public class TraceFileService : ITraceFileService
     {
         private readonly ITraceFileRepository _traceFileRepository;
-        private readonly IRequestContext _requestContext;
         private readonly IFileStorageService _fileStorageService;
+        private readonly IRequestContext _requestContext;
 
-        public TraceFileService(ITraceFileRepository traceFileRepository, IRequestContext requestContext, IFileStorageService fileStorageService)
+        public TraceFileService(ITraceFileRepository traceFileRepository, IFileStorageService fileStorageService, IRequestContext requestContext)
         {
-            _fileStorageService = fileStorageService;
-            _traceFileRepository = Check.NotNull(traceFileRepository, nameof(traceFileRepository));
             _requestContext = Check.NotNull(requestContext, nameof(requestContext));
+            _fileStorageService = Check.NotNull(fileStorageService, nameof(fileStorageService));
+            _traceFileRepository = Check.NotNull(traceFileRepository, nameof(traceFileRepository));
         }
 
-        public async Task<IReadOnlyList<TraceFileDto>> CreateTraceFileAsync(List<CreateTraceFileDto> createTraceFileDtos)
+        public async Task<List<TraceFile>> UploadStorageFilesAsync(List<CreateTraceFileDto> files)
         {
-            Check.NotNull(createTraceFileDtos, nameof(createTraceFileDtos));
+            var traceFiles = new List<TraceFile>();
 
-            foreach (var createTraceFileDto in createTraceFileDtos)
-            {
-                if (!createTraceFileDto.IsValid())
-                {
-                    throw new BusinessValidationException(TextConstants.CreateTraceFileInvalidErrorMessage);
-                }
-            }
-
-            List<TraceFileDto> dtos = new List<TraceFileDto>();
-
-            foreach (var createTraceFileDto in createTraceFileDtos)
-            {
-                var traceFileDto = await CreateTraceFileAsync(createTraceFileDto);
-                dtos.Add(traceFileDto);
-            }
-
-            return dtos.ToList();
-        }
-
-        public async Task<TraceFileDto> CreateTraceFileAsync(CreateTraceFileDto createTraceFileDto)
-        {
-            Check.NotNull(createTraceFileDto, nameof(createTraceFileDto));
-
-            if (!createTraceFileDto.IsValid())
+            if (!files.IsValid())
             {
                 throw new BusinessValidationException(TextConstants.CreateTraceFileInvalidErrorMessage);
             }
 
-            var tenantId = _requestContext.TenantId;
-            var fileGuid = Guid.NewGuid();
-            var currentSubjectId = _requestContext.SubjectId;
-            var path = $"files/{tenantId}/{fileGuid}/{createTraceFileDto.Name}";
-
-            var traceFile = new TraceFile
+            foreach (var createFile in files)
             {
-                Name = createTraceFileDto.Name,
-                Size = createTraceFileDto.Size,
-                CreatedBy = currentSubjectId,
-                MimeType = createTraceFileDto.MimeType,
-                TraceId = createTraceFileDto.TraceId,
-                Path = path,
-                PublicId = Guid.NewGuid()
-            };
+                var traceFile = createFile.ToTraceFile(this._requestContext);
+                traceFiles.Add(traceFile);
+                await this._fileStorageService.CreateFileAsync(traceFile, createFile.Data);
+            }
 
-            await _fileStorageService.CreateFileAsync(traceFile, createTraceFileDto.Data);
-
-            _traceFileRepository.Insert(traceFile);
-
-            await _traceFileRepository.SaveAsync();
-
-            var newTraceFile = await _traceFileRepository.GetAsync(traceFile.Id);
-
-            return newTraceFile.ToTraceFileDto();
+            return traceFiles;
         }
 
         public async Task<SavedFileDto> GetSavedFileFromPublicIdAsync(string publicId)
@@ -104,23 +63,15 @@ namespace Traces.Core.Services.Files
             };
         }
 
-        public async Task<bool> DeleteTraceFileRangeAsync(List<int> ids)
+        public async Task<IReadOnlyList<TraceFile>> DeleteStorageFilesAsync(List<int> ids)
         {
             var traceFiles = await _traceFileRepository.GetAllTraceFilesForTenantAsync(traceFile => ids.Contains(traceFile.Id));
             if (traceFiles.Any())
             {
                 await _fileStorageService.DeleteFileRangeAsync(traceFiles);
-                var deleted = await _traceFileRepository.DeleteRangeAsync(ids);
-
-                if (deleted)
-                {
-                    await _traceFileRepository.SaveAsync();
-                }
-
-                return deleted;
             }
 
-            return true;
+            return traceFiles;
         }
     }
 }

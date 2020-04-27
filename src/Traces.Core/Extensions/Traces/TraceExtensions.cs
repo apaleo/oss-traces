@@ -4,6 +4,7 @@ using NodaTime;
 using Optional;
 using Traces.Core.Extensions.Files;
 using Traces.Core.Models;
+using Traces.Core.Models.Files;
 
 namespace Traces.Core.Extensions.Traces
 {
@@ -20,7 +21,7 @@ namespace Traces.Core.Extensions.Traces
             PropertyId = trace.PropertyId,
             ReservationId = trace.ReservationId.SomeNotNull(),
             AssignedRole = trace.AssignedRole.SomeNotNull(),
-            Files = trace.Files.ToTraceFileDtoList().SomeNotNull()
+            Files = trace.Files?.ToTraceFileDtoList().SomeNotNull() ?? Option.None<IReadOnlyList<TraceFileDto>>()
         };
 
         public static IReadOnlyList<TraceDto> ToTraceDtoList(this IReadOnlyList<Data.Entities.Trace> traces) => traces.Select(ToTraceDto).ToList();

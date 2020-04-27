@@ -28,7 +28,8 @@ namespace Traces.Data
             modelBuilder
                 .Entity<Trace>()
                 .HasMany(t => t.Files)
-                .WithOne(tf => tf.Trace);
+                .WithOne(tf => tf.Trace)
+                .HasForeignKey(tf => tf.TraceId);
 
             base.OnModelCreating(modelBuilder);
         }

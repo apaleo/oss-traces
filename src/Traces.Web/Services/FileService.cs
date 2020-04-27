@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Optional;
@@ -21,34 +20,6 @@ namespace Traces.Web.Services
             _traceFileService = traceFileService;
         }
 
-        public async Task<ResultModel<IReadOnlyList<TraceFileItemModel>>> CreateTraceFileAsync(List<CreateTraceFileItemModel> createTraceFileItemModels)
-        {
-            try
-            {
-                var createTraceFileDtos = createTraceFileItemModels.ToCreateTraceFileDtoList();
-
-                var traceFileDtos = await _traceFileService.CreateTraceFileAsync(createTraceFileDtos);
-
-                var traceFileItemModels = traceFileDtos.ToTraceFileItemModelList();
-
-                return new ResultModel<IReadOnlyList<TraceFileItemModel>>
-                {
-                    Result = traceFileItemModels.Some(),
-                    Success = true
-                };
-            }
-            catch (BusinessValidationException ex)
-            {
-                _logger.LogWarning(ex, $"{nameof(FileService)}.{nameof(CreateTraceFileAsync)} - Exception while trying to create trace file");
-
-                return new ResultModel<IReadOnlyList<TraceFileItemModel>>
-                {
-                    Success = false,
-                    ErrorMessage = ex.Message.Some()
-                };
-            }
-        }
-
         public async Task<ResultModel<SavedFileItemModel>> GetSavedFileFromPublicIdAsync(string publicId)
         {
             try
@@ -68,30 +39,6 @@ namespace Traces.Web.Services
                 _logger.LogWarning(ex, $"{nameof(FileService)}.{nameof(GetSavedFileFromPublicIdAsync)} - Exception while trying to get saved trace file");
 
                 return new ResultModel<SavedFileItemModel>
-                {
-                    Success = false,
-                    ErrorMessage = ex.Message.Some()
-                };
-            }
-        }
-
-        public async Task<ResultModel<bool>> DeleteTraceFileRangeAsync(List<int> ids)
-        {
-            try
-            {
-                var deleteResult = await _traceFileService.DeleteTraceFileRangeAsync(ids);
-
-                return new ResultModel<bool>
-                {
-                    Result = deleteResult.Some(),
-                    Success = true
-                };
-            }
-            catch (BusinessValidationException ex)
-            {
-                _logger.LogWarning(ex, $"{nameof(FileService)}.{nameof(DeleteTraceFileRangeAsync)} - Exception while deleting trace files with id {ids}");
-
-                return new ResultModel<bool>
                 {
                     Success = false,
                     ErrorMessage = ex.Message.Some()

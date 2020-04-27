@@ -38,6 +38,7 @@ namespace Traces.Web.ViewModels
                     SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText
                         ? null
                         : SelectedRole,
+                FilesToUpload = FilesToUpload.GetValidCreateTraceFileItemModels()
             };
 
         public ReplaceTraceItemModel GetReplaceTraceItemModel()
@@ -52,19 +53,9 @@ namespace Traces.Web.ViewModels
                     SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText
                         ? null
                         : SelectedRole,
+                FilesToDelete = GetTraceFilesToDelete(),
+                FilesToUpload = FilesToUpload.GetValidCreateTraceFileItemModels()
             };
-
-        public List<CreateTraceFileItemModel> GetCreateTraceFileItemModels(int traceId)
-            => FilesToUpload
-                .Where(file => file.IsValid)
-                .ToList()
-                .ToCreateTraceFileItemModelList(traceId);
-
-        public List<int> GetTraceFilesToDelete()
-            => TraceFiles
-                .Where(file => file.State == TraceFileItemModelState.ShouldDelete)
-                .Select(file => file.Id)
-                .ToList();
 
         public void ClearCurrentState()
         {
@@ -77,5 +68,11 @@ namespace Traces.Web.ViewModels
             FilesToUpload.Clear();
             TraceFiles = new List<TraceFileItemModel>();
         }
+
+        private List<int> GetTraceFilesToDelete()
+            => TraceFiles
+                .Where(file => file.State == TraceFileItemModelState.ShouldDelete)
+                .Select(file => file.Id)
+                .ToList();
     }
 }

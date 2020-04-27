@@ -10,8 +10,6 @@ namespace Traces.Web.Models.Files
 
         public long Size { get; set; }
 
-        public int TraceId { get; set; }
-
         public MemoryStream Data { get; set; }
     }
 }

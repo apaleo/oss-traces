@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Traces.Web.Models;
 using Traces.Web.Models.Files;
@@ -7,10 +6,6 @@ namespace Traces.Web.Services
 {
     public interface IFileService
     {
-        Task<ResultModel<IReadOnlyList<TraceFileItemModel>>> CreateTraceFileAsync(List<CreateTraceFileItemModel> createTraceFileItemModels);
-
         Task<ResultModel<SavedFileItemModel>> GetSavedFileFromPublicIdAsync(string publicId);
-
-        Task<ResultModel<bool>> DeleteTraceFileRangeAsync(List<int> ids);
     }
 }

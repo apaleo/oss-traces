@@ -31,11 +31,7 @@ namespace Traces.Web.Pages
             {
                 await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
 
-                createResult.Result.MatchSome(async trace =>
-                {
-                    ActiveTracesDictionary.AddTrace(trace);
-                    await CreateTraceFileAsync(trace.Id);
-                });
+                createResult.Result.MatchSome(ActiveTracesDictionary.AddTrace);
 
                 HideCreateTraceModal();
             }

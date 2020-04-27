@@ -13,7 +13,6 @@ namespace Traces.Web.Extensions.Files
             Name = createTraceFileItemModel.Name,
             Size = createTraceFileItemModel.Size,
             MimeType = createTraceFileItemModel.MimeType,
-            TraceId = createTraceFileItemModel.TraceId
         };
 
         public static List<CreateTraceFileDto> ToCreateTraceFileDtoList(this List<CreateTraceFileItemModel> createTraceFileItemModels)

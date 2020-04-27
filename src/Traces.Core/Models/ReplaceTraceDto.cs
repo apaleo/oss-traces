@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using NodaTime;
 using Optional;
+using Traces.Core.Models.Files;
 
 namespace Traces.Core.Models
 {
@@ -12,5 +14,9 @@ namespace Traces.Core.Models
         public LocalDate DueDate { get; set; }
 
         public Option<string> AssignedRole { get; set; }
+
+        public Option<List<CreateTraceFileDto>> FilesToUpload { get; set; }
+
+        public Option<List<int>> FilesToDelete { get; set; }
     }
 }
