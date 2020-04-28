@@ -83,7 +83,7 @@ namespace Traces.Web.Tests.Services
                 Title = testTraceTitle,
                 Description = testTraceDescription,
                 DueDate = testTraceDueDate,
-                PropertyId = testTracePropertyId
+                PropertyId = testTracePropertyId,
             };
 
             var resultTraceDto = new TraceDto
@@ -93,7 +93,7 @@ namespace Traces.Web.Tests.Services
                 Description = testTraceDescription.Some(),
                 DueDate = testTraceDueDate.ToLocalDateTime().Date,
                 State = TraceState.Active,
-                PropertyId = testTracePropertyId
+                PropertyId = testTracePropertyId,
             };
 
             _traceServiceMock.Setup(x => x.CreateTraceAsync(

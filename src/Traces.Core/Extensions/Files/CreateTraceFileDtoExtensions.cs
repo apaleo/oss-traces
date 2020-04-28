@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Traces.Common;
 using Traces.Common.Constants;
+using Traces.Common.Utils;
 using Traces.Core.Models.Files;
 using Traces.Data.Entities;
 
@@ -39,6 +40,9 @@ namespace Traces.Core.Extensions.Files
 
         public static TraceFile ToTraceFile(this CreateTraceFileDto dto, IRequestContext requestContext)
         {
+            Check.NotNull(dto, nameof(dto));
+            Check.NotNull(requestContext, nameof(requestContext));
+
             var tenantId = requestContext.TenantId;
             var fileGuid = Guid.NewGuid();
             var currentSubjectId = requestContext.SubjectId;

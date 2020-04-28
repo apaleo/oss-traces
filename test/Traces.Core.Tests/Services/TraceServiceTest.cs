@@ -610,6 +610,9 @@ namespace Traces.Core.Tests.Services
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
                 .ReturnsAsync(true);
 
+            _traceRepositoryMock.Setup(x => x.GetAsync(It.Is<int>(i => i == TestOverdueTraceId)))
+                .ReturnsAsync(new Trace());
+
             _traceRepositoryMock.Setup(x => x.DeleteAsync(It.Is<int>(i => i == TestOverdueTraceId)))
                 .ReturnsAsync(true);
 
@@ -638,6 +641,9 @@ namespace Traces.Core.Tests.Services
         {
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
                 .ReturnsAsync(true);
+
+            _traceRepositoryMock.Setup(x => x.GetAsync(It.Is<int>(i => i == TestActiveTraceId)))
+                .ReturnsAsync(new Trace());
 
             _traceRepositoryMock.Setup(x => x.DeleteAsync(It.Is<int>(i => i == TestActiveTraceId)))
                 .ReturnsAsync(false);

@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using NodaTime.Extensions;
 using Optional;
 using Traces.Common.Utils;
 using Traces.Core.Models;
+using Traces.Core.Models.Files;
 using Traces.Web.Extensions.Files;
 using Traces.Web.Models;
 
@@ -36,7 +38,7 @@ namespace Traces.Web.Extensions.Traces
                 DueDate = itemModel.DueDate.ToLocalDateTime().Date,
                 ReservationId = itemModel.ReservationId.SomeNotNull(),
                 AssignedRole = itemModel.AssignedRole.SomeNotNull(),
-                FilesToUpload = itemModel.FilesToUpload.ToCreateTraceFileDtoList().SomeNotNull(),
+                FilesToUpload = itemModel.FilesToUpload?.ToCreateTraceFileDtoList().SomeNotNull() ?? Option.None<List<CreateTraceFileDto>>(),
             };
         }
     }
