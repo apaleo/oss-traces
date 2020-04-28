@@ -19,23 +19,21 @@ namespace Traces.Core.Services.Files
             }
         }
 
-        public async Task<MemoryStream> GetFileAsync(TraceFile traceFile)
+        public async Task<byte[]> GetFileAsync(TraceFile traceFile)
         {
-            var memoryStream = new MemoryStream();
-
             try
             {
                 using (var fileStream = File.OpenRead(traceFile.Path))
+                using (var ms = new MemoryStream())
                 {
-                    await fileStream.CopyToAsync(memoryStream);
+                    await fileStream.CopyToAsync(ms);
+                    return ms.ToArray();
                 }
             }
             catch (DirectoryNotFoundException ex)
             {
                 throw new BusinessValidationException(TextConstants.FileGetExceptionMessage, ex);
             }
-
-            return memoryStream;
         }
 
         public Task DeleteFileRangeAsync(IReadOnlyList<TraceFile> traceFiles)

@@ -52,9 +52,7 @@ namespace Traces.Core.Services.Files
             }
 
             var traceFile = await _traceFileRepository.GetByPublicIdAsync(publicId);
-            var memoryStream = await _fileStorageService.GetFileAsync(traceFile);
-            var data = memoryStream.ToArray();
-            await memoryStream.DisposeAsync();
+            var data = await _fileStorageService.GetFileAsync(traceFile);
 
             return new SavedFileDto
             {

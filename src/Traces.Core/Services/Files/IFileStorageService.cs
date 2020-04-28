@@ -9,7 +9,7 @@ namespace Traces.Core.Services.Files
     {
         Task CreateFileAsync(TraceFile traceFile, MemoryStream data);
 
-        Task<MemoryStream> GetFileAsync(TraceFile traceFile);
+        Task<byte[]> GetFileAsync(TraceFile traceFile);
 
         Task DeleteFileRangeAsync(IReadOnlyList<TraceFile> traceFiles);
     }

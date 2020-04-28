@@ -54,19 +54,18 @@ namespace Traces.Core.Services.Files
             }
         }
 
-        public async Task<MemoryStream> GetFileAsync(TraceFile traceFile)
+        public async Task<byte[]> GetFileAsync(TraceFile traceFile)
         {
             try
             {
                 var response = await _s3Client.GetObjectAsync(_s3UserConfig.Value.BucketName, traceFile.Path);
-                var memoryStream = new MemoryStream();
 
                 using (var responseStream = response.ResponseStream)
+                using (var ms = new MemoryStream())
                 {
-                    responseStream.CopyTo(memoryStream);
+                    responseStream.CopyTo(ms);
+                    return ms.ToArray();
                 }
-
-                return memoryStream;
             }
             catch (AmazonS3Exception e)
             {
