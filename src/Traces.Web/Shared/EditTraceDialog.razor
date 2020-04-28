@@ -29,12 +29,12 @@
     <Field>
         <FieldLabel>@TextConstants.TracesEditDialogRoleText</FieldLabel>
         <FieldBody>
-            <SelectEdit @bind-SelectedValue="@EditTraceDialogVm.SelectedRole">
+            <Select @bind-SelectedValue="@EditTraceDialogVm.SelectedRole">
                 @foreach (var role in EditTraceDialogVm.Roles)
                 {
                     <SelectItem Value="@role">@role.Humanize()</SelectItem>
                 }
-            </SelectEdit>
+            </Select>
         </FieldBody>
     </Field>
     <Field>
@@ -59,11 +59,11 @@
                     <div class="d-flex justify-content-end">
                         @if (file.IsStateChanged)
                         {
-                            <Button Color="Color.Secondary" IsOutline="true" PreventDefaultOnSubmit="true" Clicked="@(() => OnUndoDeleteClick(file))">@TextConstants.TracesUndoDeleteButtonText</Button>
+                            <Button Color="Color.Secondary" Outline="true" PreventDefaultOnSubmit="true" Clicked="@(() => OnUndoDeleteClick(file))">@TextConstants.TracesUndoDeleteButtonText</Button>
                         }
                         else
                         {
-                            <Button Color="Color.Danger" IsOutline="true" PreventDefaultOnSubmit="true" Clicked="@(() => OnDeleteClick(file))">@TextConstants.TracesDeleteButtonText</Button>
+                            <Button Color="Color.Danger" Outline="true" PreventDefaultOnSubmit="true" Clicked="@(() => OnDeleteClick(file))">@TextConstants.TracesDeleteButtonText</Button>
                         }
                     </div>
                 </div>
@@ -73,13 +73,14 @@
         </FieldBody>
     </Field>
     <ModalFooter>
-        <Button Color="Color.Primary" IsDisabled="@_isLoading" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" IsLoading="@_isLoading" Clicked="@OnCreateOrEditButtonClick">@SubmitButtonText</Button>
-        <Button Color="Color.Secondary" PreventDefaultOnSubmit="true" Clicked="@OnClose">@TextConstants.TracesCloseButtonText</Button>
-    </ModalFooter>
+        <Button Color="Color.Primary" Type="ButtonType.Submit" Disabled="@_isLoading" PreventDefaultOnSubmit="true" Loading="@_isLoading" Clicked="@OnCreateOrEditButtonClick">@SubmitButtonText</Button>
+        <Button Color="Color.Secondary" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" Loading="@_isLoading" Clicked="@OnClose">Close</Button>
+        </ModalFooter>
 </Form>
 
 @code
 {
+
     private bool _isLoading;
 
     [Parameter]

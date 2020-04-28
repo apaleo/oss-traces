@@ -77,13 +77,13 @@
 
     <Modal @ref="@EditTraceModalRef">
         <ModalBackdrop/>
-        <ModalContent IsCentered="true" Size="ModalSize.Large">
+        <ModalContent Centered="true" Size="ModalSize.Large">
             <ModalHeader>
                 <ModalTitle>@TextConstants.EditTraceModalTitle</ModalTitle>
                 <CloseButton Clicked="@HideEditTraceModal"/>
             </ModalHeader>
             <ModalBody>
-                @if (EditTraceModalRef.IsOpen)
+                @if (EditTraceModalRef.Visible)
                 {
                     <EditTraceDialog EditTraceDialogVm="@EditTraceDialogViewModel" OnClose="@HideEditTraceModal" OnSubmit="@EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
                 }

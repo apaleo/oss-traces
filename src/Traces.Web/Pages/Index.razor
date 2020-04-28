@@ -12,7 +12,7 @@
             }
             else
             {
-                <Button IsBlock="true" Color="Color.Primary" IsDisabled="@IsLoading" IsLoading="@IsLoading" Clicked="@(() => TriggerSetupAsync())">@ButtonText</Button>
+                <Button Block="true" Color="Color.Primary" Disabled="@IsLoading" Loading="@IsLoading" Clicked="@(() => TriggerSetupAsync())">@ButtonText</Button>
             }
         </CardBody>
     </Card>

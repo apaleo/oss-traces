@@ -20,7 +20,7 @@
         <div class="d-flex flex-fill flex-column">
             <TextEdit Color="@(file.HasInvalidSize ? Color.Danger : Color.None)"
                       @bind-Text="@file.Name"
-                      IsDisabled="@file.HasInvalidSize">
+                      Disabled="@file.HasInvalidSize">
             </TextEdit>
             <div class="d-flex mt-1">
                 @if (file.HasInvalidSize)
