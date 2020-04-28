@@ -8,9 +8,9 @@
         @if (HasCompletedTraces)
         {
             <div class="mb-3">
-                <CheckEdit @bind-Checked="@IsCompletedTracesVisible">
+                <Check TValue="bool" @bind-Checked="@IsCompletedTracesVisible">
                     @CompletedTracesCheckBoxText
-                </CheckEdit>
+                </Check>
             </div>
         }
 
@@ -106,7 +106,7 @@
 
     <Modal @ref="@EditTraceModalRef">
         <ModalBackdrop/>
-        <ModalContent IsCentered="true" Size="ModalSize.Large">
+        <ModalContent Centered="true" Size="ModalSize.Large">
             <ModalHeader>
                 <ModalTitle>@TextConstants.EditTraceModalTitle</ModalTitle>
                 <CloseButton Clicked="@HideEditTraceModal"/>
@@ -119,7 +119,7 @@
 
     <Modal @ref="@CreateTraceModalRef">
         <ModalBackdrop/>
-        <ModalContent IsCentered="true" Size="ModalSize.Large">
+        <ModalContent Centered="true" Size="ModalSize.Large">
             <ModalHeader>
                 <ModalTitle>@TextConstants.CreateTraceModalTitle</ModalTitle>
                 <CloseButton Clicked="@HideCreateTraceModal"/>

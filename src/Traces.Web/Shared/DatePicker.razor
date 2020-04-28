@@ -7,19 +7,19 @@
 
 <div class="py-3 apa-date-picker">
     <div class="row no-gutters">
-        <Button Color="Color.Primary" IsOutline="true" Clicked="@SetTodayButtonOnClick">
+        <Button Color="Color.Primary" Outline="true" Clicked="@SetTodayButtonOnClick">
             <i class="fa fa-redo"></i>
             @TextConstants.DatePickerSetTodayButtonText</Button>
 
         <div class="row no-gutters">
-            <Button class="ml-1" Clicked="@PreviousWeekButtonOnClick" IsDisabled="@IsPreviousWeekDisabled">
+            <Button class="ml-1" Clicked="@PreviousWeekButtonOnClick" Disabled="@IsPreviousWeekDisabled">
                 <i class="fa fa-angle-double-left"></i>
             </Button>
-            <Button class="ml-1" Clicked="@PreviousDayButtonOnClick" IsDisabled="@IsPreviousDayDisabled">
+            <Button class="ml-1" Clicked="@PreviousDayButtonOnClick" Disabled="@IsPreviousDayDisabled">
                 <i class="fa fa-angle-left"></i>
             </Button>
 
-            <DateEdit class="ml-1" Min="@DateTime.Today" Date="@DatePickerDate" DateChanged="@OnDateChange"/>
+            <DateEdit class="ml-1" TValue="DateTime?" Min="@DateTime.Today" Date="@DatePickerDate" DateChanged="@OnDateChange"/>
 
             <Button class="ml-1" Clicked="@NextDayButtonOnClick">
                 <i class="fa fa-angle-right"></i>
