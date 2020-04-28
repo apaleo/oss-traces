@@ -27,7 +27,7 @@ namespace Traces.Core.Tests.Services
         private const string TestMimeType = "TestMimeType";
         private const int TestSize = 1024;
 
-        private const int TestTraceFileId = 5;
+        private const int TestTraceFileId = 0;
         private const string TestPublicId = "TestPublicId";
 
         private readonly Mock<ITraceFileRepository> _traceFileRepositoryMock;
@@ -72,34 +72,39 @@ namespace Traces.Core.Tests.Services
         }
 
         [Fact]
-        public async Task ShouldFailUploadFilesIfParamIsNotValidAsync()
+        public async Task ShouldFailUploadFilesIfNameIsEmptyAsync()
         {
-            var param = new List<CreateTraceFileDto>();
-
-            var results = new List<BusinessValidationException>();
-            param.Clear();
-            param.Add(GenerateCreateTraceFileDto(name: string.Empty));
-            results.Add(
+            var param = new List<CreateTraceFileDto> { GenerateCreateTraceFileDto(name: string.Empty) };
+            var result =
                 await Assert.ThrowsAsync<BusinessValidationException>(
-                    () => _traceFileService.UploadStorageFilesAsync(param)));
+                    () => _traceFileService.UploadStorageFilesAsync(param));
 
-            param.Clear();
-            param.Add(GenerateCreateTraceFileDto(mime: string.Empty));
-            results.Add(
+            result.Message.Should().Be(TextConstants.CreateTraceFileInvalidErrorMessage);
+        }
+
+        [Fact]
+        public async Task ShouldFailUploadFilesIfMimeTypeIsEmptyAsync()
+        {
+            var param = new List<CreateTraceFileDto> { GenerateCreateTraceFileDto(mime: string.Empty) };
+            var result =
                 await Assert.ThrowsAsync<BusinessValidationException>(
-                    () => _traceFileService.UploadStorageFilesAsync(param)));
+                    () => _traceFileService.UploadStorageFilesAsync(param));
 
-            param.Clear();
-            param.Add(GenerateCreateTraceFileDto(size: AppConstants.MaxFileSizeInBytes + 1));
-            results.Add(
-                await Assert.ThrowsAsync<BusinessValidationException>(
-                    () => _traceFileService.UploadStorageFilesAsync(param)));
+            result.Message.Should().Be(TextConstants.CreateTraceFileInvalidErrorMessage);
+        }
 
-            results.Count.Should().Be(3);
-            foreach (var businessValidationException in results)
+        [Fact]
+        public async Task ShouldFailUploadFilesIfSizeIsLargeAsync()
+        {
+            var param = new List<CreateTraceFileDto>
             {
-                businessValidationException.Message.Should().Be(TextConstants.CreateTraceFileInvalidErrorMessage);
-            }
+                GenerateCreateTraceFileDto(size: AppConstants.MaxFileSizeInBytes + 1)
+            };
+            var result =
+                await Assert.ThrowsAsync<BusinessValidationException>(
+                    () => _traceFileService.UploadStorageFilesAsync(param));
+
+            result.Message.Should().Be(TextConstants.CreateTraceFileInvalidErrorMessage);
         }
 
         [Fact]
@@ -154,7 +159,8 @@ namespace Traces.Core.Tests.Services
             var result = await Assert.ThrowsAsync<BusinessValidationException>(
                 () => _traceFileService.GetSavedFileFromPublicIdAsync(TestPublicId));
 
-            result.Message.Should().Be(string.Format(TextConstants.TraceFilePublicIdCouldNotBeFoundErrorMessageFormat, TestPublicId));
+            result.Message.Should()
+                .Be(string.Format(TextConstants.TraceFilePublicIdCouldNotBeFoundErrorMessageFormat, TestPublicId));
         }
 
         private static CreateTraceFileDto GenerateCreateTraceFileDto(
