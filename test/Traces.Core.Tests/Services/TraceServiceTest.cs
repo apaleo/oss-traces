@@ -730,9 +730,6 @@ namespace Traces.Core.Tests.Services
         [Fact]
         public async Task ShouldNotBeAbleToDeleteTraceWhenDoesNotExistAsync()
         {
-            _traceFileServiceMock.Setup(x => x.DeleteStorageFilesAsync(It.Is<List<int>>(l => l.Exists(tf => tf == TestTraceFileId))))
-                .ReturnsAsync(new List<TraceFile> { new TraceFile { Name = TestTraceFileName } });
-
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
                 .ReturnsAsync(false);
 
