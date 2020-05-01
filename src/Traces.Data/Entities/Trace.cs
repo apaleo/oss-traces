@@ -1,4 +1,3 @@
-#pragma warning disable CA2227 // Can be disabled in models
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NodaTime;
@@ -30,6 +29,8 @@ namespace Traces.Data.Entities
 
         public string AssignedRole { get; set; }
 
+#pragma warning disable CA2227 // disables argument can be null
         public List<TraceFile> Files { get; set; }
+#pragma warning restore CA2227
     }
 }

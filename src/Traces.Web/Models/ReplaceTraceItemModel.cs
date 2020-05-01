@@ -1,4 +1,3 @@
-#pragma warning disable CA2227 // Can be disabled in models
 using System;
 using System.Collections.Generic;
 using Traces.Web.Models.Files;
@@ -17,8 +16,10 @@ namespace Traces.Web.Models
 
         public string AssignedRole { get; set; }
 
+#pragma warning disable CA2227 // disables argument can be null
         public List<CreateTraceFileItemModel> FilesToUpload { get; set; }
 
         public List<int> FilesToDelete { get; set; }
+#pragma warning restore CA2227
     }
 }

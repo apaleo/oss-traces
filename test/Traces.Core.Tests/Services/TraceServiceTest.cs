@@ -541,7 +541,7 @@ namespace Traces.Core.Tests.Services
                 .ReturnsAsync(new List<TraceFile> { new TraceFile { Name = TestTraceFileName } });
 
             _traceFileServiceMock.Setup(x => x.DeleteStorageFilesAsync(It.Is<List<int>>(l => l.Exists(tf => tf == TestTraceFileId))))
-                .ReturnsAsync(new List<TraceFile> { new TraceFile { Name = TestTraceFileName } });
+                .Returns(Task.CompletedTask);
 
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
                 .ReturnsAsync(true);
@@ -709,7 +709,7 @@ namespace Traces.Core.Tests.Services
         public async Task ShouldBeAbleToDeleteTraceFileAsync()
         {
             _traceFileServiceMock.Setup(x => x.DeleteStorageFilesAsync(It.Is<List<int>>(l => l.Exists(tf => tf == TestTraceFileId))))
-                .ReturnsAsync(new List<TraceFile> { new TraceFile { Name = TestTraceFileName } });
+                .Returns(Task.CompletedTask);
 
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
                 .ReturnsAsync(true);

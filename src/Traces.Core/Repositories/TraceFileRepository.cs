@@ -24,7 +24,7 @@ namespace Traces.Core.Repositories
         public async Task<IReadOnlyList<TraceFile>> GetAllTraceFilesForTenantAsync(Expression<Func<TraceFile, bool>> expression) =>
             await _dbContext.TraceFile.Where(expression).ToListAsync();
 
-        public async Task<TraceFile> GetByPublicIdAsync(string publicId) =>
-            await _dbContext.TraceFile.FirstOrDefaultAsync(t => t.PublicId.ToString() == publicId);
+        public async Task<TraceFile> GetByPublicIdAsync(Guid publicId) =>
+            await _dbContext.TraceFile.FirstOrDefaultAsync(t => t.PublicId == publicId);
     }
 }

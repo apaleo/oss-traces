@@ -11,6 +11,6 @@ namespace Traces.Core.Services.Files
 
         Task<SavedFileDto> GetSavedFileFromPublicIdAsync(string publicId);
 
-        Task<IReadOnlyList<TraceFile>> DeleteStorageFilesAsync(List<int> ids);
+        Task DeleteStorageFilesAsync(List<int> ids);
     }
 }

@@ -28,7 +28,6 @@ namespace Traces.Core.Tests.Services
         private const int TestSize = 1024;
 
         private const int TestTraceFileId = 0;
-        private const string TestPublicId = "TestPublicId";
 
         private readonly Mock<ITraceFileRepository> _traceFileRepositoryMock;
         private readonly Mock<IRequestContext> _requestContextMock;
@@ -122,28 +121,29 @@ namespace Traces.Core.Tests.Services
                     x => x.DeleteFileRangeAsync(It.Is<IReadOnlyList<TraceFile>>(list => list.Equals(repoResult))))
                 .Returns(Task.CompletedTask);
 
-            var result = await _traceFileService.DeleteStorageFilesAsync(repoResult.Select(tf => tf.Id).ToList());
+            await _traceFileService.DeleteStorageFilesAsync(repoResult.Select(tf => tf.Id).ToList());
 
-            result.Count.Should().Be(1);
-            result.Should().Contain(t => t.Id == TestTraceFileId);
+            _fileStorageServiceMock.Verify();
         }
 
         [Fact]
         public async Task ShouldGetSavedFileFromPublicIdAsync()
         {
+            var publicId = Guid.NewGuid();
+
             var traceFile = new TraceFile { Id = TestTraceFileId };
             _traceFileRepositoryMock
                 .Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<TraceFile, bool>>>()))
                 .ReturnsAsync(true);
 
             _traceFileRepositoryMock
-                .Setup(x => x.GetByPublicIdAsync(It.Is<string>(pid => pid == TestPublicId)))
+                .Setup(x => x.GetByPublicIdAsync(It.Is<Guid>(pid => pid == publicId)))
                 .ReturnsAsync(traceFile);
 
             _fileStorageServiceMock.Setup(x => x.GetFileAsync(It.Is<TraceFile>(t => t.Id == TestTraceFileId)))
                 .ReturnsAsync(Array.Empty<byte>());
 
-            var result = await _traceFileService.GetSavedFileFromPublicIdAsync(TestPublicId);
+            var result = await _traceFileService.GetSavedFileFromPublicIdAsync(publicId.ToString());
 
             result.TraceFile.Id.Should().Be(TestTraceFileId);
             result.Data.Length.Should().Be(0);
@@ -152,15 +152,17 @@ namespace Traces.Core.Tests.Services
         [Fact]
         public async Task ShouldFailGetSavedFileFromPublicIdIfPublicIdDoesntExistsAsync()
         {
+            var publicId = Guid.NewGuid().ToString();
+
             _traceFileRepositoryMock
                 .Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<TraceFile, bool>>>()))
                 .ReturnsAsync(false);
 
             var result = await Assert.ThrowsAsync<BusinessValidationException>(
-                () => _traceFileService.GetSavedFileFromPublicIdAsync(TestPublicId));
+                () => _traceFileService.GetSavedFileFromPublicIdAsync(publicId));
 
             result.Message.Should()
-                .Be(string.Format(TextConstants.TraceFilePublicIdCouldNotBeFoundErrorMessageFormat, TestPublicId));
+                .Be(string.Format(TextConstants.TraceFilePublicIdCouldNotBeFoundErrorMessageFormat, publicId));
         }
 
         private static CreateTraceFileDto GenerateCreateTraceFileDto(

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Traces.Common;
 using Traces.Common.Constants;
 using Traces.Common.Utils;
 using Traces.Core.Models.Files;
@@ -38,24 +37,18 @@ namespace Traces.Core.Extensions.Files
             return true;
         }
 
-        public static TraceFile ToTraceFile(this CreateTraceFileDto dto, IRequestContext requestContext)
+        public static TraceFile ToTraceFile(this CreateTraceFileDto dto, string subjectId, string path, Guid publicId)
         {
             Check.NotNull(dto, nameof(dto));
-            Check.NotNull(requestContext, nameof(requestContext));
-
-            var tenantId = requestContext.TenantId;
-            var fileGuid = Guid.NewGuid();
-            var currentSubjectId = requestContext.SubjectId;
-            var path = $"files/{tenantId}/{fileGuid}/{dto.Name}";
 
             return new TraceFile
             {
                 Name = dto.Name,
                 Size = dto.Size,
-                CreatedBy = currentSubjectId,
+                CreatedBy = subjectId,
                 MimeType = dto.MimeType,
                 Path = path,
-                PublicId = Guid.NewGuid()
+                PublicId = publicId
             };
         }
     }

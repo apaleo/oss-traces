@@ -12,6 +12,6 @@ namespace Traces.Core.Repositories
 
         Task<IReadOnlyList<TraceFile>> GetAllTraceFilesForTenantAsync(Expression<Func<TraceFile, bool>> expression);
 
-        Task<TraceFile> GetByPublicIdAsync(string publicId);
+        Task<TraceFile> GetByPublicIdAsync(Guid publicId);
     }
 }

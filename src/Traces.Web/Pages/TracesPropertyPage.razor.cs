@@ -29,9 +29,9 @@ namespace Traces.Web.Pages
 
             if (createResult.Success)
             {
-                await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
-
                 createResult.Result.MatchSome(ActiveTracesDictionary.AddTrace);
+
+                await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
 
                 HideCreateTraceModal();
             }

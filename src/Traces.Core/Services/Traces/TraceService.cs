@@ -142,7 +142,7 @@ namespace Traces.Core.Services.Traces
             var filesToUpload = createTraceDto.FilesToUpload.ValueOr(new List<CreateTraceFileDto>());
             if (filesToUpload.Any())
             {
-                traceFiles.AddRange(await this._traceFileService.UploadStorageFilesAsync(filesToUpload));
+                traceFiles.AddRange(await _traceFileService.UploadStorageFilesAsync(filesToUpload));
             }
 
             var trace = new Trace
@@ -210,7 +210,7 @@ namespace Traces.Core.Services.Traces
             var filesToUpload = replaceTraceDto.FilesToUpload.ValueOr(new List<CreateTraceFileDto>());
             if (filesToUpload.Any())
             {
-                traceFiles.AddRange(await this._traceFileService.UploadStorageFilesAsync(filesToUpload));
+                traceFiles.AddRange(await _traceFileService.UploadStorageFilesAsync(filesToUpload));
             }
 
             trace.Description = replaceTraceDto.Description.ValueOrDefault();

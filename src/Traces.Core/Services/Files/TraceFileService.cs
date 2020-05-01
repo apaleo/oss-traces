@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,9 +37,11 @@ namespace Traces.Core.Services.Files
 
             foreach (var createFile in files)
             {
-                var traceFile = createFile.ToTraceFile(this._requestContext);
+                var path = $"files/{_requestContext.TenantId}/{Guid.NewGuid()}/{createFile.Name}";
+
+                var traceFile = createFile.ToTraceFile(_requestContext.SubjectId, path, Guid.NewGuid());
+                await _fileStorageService.CreateFileAsync(traceFile, createFile.Data);
                 traceFiles.Add(traceFile);
-                await this._fileStorageService.CreateFileAsync(traceFile, createFile.Data);
             }
 
             return traceFiles;
@@ -46,12 +49,14 @@ namespace Traces.Core.Services.Files
 
         public async Task<SavedFileDto> GetSavedFileFromPublicIdAsync(string publicId)
         {
-            if (!await _traceFileRepository.ExistsAsync(t => t.PublicId.ToString() == publicId))
+            var parsed = Guid.TryParse(publicId, out var publicGuid);
+
+            if (!(parsed && await _traceFileRepository.ExistsAsync(t => t.PublicId == publicGuid)))
             {
                 throw new BusinessValidationException(string.Format(TextConstants.TraceFilePublicIdCouldNotBeFoundErrorMessageFormat, publicId));
             }
 
-            var traceFile = await _traceFileRepository.GetByPublicIdAsync(publicId);
+            var traceFile = await _traceFileRepository.GetByPublicIdAsync(publicGuid);
             var data = await _fileStorageService.GetFileAsync(traceFile);
 
             return new SavedFileDto
@@ -61,15 +66,13 @@ namespace Traces.Core.Services.Files
             };
         }
 
-        public async Task<IReadOnlyList<TraceFile>> DeleteStorageFilesAsync(List<int> ids)
+        public async Task DeleteStorageFilesAsync(List<int> ids)
         {
             var traceFiles = await _traceFileRepository.GetAllTraceFilesForTenantAsync(traceFile => ids.Contains(traceFile.Id));
             if (traceFiles.Any())
             {
                 await _fileStorageService.DeleteFileRangeAsync(traceFiles);
             }
-
-            return traceFiles;
         }
     }
 }
