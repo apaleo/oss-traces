@@ -28,6 +28,7 @@ namespace Traces.Core.Tests.Services
         private const int TestSize = 1024;
 
         private const int TestTraceFileId = 0;
+        private const string TestTraceFileExceptionMessage = "TraceFileException";
 
         private readonly Mock<ITraceFileRepository> _traceFileRepositoryMock;
         private readonly Mock<IRequestContext> _requestContextMock;
@@ -68,6 +69,27 @@ namespace Traces.Core.Tests.Services
 
             result.Count.Should().Be(1);
             result.Should().Contain(t => t.Name == TestName && IsCorrectPath(t));
+        }
+
+        [Fact]
+        public async Task ShouldFailUploadFilesIfStorageFailsAsync()
+        {
+            var createTraceFileDto = GenerateCreateTraceFileDto();
+            var createTraceFiles = new List<CreateTraceFileDto> { createTraceFileDto };
+
+            _requestContextMock.SetupGet(x => x.SubjectId)
+                .Returns(TestSubjectId);
+            _requestContextMock.SetupGet(x => x.TenantId)
+                .Returns(TestTenantId);
+
+            _fileStorageServiceMock.Setup(
+                    x => x.CreateFileAsync(It.Is<TraceFile>(t => t.Name == TestName), It.IsAny<MemoryStream>()))
+                .ThrowsAsync(new BusinessValidationException(TestTraceFileExceptionMessage));
+
+            var result = await Assert.ThrowsAsync<BusinessValidationException>(
+                () => _traceFileService.UploadStorageFilesAsync(createTraceFiles));
+
+            result.Message.Should().Be(TestTraceFileExceptionMessage);
         }
 
         [Fact]

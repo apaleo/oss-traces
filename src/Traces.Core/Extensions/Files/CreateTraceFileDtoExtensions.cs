@@ -24,18 +24,7 @@ namespace Traces.Core.Extensions.Files
             return true;
         }
 
-        public static bool IsValid(this List<CreateTraceFileDto> dtos)
-        {
-            foreach (var createTraceFileDto in dtos)
-            {
-                if (!createTraceFileDto.IsValid())
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
+        public static bool IsValid(this List<CreateTraceFileDto> dtos) => dtos.TrueForAll(dto => dto.IsValid());
 
         public static TraceFile ToTraceFile(this CreateTraceFileDto dto, string subjectId, string path, Guid publicId)
         {

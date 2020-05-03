@@ -48,6 +48,7 @@ namespace Traces.Core.Tests.Services
 
         private const int TestTraceFileId = 4;
         private const string TestTraceFileName = "TestTraceFileName";
+        private const string TestTraceFileExceptionMessage = "TraceFileException";
 
         private readonly LocalDate _testActiveTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
         private readonly LocalDate _testOverdueTraceDueDate = DateTime.UtcNow.Subtract(TimeSpan.FromDays(1)).ToLocalDateTime().Date;
@@ -452,6 +453,28 @@ namespace Traces.Core.Tests.Services
             resultFilesList.Count.Should().Be(1);
             resultFilesList[0].Id.Should().Be(TestTraceFileId);
             resultFilesList[0].Name.Should().Be(TestTraceFileName);
+        }
+
+        [Fact]
+        public async Task ShouldNotBeAbleToCreateTraceWhenFileCreationFailsAsync()
+        {
+            var createTraceFileDto = new CreateTraceFileDto { Name = TestTraceFileName };
+            var createTraceFiles = new List<CreateTraceFileDto> { createTraceFileDto };
+            var createTraceDto = new CreateTraceDto
+            {
+                Description = TestActiveTraceDescription.Some(),
+                Title = TestActiveTraceTitle,
+                DueDate = _testActiveTraceDueDate,
+                PropertyId = TestActivePropertyId,
+                FilesToUpload = Option.Some(createTraceFiles)
+            };
+
+            _traceFileServiceMock.Setup(x => x.UploadStorageFilesAsync(It.Is<List<CreateTraceFileDto>>(l => l == createTraceFiles)))
+                .ThrowsAsync(new BusinessValidationException(TestTraceFileExceptionMessage));
+
+            var result = await Assert.ThrowsAsync<BusinessValidationException>(() => _traceService.CreateTraceAsync(createTraceDto));
+
+            result.Message.Should().Be(TestTraceFileExceptionMessage);
         }
 
         [Fact]
