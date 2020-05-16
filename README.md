@@ -44,8 +44,6 @@ Afterward allow public read to the bucket for **development** purposes:
 1. You will also need to override the BucketName and Region variables in the appsettings.json 
     - To achieve this you must define two environment variables `STORAGE__S3__BUCKETNAME` and `STORAGE__S3__REGION`.
     - The value of such variables should be your respective `bucket name` (e.g. oss-traces.local) and your `region` (e.g. eu-west-1)
-    - If you don't want to use amazon s3 (or localstack for development), you can also set in appsettings.json the property in `Storage.Local.IsEnabled` to true.
-        - The files will be then saved under `<project-dir>/src/Traces.Web/files` 
 
 1. Run the project in your IDE of preference or command line.
 
