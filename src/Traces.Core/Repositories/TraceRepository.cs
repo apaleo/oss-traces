@@ -23,13 +23,13 @@ namespace Traces.Core.Repositories
             await _dbContext.Trace.AnyAsync(predicate);
 
         public async Task<IReadOnlyList<Trace>> GetAllForTenantAsync() =>
-            await _dbContext.Trace.ToListAsync();
+            await _dbContext.Trace.Include(trace => trace.Files).ToListAsync();
 
         public async Task<IReadOnlyList<Trace>> GetAllTracesForTenantAsync(Expression<Func<Trace, bool>> expression) =>
-            await _dbContext.Trace.Where(expression).ToListAsync();
+            await _dbContext.Trace.Where(expression).Include(trace => trace.Files).ToListAsync();
 
         public async Task<Trace> GetAsync(int id) =>
-            await _dbContext.Trace.FirstOrDefaultAsync(t => t.Id == id);
+            await _dbContext.Trace.Include(trace => trace.Files).FirstOrDefaultAsync(t => t.Id == id);
 
         public void Insert(Trace trace)
         {

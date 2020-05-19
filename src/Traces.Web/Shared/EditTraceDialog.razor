@@ -1,6 +1,10 @@
 @using Humanizer
 @using Traces.Common.Constants
+@using Traces.Web.Enums
+@using Traces.Web.Models.Files
+@using Traces.Web.Services
 @using Traces.Web.ViewModels
+@inject IFileService FileService;
 
 <Form>
     <Field>
@@ -33,10 +37,45 @@
             </Select>
         </FieldBody>
     </Field>
+    <Field>
+        <FieldLabel>@TextConstants.TracesEditDialogFilesText</FieldLabel>
+        <FieldBody>
+            @for (int i = 0; i < EditTraceDialogVm.TraceFiles.Count; i++)
+            {
+                var file = EditTraceDialogVm.TraceFiles[i];
+                var index = i + 1;
+
+                <div class="d-flex align-items-start mb-2 @(file.IsStateChanged ? "trace-file-deleted" : "")">
+                    <div class="mt-2 d-flex flex-fill">
+                        <span class="mr-2">@index.</span>
+                        <div class="d-flex flex-column">
+                            <a class="trace-file-url" href="/files/@file.PublicId" target="_blank">@file.Name</a>
+                            @if (file.State == TraceFileItemModelState.ShouldDelete)
+                            {
+                                <small>@TextConstants.TraceFileWillBeDeletedMessage</small>
+                            }
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        @if (file.IsStateChanged)
+                        {
+                            <Button Color="Color.Secondary" Outline="true" PreventDefaultOnSubmit="true" Clicked="@(() => OnUndoDeleteClick(file))">@TextConstants.TracesUndoDeleteButtonText</Button>
+                        }
+                        else
+                        {
+                            <Button Color="Color.Danger" Outline="true" PreventDefaultOnSubmit="true" Clicked="@(() => OnDeleteClick(file))">@TextConstants.TracesDeleteButtonText</Button>
+                        }
+                    </div>
+                </div>
+            }
+
+            <FilesDragDropZone OnChange="@HandleFileChanged" OnLoadingChanged="@HandleLoadingChanged"></FilesDragDropZone>
+        </FieldBody>
+    </Field>
     <ModalFooter>
-        <Button Color="Color.Primary" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" Loading="@_isLoading" Clicked="@OnCreateOrEditButtonClick">@SubmitButtonText</Button>
+        <Button Color="Color.Primary" Type="ButtonType.Submit" Disabled="@_isLoading" PreventDefaultOnSubmit="true" Loading="@_isLoading" Clicked="@OnCreateOrEditButtonClick">@SubmitButtonText</Button>
         <Button Color="Color.Secondary" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" Loading="@_isLoading" Clicked="@OnClose">Close</Button>
-    </ModalFooter>
+        </ModalFooter>
 </Form>
 
 @code
@@ -56,7 +95,20 @@
     [Parameter]
     public string SubmitButtonText { get; set; }
 
-    async void OnCreateOrEditButtonClick()
+    void HandleFileChanged(List<FileToUploadModel> files)
+    {
+        EditTraceDialogVm.FilesToUpload.Clear();
+        EditTraceDialogVm.FilesToUpload.AddRange(files);
+    }
+
+    void HandleLoadingChanged(bool loading)
+    {
+        _isLoading = loading;
+
+        StateHasChanged();
+    }
+
+    async Task OnCreateOrEditButtonClick()
     {
         _isLoading = true;
 
@@ -67,4 +119,25 @@
         StateHasChanged();
     }
 
+    void OnDeleteClick(TraceFileItemModel traceFileItemModel)
+    {
+        _isLoading = true;
+
+        traceFileItemModel.State = TraceFileItemModelState.ShouldDelete;
+
+        _isLoading = false;
+
+        StateHasChanged();
+    }
+
+    void OnUndoDeleteClick(TraceFileItemModel traceFileItemModel)
+    {
+        _isLoading = true;
+
+        traceFileItemModel.State = TraceFileItemModelState.NoChanges;
+
+        _isLoading = false;
+
+        StateHasChanged();
+    }
 }

@@ -109,6 +109,8 @@ namespace Traces.Web.ViewModels.Traces
         {
             await LoadActiveTracesAsync(CurrentFromDate, CurrentToDate);
             await LoadOverdueTracesAsync();
+
+            StateHasChanged();
         }
 
         protected abstract Task<ResultModel<IReadOnlyList<TraceItemModel>>> GetActiveTracesAsync(DateTime from, DateTime toDateTime);

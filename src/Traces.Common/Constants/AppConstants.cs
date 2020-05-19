@@ -19,5 +19,7 @@ namespace Traces.Common.Constants
         public const string PropertyIdQueryParameter = "propertyId";
 
         public const string IntegrationSourceType = "Public";
+
+        public const long MaxFileSizeInBytes = 2 * 1024 * 1024;
     }
 }

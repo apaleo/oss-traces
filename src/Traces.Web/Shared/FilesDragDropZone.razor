@@ -1,0 +1,108 @@
+@using System.IO
+@using Traces.Common.Constants
+@using Traces.Common.Utils
+@using Traces.Web.Enums
+@using Traces.Web.Models.Files
+@using Traces.Web.Services
+@inject IFileService FileService;
+
+<div class="drag-drop-zone">
+    <InputFile multiple OnChange="@HandleFileSelectedAsync"/>
+    <span>
+        <i class="fa fa-file-upload"></i>
+        @TextConstants.UploadFileText
+    </span>
+</div>
+
+@foreach (var file in Files)
+{
+    <div class="d-flex align-items-start mt-2">
+        <div class="d-flex flex-fill flex-column">
+            <TextEdit Color="@(file.HasInvalidSize ? Color.Danger : Color.None)"
+                      @bind-Text="@file.Name"
+                      Disabled="@file.HasInvalidSize">
+            </TextEdit>
+            <div class="d-flex mt-1">
+                @if (file.HasInvalidSize)
+                {
+                    <small class="text-danger">@string.Format(TextConstants.InvalidUploadSizeErrorMessageFormat, $"{FileSizeUnitConverter.ConvertBytesToMebibytes(AppConstants.MaxFileSizeInBytes)} MB", file.SizeInMbFormatted)</small>
+                }
+                else
+                {
+                    <small class="text-muted mr-auto">@string.Format(TextConstants.UploadFileSize, file.SizeInMbFormatted)</small>
+                    <small class="text-muted">@string.Format(TextConstants.UploadFileProgress, file.ProgressFormatted)</small>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    [Parameter]
+    public EventCallback<List<FileToUploadModel>> OnChange { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnLoadingChanged { get; set; }
+
+    public List<FileToUploadModel> Files { get; set; } = new List<FileToUploadModel>();
+
+    async void HandleFileSelectedAsync(IFileListEntry[] fileListEntries)
+    {
+        Files.Clear();
+
+        foreach (var entry in fileListEntries)
+        {
+            Files.Add(new FileToUploadModel
+            {
+                Name = entry.Name,
+                Entry = entry
+            });
+        }
+
+        await OnLoadingChanged.InvokeAsync(true);
+
+        foreach (var file in Files)
+        {
+            if (Validate(file))
+            {
+                await UploadAsync(file);
+            }
+        }
+
+        await OnChange.InvokeAsync(Files);
+
+        await OnLoadingChanged.InvokeAsync(false);
+
+        StateHasChanged();
+    }
+
+    bool Validate(FileToUploadModel file)
+    {
+        if (file.Entry.Size > AppConstants.MaxFileSizeInBytes)
+        {
+            file.State = FileToUploadState.InvalidSize;
+            return false;
+        }
+
+        file.State = FileToUploadState.Valid;
+
+        return true;
+    }
+
+    async Task UploadAsync(FileToUploadModel file)
+    {
+        file.Entry.OnDataRead += RefreshAsync;
+
+        file.Data = new MemoryStream();
+        await file.Entry.Data.CopyToAsync(file.Data);
+
+        file.Data.Position = 0;
+        file.Entry.OnDataRead -= RefreshAsync;
+    }
+
+    async void RefreshAsync(object o, EventArgs args)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+}

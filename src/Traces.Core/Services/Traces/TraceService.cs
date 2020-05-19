@@ -13,20 +13,25 @@ using Traces.Common.Exceptions;
 using Traces.Common.Extensions;
 using Traces.Common.Utils;
 using Traces.Core.ClientFactories;
+using Traces.Core.Extensions.Traces;
 using Traces.Core.Models;
+using Traces.Core.Models.Files;
 using Traces.Core.Repositories;
+using Traces.Core.Services.Files;
 using Traces.Data.Entities;
 
-namespace Traces.Core.Services
+namespace Traces.Core.Services.Traces
 {
     public class TraceService : ITraceService
     {
         private readonly ITraceRepository _traceRepository;
         private readonly IRequestContext _requestContext;
         private readonly IApaleoClientsFactory _apaleoClientsFactory;
+        private readonly ITraceFileService _traceFileService;
 
-        public TraceService(ITraceRepository traceRepository, IRequestContext requestContext, IApaleoClientsFactory apaleoClientsFactory)
+        public TraceService(ITraceRepository traceRepository, IRequestContext requestContext, IApaleoClientsFactory apaleoClientsFactory, ITraceFileService traceFileService)
         {
+            _traceFileService = Check.NotNull(traceFileService, nameof(traceFileService));
             _traceRepository = Check.NotNull(traceRepository, nameof(traceRepository));
             _requestContext = Check.NotNull(requestContext, nameof(requestContext));
             _apaleoClientsFactory = Check.NotNull(apaleoClientsFactory, nameof(apaleoClientsFactory));
@@ -36,7 +41,7 @@ namespace Traces.Core.Services
         {
             var traces = await _traceRepository.GetAllForTenantAsync();
 
-            return ConvertToTraceDto(traces);
+            return traces.ToTraceDtoList();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetActiveTracesAsync(DateTime from, DateTime toDateTime)
@@ -54,7 +59,7 @@ namespace Traces.Core.Services
                 t.DueDate >= fromLocalDate &&
                 t.DueDate <= toLocalDate);
 
-            return ConvertToTraceDto(traces);
+            return traces.ToTraceDtoList();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetActiveTracesForPropertyAsync(string propertyId, DateTime from, DateTime toDateTime)
@@ -75,7 +80,7 @@ namespace Traces.Core.Services
                 t.DueDate >= fromLocalDate &&
                 t.DueDate <= toLocalDate);
 
-            return ConvertToTraceDto(propertyTraces);
+            return propertyTraces.ToTraceDtoList();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetOverdueTracesAsync()
@@ -85,7 +90,7 @@ namespace Traces.Core.Services
                 t.State == TraceState.Active &&
                 t.DueDate < todayDate);
 
-            return ConvertToTraceDto(traces);
+            return traces.ToTraceDtoList();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetOverdueTracesForPropertyAsync(string propertyId)
@@ -98,7 +103,7 @@ namespace Traces.Core.Services
                 t.DueDate < todayDate &&
                 t.PropertyId == propertyId);
 
-            return ConvertToTraceDto(overdueTracesForProperty);
+            return overdueTracesForProperty.ToTraceDtoList();
         }
 
         public async Task<IReadOnlyList<TraceDto>> GetAllTracesForReservationAsync(string reservationId)
@@ -108,7 +113,7 @@ namespace Traces.Core.Services
             var allTracesForReservation = await _traceRepository.GetAllTracesForTenantAsync(t =>
                 t.ReservationId == reservationId);
 
-            return ConvertToTraceDto(allTracesForReservation);
+            return allTracesForReservation.ToTraceDtoList();
         }
 
         public async Task<Option<TraceDto>> GetTraceAsync(int id)
@@ -120,7 +125,7 @@ namespace Traces.Core.Services
 
             var trace = await _traceRepository.GetAsync(id);
 
-            return TraceToDto(trace).Some();
+            return trace.ToTraceDto().Some();
         }
 
         public async Task<TraceDto> CreateTraceAsync(CreateTraceDto createTraceDto)
@@ -133,6 +138,13 @@ namespace Traces.Core.Services
                 throw new BusinessValidationException(TextConstants.CreateTraceWithoutTitleOrFutureDateErrorMessage);
             }
 
+            var traceFiles = new List<TraceFile>();
+            var filesToUpload = createTraceDto.FilesToUpload.ValueOr(new List<CreateTraceFileDto>());
+            if (filesToUpload.Any())
+            {
+                traceFiles.AddRange(await _traceFileService.UploadStorageFilesAsync(filesToUpload));
+            }
+
             var trace = new Trace
             {
                 Description = createTraceDto.Description.ValueOrDefault(),
@@ -141,14 +153,15 @@ namespace Traces.Core.Services
                 DueDate = createTraceDto.DueDate,
                 PropertyId = createTraceDto.PropertyId,
                 ReservationId = createTraceDto.ReservationId.ValueOrDefault(),
-                AssignedRole = createTraceDto.AssignedRole.ValueOrDefault()
+                AssignedRole = createTraceDto.AssignedRole.ValueOrDefault(),
+                Files = traceFiles
             };
 
             _traceRepository.Insert(trace);
 
             await _traceRepository.SaveAsync();
 
-            return TraceToDto(trace);
+            return trace.ToTraceDto();
         }
 
         /// <summary>
@@ -186,10 +199,25 @@ namespace Traces.Core.Services
 
             var trace = await _traceRepository.GetAsync(id);
 
+            var traceFiles = trace.Files ?? new List<TraceFile>();
+            var filesToDelete = replaceTraceDto.FilesToDelete.ValueOr(new List<int>());
+            if (filesToDelete.Any())
+            {
+                await _traceFileService.DeleteStorageFilesAsync(filesToDelete);
+                traceFiles.RemoveAll(traceFile => filesToDelete.Contains(traceFile.Id));
+            }
+
+            var filesToUpload = replaceTraceDto.FilesToUpload.ValueOr(new List<CreateTraceFileDto>());
+            if (filesToUpload.Any())
+            {
+                traceFiles.AddRange(await _traceFileService.UploadStorageFilesAsync(filesToUpload));
+            }
+
             trace.Description = replaceTraceDto.Description.ValueOrDefault();
             trace.Title = replaceTraceDto.Title;
             trace.DueDate = replaceTraceDto.DueDate;
             trace.AssignedRole = replaceTraceDto.AssignedRole.ValueOrDefault();
+            trace.Files = traceFiles;
 
             await _traceRepository.SaveAsync();
 
@@ -225,6 +253,7 @@ namespace Traces.Core.Services
             var trace = await _traceRepository.GetAsync(id);
 
             trace.CompletedDate = null;
+            trace.CompletedBy = null;
             trace.State = TraceState.Active;
 
             await _traceRepository.SaveAsync();
@@ -237,6 +266,12 @@ namespace Traces.Core.Services
             if (!await _traceRepository.ExistsAsync(t => t.Id == id))
             {
                 throw new BusinessValidationException(string.Format(TextConstants.TraceCouldNotBeFoundErrorMessageFormat, id));
+            }
+
+            var trace = await _traceRepository.GetAsync(id);
+            if (trace.Files != null)
+            {
+                await _traceFileService.DeleteStorageFilesAsync(trace.Files.Select(tf => tf.Id).ToList());
             }
 
             var deleted = await _traceRepository.DeleteAsync(id);
@@ -271,24 +306,5 @@ namespace Traces.Core.Services
                 }
             }
         }
-
-        private static IReadOnlyList<TraceDto> ConvertToTraceDto(IReadOnlyList<Trace> traces)
-        {
-            var tracesDto = traces.Select(TraceToDto).ToList();
-            return tracesDto;
-        }
-
-        private static TraceDto TraceToDto(Trace trace) => new TraceDto
-        {
-            Description = trace.Description.SomeNotNull(),
-            State = trace.State,
-            Title = trace.Title,
-            CompletedDate = trace.CompletedDate?.Some() ?? Option.None<LocalDate>(),
-            DueDate = trace.DueDate,
-            Id = trace.Id,
-            PropertyId = trace.PropertyId,
-            ReservationId = trace.ReservationId.SomeNotNull(),
-            AssignedRole = trace.AssignedRole.SomeNotNull()
-        };
     }
 }

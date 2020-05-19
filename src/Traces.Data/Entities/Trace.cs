@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NodaTime;
 using Traces.Common.Enums;
@@ -27,5 +28,9 @@ namespace Traces.Data.Entities
         public string ReservationId { get; set; }
 
         public string AssignedRole { get; set; }
+
+#pragma warning disable CA2227 // disables argument can be null
+        public List<TraceFile> Files { get; set; }
+#pragma warning restore CA2227
     }
 }

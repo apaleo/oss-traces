@@ -29,6 +29,7 @@
                         <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableAssignedRoleText</TableHeaderCell>
+                        <TableHeaderCell>@TextConstants.TracesTableFilesCountText</TableHeaderCell>
                         <TableHeaderCell></TableHeaderCell>
                     </TableRow>
                 </TableHeader>
@@ -61,6 +62,7 @@
                             <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
                             <TableHeaderCell>@TextConstants.TracesTableDueDateText</TableHeaderCell>
                             <TableHeaderCell>@TextConstants.TracesTableAssignedRoleText</TableHeaderCell>
+                            <TableHeaderCell>@TextConstants.TracesTableFilesCountText</TableHeaderCell>
                             <TableHeaderCell></TableHeaderCell>
                         </TableRow>
                     </TableHeader>
@@ -85,6 +87,7 @@
                         <TableHeaderCell>@TextConstants.TracesTableTitleText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableDescriptionText</TableHeaderCell>
                         <TableHeaderCell>@TextConstants.TracesTableAssignedRoleText</TableHeaderCell>
+                        <TableHeaderCell>@TextConstants.TracesTableFilesCountText</TableHeaderCell>
                         <TableHeaderCell></TableHeaderCell>
                     </TableRow>
                 </TableHeader>
@@ -112,7 +115,10 @@
                 <CloseButton Clicked="@HideEditTraceModal"/>
             </ModalHeader>
             <ModalBody>
-                <EditTraceDialog EditTraceDialogVm="@EditTraceDialogViewModel" OnClose="@HideEditTraceModal" OnSubmit="@EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
+                @if (EditTraceModalRef.Visible)
+                {
+                    <EditTraceDialog EditTraceDialogVm="@EditTraceDialogViewModel" OnClose="@HideEditTraceModal" OnSubmit="@EditTraceItemAsync" SubmitButtonText="@TextConstants.EditTraceButtonText"/>
+                }
             </ModalBody>
         </ModalContent>
     </Modal>
@@ -125,7 +131,10 @@
                 <CloseButton Clicked="@HideCreateTraceModal"/>
             </ModalHeader>
             <ModalBody>
-                <EditTraceDialog EditTraceDialogVm="@EditTraceDialogViewModel" OnClose="@HideCreateTraceModal" OnSubmit="@CreateTraceItemAsync" SubmitButtonText="@TextConstants.CreateTraceButtonText"/>
+                @if (CreateTraceModalRef.Visible)
+                {
+                    <EditTraceDialog EditTraceDialogVm="@EditTraceDialogViewModel" OnClose="@HideCreateTraceModal" OnSubmit="@CreateTraceItemAsync" SubmitButtonText="@TextConstants.CreateTraceButtonText"/>
+                }
             </ModalBody>
         </ModalContent>
     </Modal>

@@ -13,8 +13,10 @@ using Traces.Common.Enums;
 using Traces.Common.Exceptions;
 using Traces.Core.ClientFactories;
 using Traces.Core.Models;
+using Traces.Core.Models.Files;
 using Traces.Core.Repositories;
-using Traces.Core.Services;
+using Traces.Core.Services.Files;
+using Traces.Core.Services.Traces;
 using Traces.Data.Entities;
 using Traces.Testing;
 using Xunit;
@@ -44,6 +46,10 @@ namespace Traces.Core.Tests.Services
         private const string TestCompletedPropertyId = "PROC";
         private const string TestCompletedReservationId = "RESC";
 
+        private const int TestTraceFileId = 4;
+        private const string TestTraceFileName = "TestTraceFileName";
+        private const string TestTraceFileExceptionMessage = "TraceFileException";
+
         private readonly LocalDate _testActiveTraceDueDate = DateTime.UtcNow.ToLocalDateTime().Date;
         private readonly LocalDate _testOverdueTraceDueDate = DateTime.UtcNow.Subtract(TimeSpan.FromDays(1)).ToLocalDateTime().Date;
         private readonly LocalDate _testCompletedTraceDueDate = DateTime.UtcNow.Add(TimeSpan.FromHours(1)).ToLocalDateTime().Date;
@@ -54,6 +60,7 @@ namespace Traces.Core.Tests.Services
         private readonly Mock<ITraceRepository> _traceRepositoryMock;
         private readonly Mock<IRequestContext> _requestContextMock;
         private readonly Mock<IApaleoClientsFactory> _apaleoClientFactoryMock;
+        private readonly Mock<ITraceFileService> _traceFileServiceMock;
         private readonly ITraceService _traceService;
 
         public TraceServiceTest()
@@ -61,7 +68,9 @@ namespace Traces.Core.Tests.Services
             _traceRepositoryMock = MockRepository.Create<ITraceRepository>();
             _requestContextMock = MockRepository.Create<IRequestContext>();
             _apaleoClientFactoryMock = MockRepository.Create<IApaleoClientsFactory>();
-            _traceService = new TraceService(_traceRepositoryMock.Object, _requestContextMock.Object, _apaleoClientFactoryMock.Object);
+            _traceFileServiceMock = MockRepository.Create<ITraceFileService>();
+
+            _traceService = new TraceService(_traceRepositoryMock.Object, _requestContextMock.Object, _apaleoClientFactoryMock.Object, _traceFileServiceMock.Object);
         }
 
         [Fact]
@@ -405,6 +414,70 @@ namespace Traces.Core.Tests.Services
         }
 
         [Fact]
+        public async Task ShouldCreateTraceFileAsync()
+        {
+            var createTraceFileDto = new CreateTraceFileDto { Name = TestTraceFileName };
+            var traceFile = new TraceFile
+            {
+                Id = TestTraceFileId,
+                Name = TestTraceFileName
+            };
+            var traceFiles = new List<TraceFile>();
+            traceFiles.Add(traceFile);
+
+            var createTraceDto = new CreateTraceDto
+            {
+                Description = TestActiveTraceDescription.Some(),
+                Title = TestActiveTraceTitle,
+                DueDate = _testActiveTraceDueDate,
+                PropertyId = TestActivePropertyId,
+                FilesToUpload = Option.Some(new List<CreateTraceFileDto> { createTraceFileDto })
+            };
+
+            _traceRepositoryMock.Setup(x => x.Insert(
+                It.Is<Trace>(t => t.Files.Exists(tf => tf.Id == TestTraceFileId))));
+
+            _traceFileServiceMock.Setup(
+                    x => x.UploadStorageFilesAsync(
+                        It.Is<List<CreateTraceFileDto>>(
+                            l =>
+                                l.Find(tf => tf.Name == TestTraceFileName) != null)))
+                .ReturnsAsync(traceFiles);
+
+            _traceRepositoryMock.Setup(x => x.SaveAsync())
+                .Returns(Task.CompletedTask);
+
+            var result = await _traceService.CreateTraceAsync(createTraceDto);
+
+            var resultFilesList = result.Files.ValueOr(new List<TraceFileDto>());
+            resultFilesList.Count.Should().Be(1);
+            resultFilesList[0].Id.Should().Be(TestTraceFileId);
+            resultFilesList[0].Name.Should().Be(TestTraceFileName);
+        }
+
+        [Fact]
+        public async Task ShouldNotBeAbleToCreateTraceWhenFileCreationFailsAsync()
+        {
+            var createTraceFileDto = new CreateTraceFileDto { Name = TestTraceFileName };
+            var createTraceFiles = new List<CreateTraceFileDto> { createTraceFileDto };
+            var createTraceDto = new CreateTraceDto
+            {
+                Description = TestActiveTraceDescription.Some(),
+                Title = TestActiveTraceTitle,
+                DueDate = _testActiveTraceDueDate,
+                PropertyId = TestActivePropertyId,
+                FilesToUpload = Option.Some(createTraceFiles)
+            };
+
+            _traceFileServiceMock.Setup(x => x.UploadStorageFilesAsync(It.Is<List<CreateTraceFileDto>>(l => l == createTraceFiles)))
+                .ThrowsAsync(new BusinessValidationException(TestTraceFileExceptionMessage));
+
+            var result = await Assert.ThrowsAsync<BusinessValidationException>(() => _traceService.CreateTraceAsync(createTraceDto));
+
+            result.Message.Should().Be(TestTraceFileExceptionMessage);
+        }
+
+        [Fact]
         public async Task ShouldFailToCreateTraceWhenDueDateIsNotSetAsync()
         {
             var createTraceDto = new CreateTraceDto
@@ -466,6 +539,42 @@ namespace Traces.Core.Tests.Services
                     Title = TestActiveTraceTitle,
                     DueDate = _testActiveTraceDueDate,
                     Description = TestActiveTraceDescription
+                });
+
+            _traceRepositoryMock.Setup(x => x.SaveAsync())
+                .Returns(Task.CompletedTask);
+
+            var result = await _traceService.ReplaceTraceAsync(TestActiveTraceId, replaceTraceDto);
+
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task ShouldBeAbleToReplaceTraceFileAsync()
+        {
+            var replaceTraceDto = new ReplaceTraceDto
+            {
+                Title = TestOverdueTraceTitle,
+                DueDate = LocalDate.FromDateTime(DateTime.Today),
+                FilesToUpload = Option.Some(new List<CreateTraceFileDto> { new CreateTraceFileDto { Name = TestTraceFileName } }),
+                FilesToDelete = Option.Some(new List<int> { TestTraceFileId })
+            };
+
+            _traceFileServiceMock.Setup(x => x.UploadStorageFilesAsync(It.Is<List<CreateTraceFileDto>>(l => l.Exists(tf => tf.Name == TestTraceFileName))))
+                .ReturnsAsync(new List<TraceFile> { new TraceFile { Name = TestTraceFileName } });
+
+            _traceFileServiceMock.Setup(x => x.DeleteStorageFilesAsync(It.Is<List<int>>(l => l.Exists(tf => tf == TestTraceFileId))))
+                .Returns(Task.CompletedTask);
+
+            _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
+                .ReturnsAsync(true);
+
+            _traceRepositoryMock.Setup(x => x.GetAsync(It.Is<int>(i => i == TestActiveTraceId)))
+                .ReturnsAsync(new Trace
+                {
+                    Title = TestActiveTraceTitle,
+                    DueDate = _testActiveTraceDueDate,
+                    Files = new List<TraceFile> { new TraceFile() }
                 });
 
             _traceRepositoryMock.Setup(x => x.SaveAsync())
@@ -606,6 +715,31 @@ namespace Traces.Core.Tests.Services
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
                 .ReturnsAsync(true);
 
+            _traceRepositoryMock.Setup(x => x.GetAsync(It.Is<int>(i => i == TestOverdueTraceId)))
+                .ReturnsAsync(new Trace());
+
+            _traceRepositoryMock.Setup(x => x.DeleteAsync(It.Is<int>(i => i == TestOverdueTraceId)))
+                .ReturnsAsync(true);
+
+            _traceRepositoryMock.Setup(x => x.SaveAsync())
+                .Returns(Task.CompletedTask);
+
+            var result = await _traceService.DeleteTraceAsync(TestOverdueTraceId);
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task ShouldBeAbleToDeleteTraceFileAsync()
+        {
+            _traceFileServiceMock.Setup(x => x.DeleteStorageFilesAsync(It.Is<List<int>>(l => l.Exists(tf => tf == TestTraceFileId))))
+                .Returns(Task.CompletedTask);
+
+            _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
+                .ReturnsAsync(true);
+
+            _traceRepositoryMock.Setup(x => x.GetAsync(It.Is<int>(i => i == TestOverdueTraceId)))
+                .ReturnsAsync(new Trace { Files = new List<TraceFile> { new TraceFile { Id = TestTraceFileId } } });
+
             _traceRepositoryMock.Setup(x => x.DeleteAsync(It.Is<int>(i => i == TestOverdueTraceId)))
                 .ReturnsAsync(true);
 
@@ -634,6 +768,9 @@ namespace Traces.Core.Tests.Services
         {
             _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
                 .ReturnsAsync(true);
+
+            _traceRepositoryMock.Setup(x => x.GetAsync(It.Is<int>(i => i == TestActiveTraceId)))
+                .ReturnsAsync(new Trace());
 
             _traceRepositoryMock.Setup(x => x.DeleteAsync(It.Is<int>(i => i == TestActiveTraceId)))
                 .ReturnsAsync(false);

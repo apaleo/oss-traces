@@ -8,3 +8,16 @@ services:
       - POSTGRES_PASSWORD=OpenTraces.2019
     ports:
       - "5432:5432"
+  localstack:
+    image: localstack/localstack
+    container_name: localstack_development
+    ports:
+      - '4563-4599:4563-4599'
+      - '8055:8080'
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+    volumes:
+      - './.localstack:/tmp/localstack'
+      - '/var/run/docker.sock:/var/run/docker.sock'

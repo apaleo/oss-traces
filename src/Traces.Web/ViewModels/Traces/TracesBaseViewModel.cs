@@ -42,20 +42,17 @@ namespace Traces.Web.ViewModels.Traces
 
             if (replaceResult.Success)
             {
+                await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceUpdatedSuccessfullyMessage);
+
                 await RefreshAsync();
 
-                await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceUpdatedSuccessfullyMessage);
+                HideEditTraceModal();
             }
             else
             {
                 var errorMessage = replaceResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
                 await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-            }
-
-            if (replaceResult.Success)
-            {
-                HideEditTraceModal();
             }
         }
 
@@ -122,6 +119,7 @@ namespace Traces.Web.ViewModels.Traces
             EditTraceDialogViewModel.Description = traceItemModel.Description;
             EditTraceDialogViewModel.DueDate = traceItemModel.DueDate;
             EditTraceDialogViewModel.SelectedRole = traceItemModel.AssignedRole;
+            EditTraceDialogViewModel.TraceFiles = traceItemModel.Files;
 
             EditTraceModalRef?.Show();
         }

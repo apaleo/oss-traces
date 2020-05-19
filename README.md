@@ -6,10 +6,12 @@ This is an open source blueprint for a Traces/To-Do application to be coupled wi
 - You need to have Docker installed
 - For deployment you need to have heroku cli
     - [how to install heroku cli](https://devcenter.heroku.com/articles/heroku-cli)
+- For amazon s3 you need to have aws cli
+    - [how to install amazon cli](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 
 ## Testing locally
 
-### Run postgres container
+### Run postgres and localstack container
 
 **This step should not be skipped as it is required for the project database**
 
@@ -19,6 +21,14 @@ While in the root directory of the project
 - `docker-compose down` will remove all containers and all the data.
 - `docker-compose stop` will only stop the container without deleting data.
 - `docker-compose start` will spin up the containers in case they have been stopped.
+
+To create a bucket in localstack please execute this command, which will create a bucket called `oss-traces.local` in the region `eu-west-1`:
+
+`aws --endpoint-url=http://localhost:4572 s3 mb s3://oss-traces.local --region eu-west-1`
+
+Afterward allow public read to the bucket for **development** purposes:
+
+`aws --endpoint-url=http://localhost:4572 s3api put-bucket-acl --bucket oss-traces.local --acl public-read`
 
 ### Build and run with your IDE of preference or command line
 
@@ -30,6 +40,10 @@ While in the root directory of the project
     - To achieve this you must define two environment variables `APALEO__CLIENTID` and `APALEO__CLIENTSECRET`.
     - The value of such variables should be your respective `apaleo client id` and your `apaleo client secret`
     - Again remember that these values should stay always private.
+
+1. You will also need to override the BucketName and Region variables in the appsettings.json 
+    - To achieve this you must define two environment variables `STORAGE__S3__BUCKETNAME` and `STORAGE__S3__REGION`.
+    - The value of such variables should be your respective `bucket name` (e.g. oss-traces.local) and your `region` (e.g. eu-west-1)
 
 1. Run the project in your IDE of preference or command line.
 
@@ -47,12 +61,14 @@ While in the root directory of the project
 
 1. Now you can navigate to your app's URL `ReplaceThisWithYourAppName.herokuapp.com` or your already setup URL for your app.
 
+1. Configure AWS access in heorku, to be able to store files in S3, by setting the environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` ([see documentation for details](https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_credentials_environment.html))
+
 ## Going Live
 
 1. You'll need to collect your logs somewhere. You can pick one of https://elements.heroku.com/addons#logging - but you don't necessarily need to get it through heroku. 
 
 1. Make sure nlog (or any other logger) can log to the service. Either via HTTP or via custom libraries.
 
-1. Add a drain to your app, to also recieve logs from heroku. This is done via `heroku drain:add --app [YOUR_APP_NAME] [URL_WHERE_HEROKU_SENDS_LOGS]`
+1. Add a drain to your app, to also receive logs from heroku. This is done via `heroku drain:add --app [YOUR_APP_NAME] [URL_WHERE_HEROKU_SENDS_LOGS]`
 
 1. Bonus points if you add a dedicated service for error handling for instance one of these: https://elements.heroku.com/addons#errors-exceptions (again, you don't need to get it through heroku, it's just a nice list to start with)

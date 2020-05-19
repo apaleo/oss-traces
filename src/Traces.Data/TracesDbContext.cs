@@ -13,11 +13,23 @@ namespace Traces.Data
 
         public DbSet<Trace> Trace { get; set; }
 
+        public DbSet<TraceFile> TraceFile { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Trace>()
                 .Property(t => t.Id)
                 .UseHiLo();
+
+            modelBuilder.Entity<TraceFile>()
+                .Property(t => t.Id)
+                .UseHiLo();
+
+            modelBuilder
+                .Entity<Trace>()
+                .HasMany(t => t.Files)
+                .WithOne(tf => tf.Trace)
+                .HasForeignKey(tf => tf.TraceId);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -16,9 +16,11 @@ namespace Traces.Web.Pages
     {
         private string _currentReservationId;
 
-        public SortedDictionary<DateTime, List<TraceItemModel>> AllTracesDictionary { get; } = new SortedDictionary<DateTime, List<TraceItemModel>>();
+        public SortedDictionary<DateTime, List<TraceItemModel>> AllTracesDictionary { get; } =
+            new SortedDictionary<DateTime, List<TraceItemModel>>();
 
-        public SortedDictionary<DateTime, List<TraceItemModel>> ActiveTracesDictionary { get; } = new SortedDictionary<DateTime, List<TraceItemModel>>();
+        public SortedDictionary<DateTime, List<TraceItemModel>> ActiveTracesDictionary { get; } =
+            new SortedDictionary<DateTime, List<TraceItemModel>>();
 
         public List<TraceItemModel> OverdueTraces { get; private set; } = new List<TraceItemModel>();
 
@@ -46,17 +48,14 @@ namespace Traces.Web.Pages
                 await RefreshAsync();
 
                 await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
+
+                HideCreateTraceModal();
             }
             else
             {
                 var errorMessage = createResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
                 await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-            }
-
-            if (createResult.Success)
-            {
-                HideCreateTraceModal();
             }
         }
 
@@ -90,6 +89,8 @@ namespace Traces.Web.Pages
         protected override async Task RefreshAsync()
         {
             await LoadTracesAsync();
+
+            StateHasChanged();
         }
 
         private async Task LoadAllTracesAsync()
@@ -129,7 +130,9 @@ namespace Traces.Web.Pages
                 string.Format(TextConstants.TracesShowCompletedCheckboxTextFormat, elementCount);
         }
 
-        private void LoadCurrentReservationId()
-            => _currentReservationId = UrlQueryParameterExtractor.ExtractQueryParameterFromManager(NavigationManager, AppConstants.ReservationIdQueryParameter);
+        private void LoadCurrentReservationId() =>
+            _currentReservationId = UrlQueryParameterExtractor.ExtractQueryParameterFromManager(
+                NavigationManager,
+                AppConstants.ReservationIdQueryParameter);
     }
 }

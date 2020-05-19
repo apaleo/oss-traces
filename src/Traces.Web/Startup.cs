@@ -21,7 +21,8 @@ using Traces.Common;
 using Traces.Common.Utils;
 using Traces.Core.ClientFactories;
 using Traces.Core.Repositories;
-using Traces.Core.Services;
+using Traces.Core.Services.Files;
+using Traces.Core.Services.Traces;
 using Traces.Data;
 using Traces.Web.AutoRefresh;
 using Traces.Web.Middlewares;
@@ -57,6 +58,8 @@ namespace Traces.Web
             services.Configure<IntegrationConfig>(Configuration.GetSection("apaleo:IntegrationConfig"));
             services.Configure<ServicesUriConfig>(Configuration.GetSection("apaleo:ServicesUri"));
             services.Configure<ApaleoConfig>(Configuration.GetSection("apaleo"));
+            services.Configure<S3Config>(Configuration.GetSection("Storage:S3"));
+            services.Configure<StorageConfig>(Configuration.GetSection("Storage"));
 
             // Here we have a retry policy only for read-only requests such as GET or HEAD
             // In addition there is a waiting time for the circuit breaker to avoid too many requests per second to the apaleo api
@@ -132,7 +135,12 @@ namespace Traces.Web
             services.AddScoped<IRequestContext, RequestContext>();
             services.AddScoped<ITokenStorageService, TokenStorageService>();
             services.AddScoped<ITraceRepository, TraceRepository>();
+            services.AddScoped<ITraceFileRepository, TraceFileRepository>();
             services.AddScoped<ITraceService, TraceService>();
+            services.AddScoped<ITraceFileService, TraceFileService>();
+            services.AddScoped<IFileStorageService, S3StorageService>();
+
+            services.AddScoped<IFileService, FileService>();
             services.AddScoped<ITraceModifierService, TraceModifierService>();
             services.AddScoped<ITracesCollectorService, TracesCollectorService>();
             services.AddScoped<IApaleoOneNavigationService, ApaleoOneNavigationService>();

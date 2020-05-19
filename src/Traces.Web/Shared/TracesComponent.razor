@@ -44,16 +44,21 @@
                         @trace.AssignedRole.Humanize()
                     }
                 </TableRowCell>
+                <TableRowCell>
+                    @if (trace.Files.Count > 0)
+                    {
+                        @trace.Files.Count
+                    }
+                </TableRowCell>
                 <TableRowCell class="fit">
-
                     <div class="d-flex justify-content-end">
                         @if (trace.State == TraceState.Active)
                         {
-                            <Button class="mr-2" Color="Color.Primary" Loading="@IsLoading" Clicked="@(() => OnComplete(trace))">
+                            <Button class="mr-2" Color="Color.Primary" Disabled="@IsLoading" Loading="@IsLoading" Clicked="@(() => OnComplete(trace))">
                                 <i class="fa fa-check"></i>
                                 @TextConstants.TracesCompleteButtonText
                             </Button>
-                            <Button class="mr-2" Color="Color.Secondary" Outline="true" Loading="@IsLoading" Clicked="@(() => OnEdit(trace))">
+                            <Button class="mr-2" Color="Color.Secondary" Outline="true" Disabled="@IsLoading" Loading="@IsLoading" Clicked="@(() => OnEdit(trace))">
                                 <i class="fa fa-edit"></i>
                                 @TextConstants.TracesEditButtonText
                             </Button>
@@ -69,7 +74,7 @@
                         }
                         else
                         {
-                            <Button class="mr-2" Color="Color.Secondary" Outline="true" Loading="@IsLoading" Clicked="@(() => OnRevertComplete(trace))">
+                            <Button class="mr-2" Color="Color.Secondary" Outline="true" Disabled="@IsLoading" Loading="@IsLoading" Clicked="@(() => OnRevertComplete(trace))">
                                 <i class="fa fa-history"></i>
                                 @TextConstants.TracesRevertCompleteButtonText
                             </Button>

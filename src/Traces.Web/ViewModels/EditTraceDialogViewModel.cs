@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Traces.Common.Constants;
+using Traces.Web.Enums;
+using Traces.Web.Extensions.Files;
 using Traces.Web.Models;
+using Traces.Web.Models.Files;
 
 namespace Traces.Web.ViewModels
 {
     public class EditTraceDialogViewModel
     {
-        public EditTraceDialogViewModel()
-        {
-            Roles = new List<string>();
-        }
-
         public int Id { get; set; }
 
         public string Title { get; set; }
@@ -22,7 +21,11 @@ namespace Traces.Web.ViewModels
 
         public string SelectedRole { get; set; }
 
-        public List<string> Roles { get; }
+        public List<FileToUploadModel> FilesToUpload { get; } = new List<FileToUploadModel>();
+
+        public IReadOnlyList<TraceFileItemModel> TraceFiles { get; set; } = new List<TraceFileItemModel>();
+
+        public List<string> Roles { get; } = new List<string>();
 
         public CreateTraceItemModel GetCreateTraceItemModel()
             => new CreateTraceItemModel
@@ -34,7 +37,8 @@ namespace Traces.Web.ViewModels
                     string.IsNullOrWhiteSpace(SelectedRole) ||
                     SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText
                         ? null
-                        : SelectedRole
+                        : SelectedRole,
+                FilesToUpload = FilesToUpload.GetValidCreateTraceFileItemModels()
             };
 
         public ReplaceTraceItemModel GetReplaceTraceItemModel()
@@ -48,7 +52,9 @@ namespace Traces.Web.ViewModels
                     string.IsNullOrWhiteSpace(SelectedRole) ||
                     SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText
                         ? null
-                        : SelectedRole
+                        : SelectedRole,
+                FilesToDelete = GetTraceFilesToDelete(),
+                FilesToUpload = FilesToUpload.GetValidCreateTraceFileItemModels()
             };
 
         public void ClearCurrentState()
@@ -58,6 +64,15 @@ namespace Traces.Web.ViewModels
             Description = string.Empty;
             DueDate = null;
             SelectedRole = string.Empty;
+
+            FilesToUpload.Clear();
+            TraceFiles = new List<TraceFileItemModel>();
         }
+
+        private List<int> GetTraceFilesToDelete()
+            => TraceFiles
+                .Where(file => file.State == TraceFileItemModelState.ShouldDelete)
+                .Select(file => file.Id)
+                .ToList();
     }
 }

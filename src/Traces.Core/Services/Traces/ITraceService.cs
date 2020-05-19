@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Optional;
 using Traces.Core.Models;
 
-namespace Traces.Core.Services
+namespace Traces.Core.Services.Traces
 {
     public interface ITraceService
     {

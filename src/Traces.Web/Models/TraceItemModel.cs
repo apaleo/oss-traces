@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Traces.Common.Enums;
+using Traces.Web.Models.Files;
 
 namespace Traces.Web.Models
 {
@@ -20,5 +22,7 @@ namespace Traces.Web.Models
         public string ReservationId { get; set; }
 
         public string AssignedRole { get; set; }
+
+        public IReadOnlyList<TraceFileItemModel> Files { get; set; }
     }
 }

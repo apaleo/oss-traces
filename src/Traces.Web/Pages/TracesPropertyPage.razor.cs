@@ -32,17 +32,14 @@ namespace Traces.Web.Pages
                 createResult.Result.MatchSome(ActiveTracesDictionary.AddTrace);
 
                 await ApaleoOneNotificationService.ShowSuccessAsync(TextConstants.TraceCreatedSuccessfullyMessage);
+
+                HideCreateTraceModal();
             }
             else
             {
                 var errorMessage = createResult.ErrorMessage.ValueOrException(new NotImplementedException());
 
                 await ApaleoOneNotificationService.ShowErrorAsync(errorMessage);
-            }
-
-            if (createResult.Success)
-            {
-                HideCreateTraceModal();
             }
         }
 

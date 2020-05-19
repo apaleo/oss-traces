@@ -1,13 +1,11 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NodaTime.Extensions;
 using Optional;
 using Traces.Common.Exceptions;
 using Traces.Common.Utils;
-using Traces.Core.Models;
-using Traces.Core.Services;
+using Traces.Core.Services.Traces;
+using Traces.Web.Extensions.Traces;
 using Traces.Web.Models;
-using Traces.Web.Utils;
 
 namespace Traces.Web.Services
 {
@@ -51,19 +49,11 @@ namespace Traces.Web.Services
         {
             try
             {
-                var createTraceDto = new CreateTraceDto
-                {
-                    Title = createTraceItemModel.Title,
-                    Description = createTraceItemModel.Description.SomeNotNull(),
-                    DueDate = createTraceItemModel.DueDate.ToLocalDateTime().Date,
-                    PropertyId = createTraceItemModel.PropertyId,
-                    ReservationId = createTraceItemModel.ReservationId.SomeNotNull(),
-                    AssignedRole = createTraceItemModel.AssignedRole.SomeNotNull()
-                };
+                var createTraceDto = createTraceItemModel.ToCreateTraceDto();
 
                 var traceDto = await _traceService.CreateTraceAsync(createTraceDto);
 
-                var traceItemModel = traceDto.ConvertToTraceItemModel();
+                var traceItemModel = traceDto.ToTraceItemModel();
 
                 return new ResultModel<TraceItemModel>
                 {
@@ -87,18 +77,11 @@ namespace Traces.Web.Services
         {
             try
             {
-                var createTraceDto = new CreateTraceDto
-                {
-                    Title = createTraceItemModel.Title,
-                    Description = createTraceItemModel.Description.SomeNotNull(),
-                    DueDate = createTraceItemModel.DueDate.ToLocalDateTime().Date,
-                    ReservationId = createTraceItemModel.ReservationId.SomeNotNull(),
-                    AssignedRole = createTraceItemModel.AssignedRole.SomeNotNull()
-                };
+                var createTraceDto = createTraceItemModel.ToCreateTraceDtoWithoutPropertyId();
 
                 var traceDto = await _traceService.CreateTraceFromReservationAsync(createTraceDto);
 
-                var traceItemModel = traceDto.ConvertToTraceItemModel();
+                var traceItemModel = traceDto.ToTraceItemModel();
 
                 return new ResultModel<TraceItemModel>
                 {
@@ -122,13 +105,7 @@ namespace Traces.Web.Services
         {
             try
             {
-                var replaceTraceDto = new ReplaceTraceDto
-                {
-                    Title = replaceTraceItemModel.Title,
-                    Description = replaceTraceItemModel.Description.SomeWhen(t => !string.IsNullOrWhiteSpace(t)),
-                    DueDate = replaceTraceItemModel.DueDate.ToLocalDateTime().Date,
-                    AssignedRole = replaceTraceItemModel.AssignedRole.SomeNotNull()
-                };
+                var replaceTraceDto = replaceTraceItemModel.ToReplaceTraceDto();
 
                 var replaceResult = await _traceService.ReplaceTraceAsync(replaceTraceItemModel.Id, replaceTraceDto);
 
