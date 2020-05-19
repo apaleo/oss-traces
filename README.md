@@ -61,6 +61,8 @@ Afterward allow public read to the bucket for **development** purposes:
 
 1. Now you can navigate to your app's URL `ReplaceThisWithYourAppName.herokuapp.com` or your already setup URL for your app.
 
+1. Configure AWS access in heorku, to be able to store files in S3, by setting the environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` ([see documentation for details](https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_credentials_environment.html))
+
 ## Going Live
 
 1. You'll need to collect your logs somewhere. You can pick one of https://elements.heroku.com/addons#logging - but you don't necessarily need to get it through heroku. 
