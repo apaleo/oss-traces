@@ -8,7 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="Moq" Version="4.14.1" />
-      <PackageReference Include="NodaTime.Testing" Version="2.4.8" />
+      <PackageReference Include="NodaTime.Testing" Version="3.0.0" />
     </ItemGroup>
 
 </Project>
