@@ -20,6 +20,6 @@ namespace Traces.Common.Constants
 
         public const string IntegrationSourceType = "Public";
 
-        public const long MaxFileSizeInBytes = 2 * 1024 * 1024;
+        public const long MaxFileSizeInBytes = 5 * 1024 * 1024;
     }
 }
