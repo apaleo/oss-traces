@@ -8,7 +8,7 @@ app {
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 920px;
+    min-height: 920px;
 }
 
 .main {
