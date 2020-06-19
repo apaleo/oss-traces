@@ -25,14 +25,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         /// <param name="ratePlanId">The rate plan id for this time
         /// slice</param>
-        /// <param name="totalGrossAmount">The total amount for this time slice
-        /// including taxes and fees for included services and including the
-        /// surcharges for all persons. If no price is given and the rate plan
-        /// for an already booked time slice
-        /// is not changed only the per person surcharge will be recalculated.
-        /// If the rate plan for an already booked
-        /// time slice is changed or it is a newly added time slice the price
-        /// from the offer will be taken</param>
         public DesiredTimeSliceModel(string ratePlanId, MonetaryValueModel totalGrossAmount = default(MonetaryValueModel))
         {
             RatePlanId = ratePlanId;
@@ -52,14 +44,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public string RatePlanId { get; set; }
 
         /// <summary>
-        /// Gets or sets the total amount for this time slice including taxes
-        /// and fees for included services and including the
-        /// surcharges for all persons. If no price is given and the rate plan
-        /// for an already booked time slice
-        /// is not changed only the per person surcharge will be recalculated.
-        /// If the rate plan for an already booked
-        /// time slice is changed or it is a newly added time slice the price
-        /// from the offer will be taken
         /// </summary>
         [JsonProperty(PropertyName = "totalGrossAmount")]
         public MonetaryValueModel TotalGrossAmount { get; set; }

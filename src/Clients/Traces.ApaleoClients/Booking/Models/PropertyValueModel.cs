@@ -23,11 +23,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the PropertyValueModel class.
         /// </summary>
-        /// <param name="balance">The balance of this booking for this
-        /// property</param>
-        /// <param name="property">The property</param>
-        /// <param name="totalGrossAmount">The total gross amount of this
-        /// booking for this property</param>
         public PropertyValueModel(MonetaryValueModel balance, EmbeddedPropertyModel property, MonetaryValueModel totalGrossAmount)
         {
             Balance = balance;
@@ -42,20 +37,16 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the balance of this booking for this property
         /// </summary>
         [JsonProperty(PropertyName = "balance")]
         public MonetaryValueModel Balance { get; set; }
 
         /// <summary>
-        /// Gets or sets the property
         /// </summary>
         [JsonProperty(PropertyName = "property")]
         public EmbeddedPropertyModel Property { get; set; }
 
         /// <summary>
-        /// Gets or sets the total gross amount of this booking for this
-        /// property
         /// </summary>
         [JsonProperty(PropertyName = "totalGrossAmount")]
         public MonetaryValueModel TotalGrossAmount { get; set; }

@@ -25,17 +25,20 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the ReservationStayOffersModel class.
         /// </summary>
-        /// <param name="arrivalRequested">The requested arrival date and
-        /// time&lt;br /&gt;Specify a date and time (without fractional second
-        /// part) in UTC or with UTC offset as defined in &lt;a
+        /// <param name="offers">List of offered unit groups with rates</param>
+        /// <param name="arrivalRequested">The requested arrival date and time
+        /// - &lt;b&gt;DEPRECATED: This field will be removed
+        /// 27.06.2020.&lt;/b&gt;&lt;br /&gt;A date and time (without
+        /// fractional second part) in UTC or with UTC offset as defined in
+        /// &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="departureRequested">The requested departure date and
-        /// time&lt;br /&gt;Specify a date and time (without fractional second
-        /// part) in UTC or with UTC offset as defined in &lt;a
+        /// time - &lt;b&gt;DEPRECATED: This field will be removed
+        /// 27.06.2020.&lt;/b&gt;&lt;br /&gt;A date and time (without
+        /// fractional second part) in UTC or with UTC offset as defined in
+        /// &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="offers">List of offered unit groups with rates</param>
-        /// <param name="property">The property</param>
-        public ReservationStayOffersModel(System.DateTime arrivalRequested, System.DateTime departureRequested, IList<ReservationStayOfferModel> offers, EmbeddedPropertyModel property)
+        public ReservationStayOffersModel(IList<ReservationStayOfferModel> offers, EmbeddedPropertyModel property, System.DateTime? arrivalRequested = default(System.DateTime?), System.DateTime? departureRequested = default(System.DateTime?))
         {
             ArrivalRequested = arrivalRequested;
             DepartureRequested = departureRequested;
@@ -50,22 +53,26 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the requested arrival date and time&amp;lt;br
-        /// /&amp;gt;Specify a date and time (without fractional second part)
-        /// in UTC or with UTC offset as defined in &amp;lt;a
+        /// Gets or sets the requested arrival date and time -
+        /// &amp;lt;b&amp;gt;DEPRECATED: This field will be removed
+        /// 27.06.2020.&amp;lt;/b&amp;gt;&amp;lt;br /&amp;gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "arrivalRequested")]
-        public System.DateTime ArrivalRequested { get; set; }
+        public System.DateTime? ArrivalRequested { get; set; }
 
         /// <summary>
-        /// Gets or sets the requested departure date and time&amp;lt;br
-        /// /&amp;gt;Specify a date and time (without fractional second part)
-        /// in UTC or with UTC offset as defined in &amp;lt;a
+        /// Gets or sets the requested departure date and time -
+        /// &amp;lt;b&amp;gt;DEPRECATED: This field will be removed
+        /// 27.06.2020.&amp;lt;/b&amp;gt;&amp;lt;br /&amp;gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "departureRequested")]
-        public System.DateTime DepartureRequested { get; set; }
+        public System.DateTime? DepartureRequested { get; set; }
 
         /// <summary>
         /// Gets or sets list of offered unit groups with rates
@@ -74,7 +81,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<ReservationStayOfferModel> Offers { get; set; }
 
         /// <summary>
-        /// Gets or sets the property
         /// </summary>
         [JsonProperty(PropertyName = "property")]
         public EmbeddedPropertyModel Property { get; set; }

@@ -27,17 +27,11 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         /// <param name="available">The number of available units for the
         /// offer</param>
-        /// <param name="unitGroup">The unit group for which the offer
-        /// applies</param>
-        /// <param name="maxAdvance">The maximum advance booking period</param>
-        /// <param name="minAdvance">The minimum advance booking period</param>
         /// <param name="minGuaranteeType">The minimum guarantee type for the
         /// offer. Possible values include: 'PM6Hold', 'CreditCard',
         /// 'Prepayment', 'Company', 'Ota'</param>
         /// <param name="prices">The prices for this offer</param>
-        /// <param name="restrictions">The restrictions set for this
-        /// offer</param>
-        public TimeSliceOfferItemModel(int available, EmbeddedUnitGroupModel unitGroup, PeriodModel maxAdvance = default(PeriodModel), PeriodModel minAdvance = default(PeriodModel), string minGuaranteeType = default(string), IList<PerOccupancyPriceItemModel> prices = default(IList<PerOccupancyPriceItemModel>), RateRestrictionsModel restrictions = default(RateRestrictionsModel))
+        public TimeSliceOfferItemModel(int available, EmbeddedUnitGroupModel unitGroup, PeriodModel maxAdvance = default(PeriodModel), PeriodModel minAdvance = default(PeriodModel), GuaranteeType? minGuaranteeType = default(GuaranteeType?), IList<PerOccupancyPriceItemModel> prices = default(IList<PerOccupancyPriceItemModel>), RateRestrictionsModel restrictions = default(RateRestrictionsModel))
         {
             Available = available;
             MaxAdvance = maxAdvance;
@@ -61,13 +55,11 @@ namespace Traces.ApaleoClients.Booking.Models
         public int Available { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum advance booking period
         /// </summary>
         [JsonProperty(PropertyName = "maxAdvance")]
         public PeriodModel MaxAdvance { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum advance booking period
         /// </summary>
         [JsonProperty(PropertyName = "minAdvance")]
         public PeriodModel MinAdvance { get; set; }
@@ -78,7 +70,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// 'Ota'
         /// </summary>
         [JsonProperty(PropertyName = "minGuaranteeType")]
-        public string MinGuaranteeType { get; set; }
+        public GuaranteeType? MinGuaranteeType { get; set; }
 
         /// <summary>
         /// Gets or sets the prices for this offer
@@ -87,13 +79,11 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<PerOccupancyPriceItemModel> Prices { get; set; }
 
         /// <summary>
-        /// Gets or sets the restrictions set for this offer
         /// </summary>
         [JsonProperty(PropertyName = "restrictions")]
         public RateRestrictionsModel Restrictions { get; set; }
 
         /// <summary>
-        /// Gets or sets the unit group for which the offer applies
         /// </summary>
         [JsonProperty(PropertyName = "unitGroup")]
         public EmbeddedUnitGroupModel UnitGroup { get; set; }

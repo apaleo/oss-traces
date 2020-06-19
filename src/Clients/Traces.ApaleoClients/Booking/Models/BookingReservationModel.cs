@@ -26,32 +26,25 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the BookingReservationModel class.
         /// </summary>
         /// <param name="adults">Number of adults</param>
-        /// <param name="arrival">Date of arrival&lt;br /&gt;Specify a date and
+        /// <param name="arrival">Date of arrival&lt;br /&gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="channelCode">Channel code. Possible values include:
+        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia',
+        /// 'Homelike'</param>
+        /// <param name="departure">Date of departure&lt;br /&gt;A date and
         /// time (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="cancellationFee">Details about the cancellation fee
-        /// for this reservation</param>
-        /// <param name="channelCode">Channel code. Possible values include:
-        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia'</param>
-        /// <param name="departure">Date of departure&lt;br /&gt;Specify a date
-        /// and time (without fractional second part) in UTC or with UTC offset
-        /// as defined in &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="id">Reservation id</param>
-        /// <param name="property">The property</param>
-        /// <param name="ratePlan">The currently active rate plan</param>
         /// <param name="status">Status of the reservation. Possible values
         /// include: 'Confirmed', 'InHouse', 'CheckedOut', 'Canceled',
         /// 'NoShow'</param>
-        /// <param name="totalGrossAmount">Total amount</param>
-        /// <param name="unitGroup">The currently active unit group</param>
         /// <param name="childrenAges">The ages of the children</param>
-        /// <param name="company">Company for this reservation.</param>
         /// <param name="externalCode">Code in external system</param>
         /// <param name="guestComment">Additional information and comment by
         /// the guest</param>
-        /// <param name="paymentAccount">Payment information</param>
         /// <param name="services">The list of additional services (extras,
         /// add-ons) reserved for the stay</param>
         /// <param name="source">Source of the reservation (e.g Hotels.com,
@@ -91,8 +84,8 @@ namespace Traces.ApaleoClients.Booking.Models
         public int Adults { get; set; }
 
         /// <summary>
-        /// Gets or sets date of arrival&amp;lt;br /&amp;gt;Specify a date and
-        /// time (without fractional second part) in UTC or with UTC offset as
+        /// Gets or sets date of arrival&amp;lt;br /&amp;gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
         /// defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
@@ -100,15 +93,13 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime Arrival { get; set; }
 
         /// <summary>
-        /// Gets or sets details about the cancellation fee for this
-        /// reservation
         /// </summary>
         [JsonProperty(PropertyName = "cancellationFee")]
         public ReservationCancellationFeeModel CancellationFee { get; set; }
 
         /// <summary>
         /// Gets or sets channel code. Possible values include: 'Direct',
-        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia'
+        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
         /// </summary>
         [JsonProperty(PropertyName = "channelCode")]
         public ChannelCode ChannelCode { get; set; }
@@ -120,15 +111,14 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<int?> ChildrenAges { get; set; }
 
         /// <summary>
-        /// Gets or sets company for this reservation.
         /// </summary>
         [JsonProperty(PropertyName = "company")]
         public EmbeddedCompanyModel Company { get; set; }
 
         /// <summary>
-        /// Gets or sets date of departure&amp;lt;br /&amp;gt;Specify a date
-        /// and time (without fractional second part) in UTC or with UTC offset
-        /// as defined in &amp;lt;a
+        /// Gets or sets date of departure&amp;lt;br /&amp;gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "departure")]
@@ -153,19 +143,16 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Id { get; set; }
 
         /// <summary>
-        /// Gets or sets payment information
         /// </summary>
         [JsonProperty(PropertyName = "paymentAccount")]
         public PaymentAccountModel PaymentAccount { get; set; }
 
         /// <summary>
-        /// Gets or sets the property
         /// </summary>
         [JsonProperty(PropertyName = "property")]
         public EmbeddedPropertyModel Property { get; set; }
 
         /// <summary>
-        /// Gets or sets the currently active rate plan
         /// </summary>
         [JsonProperty(PropertyName = "ratePlan")]
         public EmbeddedRatePlanModel RatePlan { get; set; }
@@ -192,13 +179,11 @@ namespace Traces.ApaleoClients.Booking.Models
         public ReservationStatus Status { get; set; }
 
         /// <summary>
-        /// Gets or sets total amount
         /// </summary>
         [JsonProperty(PropertyName = "totalGrossAmount")]
         public MonetaryValueModel TotalGrossAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets the currently active unit group
         /// </summary>
         [JsonProperty(PropertyName = "unitGroup")]
         public EmbeddedUnitGroupModel UnitGroup { get; set; }

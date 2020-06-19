@@ -36,11 +36,12 @@ namespace Traces.ApaleoClients.Booking
 
 
         /// <summary>
-        /// Get a list of all available unit groups in a property
+        /// Get a list of all available unit groups in a property [DEPRECATED]
         /// </summary>
         /// <remarks>
-        /// Get the list of available unit groups for a specific property and
-        /// time period.&lt;br&gt;Scopes required: 'availability.read'.
+        /// Use /availability/v1/unit-groups instead&lt;br/ &gt;Get the list of
+        /// available unit groups for a specific property and time
+        /// period.&lt;br&gt;You must have this scope: 'availability.read'.
         /// </remarks>
         /// <param name='propertyId'>
         /// The property id
@@ -56,6 +57,9 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='timeSliceTemplate'>
         /// The time slice template, defaults to 'over night'. Possible values
         /// include: 'DayUse', 'OverNight'
+        /// </param>
+        /// <param name='unitGroupTypes'>
+        /// Filter result by requested unit group types
         /// </param>
         /// <param name='timeSliceDefinitionIds'>
         /// The time slice definition ids
@@ -88,28 +92,28 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingAvailableUnitGroupsGetWithHttpMessagesAsync(string propertyId, System.DateTime fromParameter, System.DateTime to, string timeSliceTemplate = default(string), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), bool? onlySellable = default(bool?), int? pageNumber = 1, int? pageSize = 100, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingAvailableUnitGroupsGetWithHttpMessagesAsync(string propertyId, System.DateTime fromParameter, System.DateTime to, TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), bool? onlySellable = default(bool?), int? pageNumber = 1, int? pageSize = 100, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// Get a list of all available units in a property
+        /// Get a list of all available units in a property [DEPRECATED]
         /// </summary>
         /// <remarks>
-        /// Get the list of available units for a specific property and time
-        /// period.&lt;br&gt;Scopes required: 'availability.read'.
+        /// Use /availability/v1/units instead&lt;br/ &gt;Get the list of
+        /// available units for a specific property and time
+        /// period.&lt;br&gt;You must have this scope: 'availability.read'.
         /// </remarks>
         /// <param name='propertyId'>
         /// The property id
         /// </param>
         /// <param name='fromParameter'>
-        /// The from date and time&lt;br /&gt;Specify a date and time (without
+        /// The from date and time&lt;br /&gt;A date and time (without
         /// fractional second part) in UTC or with UTC offset as defined in
         /// &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='to'>
-        /// The to date and time&lt;br /&gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
+        /// The to date and time&lt;br /&gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='unitGroupId'>
@@ -129,7 +133,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingAvailableUnitsGetWithHttpMessagesAsync(string propertyId, System.DateTime fromParameter, System.DateTime to, string unitGroupId = default(string), bool? includeOutOfService = default(bool?), string unitCondition = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingAvailableUnitsGetWithHttpMessagesAsync(string propertyId, System.DateTime fromParameter, System.DateTime to, string unitGroupId = default(string), bool? includeOutOfService = default(bool?), UnitCondition? unitCondition = default(UnitCondition?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Cancel a block.
@@ -137,8 +141,8 @@ namespace Traces.ApaleoClients.Booking
         /// <remarks>
         /// Cancel a specific block which is in status 'Definite' or
         /// 'Tentative'.
-        /// This changes the status to 'Canceled'.&lt;br&gt;Scopes required:
-        /// 'blocks.manage'.
+        /// This changes the status to 'Canceled'.&lt;br&gt;You must have at
+        /// least one of these scopes: 'blocks.manage, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the block that should be processed.
@@ -156,8 +160,8 @@ namespace Traces.ApaleoClients.Booking
         /// </summary>
         /// <remarks>
         /// Confirm a specific block which is in status 'Tentative'.
-        /// This changes the status to 'Definite'.&lt;br&gt;Scopes required:
-        /// 'blocks.manage'.
+        /// This changes the status to 'Definite'.&lt;br&gt;You must have at
+        /// least one of these scopes: 'blocks.manage, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the block that should be processed.
@@ -175,8 +179,8 @@ namespace Traces.ApaleoClients.Booking
         /// </summary>
         /// <remarks>
         /// Release a specific block which is in status 'Definite'.
-        /// This changes the status to 'Tentative'.&lt;br&gt;Scopes required:
-        /// 'blocks.manage'.
+        /// This changes the status to 'Tentative'.&lt;br&gt;You must have at
+        /// least one of these scopes: 'blocks.manage, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the block that should be processed.
@@ -194,8 +198,8 @@ namespace Traces.ApaleoClients.Booking
         /// </summary>
         /// <remarks>
         /// Wash a specific block which is in status 'Definite'.
-        /// This releases all unpicked units.&lt;br&gt;Scopes required:
-        /// 'blocks.manage'.
+        /// This releases all unpicked units.&lt;br&gt;You must have at least
+        /// one of these scopes: 'blocks.manage, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the block that should be processed.
@@ -213,32 +217,47 @@ namespace Traces.ApaleoClients.Booking
         /// </summary>
         /// <remarks>
         /// Returns a list of all blocks, filtered by the specified parameters.
-        /// If no parameters are set, returns the entire list.&lt;br&gt;Scopes
-        /// required: 'blocks.read'.
+        /// If no parameters are set, returns the entire list.&lt;br&gt;You
+        /// must have at least one of these scopes: 'blocks.read,
+        /// reservations.read, reservations.manage'.
         /// </remarks>
         /// <param name='groupId'>
-        /// Filter result by group id
+        /// Return blocks for the specific group
         /// </param>
         /// <param name='propertyIds'>
-        /// Filter result by requested properties
+        /// Return blocks filtered by properties
         /// </param>
         /// <param name='status'>
-        /// Filter result by block status
+        /// Return blocks filtered by statuses
+        /// </param>
+        /// <param name='unitGroupIds'>
+        /// Return blocks with any of the specified unit groups
+        /// </param>
+        /// <param name='ratePlanIds'>
+        /// Return blocks with any of the specified rate plans
+        /// </param>
+        /// <param name='timeSliceDefinitionIds'>
+        /// Return blocks with any of the specified time slice definitions
+        /// </param>
+        /// <param name='unitGroupTypes'>
+        /// Return blocks with any of the specified unit group types
+        /// </param>
+        /// <param name='timeSliceTemplate'>
+        /// The time slice template, defaults to 'over night'. Possible values
+        /// include: 'DayUse', 'OverNight'
         /// </param>
         /// <param name='fromParameter'>
         /// The start of the time range. All blocks that are overlapping with
         /// the interval specified by from and to
-        /// will be returned&lt;br /&gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
+        /// will be returned&lt;br /&gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='to'>
         /// The end of the time range. All blocks that are overlapping with the
         /// interval specified by from and to
-        /// will be returned&lt;br /&gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
+        /// will be returned&lt;br /&gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='pageNumber'>
@@ -251,8 +270,8 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='expand'>
         /// List of all embedded resources that should be expanded in the
-        /// response. Possible values are: actions. All other values will be
-        /// silently ignored.
+        /// response. Possible values are: actions, timeSlices. All other
+        /// values will be silently ignored.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -260,15 +279,16 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingBlocksGetWithHttpMessagesAsync(string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> status = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingBlocksGetWithHttpMessagesAsync(string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Creates a block
         /// </summary>
         /// <remarks>
-        /// &lt;br&gt;Scopes required: 'blocks.create'.
+        /// &lt;br&gt;You must have at least one of these scopes:
+        /// 'blocks.create, reservations.manage'.
         /// </remarks>
-        /// <param name='requestBody'>
+        /// <param name='body'>
         /// The details for the block you want to create.
         /// </param>
         /// <param name='idempotencyKey'>
@@ -285,38 +305,53 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object,BookingBlocksPostHeaders>> BookingBlocksPostWithHttpMessagesAsync(CreateBlockModel requestBody, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object,BookingBlocksPostHeaders>> BookingBlocksPostWithHttpMessagesAsync(CreateBlockModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns number of blocks
         /// </summary>
         /// <remarks>
-        /// Returns number of blocks matching the filter
-        /// criteria&lt;br&gt;Scopes required: 'blocks.read'.
+        /// Returns number of blocks matching the filter criteria&lt;br&gt;You
+        /// must have at least one of these scopes: 'blocks.read,
+        /// reservations.read, reservations.manage'.
         /// </remarks>
         /// <param name='groupId'>
-        /// Filter result by group id
+        /// Return blocks for the specific group
         /// </param>
         /// <param name='propertyIds'>
-        /// Filter result by requested properties
+        /// Return blocks filtered by properties
         /// </param>
         /// <param name='status'>
-        /// Filter result by block status
+        /// Return blocks filtered by statuses
+        /// </param>
+        /// <param name='unitGroupIds'>
+        /// Return blocks with any of the specified unit groups
+        /// </param>
+        /// <param name='ratePlanIds'>
+        /// Return blocks with any of the specified rate plans
+        /// </param>
+        /// <param name='timeSliceDefinitionIds'>
+        /// Return blocks with any of the specified time slice definitions
+        /// </param>
+        /// <param name='unitGroupTypes'>
+        /// Return blocks with any of the specified unit group types
+        /// </param>
+        /// <param name='timeSliceTemplate'>
+        /// The time slice template, defaults to 'over night'. Possible values
+        /// include: 'DayUse', 'OverNight'
         /// </param>
         /// <param name='fromParameter'>
         /// The start of the time range. All blocks that are overlapping with
         /// the interval specified by from and to
-        /// will be returned&lt;br /&gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
+        /// will be returned&lt;br /&gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='to'>
         /// The end of the time range. All blocks that are overlapping with the
         /// interval specified by from and to
-        /// will be returned&lt;br /&gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
+        /// will be returned&lt;br /&gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='customHeaders'>
@@ -325,7 +360,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingBlockscountGetWithHttpMessagesAsync(string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> status = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingBlockscountGetWithHttpMessagesAsync(string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Delete a specific block
@@ -333,7 +368,8 @@ namespace Traces.ApaleoClients.Booking
         /// <remarks>
         /// Use this call to delete a block. This is only possible as long as
         /// no reservation was picked up yet even if all of
-        /// them are canceled&lt;br&gt;Scopes required: 'blocks.manage'.
+        /// them are canceled&lt;br&gt;You must have at least one of these
+        /// scopes: 'blocks.manage, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// The id of the block.
@@ -350,16 +386,17 @@ namespace Traces.ApaleoClients.Booking
         /// Returns a specific block.
         /// </summary>
         /// <remarks>
-        /// Retrieves a block, specified by its ID.&lt;br&gt;Scopes required:
-        /// 'blocks.read'.
+        /// Retrieves a block, specified by its ID.&lt;br&gt;You must have at
+        /// least one of these scopes: 'blocks.read, reservations.read,
+        /// reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the block to be retrieved.
         /// </param>
         /// <param name='expand'>
         /// List of all embedded resources that should be expanded in the
-        /// response. Possible values are: actions. All other values will be
-        /// silently ignored.
+        /// response. Possible values are: actions, timeSlices. All other
+        /// values will be silently ignored.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -373,8 +410,9 @@ namespace Traces.ApaleoClients.Booking
         /// Check if a block exists
         /// </summary>
         /// <remarks>
-        /// Check if a block exists by id&lt;br&gt;Scopes required:
-        /// 'blocks.read'.
+        /// Check if a block exists by id&lt;br&gt;You must have at least one
+        /// of these scopes: 'blocks.read, reservations.read,
+        /// reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// The id of the block.
@@ -392,12 +430,13 @@ namespace Traces.ApaleoClients.Booking
         /// </summary>
         /// <remarks>
         /// You can replace From, To, GrossDailyRate and
-        /// BlockedUnits&lt;br&gt;Scopes required: 'blocks.manage'.
+        /// BlockedUnits&lt;br&gt;You must have at least one of these scopes:
+        /// 'blocks.manage, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the block to be modified.
         /// </param>
-        /// <param name='request'>
+        /// <param name='body'>
         /// Define the list of operations to be applied to the resource. Learn
         /// more about JSON Patch here: http://jsonpatch.com/.
         /// </param>
@@ -407,7 +446,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingBlocksByIdPatchWithHttpMessagesAsync(string id, IList<Operation> request, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessageItemCollection>> BookingBlocksByIdPatchWithHttpMessagesAsync(string id, IList<Operation> body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns a list of all bookings, filtered by the specified
@@ -416,7 +455,8 @@ namespace Traces.ApaleoClients.Booking
         /// <remarks>
         /// Returns a list of all bookings, filtered by the specified
         /// parameters. If no parameters are set, returns the entire
-        /// list.&lt;br&gt;Scopes required: 'reservations.read'.
+        /// list.&lt;br&gt;You must have at least one of these scopes:
+        /// 'reservations.read, reservations.manage'.
         /// </remarks>
         /// <param name='reservationId'>
         /// Filter result by reservation id. The result set will contain all
@@ -437,8 +477,8 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='textSearch'>
         /// This will filter all bookings for the provided free text. Currently
-        /// it only looks up if either the lastname, firstname or company name
-        /// of the booker
+        /// it only looks up if either the lastname, firstname, email or
+        /// company name of the booker
         /// contains one of the provided values
         /// </param>
         /// <param name='pageNumber'>
@@ -460,16 +500,17 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingBookingsGetWithHttpMessagesAsync(string reservationId = default(string), string groupId = default(string), IList<string> channelCode = default(IList<string>), string externalCode = default(string), string textSearch = default(string), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingBookingsGetWithHttpMessagesAsync(string reservationId = default(string), string groupId = default(string), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), string externalCode = default(string), string textSearch = default(string), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Creates a booking for one or more reservations.
         /// </summary>
         /// <remarks>
         /// Creates a booking taking a list of reservations as
-        /// input&lt;br&gt;Scopes required: 'reservations.create'.
+        /// input&lt;br&gt;You must have at least one of these scopes:
+        /// 'reservations.create, reservations.manage'.
         /// </remarks>
-        /// <param name='requestBody'>
+        /// <param name='body'>
         /// The list of reservations you want to create.
         /// </param>
         /// <param name='idempotencyKey'>
@@ -486,7 +527,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object,BookingBookingsPostHeaders>> BookingBookingsPostWithHttpMessagesAsync(CreateBookingModel requestBody, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object,BookingBookingsPostHeaders>> BookingBookingsPostWithHttpMessagesAsync(CreateBookingModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Creates a booking for one or more reservations regardless of
@@ -494,9 +535,10 @@ namespace Traces.ApaleoClients.Booking
         /// </summary>
         /// <remarks>
         /// Creates a booking taking a list of reservations as
-        /// input&lt;br&gt;Scopes required: 'reservations.force-create'.
+        /// input&lt;br&gt;You must have at least one of these scopes:
+        /// 'reservations.force-create, reservations.force-manage'.
         /// </remarks>
-        /// <param name='requestBody'>
+        /// <param name='body'>
         /// The list of reservations you want to create.
         /// </param>
         /// <param name='idempotencyKey'>
@@ -513,14 +555,15 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object,BookingBookingsforcePostHeaders>> BookingBookingsforcePostWithHttpMessagesAsync(CreateBookingModel requestBody, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object,BookingBookingsforcePostHeaders>> BookingBookingsforcePostWithHttpMessagesAsync(CreateBookingModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns a specific booking.
         /// </summary>
         /// <remarks>
-        /// Retrieves a booking with all its reservations.&lt;br&gt;Scopes
-        /// required: 'reservations.read'.
+        /// Retrieves a booking with all its reservations.&lt;br&gt;You must
+        /// have at least one of these scopes: 'reservations.read,
+        /// reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the booking to be retrieved.
@@ -549,12 +592,13 @@ namespace Traces.ApaleoClients.Booking
         /// - Add, replace and remove BookerComment
         /// - Copy PaymentAccount, Comment and BookerComment from the booking
         /// to any reservation, or the other way around
-        /// - Replace Booker&lt;br&gt;Scopes required: 'reservations.manage'.
+        /// - Replace Booker&lt;br&gt;You must have this scope:
+        /// 'reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the booking to be modified.
         /// </param>
-        /// <param name='request'>
+        /// <param name='body'>
         /// Define the list of operations to be applied to the resource. Learn
         /// more about JSON Patch here: http://jsonpatch.com/.
         /// </param>
@@ -564,20 +608,21 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingBookingsByIdPatchWithHttpMessagesAsync(string id, IList<Operation> request, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessageItemCollection>> BookingBookingsByIdPatchWithHttpMessagesAsync(string id, IList<Operation> body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Add one or multiple reservations to an existing booking.
         /// </summary>
         /// <remarks>
         /// Creates new reservations and adds them to an existing booking
-        /// taking a list of reservations as input&lt;br&gt;Scopes required:
-        /// 'reservations.create'.
+        /// taking a list of reservations as input&lt;br&gt;You must have at
+        /// least one of these scopes: 'reservations.create,
+        /// reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the booking the reservations should be attached to.
         /// </param>
-        /// <param name='requestBody'>
+        /// <param name='body'>
         /// The list of reservations you want to add.
         /// </param>
         /// <param name='idempotencyKey'>
@@ -594,7 +639,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object,BookingBookingsByIdReservationsPostHeaders>> BookingBookingsByIdReservationsPostWithHttpMessagesAsync(string id, AddReservationsModel requestBody, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object,BookingBookingsByIdReservationsPostHeaders>> BookingBookingsByIdReservationsPostWithHttpMessagesAsync(string id, AddReservationsModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Add one or multiple reservations to an existing booking regardless
@@ -602,13 +647,14 @@ namespace Traces.ApaleoClients.Booking
         /// </summary>
         /// <remarks>
         /// Creates new reservations and adds them to an existing booking
-        /// taking a list of reservations as input&lt;br&gt;Scopes required:
-        /// 'reservations.force-create'.
+        /// taking a list of reservations as input&lt;br&gt;You must have at
+        /// least one of these scopes: 'reservations.force-create,
+        /// reservations.force-manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the booking the reservations should be attached to.
         /// </param>
-        /// <param name='requestBody'>
+        /// <param name='body'>
         /// The list of reservations you want to add.
         /// </param>
         /// <param name='idempotencyKey'>
@@ -625,7 +671,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object,BookingBookingsByIdReservationsforcePostHeaders>> BookingBookingsByIdReservationsforcePostWithHttpMessagesAsync(string id, AddReservationsModel requestBody, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object,BookingBookingsByIdReservationsforcePostHeaders>> BookingBookingsByIdReservationsforcePostWithHttpMessagesAsync(string id, AddReservationsModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns a list of all group bookings, filtered by the specified
@@ -634,13 +680,14 @@ namespace Traces.ApaleoClients.Booking
         /// <remarks>
         /// Returns a list of all group bookings, filtered by the specified
         /// parameters.
-        /// If no parameters are set, returns the entire list&lt;br&gt;Scopes
-        /// required: 'groups.read'.
+        /// If no parameters are set, returns the entire list&lt;br&gt;You must
+        /// have at least one of these scopes: 'groups.read, reservations.read,
+        /// reservations.manage'.
         /// </remarks>
         /// <param name='textSearch'>
         /// This will filter all group bookings for the provided free text.
         /// Currently it only looks up if either the group name, lastname,
-        /// firstname or company name of the booker contains one of the
+        /// firstname, email or company name of the booker contains one of the
         /// provided values
         /// </param>
         /// <param name='propertyIds'>
@@ -649,17 +696,15 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='fromParameter'>
         /// The start of the time range. All groups that have blocks
         /// overlapping with the interval specified by from and to
-        /// will be returned&lt;br /&gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
+        /// will be returned&lt;br /&gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='to'>
         /// The end of the time range. All groups that have blocks overlapping
         /// with the interval specified by from and to
-        /// will be returned&lt;br /&gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
+        /// will be returned&lt;br /&gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='pageNumber'>
@@ -687,9 +732,10 @@ namespace Traces.ApaleoClients.Booking
         /// Creates a group booking.
         /// </summary>
         /// <remarks>
-        /// &lt;br&gt;Scopes required: 'groups.create'.
+        /// &lt;br&gt;You must have at least one of these scopes:
+        /// 'groups.create, reservations.manage'.
         /// </remarks>
-        /// <param name='requestBody'>
+        /// <param name='body'>
         /// The details of the group that should be created.
         /// </param>
         /// <param name='idempotencyKey'>
@@ -706,19 +752,20 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object,BookingGroupsPostHeaders>> BookingGroupsPostWithHttpMessagesAsync(CreateGroupModel requestBody, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object,BookingGroupsPostHeaders>> BookingGroupsPostWithHttpMessagesAsync(CreateGroupModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns number of group bookings
         /// </summary>
         /// <remarks>
         /// Returns number of group bookings matching the filter
-        /// criteria&lt;br&gt;Scopes required: 'groups.read'.
+        /// criteria&lt;br&gt;You must have at least one of these scopes:
+        /// 'groups.read, reservations.read, reservations.manage'.
         /// </remarks>
         /// <param name='textSearch'>
         /// This will filter all group bookings for the provided free text.
         /// Currently it only looks up if either the group name, lastname,
-        /// firstname or company name of the booker contains one of the
+        /// firstname, email or company name of the booker contains one of the
         /// provided values
         /// </param>
         /// <param name='propertyIds'>
@@ -727,17 +774,15 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='fromParameter'>
         /// The start of the time range. All groups that have blocks
         /// overlapping with the interval specified by from and to
-        /// will be returned&lt;br /&gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
+        /// will be returned&lt;br /&gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='to'>
         /// The end of the time range. All groups that have blocks overlapping
         /// with the interval specified by from and to
-        /// will be returned&lt;br /&gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
+        /// will be returned&lt;br /&gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='customHeaders'>
@@ -754,7 +799,8 @@ namespace Traces.ApaleoClients.Booking
         /// <remarks>
         /// Use this call to delete a group booking. This is only possible as
         /// long as no blocks exist that are linked to
-        /// this group booking&lt;br&gt;Scopes required: 'groups.manage'.
+        /// this group booking&lt;br&gt;You must have at least one of these
+        /// scopes: 'groups.manage, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the group booking to be deleted.
@@ -772,7 +818,8 @@ namespace Traces.ApaleoClients.Booking
         /// </summary>
         /// <remarks>
         /// Retrieves a specific group booking with all its related
-        /// blocks&lt;br&gt;Scopes required: 'groups.read'.
+        /// blocks&lt;br&gt;You must have at least one of these scopes:
+        /// 'groups.read, reservations.read, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the group booking to be retrieved.
@@ -794,8 +841,9 @@ namespace Traces.ApaleoClients.Booking
         /// Check if a certain group booking exists
         /// </summary>
         /// <remarks>
-        /// Check if a group booking exists by id&lt;br&gt;Scopes required:
-        /// 'groups.read'.
+        /// Check if a group booking exists by id&lt;br&gt;You must have at
+        /// least one of these scopes: 'groups.read, reservations.read,
+        /// reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the group booking to be checked for existence.
@@ -818,12 +866,13 @@ namespace Traces.ApaleoClients.Booking
         /// - Add, replace and remove BookerComment
         /// - Add, replace and remove PaymentAccount
         /// - Add, replace and remove PropertyIds
-        /// - Replace Booker&lt;br&gt;Scopes required: 'groups.manage'.
+        /// - Replace Booker&lt;br&gt;You must have at least one of these
+        /// scopes: 'groups.manage, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the group booking to be modified.
         /// </param>
-        /// <param name='request'>
+        /// <param name='body'>
         /// Define the list of operations to be applied to the resource. Learn
         /// more about JSON Patch here: http://jsonpatch.com/.
         /// </param>
@@ -833,7 +882,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingGroupsByIdPatchWithHttpMessagesAsync(string id, IList<Operation> request, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessageItemCollection>> BookingGroupsByIdPatchWithHttpMessagesAsync(string id, IList<Operation> body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Add one or multiple reservations to an existing group booking using
@@ -841,13 +890,13 @@ namespace Traces.ApaleoClients.Booking
         /// </summary>
         /// <remarks>
         /// Creates new reservations and adds them to an existing group booking
-        /// taking a list of reservations as input&lt;br&gt;Scopes required:
-        /// 'groups.manage'.
+        /// taking a list of reservations as input&lt;br&gt;You must have at
+        /// least one of these scopes: 'groups.manage, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the group booking the reservations should be attached to.
         /// </param>
-        /// <param name='requestBody'>
+        /// <param name='body'>
         /// The list of reservations you want to create.
         /// </param>
         /// <param name='idempotencyKey'>
@@ -864,7 +913,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object,BookingGroupsByIdReservationsPostHeaders>> BookingGroupsByIdReservationsPostWithHttpMessagesAsync(string id, PickUpReservationsModel requestBody, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object,BookingGroupsByIdReservationsPostHeaders>> BookingGroupsByIdReservationsPostWithHttpMessagesAsync(string id, PickUpReservationsModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns offers with rates and availabilities for the specified
@@ -872,8 +921,8 @@ namespace Traces.ApaleoClients.Booking
         /// </summary>
         /// <remarks>
         /// Calculates and returns offers per time slice for a specific rate
-        /// plan, arrival and departure date.&lt;br&gt;Scopes required:
-        /// 'offer-index.read'.
+        /// plan, arrival and departure date.&lt;br&gt;You must have at least
+        /// one of these scopes: 'offer-index.read, offers.read'.
         /// </remarks>
         /// <param name='ratePlanId'>
         /// </param>
@@ -891,7 +940,7 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='channelCode'>
         /// Possible values include: 'Direct', 'BookingCom', 'Ibe',
-        /// 'ChannelManager', 'Expedia'
+        /// 'ChannelManager', 'Expedia', 'Homelike'
         /// </param>
         /// <param name='pageNumber'>
         /// Page number, starting from 1 and defaulting to 1. Results in 204 if
@@ -907,15 +956,15 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingOfferIndexGetWithHttpMessagesAsync(string ratePlanId, string fromParameter, string to, string channelCode, int? pageNumber = 1, int? pageSize = 100, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingOfferIndexGetWithHttpMessagesAsync(string ratePlanId, string fromParameter, string to, ChannelCode channelCode, int? pageNumber = 1, int? pageSize = 100, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns offers for one specific stay.
         /// </summary>
         /// <remarks>
         /// Calculates and returns available offers for a specific property,
-        /// arrival and departure date.&lt;br&gt;Scopes required:
-        /// 'offers.read'.
+        /// arrival and departure date.&lt;br&gt;You must have at least one of
+        /// these scopes: 'offers.read, reservations.manage'.
         /// </remarks>
         /// <param name='propertyId'>
         /// The property ID
@@ -943,12 +992,19 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='timeSliceDefinitionIds'>
         /// Time slice definition IDs, used to filter rate plans
         /// </param>
+        /// <param name='unitGroupIds'>
+        /// Unit group IDs, used to filter rate plans
+        /// </param>
+        /// <param name='unitGroupTypes'>
+        /// Unit group types, used to filter rate plans
+        /// </param>
         /// <param name='channelCode'>
         /// Channel code, used to filter the rate plans. Possible values
-        /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia'
+        /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
+        /// 'Expedia', 'Homelike'
         /// </param>
         /// <param name='promoCode'>
-        /// The code associated with a certain special offer
+        /// The promo code associated with a certain special offer
         /// </param>
         /// <param name='corporateCode'>
         /// The code associated with a corporate rate
@@ -967,15 +1023,15 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingOffersGetWithHttpMessagesAsync(string propertyId, string arrival, string departure, int adults, string timeSliceTemplate = default(string), IList<string> timeSliceDefinitionIds = default(IList<string>), string channelCode = default(string), string promoCode = default(string), string corporateCode = default(string), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingOffersGetWithHttpMessagesAsync(string propertyId, string arrival, string departure, int adults, TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), string corporateCode = default(string), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns offers for a specific rate plan.
         /// </summary>
         /// <remarks>
         /// Calculates and returns available offers for a specific rate plan,
-        /// arrival and departure date.&lt;br&gt;Scopes required:
-        /// 'offers.read'.
+        /// arrival and departure date.&lt;br&gt;You must have at least one of
+        /// these scopes: 'offers.read, reservations.manage'.
         /// </remarks>
         /// <param name='ratePlanId'>
         /// The rate plan ID
@@ -998,7 +1054,7 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='channelCode'>
         /// The channel code. Possible values include: 'Direct', 'BookingCom',
-        /// 'Ibe', 'ChannelManager', 'Expedia'
+        /// 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
         /// </param>
         /// <param name='childrenAges'>
         /// The ages of the children you want offers for
@@ -1014,7 +1070,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingRatePlanOffersGetWithHttpMessagesAsync(string ratePlanId, string arrival, string departure, int adults, string channelCode = default(string), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingRatePlanOffersGetWithHttpMessagesAsync(string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Allows you to amend the stay details of a reservation
@@ -1026,13 +1082,13 @@ namespace Traces.ApaleoClients.Booking
         /// If a reservation is 'InHouse', only changes to future time slices
         /// are possible.&lt;br /&gt;
         /// Changes to reservations that are in the status 'CheckedOut' or
-        /// 'Canceled' are not possible at all.&lt;br&gt;Scopes required:
-        /// 'reservations.manage'.
+        /// 'Canceled' are not possible at all.&lt;br&gt;You must have this
+        /// scope: 'reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation that should be modified
         /// </param>
-        /// <param name='request'>
+        /// <param name='body'>
         /// The new stay details that should be applied to the reservation.
         /// </param>
         /// <param name='customHeaders'>
@@ -1041,7 +1097,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdAmendPutWithHttpMessagesAsync(string id, DesiredStayDetailsModel request, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdAmendPutWithHttpMessagesAsync(string id, DesiredStayDetailsModel body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Allows you to amend the stay details of a reservation regardless of
@@ -1054,13 +1110,13 @@ namespace Traces.ApaleoClients.Booking
         /// If a reservation is 'InHouse', only changes to future time slices
         /// are possible.&lt;br /&gt;
         /// Changes to reservations that are in the status 'CheckedOut' or
-        /// 'Canceled' are not possible at all.&lt;br&gt;Scopes required:
-        /// 'reservations.force-manage'.
+        /// 'Canceled' are not possible at all.&lt;br&gt;You must have this
+        /// scope: 'reservations.force-manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation that should be modified
         /// </param>
-        /// <param name='request'>
+        /// <param name='body'>
         /// The new stay details that should be applied to the reservation.
         /// </param>
         /// <param name='customHeaders'>
@@ -1069,15 +1125,15 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdAmendforcePutWithHttpMessagesAsync(string id, DesiredStayDetailsModel request, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdAmendforcePutWithHttpMessagesAsync(string id, DesiredStayDetailsModel body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Assign a unit to a reservation.
         /// </summary>
         /// <remarks>
         /// Assigns one of the available units to a reservation which is in
-        /// state 'Confirmed' or 'InHouse'.&lt;br&gt;Scopes required:
-        /// 'reservations.assign-unit'.
+        /// state 'Confirmed' or 'InHouse'.&lt;br&gt;You must have at least one
+        /// of these scopes: 'reservations.assign-unit, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation a unit should be assigned to.
@@ -1097,7 +1153,8 @@ namespace Traces.ApaleoClients.Booking
         /// Assigns a specific unit to a reservation which is in state
         /// 'Confirmed' or 'InHouse'.&lt;br /&gt;If the unit is not available,
         /// the call will return an error, and no unit will be
-        /// assigned.&lt;br&gt;Scopes required: 'reservations.assign-unit'.
+        /// assigned.&lt;br&gt;You must have at least one of these scopes:
+        /// 'reservations.assign-unit, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation the unit should be assigned to.
@@ -1136,12 +1193,12 @@ namespace Traces.ApaleoClients.Booking
         /// Use this to book a service for a specific reservation.
         /// Please note that when dates are specified, all desired dates must
         /// be specified or they will be removed if not posted to the
-        /// folio.&lt;br&gt;Scopes required: 'reservations.manage'.
+        /// folio.&lt;br&gt;You must have this scope: 'reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation.
         /// </param>
-        /// <param name='request'>
+        /// <param name='body'>
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1149,7 +1206,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdBookServicePutWithHttpMessagesAsync(string id, BookReservationServiceModel request, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdBookServicePutWithHttpMessagesAsync(string id, BookReservationServiceModel body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Cancel a reservation.
@@ -1158,7 +1215,8 @@ namespace Traces.ApaleoClients.Booking
         /// Cancel a specific reservation which is in status 'Confirmed' and
         /// where the arrival time is in the future.
         /// This changes the status to 'Canceled', and sets the cancellation
-        /// date and time.&lt;br&gt;Scopes required: 'reservations.manage'.
+        /// date and time.&lt;br&gt;You must have this scope:
+        /// 'reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation that should be processed.
@@ -1172,40 +1230,12 @@ namespace Traces.ApaleoClients.Booking
         Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdCancelPutWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// Allows channel to amend the stay details of a reservation
-        /// regardless of availability or restrictions.
-        /// </summary>
-        /// <remarks>
-        /// Modifies the stay-related data of a reservation.&lt;br /&gt;
-        /// If a reservation is 'Confirmed', you can change all fields.&lt;br
-        /// /&gt;
-        /// If a reservation is 'InHouse', only changes to future time slices
-        /// are possible.&lt;br /&gt;
-        /// Changes to reservations that are in the status 'CheckedOut' or
-        /// 'Canceled' are not possible at all.&lt;br&gt;Scopes required:
-        /// 'reservations.force-manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the reservation that should be modified
-        /// </param>
-        /// <param name='request'>
-        /// The new stay details that should be applied to the reservation.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdChannelAmendPutWithHttpMessagesAsync(string id, DesiredStayDetailsChannelModel request, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
         /// Check-in of a reservation.
         /// </summary>
         /// <remarks>
         /// Check in a specific reservation which is in status 'Confirmed', and
         /// has a unit assigned. This changes the status to 'InHouse', and sets
-        /// the check-in date and time.&lt;br&gt;Scopes required:
+        /// the check-in date and time.&lt;br&gt;You must have this scope:
         /// 'reservations.manage'.
         /// </remarks>
         /// <param name='id'>
@@ -1232,7 +1262,7 @@ namespace Traces.ApaleoClients.Booking
         /// &lt;br /&gt;
         /// Check-out is only possible, if the departure date is not later than
         /// tomorrow. Otherwise, first amend the reservation and shorten the
-        /// stay.&lt;br&gt;Scopes required: 'reservations.manage'.
+        /// stay.&lt;br&gt;You must have this scope: 'reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation that should be processed.
@@ -1252,7 +1282,7 @@ namespace Traces.ApaleoClients.Booking
         /// Set a specific reservation to No-show which is in status
         /// 'Confirmed' and where the arrival date is in the past.
         /// This changes the status to 'NoShow', and sets the no-show date and
-        /// time.&lt;br&gt;Scopes required: 'reservations.manage'.
+        /// time.&lt;br&gt;You must have this scope: 'reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation that should be processed.
@@ -1272,8 +1302,8 @@ namespace Traces.ApaleoClients.Booking
         /// Unassigns units for all time slices of the given reservation. If no
         /// units are assigned for the
         /// reservation nothing will happen. It will fail for reservations in
-        /// status 'CheckedOut'.&lt;br&gt;Scopes required:
-        /// 'reservations.assign-unit'.
+        /// status 'CheckedOut'.&lt;br&gt;You must have at least one of these
+        /// scopes: 'reservations.assign-unit, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation the unit should be unassigned for.
@@ -1293,7 +1323,8 @@ namespace Traces.ApaleoClients.Booking
         /// <remarks>
         /// Returns a list of all reservations, filtered by the specified
         /// parameters. If no parameters are set, returns the entire
-        /// list.&lt;br&gt;Scopes required: 'reservations.read'.
+        /// list.&lt;br&gt;You must have at least one of these scopes:
+        /// 'reservations.read, reservations.manage'.
         /// </remarks>
         /// <param name='bookingId'>
         /// Filter result by booking id
@@ -1313,6 +1344,9 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='unitGroupIds'>
         /// Filter result by requested unit groups
         /// </param>
+        /// <param name='unitGroupTypes'>
+        /// Filter result by requested unit group types
+        /// </param>
         /// <param name='blockIds'>
         /// Filter result by requested blocks
         /// </param>
@@ -1331,16 +1365,16 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='fromParameter'>
         /// The start of the time interval. When filtering by date, at least
-        /// one of 'from' and 'to' has to be specified&lt;br /&gt;Specify a
-        /// date and time (without fractional second part) in UTC or with UTC
-        /// offset as defined in &lt;a
+        /// one of 'from' and 'to' has to be specified&lt;br /&gt;A date and
+        /// time (without fractional second part) in UTC or with UTC offset as
+        /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='to'>
         /// The end of the time interval, must be larger than 'from'. When
         /// filtering by date, at least one of 'from' and 'to' has to be
-        /// specified&lt;br /&gt;Specify a date and time (without fractional
-        /// second part) in UTC or with UTC offset as defined in &lt;a
+        /// specified&lt;br /&gt;A date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='channelCode'>
@@ -1359,9 +1393,11 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='textSearch'>
         /// This will filter all reservations where the provided text is
-        /// contained in: booker first name or last name or company name,
-        /// primary guest first name or last name or company name, external
-        /// code, reservation id, unit name. The search is case insensitive.
+        /// contained in: booker first name or last name or email or company
+        /// name,
+        /// primary guest first name or last name or email or company name,
+        /// external code, reservation id, unit name. The search is case
+        /// insensitive.
         /// </param>
         /// <param name='balanceFilter'>
         /// This will filter reservations based on their balance.&lt;br
@@ -1395,14 +1431,14 @@ namespace Traces.ApaleoClients.Booking
         /// values are: arrival:asc, arrival:desc, departure:asc,
         /// departure:desc, created:asc, created:desc, updated:asc,
         /// updated:desc, id:asc, id:desc, firstname:asc, firstname:desc,
-        /// lastname:asc, lastname:desc. All other values will be silently
-        /// ignored.
+        /// lastname:asc, lastname:desc, unitname:asc, unitname:desc. All other
+        /// values will be silently ignored.
         /// </param>
         /// <param name='expand'>
         /// List of all embedded resources that should be expanded in the
         /// response. Possible values are: booker, actions, timeSlices,
-        /// services, assignedUnits, company, cityTax. All other values will be
-        /// silently ignored.
+        /// services, assignedUnits, company. All other values will be silently
+        /// ignored.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1410,7 +1446,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationsGetWithHttpMessagesAsync(string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<string> blockIds = default(IList<string>), IList<string> status = default(IList<string>), string dateFilter = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<string> channelCode = default(IList<string>), IList<string> sources = default(IList<string>), IList<string> validationMessageCategory = default(IList<string>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), int? pageNumber = 1, int? pageSize = 100, IList<string> sort = default(IList<string>), IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingReservationsGetWithHttpMessagesAsync(string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), int? pageNumber = 1, int? pageSize = 100, IList<string> sort = default(IList<string>), IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns the number of reservations fulfilling the criteria
@@ -1418,7 +1454,8 @@ namespace Traces.ApaleoClients.Booking
         /// </summary>
         /// <remarks>
         /// If no parameters are set, returns the total count of
-        /// reservations.&lt;br&gt;Scopes required: 'reservations.read'.
+        /// reservations.&lt;br&gt;You must have at least one of these scopes:
+        /// 'reservations.read, reservations.manage'.
         /// </remarks>
         /// <param name='bookingId'>
         /// Filter result by booking id
@@ -1438,6 +1475,9 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='unitGroupIds'>
         /// Filter result by requested unit groups
         /// </param>
+        /// <param name='unitGroupTypes'>
+        /// Filter result by requested unit group types
+        /// </param>
         /// <param name='blockIds'>
         /// Filter result by requested blocks
         /// </param>
@@ -1456,16 +1496,16 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='fromParameter'>
         /// The start of the time interval. When filtering by date, at least
-        /// one of 'from' and 'to' has to be specified&lt;br /&gt;Specify a
-        /// date and time (without fractional second part) in UTC or with UTC
-        /// offset as defined in &lt;a
+        /// one of 'from' and 'to' has to be specified&lt;br /&gt;A date and
+        /// time (without fractional second part) in UTC or with UTC offset as
+        /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='to'>
         /// The end of the time interval, must be larger than 'from'. When
         /// filtering by date, at least one of 'from' and 'to' has to be
-        /// specified&lt;br /&gt;Specify a date and time (without fractional
-        /// second part) in UTC or with UTC offset as defined in &lt;a
+        /// specified&lt;br /&gt;A date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='channelCode'>
@@ -1484,9 +1524,11 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='textSearch'>
         /// This will filter all reservations where the provided text is
-        /// contained in: booker first name or last name or company name,
-        /// primary guest first name or last name or company name, external
-        /// code, reservation id, unit name. The search is case insensitive.
+        /// contained in: booker first name or last name or email or company
+        /// name,
+        /// primary guest first name or last name or email or company name,
+        /// external code, reservation id, unit name. The search is case
+        /// insensitive.
         /// </param>
         /// <param name='balanceFilter'>
         /// This will filter reservations based on their balance.&lt;br
@@ -1513,14 +1555,15 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationscountGetWithHttpMessagesAsync(string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<string> blockIds = default(IList<string>), IList<string> status = default(IList<string>), string dateFilter = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<string> channelCode = default(IList<string>), IList<string> sources = default(IList<string>), IList<string> validationMessageCategory = default(IList<string>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingReservationscountGetWithHttpMessagesAsync(string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns a specific reservation.
         /// </summary>
         /// <remarks>
-        /// Retrieves a reservation, specified by its ID.&lt;br&gt;Scopes
-        /// required: 'reservations.read'.
+        /// Retrieves a reservation, specified by its ID.&lt;br&gt;You must
+        /// have at least one of these scopes: 'reservations.read,
+        /// reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation to be retrieved.
@@ -1528,8 +1571,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='expand'>
         /// List of all embedded resources that should be expanded in the
         /// response. Possible values are: timeSlices, services, booker,
-        /// actions, company, cityTax. All other values will be silently
-        /// ignored.
+        /// actions, company. All other values will be silently ignored.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1552,13 +1594,13 @@ namespace Traces.ApaleoClients.Booking
         /// - Add a company (using company/Id, and only if not already set)
         /// - Add, replace and remove Commission
         /// - Replace PrimaryGuest
-        /// - Remove ValidationMessages&lt;br&gt;Scopes required:
+        /// - Remove ValidationMessages&lt;br&gt;You must have this scope:
         /// 'reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation to be modified.
         /// </param>
-        /// <param name='request'>
+        /// <param name='body'>
         /// Define the list of operations to be applied to the resource. Learn
         /// more about JSON Patch here: http://jsonpatch.com/.
         /// </param>
@@ -1568,14 +1610,18 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationsByIdPatchWithHttpMessagesAsync(string id, IList<Operation> request, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationsByIdPatchWithHttpMessagesAsync(string id, IList<Operation> body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// Get a list of all available units for a reservation
+        /// Get a list of all available units for a reservation [DEPRECATED]
         /// </summary>
         /// <remarks>
-        /// Get the list of available units for a specific reservation and time
-        /// period.&lt;br&gt;Scopes required: 'availability.read'.
+        /// This method has been moved to availability, use
+        /// /availability/v1/reservations/{id}/units instead. It will be
+        /// removed on 10/07/2020&lt;br/ &gt;Get the list of available units
+        /// for a specific reservation and time period.&lt;br&gt;You must have
+        /// at least one of these scopes: 'availability.read,
+        /// reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// The id of the reservation
@@ -1584,15 +1630,14 @@ namespace Traces.ApaleoClients.Booking
         /// The unit group id
         /// </param>
         /// <param name='fromParameter'>
-        /// The from date and time&lt;br /&gt;Specify a date and time (without
+        /// The from date and time&lt;br /&gt;A date and time (without
         /// fractional second part) in UTC or with UTC offset as defined in
         /// &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='to'>
-        /// The to date and time&lt;br /&gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
+        /// The to date and time&lt;br /&gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='includeOutOfService'>
@@ -1609,14 +1654,15 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationsByIdAvailableUnitsGetWithHttpMessagesAsync(string id, string unitGroupId = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeOutOfService = default(bool?), string unitCondition = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingReservationsByIdAvailableUnitsGetWithHttpMessagesAsync(string id, string unitGroupId = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeOutOfService = default(bool?), UnitCondition? unitCondition = default(UnitCondition?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns offers for one specific reservation.
         /// </summary>
         /// <remarks>
         /// Calculates and returns offers for amending a specific
-        /// reservation.&lt;br&gt;Scopes required: 'offers.read'.
+        /// reservation.&lt;br&gt;You must have at least one of these scopes:
+        /// 'offers.read, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation to be amended.
@@ -1642,11 +1688,12 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='channelCode'>
         /// The channel code used to filter the rate plans. Possible values
-        /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia'
+        /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
+        /// 'Expedia', 'Homelike'
         /// </param>
         /// <param name='promoCode'>
-        /// The code associated with a certain special offer, like corporate
-        /// rate
+        /// The promo code associated with a certain special offer, like
+        /// corporate rate
         /// </param>
         /// <param name='requote'>
         /// Whether the offers should be re-quoted based on current prices, or
@@ -1665,21 +1712,23 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationsByIdOffersGetWithHttpMessagesAsync(string id, string arrival = default(string), string departure = default(string), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), string channelCode = default(string), string promoCode = default(string), bool? requote = default(bool?), bool? includeUnavailable = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingReservationsByIdOffersGetWithHttpMessagesAsync(string id, string arrival = default(string), string departure = default(string), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), bool? requote = default(bool?), bool? includeUnavailable = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns service offers for one specific reservation.
         /// </summary>
         /// <remarks>
         /// Calculates and returns service offers for a specific
-        /// reservation.&lt;br&gt;Scopes required: 'offers.read'.
+        /// reservation.&lt;br&gt;You must have at least one of these scopes:
+        /// 'offers.read, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation.
         /// </param>
         /// <param name='channelCode'>
         /// The channel code used to filter the services. Possible values
-        /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia'
+        /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
+        /// 'Expedia', 'Homelike'
         /// </param>
         /// <param name='onlyDefaultDates'>
         /// Depending on the postNextDay setting of a service it will by
@@ -1697,7 +1746,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationsByIdServiceOffersGetWithHttpMessagesAsync(string id, string channelCode = default(string), bool? onlyDefaultDates = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingReservationsByIdServiceOffersGetWithHttpMessagesAsync(string id, ChannelCode? channelCode = default(ChannelCode?), bool? onlyDefaultDates = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Removes a service from a reservation.
@@ -1705,7 +1754,7 @@ namespace Traces.ApaleoClients.Booking
         /// <remarks>
         /// Removes a service from a reservation. The service will not be
         /// removed if it is already posted or if the service date is in the
-        /// past.&lt;br&gt;Scopes required: 'reservations.manage'.
+        /// past.&lt;br&gt;You must have this scope: 'reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation.
@@ -1726,7 +1775,8 @@ namespace Traces.ApaleoClients.Booking
         /// </summary>
         /// <remarks>
         /// Returns the services booked for a specific
-        /// reservation.&lt;br&gt;Scopes required: 'reservations.read'.
+        /// reservation.&lt;br&gt;You must have at least one of these scopes:
+        /// 'reservations.read, reservations.manage'.
         /// </remarks>
         /// <param name='id'>
         /// Id of the reservation.
@@ -1743,7 +1793,8 @@ namespace Traces.ApaleoClients.Booking
         /// Returns service offers for one specific stay.
         /// </summary>
         /// <remarks>
-        /// &lt;br&gt;Scopes required: 'offers.read'.
+        /// &lt;br&gt;You must have at least one of these scopes: 'offers.read,
+        /// reservations.manage'.
         /// </remarks>
         /// <param name='ratePlanId'>
         /// The rate plan ID
@@ -1766,7 +1817,8 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='channelCode'>
         /// The channel code used to filter the services. Possible values
-        /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia'
+        /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
+        /// 'Expedia', 'Homelike'
         /// </param>
         /// <param name='childrenAges'>
         /// The ages of the children you want offers for
@@ -1790,7 +1842,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingServiceOffersGetWithHttpMessagesAsync(string ratePlanId, string arrival, string departure, int adults, string channelCode = default(string), IList<int?> childrenAges = default(IList<int?>), bool? onlyDefaultDates = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingServiceOffersGetWithHttpMessagesAsync(string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? onlyDefaultDates = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns a list of supported sources.

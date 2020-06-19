@@ -25,10 +25,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the BookerModel class.
         /// </summary>
         /// <param name="lastName">Last name of the booker</param>
-        /// <param name="address">Address of the booker</param>
         /// <param name="birthDate">Birth date</param>
-        /// <param name="company">The company of the booker, which will be
-        /// displayed on the invoice.</param>
         /// <param name="email">Email address of the booker</param>
         /// <param name="firstName">First name of the booker</param>
         /// <param name="gender">Gender of the booker. Possible values include:
@@ -47,7 +44,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// language code (ISO Alpha-2)</param>
         /// <param name="title">Title of the booker. Possible values include:
         /// 'Mr', 'Ms', 'Dr', 'Prof', 'Other'</param>
-        public BookerModel(string lastName, PersonAddressModel address = default(PersonAddressModel), System.DateTime? birthDate = default(System.DateTime?), PersonCompanyModel company = default(PersonCompanyModel), string email = default(string), string firstName = default(string), string gender = default(string), string identificationNumber = default(string), string identificationType = default(string), string middleInitial = default(string), string nationalityCountryCode = default(string), string phone = default(string), string preferredLanguage = default(string), string title = default(string))
+        public BookerModel(string lastName, PersonAddressModel address = default(PersonAddressModel), System.DateTime? birthDate = default(System.DateTime?), PersonCompanyModel company = default(PersonCompanyModel), string email = default(string), string firstName = default(string), Gender? gender = default(Gender?), string identificationNumber = default(string), IdentificationType? identificationType = default(IdentificationType?), string middleInitial = default(string), string nationalityCountryCode = default(string), string phone = default(string), string preferredLanguage = default(string), PersonTitle? title = default(PersonTitle?))
         {
             Address = address;
             BirthDate = birthDate;
@@ -72,7 +69,6 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets address of the booker
         /// </summary>
         [JsonProperty(PropertyName = "address")]
         public PersonAddressModel Address { get; set; }
@@ -85,8 +81,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime? BirthDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the company of the booker, which will be displayed on
-        /// the invoice.
         /// </summary>
         [JsonProperty(PropertyName = "company")]
         public PersonCompanyModel Company { get; set; }
@@ -108,7 +102,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// 'Female', 'Male', 'Other'
         /// </summary>
         [JsonProperty(PropertyName = "gender")]
-        public string Gender { get; set; }
+        public Gender? Gender { get; set; }
 
         /// <summary>
         /// Gets or sets the booker's identification number for the given
@@ -123,7 +117,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// 'DriverLicenseNumber'
         /// </summary>
         [JsonProperty(PropertyName = "identificationType")]
-        public string IdentificationType { get; set; }
+        public IdentificationType? IdentificationType { get; set; }
 
         /// <summary>
         /// Gets or sets last name of the booker
@@ -161,7 +155,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// 'Ms', 'Dr', 'Prof', 'Other'
         /// </summary>
         [JsonProperty(PropertyName = "title")]
-        public string Title { get; set; }
+        public PersonTitle? Title { get; set; }
 
         /// <summary>
         /// Validate the object.

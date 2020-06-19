@@ -24,15 +24,18 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the ServiceDateItemModel class.
         /// </summary>
-        /// <param name="amount">The total price for all booked
-        /// services</param>
         /// <param name="count">The count of booked services</param>
+        /// <param name="isMandatory">Rate plans can have additional services.
+        /// When booking an offer for such rate plans, those services are
+        /// automatically booked.
+        /// They are marked as mandatory and they cannot be removed.</param>
         /// <param name="serviceDate">The date this service is
         /// delivered</param>
-        public ServiceDateItemModel(AmountModel amount, int count, System.DateTime serviceDate)
+        public ServiceDateItemModel(AmountModel amount, int count, bool isMandatory, System.DateTime serviceDate)
         {
             Amount = amount;
             Count = count;
+            IsMandatory = isMandatory;
             ServiceDate = serviceDate;
             CustomInit();
         }
@@ -43,7 +46,6 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the total price for all booked services
         /// </summary>
         [JsonProperty(PropertyName = "amount")]
         public AmountModel Amount { get; set; }
@@ -53,6 +55,15 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "count")]
         public int Count { get; set; }
+
+        /// <summary>
+        /// Gets or sets rate plans can have additional services. When booking
+        /// an offer for such rate plans, those services are automatically
+        /// booked.
+        /// They are marked as mandatory and they cannot be removed.
+        /// </summary>
+        [JsonProperty(PropertyName = "isMandatory")]
+        public bool IsMandatory { get; set; }
 
         /// <summary>
         /// Gets or sets the date this service is delivered

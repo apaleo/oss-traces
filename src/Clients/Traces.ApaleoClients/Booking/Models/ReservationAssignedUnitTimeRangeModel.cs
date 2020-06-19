@@ -25,13 +25,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// ReservationAssignedUnitTimeRangeModel class.
         /// </summary>
         /// <param name="fromProperty">The start date and time of the period
-        /// for which the unit is assigned to the reservation&lt;br
-        /// /&gt;Specify a date and time (without fractional second part) in
-        /// UTC or with UTC offset as defined in &lt;a
+        /// for which the unit is assigned to the reservation&lt;br /&gt;A date
+        /// and time (without fractional second part) in UTC or with UTC offset
+        /// as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="to">The end date and time of the period for which the
-        /// unit is assigned to the reservation&lt;br /&gt;Specify a date and
-        /// time (without fractional second part) in UTC or with UTC offset as
+        /// unit is assigned to the reservation&lt;br /&gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         public ReservationAssignedUnitTimeRangeModel(System.DateTime fromProperty, System.DateTime to)
@@ -48,9 +48,9 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets the start date and time of the period for which the
-        /// unit is assigned to the reservation&amp;lt;br /&amp;gt;Specify a
-        /// date and time (without fractional second part) in UTC or with UTC
-        /// offset as defined in &amp;lt;a
+        /// unit is assigned to the reservation&amp;lt;br /&amp;gt;A date and
+        /// time (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "from")]
@@ -58,9 +58,9 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets the end date and time of the period for which the unit
-        /// is assigned to the reservation&amp;lt;br /&amp;gt;Specify a date
-        /// and time (without fractional second part) in UTC or with UTC offset
-        /// as defined in &amp;lt;a
+        /// is assigned to the reservation&amp;lt;br /&amp;gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "to")]

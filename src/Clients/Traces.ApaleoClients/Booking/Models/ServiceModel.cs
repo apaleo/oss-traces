@@ -24,8 +24,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the ServiceModel class.
         /// </summary>
         /// <param name="code">The code for the service</param>
-        /// <param name="defaultGrossPrice">The default price, used when
-        /// defining rates or calculating offers</param>
         /// <param name="description">The description for the service</param>
         /// <param name="id">The service id</param>
         /// <param name="name">The name for the service</param>
@@ -55,8 +53,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the default price, used when defining rates or
-        /// calculating offers
         /// </summary>
         [JsonProperty(PropertyName = "defaultGrossPrice")]
         public MonetaryValueModel DefaultGrossPrice { get; set; }

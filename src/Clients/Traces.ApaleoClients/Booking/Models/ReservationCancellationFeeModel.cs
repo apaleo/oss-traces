@@ -31,11 +31,10 @@ namespace Traces.ApaleoClients.Booking.Models
         /// policy applied</param>
         /// <param name="dueDateTime">The date and time the cancellation fee
         /// will be due. After that time this fee will
-        /// be charged in case of cancellation&lt;br /&gt;Specify a date and
-        /// time (without fractional second part) in UTC or with UTC offset as
+        /// be charged in case of cancellation&lt;br /&gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="fee">The fee amount</param>
         /// <param name="name">The name of the cancellation policy
         /// applied</param>
         public ReservationCancellationFeeModel(string code, string description, System.DateTime dueDateTime, MonetaryValueModel fee, string name)
@@ -68,16 +67,15 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Gets or sets the date and time the cancellation fee will be due.
         /// After that time this fee will
-        /// be charged in case of cancellation&amp;lt;br /&amp;gt;Specify a
-        /// date and time (without fractional second part) in UTC or with UTC
-        /// offset as defined in &amp;lt;a
+        /// be charged in case of cancellation&amp;lt;br /&amp;gt;A date and
+        /// time (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "dueDateTime")]
         public System.DateTime DueDateTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the fee amount
         /// </summary>
         [JsonProperty(PropertyName = "fee")]
         public MonetaryValueModel Fee { get; set; }

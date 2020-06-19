@@ -29,9 +29,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         /// <param name="dates">The dates the service will be delivered with
         /// its price</param>
-        /// <param name="service">The service</param>
-        /// <param name="totalAmount">The total amount for this service for the
-        /// whole stay</param>
         public ReservationServiceItemModel(IList<ServiceDateItemModel> dates, ServiceModel service, AmountModel totalAmount)
         {
             Dates = dates;
@@ -52,16 +49,14 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<ServiceDateItemModel> Dates { get; set; }
 
         /// <summary>
-        /// Gets or sets the service
         /// </summary>
         [JsonProperty(PropertyName = "service")]
         public ServiceModel Service { get; set; }
 
         /// <summary>
-        /// Gets the total amount for this service for the whole stay
         /// </summary>
         [JsonProperty(PropertyName = "totalAmount")]
-        public AmountModel TotalAmount { get; private set; }
+        public AmountModel TotalAmount { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -78,6 +73,10 @@ namespace Traces.ApaleoClients.Booking.Models
             if (Service == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Service");
+            }
+            if (TotalAmount == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "TotalAmount");
             }
             if (Dates != null)
             {

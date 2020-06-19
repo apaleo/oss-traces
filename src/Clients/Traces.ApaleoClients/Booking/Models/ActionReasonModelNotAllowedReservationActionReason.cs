@@ -35,8 +35,8 @@ namespace Traces.ApaleoClients.Booking.Models
         /// 'CheckOutNotAllowedWithDepartureDateMoreThanOneDayInTheFuture',
         /// 'CancelNotAllowedForReservationNotInStatusConfirmed',
         /// 'AmendNotAllowedForNotAmendableTimeSlices',
+        /// 'AmendArrivalNotAllowedForNotAmendableTimeSlices',
         /// 'AmendArrivalNotAllowedForReservationNotInStatusConfirmed',
-        /// 'AmendArrivalNotAllowedForArrivalInThePast',
         /// 'AmendDepartureNotAllowedForReservationNotInStatusConfirmedOrInHouse',
         /// 'AmendDepartureNotAllowedForReservationDepartureDateTooFarInThePast',
         /// 'NoShowNotAllowedForReservationNotInStatusConfirmed',
@@ -45,7 +45,16 @@ namespace Traces.ApaleoClients.Booking.Models
         /// 'AssignUnitNotAllowedForReservationNotInStatusConfirmedOrInHouse',
         /// 'UnassignUnitNotAllowedForReservationInThePast',
         /// 'UnassignUnitNotAllowedForReservationNotInStatusConfirmed',
-        /// 'UnassignUnitNotAllowedForReservationWithoutUnit'</param>
+        /// 'UnassignUnitNotAllowedForReservationWithoutUnit',
+        /// 'RemoveCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse',
+        /// 'RemoveCityTaxNotAllowedForReservationWithPostedCharges',
+        /// 'RemoveCityTaxNotAllowedForReservationWithoutCityTax',
+        /// 'AddCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse',
+        /// 'AddCityTaxNotAllowedForReservationWithCityTax',
+        /// 'AddCityTaxNotAllowedForReservationForRatePlanNotSubjectToCityTax',
+        /// 'AddCityTaxNotAllowedForReservationWithPostedCharges',
+        /// 'RemoveServiceNotAllowedForReservationNotInStatusConfirmedOrInHouse',
+        /// 'RemoveServiceNotAllowedForReservationInThePast'</param>
         public ActionReasonModelNotAllowedReservationActionReason(NotAllowedReservationActionReason code, string message)
         {
             Code = code;
@@ -69,8 +78,8 @@ namespace Traces.ApaleoClients.Booking.Models
         /// 'CheckOutNotAllowedWithDepartureDateMoreThanOneDayInTheFuture',
         /// 'CancelNotAllowedForReservationNotInStatusConfirmed',
         /// 'AmendNotAllowedForNotAmendableTimeSlices',
+        /// 'AmendArrivalNotAllowedForNotAmendableTimeSlices',
         /// 'AmendArrivalNotAllowedForReservationNotInStatusConfirmed',
-        /// 'AmendArrivalNotAllowedForArrivalInThePast',
         /// 'AmendDepartureNotAllowedForReservationNotInStatusConfirmedOrInHouse',
         /// 'AmendDepartureNotAllowedForReservationDepartureDateTooFarInThePast',
         /// 'NoShowNotAllowedForReservationNotInStatusConfirmed',
@@ -79,7 +88,16 @@ namespace Traces.ApaleoClients.Booking.Models
         /// 'AssignUnitNotAllowedForReservationNotInStatusConfirmedOrInHouse',
         /// 'UnassignUnitNotAllowedForReservationInThePast',
         /// 'UnassignUnitNotAllowedForReservationNotInStatusConfirmed',
-        /// 'UnassignUnitNotAllowedForReservationWithoutUnit'
+        /// 'UnassignUnitNotAllowedForReservationWithoutUnit',
+        /// 'RemoveCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse',
+        /// 'RemoveCityTaxNotAllowedForReservationWithPostedCharges',
+        /// 'RemoveCityTaxNotAllowedForReservationWithoutCityTax',
+        /// 'AddCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse',
+        /// 'AddCityTaxNotAllowedForReservationWithCityTax',
+        /// 'AddCityTaxNotAllowedForReservationForRatePlanNotSubjectToCityTax',
+        /// 'AddCityTaxNotAllowedForReservationWithPostedCharges',
+        /// 'RemoveServiceNotAllowedForReservationNotInStatusConfirmedOrInHouse',
+        /// 'RemoveServiceNotAllowedForReservationInThePast'
         /// </summary>
         [JsonProperty(PropertyName = "code")]
         public NotAllowedReservationActionReason Code { get; set; }

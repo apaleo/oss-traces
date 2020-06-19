@@ -25,6 +25,8 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the UnitGroupAvailabilityItemModel
         /// class.
         /// </summary>
+        /// <param name="allowedOverbookingCount">The number of units allowed
+        /// for overbooking.</param>
         /// <param name="availableCount">The number of units still available.
         /// This is the house count excluding the out of order units minus
         /// the already sold units.</param>
@@ -44,9 +46,9 @@ namespace Traces.ApaleoClients.Booking.Models
         /// another category or the whole house is overbooked.</param>
         /// <param name="soldCount">The number of sold units including units
         /// picked up from blocks</param>
-        /// <param name="unitGroup">The unit group</param>
-        public UnitGroupAvailabilityItemModel(int availableCount, BlockUnitsModel block, int houseCount, MaintenanceModel maintenance, double occupancy, int physicalCount, int sellableCount, int soldCount, EmbeddedUnitGroupModel unitGroup)
+        public UnitGroupAvailabilityItemModel(int allowedOverbookingCount, int availableCount, BlockUnitsModel block, int houseCount, MaintenanceModel maintenance, double occupancy, int physicalCount, int sellableCount, int soldCount, EmbeddedUnitGroupModel unitGroup)
         {
+            AllowedOverbookingCount = allowedOverbookingCount;
             AvailableCount = availableCount;
             Block = block;
             HouseCount = houseCount;
@@ -63,6 +65,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets the number of units allowed for overbooking.
+        /// </summary>
+        [JsonProperty(PropertyName = "allowedOverbookingCount")]
+        public int AllowedOverbookingCount { get; set; }
 
         /// <summary>
         /// Gets or sets the number of units still available. This is the house
@@ -122,7 +130,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public int SoldCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the unit group
         /// </summary>
         [JsonProperty(PropertyName = "unitGroup")]
         public EmbeddedUnitGroupModel UnitGroup { get; set; }

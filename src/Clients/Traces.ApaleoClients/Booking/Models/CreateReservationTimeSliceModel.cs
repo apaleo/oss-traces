@@ -27,10 +27,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         /// <param name="ratePlanId">The rate plan id for this time
         /// slice</param>
-        /// <param name="totalAmount">The total amount for this time slice
-        /// including taxes and fees for included services.
-        /// Although the currency is required, it's ignored since it's not yet
-        /// supported.</param>
         public CreateReservationTimeSliceModel(string ratePlanId, MonetaryValueModel totalAmount = default(MonetaryValueModel))
         {
             RatePlanId = ratePlanId;
@@ -50,10 +46,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public string RatePlanId { get; set; }
 
         /// <summary>
-        /// Gets or sets the total amount for this time slice including taxes
-        /// and fees for included services.
-        /// Although the currency is required, it's ignored since it's not yet
-        /// supported.
         /// </summary>
         [JsonProperty(PropertyName = "totalAmount")]
         public MonetaryValueModel TotalAmount { get; set; }

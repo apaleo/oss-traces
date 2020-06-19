@@ -26,7 +26,9 @@ namespace Traces.ApaleoClients.Booking.Models
         [EnumMember(Value = "ChannelManager")]
         ChannelManager,
         [EnumMember(Value = "Expedia")]
-        Expedia
+        Expedia,
+        [EnumMember(Value = "Homelike")]
+        Homelike
     }
     internal static class ChannelCodeEnumExtension
     {
@@ -49,6 +51,8 @@ namespace Traces.ApaleoClients.Booking.Models
                     return "ChannelManager";
                 case ChannelCode.Expedia:
                     return "Expedia";
+                case ChannelCode.Homelike:
+                    return "Homelike";
             }
             return null;
         }
@@ -67,6 +71,8 @@ namespace Traces.ApaleoClients.Booking.Models
                     return ChannelCode.ChannelManager;
                 case "Expedia":
                     return ChannelCode.Expedia;
+                case "Homelike":
+                    return ChannelCode.Homelike;
             }
             return null;
         }

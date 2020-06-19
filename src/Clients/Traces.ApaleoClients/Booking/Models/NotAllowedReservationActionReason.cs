@@ -35,10 +35,10 @@ namespace Traces.ApaleoClients.Booking.Models
         CancelNotAllowedForReservationNotInStatusConfirmed,
         [EnumMember(Value = "AmendNotAllowedForNotAmendableTimeSlices")]
         AmendNotAllowedForNotAmendableTimeSlices,
+        [EnumMember(Value = "AmendArrivalNotAllowedForNotAmendableTimeSlices")]
+        AmendArrivalNotAllowedForNotAmendableTimeSlices,
         [EnumMember(Value = "AmendArrivalNotAllowedForReservationNotInStatusConfirmed")]
         AmendArrivalNotAllowedForReservationNotInStatusConfirmed,
-        [EnumMember(Value = "AmendArrivalNotAllowedForArrivalInThePast")]
-        AmendArrivalNotAllowedForArrivalInThePast,
         [EnumMember(Value = "AmendDepartureNotAllowedForReservationNotInStatusConfirmedOrInHouse")]
         AmendDepartureNotAllowedForReservationNotInStatusConfirmedOrInHouse,
         [EnumMember(Value = "AmendDepartureNotAllowedForReservationDepartureDateTooFarInThePast")]
@@ -56,7 +56,25 @@ namespace Traces.ApaleoClients.Booking.Models
         [EnumMember(Value = "UnassignUnitNotAllowedForReservationNotInStatusConfirmed")]
         UnassignUnitNotAllowedForReservationNotInStatusConfirmed,
         [EnumMember(Value = "UnassignUnitNotAllowedForReservationWithoutUnit")]
-        UnassignUnitNotAllowedForReservationWithoutUnit
+        UnassignUnitNotAllowedForReservationWithoutUnit,
+        [EnumMember(Value = "RemoveCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse")]
+        RemoveCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse,
+        [EnumMember(Value = "RemoveCityTaxNotAllowedForReservationWithPostedCharges")]
+        RemoveCityTaxNotAllowedForReservationWithPostedCharges,
+        [EnumMember(Value = "RemoveCityTaxNotAllowedForReservationWithoutCityTax")]
+        RemoveCityTaxNotAllowedForReservationWithoutCityTax,
+        [EnumMember(Value = "AddCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse")]
+        AddCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse,
+        [EnumMember(Value = "AddCityTaxNotAllowedForReservationWithCityTax")]
+        AddCityTaxNotAllowedForReservationWithCityTax,
+        [EnumMember(Value = "AddCityTaxNotAllowedForReservationForRatePlanNotSubjectToCityTax")]
+        AddCityTaxNotAllowedForReservationForRatePlanNotSubjectToCityTax,
+        [EnumMember(Value = "AddCityTaxNotAllowedForReservationWithPostedCharges")]
+        AddCityTaxNotAllowedForReservationWithPostedCharges,
+        [EnumMember(Value = "RemoveServiceNotAllowedForReservationNotInStatusConfirmedOrInHouse")]
+        RemoveServiceNotAllowedForReservationNotInStatusConfirmedOrInHouse,
+        [EnumMember(Value = "RemoveServiceNotAllowedForReservationInThePast")]
+        RemoveServiceNotAllowedForReservationInThePast
     }
     internal static class NotAllowedReservationActionReasonEnumExtension
     {
@@ -87,10 +105,10 @@ namespace Traces.ApaleoClients.Booking.Models
                     return "CancelNotAllowedForReservationNotInStatusConfirmed";
                 case NotAllowedReservationActionReason.AmendNotAllowedForNotAmendableTimeSlices:
                     return "AmendNotAllowedForNotAmendableTimeSlices";
+                case NotAllowedReservationActionReason.AmendArrivalNotAllowedForNotAmendableTimeSlices:
+                    return "AmendArrivalNotAllowedForNotAmendableTimeSlices";
                 case NotAllowedReservationActionReason.AmendArrivalNotAllowedForReservationNotInStatusConfirmed:
                     return "AmendArrivalNotAllowedForReservationNotInStatusConfirmed";
-                case NotAllowedReservationActionReason.AmendArrivalNotAllowedForArrivalInThePast:
-                    return "AmendArrivalNotAllowedForArrivalInThePast";
                 case NotAllowedReservationActionReason.AmendDepartureNotAllowedForReservationNotInStatusConfirmedOrInHouse:
                     return "AmendDepartureNotAllowedForReservationNotInStatusConfirmedOrInHouse";
                 case NotAllowedReservationActionReason.AmendDepartureNotAllowedForReservationDepartureDateTooFarInThePast:
@@ -109,6 +127,24 @@ namespace Traces.ApaleoClients.Booking.Models
                     return "UnassignUnitNotAllowedForReservationNotInStatusConfirmed";
                 case NotAllowedReservationActionReason.UnassignUnitNotAllowedForReservationWithoutUnit:
                     return "UnassignUnitNotAllowedForReservationWithoutUnit";
+                case NotAllowedReservationActionReason.RemoveCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse:
+                    return "RemoveCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse";
+                case NotAllowedReservationActionReason.RemoveCityTaxNotAllowedForReservationWithPostedCharges:
+                    return "RemoveCityTaxNotAllowedForReservationWithPostedCharges";
+                case NotAllowedReservationActionReason.RemoveCityTaxNotAllowedForReservationWithoutCityTax:
+                    return "RemoveCityTaxNotAllowedForReservationWithoutCityTax";
+                case NotAllowedReservationActionReason.AddCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse:
+                    return "AddCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse";
+                case NotAllowedReservationActionReason.AddCityTaxNotAllowedForReservationWithCityTax:
+                    return "AddCityTaxNotAllowedForReservationWithCityTax";
+                case NotAllowedReservationActionReason.AddCityTaxNotAllowedForReservationForRatePlanNotSubjectToCityTax:
+                    return "AddCityTaxNotAllowedForReservationForRatePlanNotSubjectToCityTax";
+                case NotAllowedReservationActionReason.AddCityTaxNotAllowedForReservationWithPostedCharges:
+                    return "AddCityTaxNotAllowedForReservationWithPostedCharges";
+                case NotAllowedReservationActionReason.RemoveServiceNotAllowedForReservationNotInStatusConfirmedOrInHouse:
+                    return "RemoveServiceNotAllowedForReservationNotInStatusConfirmedOrInHouse";
+                case NotAllowedReservationActionReason.RemoveServiceNotAllowedForReservationInThePast:
+                    return "RemoveServiceNotAllowedForReservationInThePast";
             }
             return null;
         }
@@ -135,10 +171,10 @@ namespace Traces.ApaleoClients.Booking.Models
                     return NotAllowedReservationActionReason.CancelNotAllowedForReservationNotInStatusConfirmed;
                 case "AmendNotAllowedForNotAmendableTimeSlices":
                     return NotAllowedReservationActionReason.AmendNotAllowedForNotAmendableTimeSlices;
+                case "AmendArrivalNotAllowedForNotAmendableTimeSlices":
+                    return NotAllowedReservationActionReason.AmendArrivalNotAllowedForNotAmendableTimeSlices;
                 case "AmendArrivalNotAllowedForReservationNotInStatusConfirmed":
                     return NotAllowedReservationActionReason.AmendArrivalNotAllowedForReservationNotInStatusConfirmed;
-                case "AmendArrivalNotAllowedForArrivalInThePast":
-                    return NotAllowedReservationActionReason.AmendArrivalNotAllowedForArrivalInThePast;
                 case "AmendDepartureNotAllowedForReservationNotInStatusConfirmedOrInHouse":
                     return NotAllowedReservationActionReason.AmendDepartureNotAllowedForReservationNotInStatusConfirmedOrInHouse;
                 case "AmendDepartureNotAllowedForReservationDepartureDateTooFarInThePast":
@@ -157,6 +193,24 @@ namespace Traces.ApaleoClients.Booking.Models
                     return NotAllowedReservationActionReason.UnassignUnitNotAllowedForReservationNotInStatusConfirmed;
                 case "UnassignUnitNotAllowedForReservationWithoutUnit":
                     return NotAllowedReservationActionReason.UnassignUnitNotAllowedForReservationWithoutUnit;
+                case "RemoveCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse":
+                    return NotAllowedReservationActionReason.RemoveCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse;
+                case "RemoveCityTaxNotAllowedForReservationWithPostedCharges":
+                    return NotAllowedReservationActionReason.RemoveCityTaxNotAllowedForReservationWithPostedCharges;
+                case "RemoveCityTaxNotAllowedForReservationWithoutCityTax":
+                    return NotAllowedReservationActionReason.RemoveCityTaxNotAllowedForReservationWithoutCityTax;
+                case "AddCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse":
+                    return NotAllowedReservationActionReason.AddCityTaxNotAllowedForReservationNotInStatusConfirmedOrInHouse;
+                case "AddCityTaxNotAllowedForReservationWithCityTax":
+                    return NotAllowedReservationActionReason.AddCityTaxNotAllowedForReservationWithCityTax;
+                case "AddCityTaxNotAllowedForReservationForRatePlanNotSubjectToCityTax":
+                    return NotAllowedReservationActionReason.AddCityTaxNotAllowedForReservationForRatePlanNotSubjectToCityTax;
+                case "AddCityTaxNotAllowedForReservationWithPostedCharges":
+                    return NotAllowedReservationActionReason.AddCityTaxNotAllowedForReservationWithPostedCharges;
+                case "RemoveServiceNotAllowedForReservationNotInStatusConfirmedOrInHouse":
+                    return NotAllowedReservationActionReason.RemoveServiceNotAllowedForReservationNotInStatusConfirmedOrInHouse;
+                case "RemoveServiceNotAllowedForReservationInThePast":
+                    return NotAllowedReservationActionReason.RemoveServiceNotAllowedForReservationInThePast;
             }
             return null;
         }

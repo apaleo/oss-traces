@@ -28,12 +28,10 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the CreateBookingModel class.
         /// </summary>
-        /// <param name="booker">The person creating the booking</param>
         /// <param name="reservations">List of reservations to create</param>
         /// <param name="bookerComment">Additional information and comments by
         /// the booker</param>
         /// <param name="comment">Additional information and comments</param>
-        /// <param name="paymentAccount">Payment information</param>
         public CreateBookingModel(BookerModel booker, IList<CreateReservationModel> reservations, string bookerComment = default(string), string comment = default(string), CreatePaymentAccountModel paymentAccount = default(CreatePaymentAccountModel))
         {
             Booker = booker;
@@ -50,7 +48,6 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the person creating the booking
         /// </summary>
         [JsonProperty(PropertyName = "booker")]
         public BookerModel Booker { get; set; }
@@ -68,7 +65,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Comment { get; set; }
 
         /// <summary>
-        /// Gets or sets payment information
         /// </summary>
         [JsonProperty(PropertyName = "paymentAccount")]
         public CreatePaymentAccountModel PaymentAccount { get; set; }
