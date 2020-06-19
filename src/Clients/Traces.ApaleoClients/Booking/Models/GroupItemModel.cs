@@ -25,9 +25,15 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the GroupItemModel class.
         /// </summary>
-        /// <param name="booker">The person requesting the group
-        /// booking</param>
+        /// <param name="created">Date of creation&lt;br /&gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="id">Group id</param>
+        /// <param name="modified">Date of last modification&lt;br /&gt;A date
+        /// and time (without fractional second part) in UTC or with UTC offset
+        /// as defined in &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="name">Name of the group</param>
         /// <param name="propertyIds">The list of property ids this group
         /// belongs to</param>
@@ -37,25 +43,24 @@ namespace Traces.ApaleoClients.Booking.Models
         /// the booker</param>
         /// <param name="comment">Additional information and comments</param>
         /// <param name="fromProperty">Start date and time of the earliest
-        /// block for this group&lt;br /&gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
+        /// block for this group&lt;br /&gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="paymentAccount">Payment account that can be used to
-        /// pay all picked up reservations</param>
         /// <param name="to">End date and time of the latest block for this
-        /// group&lt;br /&gt;Specify a date and time (without fractional second
-        /// part) in UTC or with UTC offset as defined in &lt;a
+        /// group&lt;br /&gt;A date and time (without fractional second part)
+        /// in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        public GroupItemModel(BookerModel booker, string id, string name, IList<string> propertyIds, IList<ActionModelGroupActionNotAllowedGroupActionReason> actions = default(IList<ActionModelGroupActionNotAllowedGroupActionReason>), IList<GroupBlockModel> blocks = default(IList<GroupBlockModel>), string bookerComment = default(string), string comment = default(string), System.DateTime? fromProperty = default(System.DateTime?), PaymentAccountModel paymentAccount = default(PaymentAccountModel), System.DateTime? to = default(System.DateTime?))
+        public GroupItemModel(BookerModel booker, System.DateTime created, string id, System.DateTime modified, string name, IList<string> propertyIds, IList<ActionModelGroupActionNotAllowedGroupActionReason> actions = default(IList<ActionModelGroupActionNotAllowedGroupActionReason>), IList<GroupBlockModel> blocks = default(IList<GroupBlockModel>), string bookerComment = default(string), string comment = default(string), System.DateTime? fromProperty = default(System.DateTime?), PaymentAccountModel paymentAccount = default(PaymentAccountModel), System.DateTime? to = default(System.DateTime?))
         {
             Actions = actions;
             Blocks = blocks;
             Booker = booker;
             BookerComment = bookerComment;
             Comment = comment;
+            Created = created;
             FromProperty = fromProperty;
             Id = id;
+            Modified = modified;
             Name = name;
             PaymentAccount = paymentAccount;
             PropertyIds = propertyIds;
@@ -81,7 +86,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<GroupBlockModel> Blocks { get; set; }
 
         /// <summary>
-        /// Gets or sets the person requesting the group booking
         /// </summary>
         [JsonProperty(PropertyName = "booker")]
         public BookerModel Booker { get; set; }
@@ -99,10 +103,18 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Comment { get; set; }
 
         /// <summary>
+        /// Gets or sets date of creation&amp;lt;br /&amp;gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "created")]
+        public System.DateTime Created { get; set; }
+
+        /// <summary>
         /// Gets or sets start date and time of the earliest block for this
-        /// group&amp;lt;br /&amp;gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &amp;lt;a
+        /// group&amp;lt;br /&amp;gt;A date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "from")]
@@ -115,14 +127,21 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Id { get; set; }
 
         /// <summary>
+        /// Gets or sets date of last modification&amp;lt;br /&amp;gt;A date
+        /// and time (without fractional second part) in UTC or with UTC offset
+        /// as defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "modified")]
+        public System.DateTime Modified { get; set; }
+
+        /// <summary>
         /// Gets or sets name of the group
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets payment account that can be used to pay all picked up
-        /// reservations
         /// </summary>
         [JsonProperty(PropertyName = "paymentAccount")]
         public PaymentAccountModel PaymentAccount { get; set; }
@@ -135,9 +154,8 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets end date and time of the latest block for this
-        /// group&amp;lt;br /&amp;gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &amp;lt;a
+        /// group&amp;lt;br /&amp;gt;A date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "to")]

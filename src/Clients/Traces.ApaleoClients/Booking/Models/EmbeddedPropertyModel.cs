@@ -6,6 +6,7 @@
 
 namespace Traces.ApaleoClients.Booking.Models
 {
+    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Linq;
 
@@ -55,10 +56,10 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Description { get; private set; }
 
         /// <summary>
-        /// Gets the property id
+        /// Gets or sets the property id
         /// </summary>
         [JsonProperty(PropertyName = "id")]
-        public string Id { get; private set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name for the property
@@ -69,12 +70,15 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public virtual void Validate()
         {
-            //Nothing to validate
+            if (Id == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Id");
+            }
         }
     }
 }

@@ -28,10 +28,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="maxPersons">Maximum number of persons for the
         /// unit</param>
         /// <param name="name">The name for the unit</param>
-        /// <param name="property">The property to which the unit belongs
-        /// to</param>
-        /// <param name="status">The current status of the unit</param>
-        /// <param name="unitGroup">The unit group</param>
         public AvailableUnitItemModel(string description, string id, int maxPersons, string name, EmbeddedPropertyModel property, AvailableUnitItemStatusModel status, EmbeddedUnitGroupModel unitGroup = default(EmbeddedUnitGroupModel))
         {
             Description = description;
@@ -74,19 +70,16 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the property to which the unit belongs to
         /// </summary>
         [JsonProperty(PropertyName = "property")]
         public EmbeddedPropertyModel Property { get; set; }
 
         /// <summary>
-        /// Gets or sets the current status of the unit
         /// </summary>
         [JsonProperty(PropertyName = "status")]
         public AvailableUnitItemStatusModel Status { get; set; }
 
         /// <summary>
-        /// Gets or sets the unit group
         /// </summary>
         [JsonProperty(PropertyName = "unitGroup")]
         public EmbeddedUnitGroupModel UnitGroup { get; set; }

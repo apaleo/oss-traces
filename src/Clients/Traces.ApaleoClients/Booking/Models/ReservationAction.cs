@@ -23,8 +23,6 @@ namespace Traces.ApaleoClients.Booking.Models
         CheckOut,
         [EnumMember(Value = "Cancel")]
         Cancel,
-        [EnumMember(Value = "Amend")]
-        Amend,
         [EnumMember(Value = "AmendTimeSlices")]
         AmendTimeSlices,
         [EnumMember(Value = "AmendArrival")]
@@ -36,7 +34,13 @@ namespace Traces.ApaleoClients.Booking.Models
         [EnumMember(Value = "AssignUnit")]
         AssignUnit,
         [EnumMember(Value = "UnassignUnit")]
-        UnassignUnit
+        UnassignUnit,
+        [EnumMember(Value = "RemoveCityTax")]
+        RemoveCityTax,
+        [EnumMember(Value = "AddCityTax")]
+        AddCityTax,
+        [EnumMember(Value = "RemoveService")]
+        RemoveService
     }
     internal static class ReservationActionEnumExtension
     {
@@ -55,8 +59,6 @@ namespace Traces.ApaleoClients.Booking.Models
                     return "CheckOut";
                 case ReservationAction.Cancel:
                     return "Cancel";
-                case ReservationAction.Amend:
-                    return "Amend";
                 case ReservationAction.AmendTimeSlices:
                     return "AmendTimeSlices";
                 case ReservationAction.AmendArrival:
@@ -69,6 +71,12 @@ namespace Traces.ApaleoClients.Booking.Models
                     return "AssignUnit";
                 case ReservationAction.UnassignUnit:
                     return "UnassignUnit";
+                case ReservationAction.RemoveCityTax:
+                    return "RemoveCityTax";
+                case ReservationAction.AddCityTax:
+                    return "AddCityTax";
+                case ReservationAction.RemoveService:
+                    return "RemoveService";
             }
             return null;
         }
@@ -83,8 +91,6 @@ namespace Traces.ApaleoClients.Booking.Models
                     return ReservationAction.CheckOut;
                 case "Cancel":
                     return ReservationAction.Cancel;
-                case "Amend":
-                    return ReservationAction.Amend;
                 case "AmendTimeSlices":
                     return ReservationAction.AmendTimeSlices;
                 case "AmendArrival":
@@ -97,6 +103,12 @@ namespace Traces.ApaleoClients.Booking.Models
                     return ReservationAction.AssignUnit;
                 case "UnassignUnit":
                     return ReservationAction.UnassignUnit;
+                case "RemoveCityTax":
+                    return ReservationAction.RemoveCityTax;
+                case "AddCityTax":
+                    return ReservationAction.AddCityTax;
+                case "RemoveService":
+                    return ReservationAction.RemoveService;
             }
             return null;
         }

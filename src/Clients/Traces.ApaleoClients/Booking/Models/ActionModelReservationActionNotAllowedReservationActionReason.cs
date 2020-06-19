@@ -29,8 +29,9 @@ namespace Traces.ApaleoClients.Booking.Models
         /// class.
         /// </summary>
         /// <param name="action">Possible values include: 'CheckIn',
-        /// 'CheckOut', 'Cancel', 'Amend', 'AmendTimeSlices', 'AmendArrival',
-        /// 'AmendDeparture', 'NoShow', 'AssignUnit', 'UnassignUnit'</param>
+        /// 'CheckOut', 'Cancel', 'AmendTimeSlices', 'AmendArrival',
+        /// 'AmendDeparture', 'NoShow', 'AssignUnit', 'UnassignUnit',
+        /// 'RemoveCityTax', 'AddCityTax', 'RemoveService'</param>
         public ActionModelReservationActionNotAllowedReservationActionReason(ReservationAction action, bool isAllowed, IList<ActionReasonModelNotAllowedReservationActionReason> reasons = default(IList<ActionReasonModelNotAllowedReservationActionReason>))
         {
             Action = action;
@@ -46,8 +47,9 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets possible values include: 'CheckIn', 'CheckOut',
-        /// 'Cancel', 'Amend', 'AmendTimeSlices', 'AmendArrival',
-        /// 'AmendDeparture', 'NoShow', 'AssignUnit', 'UnassignUnit'
+        /// 'Cancel', 'AmendTimeSlices', 'AmendArrival', 'AmendDeparture',
+        /// 'NoShow', 'AssignUnit', 'UnassignUnit', 'RemoveCityTax',
+        /// 'AddCityTax', 'RemoveService'
         /// </summary>
         [JsonProperty(PropertyName = "action")]
         public ReservationAction Action { get; set; }

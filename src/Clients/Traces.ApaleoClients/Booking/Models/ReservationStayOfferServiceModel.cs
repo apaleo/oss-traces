@@ -26,7 +26,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the ReservationStayOfferServiceModel
         /// class.
         /// </summary>
-        /// <param name="amount">The total price</param>
         /// <param name="bookedAsExtra">Whether this service is already booked
         /// as extra</param>
         /// <param name="count">The default count of offered services. For
@@ -35,7 +34,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="pricingMode">Whether the service price is included in
         /// or added to the base rate. Possible values include: 'Included',
         /// 'Additional'</param>
-        /// <param name="service">The service</param>
         /// <param name="serviceDate">The date this service is
         /// delivered</param>
         public ReservationStayOfferServiceModel(AmountModel amount, bool bookedAsExtra, int count, PricingMode pricingMode, EmbeddedServiceModel service, System.DateTime serviceDate)
@@ -55,7 +53,6 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the total price
         /// </summary>
         [JsonProperty(PropertyName = "amount")]
         public AmountModel Amount { get; set; }
@@ -82,7 +79,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public PricingMode PricingMode { get; set; }
 
         /// <summary>
-        /// Gets or sets the service
         /// </summary>
         [JsonProperty(PropertyName = "service")]
         public EmbeddedServiceModel Service { get; set; }

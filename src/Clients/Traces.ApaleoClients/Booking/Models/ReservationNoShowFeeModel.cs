@@ -24,7 +24,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the ReservationNoShowFeeModel class.
         /// </summary>
         /// <param name="code">The code of the no-show policy applied</param>
-        /// <param name="fee">The fee amount</param>
         public ReservationNoShowFeeModel(string code, MonetaryValueModel fee)
         {
             Code = code;
@@ -44,7 +43,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the fee amount
         /// </summary>
         [JsonProperty(PropertyName = "fee")]
         public MonetaryValueModel Fee { get; set; }

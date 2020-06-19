@@ -24,8 +24,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the ServiceOfferItemModel class.
         /// </summary>
-        /// <param name="amount">The total price (for all persons on the
-        /// offer)</param>
         /// <param name="isDefaultDate">Depending on the postNextDay setting of
         /// the service it will by default be posted before or after midnight.
         /// Breakfast is usually delivered on the next morning, so all the
@@ -35,12 +33,17 @@ namespace Traces.ApaleoClients.Booking.Models
         /// you do not specify dates in the book-service call. Still, you can
         /// override this and also book the dates set to IsDefaultDate =
         /// false.</param>
+        /// <param name="isMandatory">Rate plans can have additional services.
+        /// When booking an offer for such rate plans, those services are
+        /// automatically booked.
+        /// They are marked as mandatory and they cannot be removed.</param>
         /// <param name="serviceDate">The date this service is
         /// delivered</param>
-        public ServiceOfferItemModel(AmountModel amount, bool isDefaultDate, System.DateTime serviceDate)
+        public ServiceOfferItemModel(AmountModel amount, bool isDefaultDate, bool isMandatory, System.DateTime serviceDate)
         {
             Amount = amount;
             IsDefaultDate = isDefaultDate;
+            IsMandatory = isMandatory;
             ServiceDate = serviceDate;
             CustomInit();
         }
@@ -51,7 +54,6 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the total price (for all persons on the offer)
         /// </summary>
         [JsonProperty(PropertyName = "amount")]
         public AmountModel Amount { get; set; }
@@ -68,6 +70,15 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "isDefaultDate")]
         public bool IsDefaultDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets rate plans can have additional services. When booking
+        /// an offer for such rate plans, those services are automatically
+        /// booked.
+        /// They are marked as mandatory and they cannot be removed.
+        /// </summary>
+        [JsonProperty(PropertyName = "isMandatory")]
+        public bool IsMandatory { get; set; }
 
         /// <summary>
         /// Gets or sets the date this service is delivered

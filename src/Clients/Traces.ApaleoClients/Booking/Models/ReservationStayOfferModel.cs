@@ -26,29 +26,24 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the ReservationStayOfferModel class.
         /// </summary>
         /// <param name="arrival">The earliest arrival date and time for this
-        /// offer&lt;br /&gt;Specify a date and time (without fractional second
-        /// part) in UTC or with UTC offset as defined in &lt;a
+        /// offer&lt;br /&gt;A date and time (without fractional second part)
+        /// in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="availableUnits">The number of available units for that
         /// offer</param>
-        /// <param name="cancellationFee">Details about the cancellation fee
-        /// for this offer</param>
         /// <param name="departure">The latest departure date and time for this
-        /// offer&lt;br /&gt;Specify a date and time (without fractional second
-        /// part) in UTC or with UTC offset as defined in &lt;a
+        /// offer&lt;br /&gt;A date and time (without fractional second part)
+        /// in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="isCorporate">Whether the offer is for a corporate rate
+        /// plan</param>
         /// <param name="minGuaranteeType">The minimum guarantee type for this
         /// offer. Possible values include: 'PM6Hold', 'CreditCard',
         /// 'Prepayment', 'Company'</param>
-        /// <param name="noShowFee">Details about the no-show fee for this
-        /// offer</param>
         /// <param name="taxDetails">Tax breakdown, displaying net and tax
         /// amount for each VAT type</param>
         /// <param name="timeSlices">The breakdown for each time slice for this
         /// offer</param>
-        /// <param name="totalGrossAmount">The price for the whole stay</param>
-        /// <param name="cityTax">The amount of city tax that can be charged
-        /// for this offer</param>
         /// <param name="companyId">ID of the company the offer is created
         /// for</param>
         /// <param name="corporateCode">The corporate rate code the offer is
@@ -58,7 +53,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="validationMessages">Validation rules that were applied
         /// to the offer and show the reason why the offer is not
         /// bookable</param>
-        public ReservationStayOfferModel(System.DateTime arrival, int availableUnits, OfferCancellationFeeModel cancellationFee, System.DateTime departure, MinGuaranteeType minGuaranteeType, OfferNoShowFeeModel noShowFee, IList<TaxDetailModel> taxDetails, IList<ReservationStayOfferTimeSliceModel> timeSlices, MonetaryValueModel totalGrossAmount, AmountModel cityTax = default(AmountModel), string companyId = default(string), string corporateCode = default(string), IList<ServiceOfferModel> services = default(IList<ServiceOfferModel>), IList<OfferValidationMessageModel> validationMessages = default(IList<OfferValidationMessageModel>))
+        public ReservationStayOfferModel(System.DateTime arrival, int availableUnits, OfferCancellationFeeModel cancellationFee, System.DateTime departure, bool isCorporate, MinGuaranteeType minGuaranteeType, OfferNoShowFeeModel noShowFee, IList<TaxDetailModel> taxDetails, IList<ReservationStayOfferTimeSliceModel> timeSlices, MonetaryValueModel totalGrossAmount, AmountModel cityTax = default(AmountModel), string companyId = default(string), string corporateCode = default(string), IList<ServiceOfferModel> services = default(IList<ServiceOfferModel>), IList<OfferValidationMessageModel> validationMessages = default(IList<OfferValidationMessageModel>))
         {
             Arrival = arrival;
             AvailableUnits = availableUnits;
@@ -67,6 +62,7 @@ namespace Traces.ApaleoClients.Booking.Models
             CompanyId = companyId;
             CorporateCode = corporateCode;
             Departure = departure;
+            IsCorporate = isCorporate;
             MinGuaranteeType = minGuaranteeType;
             NoShowFee = noShowFee;
             Services = services;
@@ -84,9 +80,8 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets the earliest arrival date and time for this
-        /// offer&amp;lt;br /&amp;gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &amp;lt;a
+        /// offer&amp;lt;br /&amp;gt;A date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "arrival")]
@@ -99,14 +94,11 @@ namespace Traces.ApaleoClients.Booking.Models
         public int AvailableUnits { get; set; }
 
         /// <summary>
-        /// Gets or sets details about the cancellation fee for this offer
         /// </summary>
         [JsonProperty(PropertyName = "cancellationFee")]
         public OfferCancellationFeeModel CancellationFee { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount of city tax that can be charged for this
-        /// offer
         /// </summary>
         [JsonProperty(PropertyName = "cityTax")]
         public AmountModel CityTax { get; set; }
@@ -125,13 +117,18 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets the latest departure date and time for this
-        /// offer&amp;lt;br /&amp;gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &amp;lt;a
+        /// offer&amp;lt;br /&amp;gt;A date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "departure")]
         public System.DateTime Departure { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the offer is for a corporate rate plan
+        /// </summary>
+        [JsonProperty(PropertyName = "isCorporate")]
+        public bool IsCorporate { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum guarantee type for this offer. Possible
@@ -141,7 +138,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public MinGuaranteeType MinGuaranteeType { get; set; }
 
         /// <summary>
-        /// Gets or sets details about the no-show fee for this offer
         /// </summary>
         [JsonProperty(PropertyName = "noShowFee")]
         public OfferNoShowFeeModel NoShowFee { get; set; }
@@ -167,7 +163,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<ReservationStayOfferTimeSliceModel> TimeSlices { get; set; }
 
         /// <summary>
-        /// Gets or sets the price for the whole stay
         /// </summary>
         [JsonProperty(PropertyName = "totalGrossAmount")]
         public MonetaryValueModel TotalGrossAmount { get; set; }

@@ -28,7 +28,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// 'CleanToBeInspected', 'Dirty'</param>
         /// <param name="maintenanceType">Possible values include:
         /// 'OutOfService', 'OutOfOrder', 'OutOfInventory'</param>
-        public AvailableUnitItemStatusModel(UnitCondition condition, bool isOccupied, string maintenanceType = default(string))
+        public AvailableUnitItemStatusModel(UnitCondition condition, bool isOccupied, MaintenanceType? maintenanceType = default(MaintenanceType?))
         {
             Condition = condition;
             IsOccupied = isOccupied;
@@ -58,7 +58,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// 'OutOfInventory'
         /// </summary>
         [JsonProperty(PropertyName = "maintenanceType")]
-        public string MaintenanceType { get; set; }
+        public MaintenanceType? MaintenanceType { get; set; }
 
         /// <summary>
         /// Validate the object.

@@ -25,9 +25,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the Date class.
         /// </summary>
         /// <param name="serviceDate">The date the service is delivered</param>
-        /// <param name="amount">The optional amount for the service; if not
-        /// specified, the default service amount from the offer will be
-        /// used</param>
         /// <param name="count">The number of services to book for this date.
         /// It defaults to the service offer count when not specified.</param>
         public Date(System.DateTime serviceDate, MonetaryValueModel amount = default(MonetaryValueModel), int? count = default(int?))
@@ -44,8 +41,6 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the optional amount for the service; if not specified,
-        /// the default service amount from the offer will be used
         /// </summary>
         [JsonProperty(PropertyName = "amount")]
         public MonetaryValueModel Amount { get; set; }

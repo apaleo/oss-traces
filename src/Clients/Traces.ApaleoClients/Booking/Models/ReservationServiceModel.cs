@@ -24,12 +24,9 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the ReservationServiceModel class.
         /// </summary>
-        /// <param name="amount">The total price for all booked
-        /// services</param>
         /// <param name="bookedAsExtra">Whether this service is already booked
         /// as extra</param>
         /// <param name="count">The count of booked services</param>
-        /// <param name="service">The reserved service</param>
         /// <param name="serviceDate">The date this service is
         /// delivered</param>
         public ReservationServiceModel(AmountModel amount, bool bookedAsExtra, int count, EmbeddedServiceModel service, System.DateTime serviceDate)
@@ -48,7 +45,6 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the total price for all booked services
         /// </summary>
         [JsonProperty(PropertyName = "amount")]
         public AmountModel Amount { get; set; }
@@ -66,7 +62,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public int Count { get; set; }
 
         /// <summary>
-        /// Gets or sets the reserved service
         /// </summary>
         [JsonProperty(PropertyName = "service")]
         public EmbeddedServiceModel Service { get; set; }

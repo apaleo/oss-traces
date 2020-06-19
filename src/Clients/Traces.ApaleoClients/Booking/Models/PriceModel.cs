@@ -32,10 +32,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="grossAmount">Price including all included services and
         /// VAT - &lt;b&gt;DEPRECATED: This field will be removed soon, use
         /// BeforeTax + Taxes.Tax instead&lt;/b&gt;</param>
-        /// <param name="taxes">Split of the taxes and fees applied to the
-        /// amount before Tax.
-        /// The price before tax plus all the taxes summed up result in the
-        /// price after tax</param>
         public PriceModel(double afterTax, double beforeTax, string currency, double grossAmount, TaxesModel taxes)
         {
             AfterTax = afterTax;
@@ -80,10 +76,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public double GrossAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets split of the taxes and fees applied to the amount
-        /// before Tax.
-        /// The price before tax plus all the taxes summed up result in the
-        /// price after tax
         /// </summary>
         [JsonProperty(PropertyName = "taxes")]
         public TaxesModel Taxes { get; set; }

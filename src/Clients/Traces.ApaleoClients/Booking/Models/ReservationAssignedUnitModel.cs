@@ -29,7 +29,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         /// <param name="timeRanges">The time ranges for which the unit is
         /// assigned to the reservation</param>
-        /// <param name="unit">The unit assigned for the time ranges</param>
         public ReservationAssignedUnitModel(IList<ReservationAssignedUnitTimeRangeModel> timeRanges, EmbeddedUnitModel unit)
         {
             TimeRanges = timeRanges;
@@ -50,7 +49,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<ReservationAssignedUnitTimeRangeModel> TimeRanges { get; set; }
 
         /// <summary>
-        /// Gets or sets the unit assigned for the time ranges
         /// </summary>
         [JsonProperty(PropertyName = "unit")]
         public EmbeddedUnitModel Unit { get; set; }
