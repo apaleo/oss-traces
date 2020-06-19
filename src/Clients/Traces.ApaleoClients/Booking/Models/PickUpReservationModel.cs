@@ -46,13 +46,11 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="comment">Additional information and comments</param>
         /// <param name="guestComment">Additional information and comment by
         /// the guest</param>
-        /// <param name="primaryGuest">The primary guest of the reservation.
-        /// If no guest was set, the booker is used.</param>
         /// <param name="services">Additional services (extras, add-ons) that
         /// should be added to the reservation</param>
         /// <param name="travelPurpose">The purpose of the trip, leisure or
         /// business. Possible values include: 'Business', 'Leisure'</param>
-        public PickUpReservationModel(int adults, string arrival, string blockId, string departure, IList<GuestModel> additionalGuests = default(IList<GuestModel>), IList<int?> childrenAges = default(IList<int?>), string comment = default(string), string guestComment = default(string), GuestModel primaryGuest = default(GuestModel), IList<BookReservationServiceModel> services = default(IList<BookReservationServiceModel>), string travelPurpose = default(string))
+        public PickUpReservationModel(int adults, string arrival, string blockId, string departure, IList<GuestModel> additionalGuests = default(IList<GuestModel>), IList<int?> childrenAges = default(IList<int?>), string comment = default(string), string guestComment = default(string), GuestModel primaryGuest = default(GuestModel), IList<BookReservationServiceModel> services = default(IList<BookReservationServiceModel>), TravelPurpose? travelPurpose = default(TravelPurpose?))
         {
             AdditionalGuests = additionalGuests;
             Adults = adults;
@@ -130,8 +128,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public string GuestComment { get; set; }
 
         /// <summary>
-        /// Gets or sets the primary guest of the reservation.
-        /// If no guest was set, the booker is used.
         /// </summary>
         [JsonProperty(PropertyName = "primaryGuest")]
         public GuestModel PrimaryGuest { get; set; }
@@ -148,7 +144,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// values include: 'Business', 'Leisure'
         /// </summary>
         [JsonProperty(PropertyName = "travelPurpose")]
-        public string TravelPurpose { get; set; }
+        public TravelPurpose? TravelPurpose { get; set; }
 
         /// <summary>
         /// Validate the object.

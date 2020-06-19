@@ -28,15 +28,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the CreateGroupModel class.
         /// </summary>
-        /// <param name="booker">The person requesting the group
-        /// booking</param>
         /// <param name="name">Name of the group</param>
         /// <param name="propertyIds">List of property ids the group booking
         /// belongs to</param>
         /// <param name="bookerComment">Additional information and comment by
         /// the booker</param>
         /// <param name="comment">Additional information and comments</param>
-        /// <param name="paymentAccount">Payment information</param>
         public CreateGroupModel(BookerModel booker, string name, IList<string> propertyIds, string bookerComment = default(string), string comment = default(string), CreatePaymentAccountModel paymentAccount = default(CreatePaymentAccountModel))
         {
             Booker = booker;
@@ -54,7 +51,6 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the person requesting the group booking
         /// </summary>
         [JsonProperty(PropertyName = "booker")]
         public BookerModel Booker { get; set; }
@@ -78,7 +74,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets payment information
         /// </summary>
         [JsonProperty(PropertyName = "paymentAccount")]
         public CreatePaymentAccountModel PaymentAccount { get; set; }

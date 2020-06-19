@@ -8,6 +8,8 @@ namespace Traces.ApaleoClients.Booking.Models
 {
     using Microsoft.Rest;
     using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
 
     public partial class CreateBlockModel
@@ -23,15 +25,11 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the CreateBlockModel class.
         /// </summary>
-        /// <param name="blockedUnits">Number of units to block for the defined
-        /// time period</param>
         /// <param name="fromProperty">Start date and time from which the
         /// inventory will be blocked&lt;br /&gt;Specify either a pure date or
         /// a date and time (without fractional second part) in UTC or with UTC
         /// offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="grossDailyRate">Gross daily rate including VAT and
-        /// included service fees</param>
         /// <param name="groupId">ID of the group that reserved the
         /// block</param>
         /// <param name="ratePlanId">The rate plan</param>
@@ -41,13 +39,24 @@ namespace Traces.ApaleoClients.Booking.Models
         /// fractional second part) in UTC or with UTC offset as defined in
         /// &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        public CreateBlockModel(int blockedUnits, string fromProperty, MonetaryValueModel grossDailyRate, string groupId, string ratePlanId, string to)
+        /// <param name="blockedUnits">Number of units to block for the defined
+        /// time period</param>
+        /// <param name="corporateCode">The corporate code associated with a
+        /// certain special offer</param>
+        /// <param name="promoCode">The promo code associated with a certain
+        /// special offer</param>
+        /// <param name="timeSlices">The list of blocked units for each time
+        /// slice</param>
+        public CreateBlockModel(string fromProperty, MonetaryValueModel grossDailyRate, string groupId, string ratePlanId, string to, int? blockedUnits = default(int?), string corporateCode = default(string), string promoCode = default(string), IList<CreateBlockTimeSliceModel> timeSlices = default(IList<CreateBlockTimeSliceModel>))
         {
             BlockedUnits = blockedUnits;
+            CorporateCode = corporateCode;
             FromProperty = fromProperty;
             GrossDailyRate = grossDailyRate;
             GroupId = groupId;
+            PromoCode = promoCode;
             RatePlanId = ratePlanId;
+            TimeSlices = timeSlices;
             To = to;
             CustomInit();
         }
@@ -61,7 +70,14 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Gets or sets number of units to block for the defined time period
         /// </summary>
         [JsonProperty(PropertyName = "blockedUnits")]
-        public int BlockedUnits { get; set; }
+        public int? BlockedUnits { get; set; }
+
+        /// <summary>
+        /// Gets or sets the corporate code associated with a certain special
+        /// offer
+        /// </summary>
+        [JsonProperty(PropertyName = "corporateCode")]
+        public string CorporateCode { get; set; }
 
         /// <summary>
         /// Gets or sets start date and time from which the inventory will be
@@ -74,8 +90,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public string FromProperty { get; set; }
 
         /// <summary>
-        /// Gets or sets gross daily rate including VAT and included service
-        /// fees
         /// </summary>
         [JsonProperty(PropertyName = "grossDailyRate")]
         public MonetaryValueModel GrossDailyRate { get; set; }
@@ -87,10 +101,22 @@ namespace Traces.ApaleoClients.Booking.Models
         public string GroupId { get; set; }
 
         /// <summary>
+        /// Gets or sets the promo code associated with a certain special offer
+        /// </summary>
+        [JsonProperty(PropertyName = "promoCode")]
+        public string PromoCode { get; set; }
+
+        /// <summary>
         /// Gets or sets the rate plan
         /// </summary>
         [JsonProperty(PropertyName = "ratePlanId")]
         public string RatePlanId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of blocked units for each time slice
+        /// </summary>
+        [JsonProperty(PropertyName = "timeSlices")]
+        public IList<CreateBlockTimeSliceModel> TimeSlices { get; set; }
 
         /// <summary>
         /// Gets or sets end date and time until which the inventory will be
@@ -134,6 +160,16 @@ namespace Traces.ApaleoClients.Booking.Models
             if (GrossDailyRate != null)
             {
                 GrossDailyRate.Validate();
+            }
+            if (TimeSlices != null)
+            {
+                foreach (var element in TimeSlices)
+                {
+                    if (element != null)
+                    {
+                        element.Validate();
+                    }
+                }
             }
         }
     }

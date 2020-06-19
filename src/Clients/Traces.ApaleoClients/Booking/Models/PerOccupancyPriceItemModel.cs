@@ -24,7 +24,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the PerOccupancyPriceItemModel class.
         /// </summary>
         /// <param name="adults">Number of adults</param>
-        /// <param name="price">The price for this offer</param>
         public PerOccupancyPriceItemModel(int adults, PriceModel price)
         {
             Adults = adults;
@@ -44,7 +43,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public int Adults { get; set; }
 
         /// <summary>
-        /// Gets or sets the price for this offer
         /// </summary>
         [JsonProperty(PropertyName = "price")]
         public PriceModel Price { get; set; }

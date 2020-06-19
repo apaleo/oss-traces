@@ -24,14 +24,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the OfferServiceModel class.
         /// </summary>
-        /// <param name="amount">The total price</param>
         /// <param name="count">The default count of offered services. For
         /// services whose pricing unit is 'Person' it will be based on the
         /// adults and children specified, otherwise 1.</param>
         /// <param name="pricingMode">Whether the service price is included in
         /// or added to the base rate. Possible values include: 'Included',
         /// 'Additional'</param>
-        /// <param name="service">The service</param>
         /// <param name="serviceDate">The date this service is
         /// delivered</param>
         public OfferServiceModel(AmountModel amount, int count, PricingMode pricingMode, EmbeddedServiceModel service, System.DateTime serviceDate)
@@ -50,7 +48,6 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the total price
         /// </summary>
         [JsonProperty(PropertyName = "amount")]
         public AmountModel Amount { get; set; }
@@ -71,7 +68,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public PricingMode PricingMode { get; set; }
 
         /// <summary>
-        /// Gets or sets the service
         /// </summary>
         [JsonProperty(PropertyName = "service")]
         public EmbeddedServiceModel Service { get; set; }

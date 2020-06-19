@@ -28,7 +28,11 @@ namespace Traces.ApaleoClients.Booking.Models
         [EnumMember(Value = "Without")]
         Without,
         [EnumMember(Value = "Special")]
-        Special
+        Special,
+        [EnumMember(Value = "ReducedCovid19")]
+        ReducedCovid19,
+        [EnumMember(Value = "NormalCovid19")]
+        NormalCovid19
     }
     internal static class VatTypeEnumExtension
     {
@@ -53,6 +57,10 @@ namespace Traces.ApaleoClients.Booking.Models
                     return "Without";
                 case VatType.Special:
                     return "Special";
+                case VatType.ReducedCovid19:
+                    return "ReducedCovid19";
+                case VatType.NormalCovid19:
+                    return "NormalCovid19";
             }
             return null;
         }
@@ -73,6 +81,10 @@ namespace Traces.ApaleoClients.Booking.Models
                     return VatType.Without;
                 case "Special":
                     return VatType.Special;
+                case "ReducedCovid19":
+                    return VatType.ReducedCovid19;
+                case "NormalCovid19":
+                    return VatType.NormalCovid19;
             }
             return null;
         }

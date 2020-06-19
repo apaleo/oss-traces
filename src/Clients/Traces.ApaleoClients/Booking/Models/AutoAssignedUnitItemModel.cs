@@ -24,14 +24,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the AutoAssignedUnitItemModel class.
         /// </summary>
         /// <param name="fromProperty">The start date and time for this time
-        /// slice&lt;br /&gt;Specify a date and time (without fractional second
-        /// part) in UTC or with UTC offset as defined in &lt;a
+        /// slice&lt;br /&gt;A date and time (without fractional second part)
+        /// in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="to">The end date and time for this time slice&lt;br
-        /// /&gt;Specify a date and time (without fractional second part) in
-        /// UTC or with UTC offset as defined in &lt;a
+        /// /&gt;A date and time (without fractional second part) in UTC or
+        /// with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="unit">The assigned unit for this time slice</param>
         public AutoAssignedUnitItemModel(System.DateTime fromProperty, System.DateTime to, EmbeddedUnitModel unit)
         {
             FromProperty = fromProperty;
@@ -47,8 +46,8 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets the start date and time for this time slice&amp;lt;br
-        /// /&amp;gt;Specify a date and time (without fractional second part)
-        /// in UTC or with UTC offset as defined in &amp;lt;a
+        /// /&amp;gt;A date and time (without fractional second part) in UTC or
+        /// with UTC offset as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "from")]
@@ -56,15 +55,14 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets the end date and time for this time slice&amp;lt;br
-        /// /&amp;gt;Specify a date and time (without fractional second part)
-        /// in UTC or with UTC offset as defined in &amp;lt;a
+        /// /&amp;gt;A date and time (without fractional second part) in UTC or
+        /// with UTC offset as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "to")]
         public System.DateTime To { get; set; }
 
         /// <summary>
-        /// Gets or sets the assigned unit for this time slice
         /// </summary>
         [JsonProperty(PropertyName = "unit")]
         public EmbeddedUnitModel Unit { get; set; }

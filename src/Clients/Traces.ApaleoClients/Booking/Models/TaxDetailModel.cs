@@ -24,7 +24,8 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the TaxDetailModel class.
         /// </summary>
         /// <param name="vatType">Possible values include: 'Null',
-        /// 'VeryReduced', 'Reduced', 'Normal', 'Without', 'Special'</param>
+        /// 'VeryReduced', 'Reduced', 'Normal', 'Without', 'Special',
+        /// 'ReducedCovid19', 'NormalCovid19'</param>
         public TaxDetailModel(MonetaryValueModel net, MonetaryValueModel tax, VatType vatType, double? vatPercent = default(double?))
         {
             Net = net;
@@ -56,7 +57,8 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets possible values include: 'Null', 'VeryReduced',
-        /// 'Reduced', 'Normal', 'Without', 'Special'
+        /// 'Reduced', 'Normal', 'Without', 'Special', 'ReducedCovid19',
+        /// 'NormalCovid19'
         /// </summary>
         [JsonProperty(PropertyName = "vatType")]
         public VatType VatType { get; set; }

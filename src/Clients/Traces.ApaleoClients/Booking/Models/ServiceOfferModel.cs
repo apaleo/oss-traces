@@ -30,14 +30,15 @@ namespace Traces.ApaleoClients.Booking.Models
         /// adults and children specified, otherwise 1.</param>
         /// <param name="dates">The dates the service will be delivered with
         /// its price</param>
-        /// <param name="prePaymentAmount">The amount that needs to be
-        /// pre-paid.</param>
-        /// <param name="service">The service</param>
-        /// <param name="totalAmount">The total price</param>
-        public ServiceOfferModel(int count, IList<ServiceOfferItemModel> dates, MonetaryValueModel prePaymentAmount, ServiceModel service, AmountModel totalAmount)
+        /// <param name="fees">The details of the fees that will be added on
+        /// top of the
+        /// Apaleo.Api.Modules.Booking.Models.Offer.ServiceOffer.ServiceOfferModel.TotalAmount
+        /// when booking the service</param>
+        public ServiceOfferModel(int count, IList<ServiceOfferItemModel> dates, MonetaryValueModel prePaymentAmount, ServiceModel service, AmountModel totalAmount, IList<OfferFeeModel> fees = default(IList<OfferFeeModel>))
         {
             Count = count;
             Dates = dates;
+            Fees = fees;
             PrePaymentAmount = prePaymentAmount;
             Service = service;
             TotalAmount = totalAmount;
@@ -64,22 +65,28 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<ServiceOfferItemModel> Dates { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount that needs to be pre-paid.
+        /// Gets or sets the details of the fees that will be added on top of
+        /// the
+        /// Apaleo.Api.Modules.Booking.Models.Offer.ServiceOffer.ServiceOfferModel.TotalAmount
+        /// when booking the service
+        /// </summary>
+        [JsonProperty(PropertyName = "fees")]
+        public IList<OfferFeeModel> Fees { get; set; }
+
+        /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "prePaymentAmount")]
         public MonetaryValueModel PrePaymentAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets the service
         /// </summary>
         [JsonProperty(PropertyName = "service")]
         public ServiceModel Service { get; set; }
 
         /// <summary>
-        /// Gets the total price
         /// </summary>
         [JsonProperty(PropertyName = "totalAmount")]
-        public AmountModel TotalAmount { get; private set; }
+        public AmountModel TotalAmount { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -101,6 +108,10 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Service");
             }
+            if (TotalAmount == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "TotalAmount");
+            }
             if (Dates != null)
             {
                 foreach (var element in Dates)
@@ -108,6 +119,16 @@ namespace Traces.ApaleoClients.Booking.Models
                     if (element != null)
                     {
                         element.Validate();
+                    }
+                }
+            }
+            if (Fees != null)
+            {
+                foreach (var element1 in Fees)
+                {
+                    if (element1 != null)
+                    {
+                        element1.Validate();
                     }
                 }
             }

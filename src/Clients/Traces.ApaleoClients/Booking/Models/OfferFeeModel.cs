@@ -10,29 +10,28 @@ namespace Traces.ApaleoClients.Booking.Models
     using Newtonsoft.Json;
     using System.Linq;
 
-    public partial class EmbeddedUnitModel
+    public partial class OfferFeeModel
     {
         /// <summary>
-        /// Initializes a new instance of the EmbeddedUnitModel class.
+        /// Initializes a new instance of the OfferFeeModel class.
         /// </summary>
-        public EmbeddedUnitModel()
+        public OfferFeeModel()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the EmbeddedUnitModel class.
+        /// Initializes a new instance of the OfferFeeModel class.
         /// </summary>
-        /// <param name="id">The unit id</param>
-        /// <param name="description">The description for the unit</param>
-        /// <param name="name">The name for the unit</param>
-        /// <param name="unitGroupId">The unit group id</param>
-        public EmbeddedUnitModel(string id, string description = default(string), string name = default(string), string unitGroupId = default(string))
+        /// <param name="code">The code for the fee</param>
+        /// <param name="id">The fee id</param>
+        /// <param name="name">The name for the fee</param>
+        public OfferFeeModel(string code, string id, string name, AmountModel totalAmount)
         {
-            Description = description;
+            Code = code;
             Id = id;
             Name = name;
-            UnitGroupId = unitGroupId;
+            TotalAmount = totalAmount;
             CustomInit();
         }
 
@@ -42,28 +41,27 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the description for the unit
+        /// Gets or sets the code for the fee
         /// </summary>
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
+        [JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the unit id
+        /// Gets or sets the fee id
         /// </summary>
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the name for the unit
+        /// Gets or sets the name for the fee
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the unit group id
         /// </summary>
-        [JsonProperty(PropertyName = "unitGroupId")]
-        public string UnitGroupId { get; set; }
+        [JsonProperty(PropertyName = "totalAmount")]
+        public AmountModel TotalAmount { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -73,9 +71,25 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
+            if (Code == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Code");
+            }
             if (Id == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Id");
+            }
+            if (Name == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Name");
+            }
+            if (TotalAmount == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "TotalAmount");
+            }
+            if (TotalAmount != null)
+            {
+                TotalAmount.Validate();
             }
         }
     }

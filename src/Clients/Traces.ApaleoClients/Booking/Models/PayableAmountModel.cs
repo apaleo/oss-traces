@@ -10,22 +10,22 @@ namespace Traces.ApaleoClients.Booking.Models
     using Newtonsoft.Json;
     using System.Linq;
 
-    public partial class AssignedUnitModel
+    public partial class PayableAmountModel
     {
         /// <summary>
-        /// Initializes a new instance of the AssignedUnitModel class.
+        /// Initializes a new instance of the PayableAmountModel class.
         /// </summary>
-        public AssignedUnitModel()
+        public PayableAmountModel()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the AssignedUnitModel class.
+        /// Initializes a new instance of the PayableAmountModel class.
         /// </summary>
-        public AssignedUnitModel(EmbeddedUnitModel unit)
+        public PayableAmountModel(MonetaryValueModel guest)
         {
-            Unit = unit;
+            Guest = guest;
             CustomInit();
         }
 
@@ -36,8 +36,8 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "unit")]
-        public EmbeddedUnitModel Unit { get; set; }
+        [JsonProperty(PropertyName = "guest")]
+        public MonetaryValueModel Guest { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -47,13 +47,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Unit == null)
+            if (Guest == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Unit");
+                throw new ValidationException(ValidationRules.CannotBeNull, "Guest");
             }
-            if (Unit != null)
+            if (Guest != null)
             {
-                Unit.Validate();
+                Guest.Validate();
             }
         }
     }

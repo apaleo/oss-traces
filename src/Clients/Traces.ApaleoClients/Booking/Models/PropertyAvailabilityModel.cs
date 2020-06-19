@@ -23,6 +23,8 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the PropertyAvailabilityModel class.
         /// </summary>
+        /// <param name="allowedOverbookingCount">The number of units which are
+        /// allowed for overbooking</param>
         /// <param name="houseCount">The number of units physically existing
         /// excluding the ones which are out of inventory</param>
         /// <param name="occupancy">The percent value indicating the
@@ -34,8 +36,9 @@ namespace Traces.ApaleoClients.Booking.Models
         /// already sold units</param>
         /// <param name="soldCount">The number of sold units including units
         /// picked up from blocks</param>
-        public PropertyAvailabilityModel(BlockUnitsModel block, int houseCount, MaintenanceModel maintenance, double occupancy, int physicalCount, int sellableCount, int soldCount)
+        public PropertyAvailabilityModel(int allowedOverbookingCount, BlockUnitsModel block, int houseCount, MaintenanceModel maintenance, double occupancy, int physicalCount, int sellableCount, int soldCount)
         {
+            AllowedOverbookingCount = allowedOverbookingCount;
             Block = block;
             HouseCount = houseCount;
             Maintenance = maintenance;
@@ -50,6 +53,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets the number of units which are allowed for overbooking
+        /// </summary>
+        [JsonProperty(PropertyName = "allowedOverbookingCount")]
+        public int AllowedOverbookingCount { get; set; }
 
         /// <summary>
         /// </summary>

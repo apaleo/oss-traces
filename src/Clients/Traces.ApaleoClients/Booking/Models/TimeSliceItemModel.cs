@@ -25,12 +25,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the TimeSliceItemModel class.
         /// </summary>
         /// <param name="fromProperty">Date and time the time slice
-        /// begins&lt;br /&gt;Specify a date and time (without fractional
-        /// second part) in UTC or with UTC offset as defined in &lt;a
+        /// begins&lt;br /&gt;A date and time (without fractional second part)
+        /// in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="to">Date and time the time slice ends&lt;br
-        /// /&gt;Specify a date and time (without fractional second part) in
-        /// UTC or with UTC offset as defined in &lt;a
+        /// <param name="to">Date and time the time slice ends&lt;br /&gt;A
+        /// date and time (without fractional second part) in UTC or with UTC
+        /// offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="offers">List of offers for this time slice</param>
         public TimeSliceItemModel(System.DateTime fromProperty, System.DateTime to, IList<TimeSliceOfferItemModel> offers = default(IList<TimeSliceOfferItemModel>))
@@ -48,8 +48,8 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets date and time the time slice begins&amp;lt;br
-        /// /&amp;gt;Specify a date and time (without fractional second part)
-        /// in UTC or with UTC offset as defined in &amp;lt;a
+        /// /&amp;gt;A date and time (without fractional second part) in UTC or
+        /// with UTC offset as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "from")]
@@ -62,9 +62,9 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<TimeSliceOfferItemModel> Offers { get; set; }
 
         /// <summary>
-        /// Gets or sets date and time the time slice ends&amp;lt;br
-        /// /&amp;gt;Specify a date and time (without fractional second part)
-        /// in UTC or with UTC offset as defined in &amp;lt;a
+        /// Gets or sets date and time the time slice ends&amp;lt;br /&amp;gt;A
+        /// date and time (without fractional second part) in UTC or with UTC
+        /// offset as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "to")]

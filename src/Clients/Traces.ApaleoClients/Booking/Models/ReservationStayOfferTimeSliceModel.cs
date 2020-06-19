@@ -27,21 +27,14 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the
         /// ReservationStayOfferTimeSliceModel class.
         /// </summary>
-        /// <param name="baseAmount">The price for this time slice without
-        /// included services</param>
         /// <param name="fromProperty">The start date and time for this time
-        /// slice&lt;br /&gt;Specify a date and time (without fractional second
-        /// part) in UTC or with UTC offset as defined in &lt;a
+        /// slice&lt;br /&gt;A date and time (without fractional second part)
+        /// in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="ratePlan">The rate plan for this time slice</param>
         /// <param name="to">The end date and time for this time slice&lt;br
-        /// /&gt;Specify a date and time (without fractional second part) in
-        /// UTC or with UTC offset as defined in &lt;a
+        /// /&gt;A date and time (without fractional second part) in UTC or
+        /// with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="totalGrossAmount">The total gross price for this time
-        /// slice, which is comprised by the base price and all included
-        /// services' prices</param>
-        /// <param name="unitGroup">The unit group for this time slice</param>
         /// <param name="includedServices">The breakdown for services included
         /// in the offer</param>
         public ReservationStayOfferTimeSliceModel(AmountModel baseAmount, System.DateTime fromProperty, EmbeddedRatePlanModel ratePlan, System.DateTime to, MonetaryValueModel totalGrossAmount, OfferUnitGroupModel unitGroup, IList<ReservationStayOfferServiceModel> includedServices = default(IList<ReservationStayOfferServiceModel>))
@@ -62,16 +55,14 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the price for this time slice without included
-        /// services
         /// </summary>
         [JsonProperty(PropertyName = "baseAmount")]
         public AmountModel BaseAmount { get; set; }
 
         /// <summary>
         /// Gets or sets the start date and time for this time slice&amp;lt;br
-        /// /&amp;gt;Specify a date and time (without fractional second part)
-        /// in UTC or with UTC offset as defined in &amp;lt;a
+        /// /&amp;gt;A date and time (without fractional second part) in UTC or
+        /// with UTC offset as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "from")]
@@ -84,29 +75,25 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<ReservationStayOfferServiceModel> IncludedServices { get; set; }
 
         /// <summary>
-        /// Gets or sets the rate plan for this time slice
         /// </summary>
         [JsonProperty(PropertyName = "ratePlan")]
         public EmbeddedRatePlanModel RatePlan { get; set; }
 
         /// <summary>
         /// Gets or sets the end date and time for this time slice&amp;lt;br
-        /// /&amp;gt;Specify a date and time (without fractional second part)
-        /// in UTC or with UTC offset as defined in &amp;lt;a
+        /// /&amp;gt;A date and time (without fractional second part) in UTC or
+        /// with UTC offset as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "to")]
         public System.DateTime To { get; set; }
 
         /// <summary>
-        /// Gets or sets the total gross price for this time slice, which is
-        /// comprised by the base price and all included services' prices
         /// </summary>
         [JsonProperty(PropertyName = "totalGrossAmount")]
         public MonetaryValueModel TotalGrossAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets the unit group for this time slice
         /// </summary>
         [JsonProperty(PropertyName = "unitGroup")]
         public OfferUnitGroupModel UnitGroup { get; set; }

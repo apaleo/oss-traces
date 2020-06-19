@@ -29,9 +29,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         /// <param name="serviceId">The id of the service you want to
         /// book</param>
-        /// <param name="amount">The optional amount for the service for each
-        /// service date; It defaults to the service offer amount when not
-        /// specified.</param>
         /// <param name="count">The number of services to book for each service
         /// date. It defaults to the service offer count when not
         /// specified.</param>
@@ -53,8 +50,6 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the optional amount for the service for each service
-        /// date; It defaults to the service offer amount when not specified.
         /// </summary>
         [JsonProperty(PropertyName = "amount")]
         public MonetaryValueModel Amount { get; set; }

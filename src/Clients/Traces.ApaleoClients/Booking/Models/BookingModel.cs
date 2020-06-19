@@ -28,21 +28,19 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the BookingModel class.
         /// </summary>
-        /// <param name="booker">The person creating the booking.</param>
-        /// <param name="created">Date of creation&lt;br /&gt;Specify a date
-        /// and time (without fractional second part) in UTC or with UTC offset
-        /// as defined in &lt;a
+        /// <param name="created">Date of creation&lt;br /&gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="id">Booking id</param>
-        /// <param name="modified">Date of last modification&lt;br /&gt;Specify
-        /// a date and time (without fractional second part) in UTC or with UTC
-        /// offset as defined in &lt;a
+        /// <param name="modified">Date of last modification&lt;br /&gt;A date
+        /// and time (without fractional second part) in UTC or with UTC offset
+        /// as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="bookerComment">Additional information and comment by
         /// the booker</param>
         /// <param name="comment">Additional information and comments</param>
         /// <param name="groupId">Group id</param>
-        /// <param name="paymentAccount">Payment information</param>
         /// <param name="propertyValues">Property specific values like total
         /// amount and balance</param>
         /// <param name="reservations">Reservations within this booking</param>
@@ -67,7 +65,6 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the person creating the booking.
         /// </summary>
         [JsonProperty(PropertyName = "booker")]
         public BookerModel Booker { get; set; }
@@ -85,8 +82,8 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Comment { get; set; }
 
         /// <summary>
-        /// Gets or sets date of creation&amp;lt;br /&amp;gt;Specify a date and
-        /// time (without fractional second part) in UTC or with UTC offset as
+        /// Gets or sets date of creation&amp;lt;br /&amp;gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
         /// defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
@@ -106,16 +103,15 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Id { get; set; }
 
         /// <summary>
-        /// Gets or sets date of last modification&amp;lt;br /&amp;gt;Specify a
-        /// date and time (without fractional second part) in UTC or with UTC
-        /// offset as defined in &amp;lt;a
+        /// Gets or sets date of last modification&amp;lt;br /&amp;gt;A date
+        /// and time (without fractional second part) in UTC or with UTC offset
+        /// as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "modified")]
         public System.DateTime Modified { get; set; }
 
         /// <summary>
-        /// Gets or sets payment information
         /// </summary>
         [JsonProperty(PropertyName = "paymentAccount")]
         public PaymentAccountModel PaymentAccount { get; set; }

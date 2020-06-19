@@ -23,10 +23,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the CommissionModel class.
         /// </summary>
-        /// <param name="commissionAmount">The amount of the OTA
-        /// commision</param>
-        /// <param name="beforeCommissionAmount">The amount of the reservation
-        /// without the OTA commision</param>
         public CommissionModel(MonetaryValueModel commissionAmount, MonetaryValueModel beforeCommissionAmount = default(MonetaryValueModel))
         {
             BeforeCommissionAmount = beforeCommissionAmount;
@@ -40,14 +36,11 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the amount of the reservation without the OTA
-        /// commision
         /// </summary>
         [JsonProperty(PropertyName = "beforeCommissionAmount")]
         public MonetaryValueModel BeforeCommissionAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount of the OTA commision
         /// </summary>
         [JsonProperty(PropertyName = "commissionAmount")]
         public MonetaryValueModel CommissionAmount { get; set; }

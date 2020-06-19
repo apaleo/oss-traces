@@ -35,7 +35,8 @@ namespace Traces.ApaleoClients.Booking.Models
         /// &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="channelCode">Channel code. Possible values include:
-        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia'</param>
+        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia',
+        /// 'Homelike'</param>
         /// <param name="departure">Date and optional time of departure. Cannot
         /// be more than 5 years after arrival.&lt;br /&gt;Specify either a
         /// pure date or a date and time (without fractional second part) in
@@ -49,8 +50,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// reservation.</param>
         /// <param name="childrenAges">Ages of the children</param>
         /// <param name="comment">Additional information and comments</param>
-        /// <param name="commission">The information about the OTA
-        /// commission.</param>
         /// <param name="companyId">Set this if this reservation belongs to a
         /// company</param>
         /// <param name="corporateCode">Corporate code provided during
@@ -63,16 +62,14 @@ namespace Traces.ApaleoClients.Booking.Models
         /// 'Company'</param>
         /// <param name="guestComment">Additional information and comments by
         /// the guest</param>
-        /// <param name="prePaymentAmount">The amount that needs to be
-        /// pre-paid.</param>
-        /// <param name="primaryGuest">The primary guest of the reservation.
-        /// If no guest is set, the booker is used.</param>
+        /// <param name="promoCode">The promo code associated with a certain
+        /// special offer</param>
         /// <param name="services">Additional services (extras, add-ons) that
         /// should be added to the reservation</param>
         /// <param name="source">Source of the reservation</param>
         /// <param name="travelPurpose">Purpose of the trip, leisure or
         /// business. Possible values include: 'Business', 'Leisure'</param>
-        public CreateReservationModel(int adults, string arrival, string channelCode, string departure, IList<CreateReservationTimeSliceModel> timeSlices, IList<GuestModel> additionalGuests = default(IList<GuestModel>), IList<int?> childrenAges = default(IList<int?>), string comment = default(string), CommissionModel commission = default(CommissionModel), string companyId = default(string), string corporateCode = default(string), string externalCode = default(string), string guaranteeType = default(string), string guestComment = default(string), MonetaryValueModel prePaymentAmount = default(MonetaryValueModel), GuestModel primaryGuest = default(GuestModel), IList<BookReservationServiceModel> services = default(IList<BookReservationServiceModel>), string source = default(string), string travelPurpose = default(string))
+        public CreateReservationModel(int adults, string arrival, ChannelCode channelCode, string departure, IList<CreateReservationTimeSliceModel> timeSlices, IList<GuestModel> additionalGuests = default(IList<GuestModel>), IList<int?> childrenAges = default(IList<int?>), string comment = default(string), CommissionModel commission = default(CommissionModel), string companyId = default(string), string corporateCode = default(string), string externalCode = default(string), MinGuaranteeType? guaranteeType = default(MinGuaranteeType?), string guestComment = default(string), MonetaryValueModel prePaymentAmount = default(MonetaryValueModel), GuestModel primaryGuest = default(GuestModel), string promoCode = default(string), IList<BookReservationServiceModel> services = default(IList<BookReservationServiceModel>), string source = default(string), TravelPurpose? travelPurpose = default(TravelPurpose?))
         {
             AdditionalGuests = additionalGuests;
             Adults = adults;
@@ -89,6 +86,7 @@ namespace Traces.ApaleoClients.Booking.Models
             GuestComment = guestComment;
             PrePaymentAmount = prePaymentAmount;
             PrimaryGuest = primaryGuest;
+            PromoCode = promoCode;
             Services = services;
             Source = source;
             TimeSlices = timeSlices;
@@ -125,10 +123,10 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets channel code. Possible values include: 'Direct',
-        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia'
+        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
         /// </summary>
         [JsonProperty(PropertyName = "channelCode")]
-        public string ChannelCode { get; set; }
+        public ChannelCode ChannelCode { get; set; }
 
         /// <summary>
         /// Gets or sets ages of the children
@@ -143,7 +141,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Comment { get; set; }
 
         /// <summary>
-        /// Gets or sets the information about the OTA commission.
         /// </summary>
         [JsonProperty(PropertyName = "commission")]
         public CommissionModel Commission { get; set; }
@@ -184,7 +181,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// values include: 'PM6Hold', 'CreditCard', 'Prepayment', 'Company'
         /// </summary>
         [JsonProperty(PropertyName = "guaranteeType")]
-        public string GuaranteeType { get; set; }
+        public MinGuaranteeType? GuaranteeType { get; set; }
 
         /// <summary>
         /// Gets or sets additional information and comments by the guest
@@ -193,17 +190,20 @@ namespace Traces.ApaleoClients.Booking.Models
         public string GuestComment { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount that needs to be pre-paid.
         /// </summary>
         [JsonProperty(PropertyName = "prePaymentAmount")]
         public MonetaryValueModel PrePaymentAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets the primary guest of the reservation.
-        /// If no guest is set, the booker is used.
         /// </summary>
         [JsonProperty(PropertyName = "primaryGuest")]
         public GuestModel PrimaryGuest { get; set; }
+
+        /// <summary>
+        /// Gets or sets the promo code associated with a certain special offer
+        /// </summary>
+        [JsonProperty(PropertyName = "promoCode")]
+        public string PromoCode { get; set; }
 
         /// <summary>
         /// Gets or sets additional services (extras, add-ons) that should be
@@ -231,7 +231,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// values include: 'Business', 'Leisure'
         /// </summary>
         [JsonProperty(PropertyName = "travelPurpose")]
-        public string TravelPurpose { get; set; }
+        public TravelPurpose? TravelPurpose { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -244,10 +244,6 @@ namespace Traces.ApaleoClients.Booking.Models
             if (Arrival == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Arrival");
-            }
-            if (ChannelCode == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "ChannelCode");
             }
             if (Departure == null)
             {

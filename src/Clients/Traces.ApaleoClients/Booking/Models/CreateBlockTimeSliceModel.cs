@@ -6,26 +6,27 @@
 
 namespace Traces.ApaleoClients.Booking.Models
 {
-    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Linq;
 
-    public partial class AssignedUnitModel
+    public partial class CreateBlockTimeSliceModel
     {
         /// <summary>
-        /// Initializes a new instance of the AssignedUnitModel class.
+        /// Initializes a new instance of the CreateBlockTimeSliceModel class.
         /// </summary>
-        public AssignedUnitModel()
+        public CreateBlockTimeSliceModel()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the AssignedUnitModel class.
+        /// Initializes a new instance of the CreateBlockTimeSliceModel class.
         /// </summary>
-        public AssignedUnitModel(EmbeddedUnitModel unit)
+        /// <param name="blockedUnits">Number of units blocked for the time
+        /// slice</param>
+        public CreateBlockTimeSliceModel(int blockedUnits)
         {
-            Unit = unit;
+            BlockedUnits = blockedUnits;
             CustomInit();
         }
 
@@ -35,26 +36,20 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets number of units blocked for the time slice
         /// </summary>
-        [JsonProperty(PropertyName = "unit")]
-        public EmbeddedUnitModel Unit { get; set; }
+        [JsonProperty(PropertyName = "blockedUnits")]
+        public int BlockedUnits { get; set; }
 
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="ValidationException">
+        /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public virtual void Validate()
         {
-            if (Unit == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Unit");
-            }
-            if (Unit != null)
-            {
-                Unit.Validate();
-            }
+            //Nothing to validate
         }
     }
 }

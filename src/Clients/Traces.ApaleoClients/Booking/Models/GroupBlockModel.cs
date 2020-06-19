@@ -24,33 +24,36 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the GroupBlockModel class.
         /// </summary>
         /// <param name="blockedUnits">Number of units blocked</param>
-        /// <param name="fromProperty">Start date and time from which the
-        /// inventory will be blocked&lt;br /&gt;Specify a date and time
+        /// <param name="created">Date of creation&lt;br /&gt;A date and time
         /// (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="grossDailyRate">Gross daily rate including VAT and
-        /// included service fees for single occupancy. Per person
-        /// surcharges will be added to this price based on the configured
-        /// surcharges of the rate plan</param>
+        /// <param name="fromProperty">Start date and time from which the
+        /// inventory will be blocked&lt;br /&gt;A date and time (without
+        /// fractional second part) in UTC or with UTC offset as defined in
+        /// &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="id">Block id</param>
+        /// <param name="modified">Date of last modification&lt;br /&gt;A date
+        /// and time (without fractional second part) in UTC or with UTC offset
+        /// as defined in &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="pickedReservations">Number of reservations already
         /// picked from this block</param>
-        /// <param name="property">The property</param>
-        /// <param name="ratePlan">The rate plan</param>
         /// <param name="status">Status of the block. Possible values include:
         /// 'Tentative', 'Definite', 'Canceled'</param>
         /// <param name="to">End date and time until which the inventory will
-        /// be blocked&lt;br /&gt;Specify a date and time (without fractional
-        /// second part) in UTC or with UTC offset as defined in &lt;a
+        /// be blocked&lt;br /&gt;A date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="unitGroup">The unit group</param>
-        public GroupBlockModel(int blockedUnits, System.DateTime fromProperty, MonetaryValueModel grossDailyRate, string id, int pickedReservations, EmbeddedPropertyModel property, EmbeddedRatePlanModel ratePlan, BlockStatus status, System.DateTime to, EmbeddedUnitGroupModel unitGroup)
+        public GroupBlockModel(int blockedUnits, System.DateTime created, System.DateTime fromProperty, MonetaryValueModel grossDailyRate, string id, System.DateTime modified, int pickedReservations, EmbeddedPropertyModel property, EmbeddedRatePlanModel ratePlan, BlockStatus status, System.DateTime to, EmbeddedUnitGroupModel unitGroup)
         {
             BlockedUnits = blockedUnits;
+            Created = created;
             FromProperty = fromProperty;
             GrossDailyRate = grossDailyRate;
             Id = id;
+            Modified = modified;
             PickedReservations = pickedReservations;
             Property = property;
             RatePlan = ratePlan;
@@ -72,20 +75,24 @@ namespace Traces.ApaleoClients.Booking.Models
         public int BlockedUnits { get; set; }
 
         /// <summary>
+        /// Gets or sets date of creation&amp;lt;br /&amp;gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "created")]
+        public System.DateTime Created { get; set; }
+
+        /// <summary>
         /// Gets or sets start date and time from which the inventory will be
-        /// blocked&amp;lt;br /&amp;gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &amp;lt;a
+        /// blocked&amp;lt;br /&amp;gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "from")]
         public System.DateTime FromProperty { get; set; }
 
         /// <summary>
-        /// Gets or sets gross daily rate including VAT and included service
-        /// fees for single occupancy. Per person
-        /// surcharges will be added to this price based on the configured
-        /// surcharges of the rate plan
         /// </summary>
         [JsonProperty(PropertyName = "grossDailyRate")]
         public MonetaryValueModel GrossDailyRate { get; set; }
@@ -97,19 +104,26 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Id { get; set; }
 
         /// <summary>
+        /// Gets or sets date of last modification&amp;lt;br /&amp;gt;A date
+        /// and time (without fractional second part) in UTC or with UTC offset
+        /// as defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "modified")]
+        public System.DateTime Modified { get; set; }
+
+        /// <summary>
         /// Gets or sets number of reservations already picked from this block
         /// </summary>
         [JsonProperty(PropertyName = "pickedReservations")]
         public int PickedReservations { get; set; }
 
         /// <summary>
-        /// Gets or sets the property
         /// </summary>
         [JsonProperty(PropertyName = "property")]
         public EmbeddedPropertyModel Property { get; set; }
 
         /// <summary>
-        /// Gets or sets the rate plan
         /// </summary>
         [JsonProperty(PropertyName = "ratePlan")]
         public EmbeddedRatePlanModel RatePlan { get; set; }
@@ -123,16 +137,14 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets end date and time until which the inventory will be
-        /// blocked&amp;lt;br /&amp;gt;Specify a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &amp;lt;a
+        /// blocked&amp;lt;br /&amp;gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "to")]
         public System.DateTime To { get; set; }
 
         /// <summary>
-        /// Gets or sets the unit group
         /// </summary>
         [JsonProperty(PropertyName = "unitGroup")]
         public EmbeddedUnitGroupModel UnitGroup { get; set; }
