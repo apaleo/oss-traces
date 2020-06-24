@@ -61,14 +61,14 @@ namespace Traces.Web.Services.Apaleo
 
                 var expectedTargets = _apaleoIntegrationTargetsUrlDictionary.Keys.ToList();
 
-                if (requestResult.Body?.UiIntegrations == null)
+                if (!(requestResult.Body is UiIntegrationListModel integrationListModel))
                 {
                     return expectedTargets;
                 }
 
                 // Get all the existing integrations codes in uppercase invariant for comparison,
                 // as when received from Integration Api they are all in uppercase
-                var existingIntegrationTargets = requestResult.Body.UiIntegrations.Where(x => x.Code == _integrationConfig.Value.DefaultIntegrationCode.ToUpperInvariant()).Select(x => x.Target).ToList();
+                var existingIntegrationTargets = integrationListModel.UiIntegrations.Where(x => x.Code == _integrationConfig.Value.DefaultIntegrationCode.ToUpperInvariant()).Select(x => x.Target).ToList();
 
                 var nonExistentIntegrationCodes = expectedTargets.Where(target => !existingIntegrationTargets.Exists(t => t == target.ToString("G"))).ToList();
 
