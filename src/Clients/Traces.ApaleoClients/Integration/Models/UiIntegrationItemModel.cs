@@ -37,12 +37,13 @@ namespace Traces.ApaleoClients.Integration.Models
         /// 'DashboardPropertyContext', 'DashboardAccountContext',
         /// 'ReservationDetailsTab', 'PropertyMenuReports', 'PropertyMenuApps',
         /// 'AccountMenuApps', 'CompanyDetailsTab'</param>
-        public UiIntegrationItemModel(string code, string id, string label, string sourceType, string sourceUrl, string target, string iconSource = default(string), IList<string> propertyIds = default(IList<string>))
+        public UiIntegrationItemModel(string code, string id, string label, string sourceType, string sourceUrl, string target, string iconSource = default(string), IDictionary<string, string> labelTranslations = default(IDictionary<string, string>), IList<string> propertyIds = default(IList<string>))
         {
             Code = code;
             IconSource = iconSource;
             Id = id;
             Label = label;
+            LabelTranslations = labelTranslations;
             PropertyIds = propertyIds;
             SourceType = sourceType;
             SourceUrl = sourceUrl;
@@ -74,6 +75,11 @@ namespace Traces.ApaleoClients.Integration.Models
         /// </summary>
         [JsonProperty(PropertyName = "label")]
         public string Label { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "labelTranslations")]
+        public IDictionary<string, string> LabelTranslations { get; set; }
 
         /// <summary>
         /// </summary>

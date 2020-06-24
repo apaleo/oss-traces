@@ -158,7 +158,7 @@ namespace Traces.ApaleoClients.Integration
             CustomInitialize();
         }
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -175,7 +175,7 @@ namespace Traces.ApaleoClients.Integration
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<UiIntegrationListModel>> IntegrationUiIntegrationsGetWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<object>> IntegrationUiIntegrationsGetWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -226,7 +226,7 @@ namespace Traces.ApaleoClients.Integration
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 204 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 500 && (int)_statusCode != 503)
+            if ((int)_statusCode != 200 && (int)_statusCode != 204 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 422 && (int)_statusCode != 500 && (int)_statusCode != 503)
             {
                 var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -249,7 +249,7 @@ namespace Traces.ApaleoClients.Integration
                 throw ex;
             }
             // Create Result
-            var _result = new HttpOperationResponse<UiIntegrationListModel>();
+            var _result = new HttpOperationResponse<object>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
@@ -270,6 +270,24 @@ namespace Traces.ApaleoClients.Integration
                     throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
                 }
             }
+            // Deserialize Response
+            if ((int)_statusCode == 422)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = SafeJsonConvert.DeserializeObject<MessageItemCollection>(_responseContent, DeserializationSettings);
+                }
+                catch (JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
             if (_shouldTrace)
             {
                 ServiceClientTracing.Exit(_invocationId, _result);
@@ -278,7 +296,7 @@ namespace Traces.ApaleoClients.Integration
         }
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
@@ -395,7 +413,7 @@ namespace Traces.ApaleoClients.Integration
         }
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
@@ -424,7 +442,7 @@ namespace Traces.ApaleoClients.Integration
         /// A response object containing the response body and response headers.
         /// </return>
         [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
-        public async Task<HttpOperationResponse<ObsoleteUiIntegrationModel>> IntegrationUiIntegrationsByTargetGetWithHttpMessagesAsync(string target, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<object>> IntegrationUiIntegrationsByTargetGetWithHttpMessagesAsync(string target, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (target == null)
             {
@@ -481,7 +499,7 @@ namespace Traces.ApaleoClients.Integration
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 500 && (int)_statusCode != 503)
+            if ((int)_statusCode != 200 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 422 && (int)_statusCode != 500 && (int)_statusCode != 503)
             {
                 var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -504,7 +522,7 @@ namespace Traces.ApaleoClients.Integration
                 throw ex;
             }
             // Create Result
-            var _result = new HttpOperationResponse<ObsoleteUiIntegrationModel>();
+            var _result = new HttpOperationResponse<object>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
@@ -525,6 +543,24 @@ namespace Traces.ApaleoClients.Integration
                     throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
                 }
             }
+            // Deserialize Response
+            if ((int)_statusCode == 422)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = SafeJsonConvert.DeserializeObject<MessageItemCollection>(_responseContent, DeserializationSettings);
+                }
+                catch (JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
             if (_shouldTrace)
             {
                 ServiceClientTracing.Exit(_invocationId, _result);
@@ -533,14 +569,14 @@ namespace Traces.ApaleoClients.Integration
         }
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
         /// 'DashboardAccountContext', 'ReservationDetailsTab', 'PropertyMenuReports',
         /// 'PropertyMenuApps', 'AccountMenuApps', 'CompanyDetailsTab'
         /// </param>
-        /// <param name='createUiIntegrationModel'>
+        /// <param name='body'>
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -563,19 +599,19 @@ namespace Traces.ApaleoClients.Integration
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<object>> IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(string target, CreateUiIntegrationModel createUiIntegrationModel, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<object>> IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(string target, CreateUiIntegrationModel body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (target == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "target");
             }
-            if (createUiIntegrationModel == null)
+            if (body == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "createUiIntegrationModel");
+                throw new ValidationException(ValidationRules.CannotBeNull, "body");
             }
-            if (createUiIntegrationModel != null)
+            if (body != null)
             {
-                createUiIntegrationModel.Validate();
+                body.Validate();
             }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -585,7 +621,7 @@ namespace Traces.ApaleoClients.Integration
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("target", target);
-                tracingParameters.Add("createUiIntegrationModel", createUiIntegrationModel);
+                tracingParameters.Add("body", body);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "IntegrationUiIntegrationsByTargetPost", tracingParameters);
             }
@@ -615,9 +651,9 @@ namespace Traces.ApaleoClients.Integration
 
             // Serialize Request
             string _requestContent = null;
-            if(createUiIntegrationModel != null)
+            if(body != null)
             {
-                _requestContent = SafeJsonConvert.SerializeObject(createUiIntegrationModel, SerializationSettings);
+                _requestContent = SafeJsonConvert.SerializeObject(body, SerializationSettings);
                 _httpRequest.Content = new StringContent(_requestContent, System.Text.Encoding.UTF8);
                 _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json; charset=utf-8");
             }
@@ -705,14 +741,14 @@ namespace Traces.ApaleoClients.Integration
         }
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
         /// 'DashboardAccountContext', 'ReservationDetailsTab', 'PropertyMenuReports',
         /// 'PropertyMenuApps', 'AccountMenuApps', 'CompanyDetailsTab'
         /// </param>
-        /// <param name='model'>
+        /// <param name='body'>
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -736,19 +772,19 @@ namespace Traces.ApaleoClients.Integration
         /// A response object containing the response body and response headers.
         /// </return>
         [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
-        public async Task<HttpOperationResponse<MessageItemCollection>> IntegrationUiIntegrationsByTargetPutWithHttpMessagesAsync(string target, ReplaceUiIntegrationModel model, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<MessageItemCollection>> IntegrationUiIntegrationsByTargetPutWithHttpMessagesAsync(string target, ReplaceUiIntegrationModel body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (target == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "target");
             }
-            if (model == null)
+            if (body == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "model");
+                throw new ValidationException(ValidationRules.CannotBeNull, "body");
             }
-            if (model != null)
+            if (body != null)
             {
-                model.Validate();
+                body.Validate();
             }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -758,7 +794,7 @@ namespace Traces.ApaleoClients.Integration
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("target", target);
-                tracingParameters.Add("model", model);
+                tracingParameters.Add("body", body);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "IntegrationUiIntegrationsByTargetPut", tracingParameters);
             }
@@ -788,9 +824,9 @@ namespace Traces.ApaleoClients.Integration
 
             // Serialize Request
             string _requestContent = null;
-            if(model != null)
+            if(body != null)
             {
-                _requestContent = SafeJsonConvert.SerializeObject(model, SerializationSettings);
+                _requestContent = SafeJsonConvert.SerializeObject(body, SerializationSettings);
                 _httpRequest.Content = new StringContent(_requestContent, System.Text.Encoding.UTF8);
                 _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json; charset=utf-8");
             }
@@ -860,7 +896,7 @@ namespace Traces.ApaleoClients.Integration
         }
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
@@ -984,7 +1020,7 @@ namespace Traces.ApaleoClients.Integration
         }
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
@@ -1014,7 +1050,7 @@ namespace Traces.ApaleoClients.Integration
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<UiIntegrationItemModel>> IntegrationUiIntegrationsByTargetByIdGetWithHttpMessagesAsync(string target, string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<object>> IntegrationUiIntegrationsByTargetByIdGetWithHttpMessagesAsync(string target, string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (target == null)
             {
@@ -1077,7 +1113,7 @@ namespace Traces.ApaleoClients.Integration
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 404 && (int)_statusCode != 500 && (int)_statusCode != 503)
+            if ((int)_statusCode != 200 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 404 && (int)_statusCode != 422 && (int)_statusCode != 500 && (int)_statusCode != 503)
             {
                 var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -1100,7 +1136,7 @@ namespace Traces.ApaleoClients.Integration
                 throw ex;
             }
             // Create Result
-            var _result = new HttpOperationResponse<UiIntegrationItemModel>();
+            var _result = new HttpOperationResponse<object>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
@@ -1121,6 +1157,24 @@ namespace Traces.ApaleoClients.Integration
                     throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
                 }
             }
+            // Deserialize Response
+            if ((int)_statusCode == 422)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = SafeJsonConvert.DeserializeObject<MessageItemCollection>(_responseContent, DeserializationSettings);
+                }
+                catch (JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
             if (_shouldTrace)
             {
                 ServiceClientTracing.Exit(_invocationId, _result);
@@ -1129,7 +1183,7 @@ namespace Traces.ApaleoClients.Integration
         }
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
@@ -1138,7 +1192,7 @@ namespace Traces.ApaleoClients.Integration
         /// </param>
         /// <param name='id'>
         /// </param>
-        /// <param name='model'>
+        /// <param name='body'>
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1161,7 +1215,7 @@ namespace Traces.ApaleoClients.Integration
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<MessageItemCollection>> IntegrationUiIntegrationsByTargetByIdPutWithHttpMessagesAsync(string target, string id, ReplaceUiIntegrationModel model, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<MessageItemCollection>> IntegrationUiIntegrationsByTargetByIdPutWithHttpMessagesAsync(string target, string id, ReplaceUiIntegrationModel body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (target == null)
             {
@@ -1171,13 +1225,13 @@ namespace Traces.ApaleoClients.Integration
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "id");
             }
-            if (model == null)
+            if (body == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "model");
+                throw new ValidationException(ValidationRules.CannotBeNull, "body");
             }
-            if (model != null)
+            if (body != null)
             {
-                model.Validate();
+                body.Validate();
             }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -1188,7 +1242,7 @@ namespace Traces.ApaleoClients.Integration
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("target", target);
                 tracingParameters.Add("id", id);
-                tracingParameters.Add("model", model);
+                tracingParameters.Add("body", body);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "IntegrationUiIntegrationsByTargetByIdPut", tracingParameters);
             }
@@ -1219,9 +1273,9 @@ namespace Traces.ApaleoClients.Integration
 
             // Serialize Request
             string _requestContent = null;
-            if(model != null)
+            if(body != null)
             {
-                _requestContent = SafeJsonConvert.SerializeObject(model, SerializationSettings);
+                _requestContent = SafeJsonConvert.SerializeObject(body, SerializationSettings);
                 _httpRequest.Content = new StringContent(_requestContent, System.Text.Encoding.UTF8);
                 _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json; charset=utf-8");
             }
@@ -1297,8 +1351,7 @@ namespace Traces.ApaleoClients.Integration
         /// Tests that the process of getting the public url from the provided url is
         /// done correctly.
         /// If there are any errors with the process, it will provide information on
-        /// what might have gone wrong.&lt;br&gt;Scopes required:
-        /// 'integration:ui-integrations.manage'.
+        /// what might have gone wrong.
         /// </remarks>
         /// <param name='target'>
         /// Target for the integration. Possible values include:
@@ -1330,7 +1383,7 @@ namespace Traces.ApaleoClients.Integration
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<UiIntegrationTestResultModel>> IntegrationUiIntegrationsByTargetByIdtestGetWithHttpMessagesAsync(string target, string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<object>> IntegrationUiIntegrationsByTargetByIdtestGetWithHttpMessagesAsync(string target, string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (target == null)
             {
@@ -1416,7 +1469,7 @@ namespace Traces.ApaleoClients.Integration
                 throw ex;
             }
             // Create Result
-            var _result = new HttpOperationResponse<UiIntegrationTestResultModel>();
+            var _result = new HttpOperationResponse<object>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
@@ -1426,6 +1479,24 @@ namespace Traces.ApaleoClients.Integration
                 try
                 {
                     _result.Body = SafeJsonConvert.DeserializeObject<UiIntegrationTestResultModel>(_responseContent, DeserializationSettings);
+                }
+                catch (JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            // Deserialize Response
+            if ((int)_statusCode == 422)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = SafeJsonConvert.DeserializeObject<MessageItemCollection>(_responseContent, DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {

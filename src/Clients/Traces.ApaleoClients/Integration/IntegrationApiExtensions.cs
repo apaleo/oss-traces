@@ -16,18 +16,18 @@ namespace Traces.ApaleoClients.Integration
     public static partial class IntegrationApiExtensions
     {
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            public static UiIntegrationListModel IntegrationUiIntegrationsGet(this IIntegrationApi operations)
+            public static object IntegrationUiIntegrationsGet(this IIntegrationApi operations)
             {
                 return operations.IntegrationUiIntegrationsGetAsync().GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -35,7 +35,7 @@ namespace Traces.ApaleoClients.Integration
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<UiIntegrationListModel> IntegrationUiIntegrationsGetAsync(this IIntegrationApi operations, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> IntegrationUiIntegrationsGetAsync(this IIntegrationApi operations, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.IntegrationUiIntegrationsGetWithHttpMessagesAsync(null, cancellationToken).ConfigureAwait(false))
                 {
@@ -44,7 +44,7 @@ namespace Traces.ApaleoClients.Integration
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -61,7 +61,7 @@ namespace Traces.ApaleoClients.Integration
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -81,7 +81,7 @@ namespace Traces.ApaleoClients.Integration
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -92,13 +92,13 @@ namespace Traces.ApaleoClients.Integration
             /// 'PropertyMenuApps', 'AccountMenuApps', 'CompanyDetailsTab'
             /// </param>
             [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
-            public static ObsoleteUiIntegrationModel IntegrationUiIntegrationsByTargetGet(this IIntegrationApi operations, string target)
+            public static object IntegrationUiIntegrationsByTargetGet(this IIntegrationApi operations, string target)
             {
                 return operations.IntegrationUiIntegrationsByTargetGetAsync(target).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -112,7 +112,7 @@ namespace Traces.ApaleoClients.Integration
             /// The cancellation token.
             /// </param>
             [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
-            public static async Task<ObsoleteUiIntegrationModel> IntegrationUiIntegrationsByTargetGetAsync(this IIntegrationApi operations, string target, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> IntegrationUiIntegrationsByTargetGetAsync(this IIntegrationApi operations, string target, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.IntegrationUiIntegrationsByTargetGetWithHttpMessagesAsync(target, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -121,7 +121,7 @@ namespace Traces.ApaleoClients.Integration
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -131,15 +131,15 @@ namespace Traces.ApaleoClients.Integration
             /// 'DashboardAccountContext', 'ReservationDetailsTab', 'PropertyMenuReports',
             /// 'PropertyMenuApps', 'AccountMenuApps', 'CompanyDetailsTab'
             /// </param>
-            /// <param name='createUiIntegrationModel'>
+            /// <param name='body'>
             /// </param>
-            public static object IntegrationUiIntegrationsByTargetPost(this IIntegrationApi operations, string target, CreateUiIntegrationModel createUiIntegrationModel)
+            public static object IntegrationUiIntegrationsByTargetPost(this IIntegrationApi operations, string target, CreateUiIntegrationModel body)
             {
-                return operations.IntegrationUiIntegrationsByTargetPostAsync(target, createUiIntegrationModel).GetAwaiter().GetResult();
+                return operations.IntegrationUiIntegrationsByTargetPostAsync(target, body).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -149,21 +149,21 @@ namespace Traces.ApaleoClients.Integration
             /// 'DashboardAccountContext', 'ReservationDetailsTab', 'PropertyMenuReports',
             /// 'PropertyMenuApps', 'AccountMenuApps', 'CompanyDetailsTab'
             /// </param>
-            /// <param name='createUiIntegrationModel'>
+            /// <param name='body'>
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> IntegrationUiIntegrationsByTargetPostAsync(this IIntegrationApi operations, string target, CreateUiIntegrationModel createUiIntegrationModel, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> IntegrationUiIntegrationsByTargetPostAsync(this IIntegrationApi operations, string target, CreateUiIntegrationModel body, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(target, createUiIntegrationModel, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(target, body, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -173,16 +173,16 @@ namespace Traces.ApaleoClients.Integration
             /// 'DashboardAccountContext', 'ReservationDetailsTab', 'PropertyMenuReports',
             /// 'PropertyMenuApps', 'AccountMenuApps', 'CompanyDetailsTab'
             /// </param>
-            /// <param name='model'>
+            /// <param name='body'>
             /// </param>
             [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
-            public static MessageItemCollection IntegrationUiIntegrationsByTargetPut(this IIntegrationApi operations, string target, ReplaceUiIntegrationModel model)
+            public static MessageItemCollection IntegrationUiIntegrationsByTargetPut(this IIntegrationApi operations, string target, ReplaceUiIntegrationModel body)
             {
-                return operations.IntegrationUiIntegrationsByTargetPutAsync(target, model).GetAwaiter().GetResult();
+                return operations.IntegrationUiIntegrationsByTargetPutAsync(target, body).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -192,22 +192,22 @@ namespace Traces.ApaleoClients.Integration
             /// 'DashboardAccountContext', 'ReservationDetailsTab', 'PropertyMenuReports',
             /// 'PropertyMenuApps', 'AccountMenuApps', 'CompanyDetailsTab'
             /// </param>
-            /// <param name='model'>
+            /// <param name='body'>
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
             [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
-            public static async Task<MessageItemCollection> IntegrationUiIntegrationsByTargetPutAsync(this IIntegrationApi operations, string target, ReplaceUiIntegrationModel model, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<MessageItemCollection> IntegrationUiIntegrationsByTargetPutAsync(this IIntegrationApi operations, string target, ReplaceUiIntegrationModel body, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.IntegrationUiIntegrationsByTargetPutWithHttpMessagesAsync(target, model, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.IntegrationUiIntegrationsByTargetPutWithHttpMessagesAsync(target, body, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -225,7 +225,7 @@ namespace Traces.ApaleoClients.Integration
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -246,7 +246,7 @@ namespace Traces.ApaleoClients.Integration
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -258,13 +258,13 @@ namespace Traces.ApaleoClients.Integration
             /// </param>
             /// <param name='id'>
             /// </param>
-            public static UiIntegrationItemModel IntegrationUiIntegrationsByTargetByIdGet(this IIntegrationApi operations, string target, string id)
+            public static object IntegrationUiIntegrationsByTargetByIdGet(this IIntegrationApi operations, string target, string id)
             {
                 return operations.IntegrationUiIntegrationsByTargetByIdGetAsync(target, id).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -279,7 +279,7 @@ namespace Traces.ApaleoClients.Integration
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<UiIntegrationItemModel> IntegrationUiIntegrationsByTargetByIdGetAsync(this IIntegrationApi operations, string target, string id, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> IntegrationUiIntegrationsByTargetByIdGetAsync(this IIntegrationApi operations, string target, string id, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.IntegrationUiIntegrationsByTargetByIdGetWithHttpMessagesAsync(target, id, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -288,7 +288,7 @@ namespace Traces.ApaleoClients.Integration
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -300,15 +300,15 @@ namespace Traces.ApaleoClients.Integration
             /// </param>
             /// <param name='id'>
             /// </param>
-            /// <param name='model'>
+            /// <param name='body'>
             /// </param>
-            public static MessageItemCollection IntegrationUiIntegrationsByTargetByIdPut(this IIntegrationApi operations, string target, string id, ReplaceUiIntegrationModel model)
+            public static MessageItemCollection IntegrationUiIntegrationsByTargetByIdPut(this IIntegrationApi operations, string target, string id, ReplaceUiIntegrationModel body)
             {
-                return operations.IntegrationUiIntegrationsByTargetByIdPutAsync(target, id, model).GetAwaiter().GetResult();
+                return operations.IntegrationUiIntegrationsByTargetByIdPutAsync(target, id, body).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+            /// &lt;br&gt;You must have this scope: 'integration:ui-integrations.manage'.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -320,14 +320,14 @@ namespace Traces.ApaleoClients.Integration
             /// </param>
             /// <param name='id'>
             /// </param>
-            /// <param name='model'>
+            /// <param name='body'>
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<MessageItemCollection> IntegrationUiIntegrationsByTargetByIdPutAsync(this IIntegrationApi operations, string target, string id, ReplaceUiIntegrationModel model, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<MessageItemCollection> IntegrationUiIntegrationsByTargetByIdPutAsync(this IIntegrationApi operations, string target, string id, ReplaceUiIntegrationModel body, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.IntegrationUiIntegrationsByTargetByIdPutWithHttpMessagesAsync(target, id, model, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.IntegrationUiIntegrationsByTargetByIdPutWithHttpMessagesAsync(target, id, body, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -340,8 +340,7 @@ namespace Traces.ApaleoClients.Integration
             /// Tests that the process of getting the public url from the provided url is
             /// done correctly.
             /// If there are any errors with the process, it will provide information on
-            /// what might have gone wrong.&lt;br&gt;Scopes required:
-            /// 'integration:ui-integrations.manage'.
+            /// what might have gone wrong.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -355,7 +354,7 @@ namespace Traces.ApaleoClients.Integration
             /// <param name='id'>
             /// Id of the integration to be tested
             /// </param>
-            public static UiIntegrationTestResultModel IntegrationUiIntegrationsByTargetByIdtestGet(this IIntegrationApi operations, string target, string id)
+            public static object IntegrationUiIntegrationsByTargetByIdtestGet(this IIntegrationApi operations, string target, string id)
             {
                 return operations.IntegrationUiIntegrationsByTargetByIdtestGetAsync(target, id).GetAwaiter().GetResult();
             }
@@ -367,8 +366,7 @@ namespace Traces.ApaleoClients.Integration
             /// Tests that the process of getting the public url from the provided url is
             /// done correctly.
             /// If there are any errors with the process, it will provide information on
-            /// what might have gone wrong.&lt;br&gt;Scopes required:
-            /// 'integration:ui-integrations.manage'.
+            /// what might have gone wrong.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -385,7 +383,7 @@ namespace Traces.ApaleoClients.Integration
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<UiIntegrationTestResultModel> IntegrationUiIntegrationsByTargetByIdtestGetAsync(this IIntegrationApi operations, string target, string id, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> IntegrationUiIntegrationsByTargetByIdtestGetAsync(this IIntegrationApi operations, string target, string id, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.IntegrationUiIntegrationsByTargetByIdtestGetWithHttpMessagesAsync(target, id, null, cancellationToken).ConfigureAwait(false))
                 {

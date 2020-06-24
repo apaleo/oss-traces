@@ -25,6 +25,10 @@ namespace Traces.ApaleoClients.Integration.Models
         /// <summary>
         /// Initializes a new instance of the CreateUiIntegrationModel class.
         /// </summary>
+        /// <param name="label">Label to be displayed as the name of your
+        /// integration.
+        /// For example, this is the text that is displayed on your user's apps
+        /// list.</param>
         /// <param name="sourceType">Possible values include: 'Private',
         /// 'Public'</param>
         /// <param name="code">Code to identify the current integration.
@@ -33,16 +37,24 @@ namespace Traces.ApaleoClients.Integration.Models
         ///
         /// If no code is provided the integration target will be used as
         /// code.</param>
+        /// <param name="labelTranslations">Different translations for the
+        /// integration label.
+        /// You can provide as many translations as you want.
+        /// You should only provide the iso code of the language for example
+        /// 'en' for english and 'de' for German. No need for the country.
+        /// If there is not a translation for a specific language, we will
+        /// display the value of the Label as default.</param>
         /// <param name="propertyIds">List of Ids for the properties for which
         /// the integration is configured
         /// If the list is empty then the integration is configured for all
         /// properties
         /// Remark: Only applicable to non account level integrations</param>
-        public CreateUiIntegrationModel(string label, string sourceType, string sourceUrl, string code = default(string), string iconSource = default(string), IList<string> propertyIds = default(IList<string>))
+        public CreateUiIntegrationModel(string label, string sourceType, string sourceUrl, string code = default(string), string iconSource = default(string), IDictionary<string, string> labelTranslations = default(IDictionary<string, string>), IList<string> propertyIds = default(IList<string>))
         {
             Code = code;
             IconSource = iconSource;
             Label = label;
+            LabelTranslations = labelTranslations;
             PropertyIds = propertyIds;
             SourceType = sourceType;
             SourceUrl = sourceUrl;
@@ -70,9 +82,23 @@ namespace Traces.ApaleoClients.Integration.Models
         public string IconSource { get; set; }
 
         /// <summary>
+        /// Gets or sets label to be displayed as the name of your integration.
+        /// For example, this is the text that is displayed on your user's apps
+        /// list.
         /// </summary>
         [JsonProperty(PropertyName = "label")]
         public string Label { get; set; }
+
+        /// <summary>
+        /// Gets or sets different translations for the integration label.
+        /// You can provide as many translations as you want.
+        /// You should only provide the iso code of the language for example
+        /// 'en' for english and 'de' for German. No need for the country.
+        /// If there is not a translation for a specific language, we will
+        /// display the value of the Label as default.
+        /// </summary>
+        [JsonProperty(PropertyName = "labelTranslations")]
+        public IDictionary<string, string> LabelTranslations { get; set; }
 
         /// <summary>
         /// Gets or sets list of Ids for the properties for which the

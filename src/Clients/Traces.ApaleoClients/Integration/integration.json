@@ -1,6 +1,7 @@
 {
   "definitions": {
     "CreateUiIntegrationModel": {
+      "example": "{\n  \"code\": \"MYINTEGRATIONWITHAPALEO\",\n  \"label\": \"My Integration\",\n  \"labelTranslations\": {\n    \"de\": \"Meine Integration\",\n    \"es\": \"Mi Integración\"\n  },\n  \"iconSource\": \"https://www.myintegrationiconsource.com\",\n  \"sourceUrl\": \"https://www.myintegration.com\",\n  \"sourceType\": \"Public\",\n  \"propertyIds\": [\n    \"BER\",\n    \"MUC\"\n  ]\n}",
       "properties": {
         "code": {
           "description": "Code to identify the current integration.\r\n            \r\nThe code can be any string of choosing.\r\n            \r\nIf no code is provided the integration target will be used as code.",
@@ -10,7 +11,15 @@
           "type": "string"
         },
         "label": {
+          "description": "Label to be displayed as the name of your integration.\r\nFor example, this is the text that is displayed on your user's apps list.",
           "type": "string"
+        },
+        "labelTranslations": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Different translations for the integration label.\r\nYou can provide as many translations as you want.\r\nYou should only provide the iso code of the language for example 'en' for english and 'de' for German. No need for the country.\r\nIf there is not a translation for a specific language, we will display the value of the Label as default.",
+          "type": "object"
         },
         "propertyIds": {
           "description": "List of Ids for the properties for which the integration is configured\r\nIf the list is empty then the integration is configured for all properties\r\nRemark: Only applicable to non account level integrations",
@@ -32,8 +41,8 @@
       },
       "required": [
         "label",
-        "sourceUrl",
-        "sourceType"
+        "sourceType",
+        "sourceUrl"
       ],
       "type": "object"
     },
@@ -79,18 +88,27 @@
         }
       },
       "required": [
-        "uiIntegrations",
-        "count"
+        "count",
+        "uiIntegrations"
       ],
       "type": "object"
     },
     "ReplaceUiIntegrationModel": {
+      "example": "{\n  \"label\": \"My Integration\",\n  \"labelTranslations\": {\n    \"de\": \"Meine Integration\",\n    \"es\": \"Mi Integración\"\n  },\n  \"iconSource\": \"https://www.myintegrationiconsource.com\",\n  \"sourceUrl\": \"https://www.myintegration.com\",\n  \"sourceType\": \"Public\",\n  \"propertyIds\": [\n    \"BER\",\n    \"MUC\"\n  ]\n}",
       "properties": {
         "iconSource": {
           "type": "string"
         },
         "label": {
+          "description": "Label to be displayed as the name of your integration.\r\nFor example, this is the text that is displayed on your user's apps list.",
           "type": "string"
+        },
+        "labelTranslations": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Different translations for the integration label.\r\nYou can provide as many translations as you want.\r\nYou should only provide the iso code of the language for example 'en' for english and 'de' for German. No need for the country.\r\nIf there is not a translation for a specific language, we will display the value of the Label as default.",
+          "type": "object"
         },
         "propertyIds": {
           "description": "List of Ids for the properties for which the integration is configured\r\nIf the list is empty then the integration is configured for all properties\r\nRemark: Only applicable to non account level integrations",
@@ -113,8 +131,8 @@
       },
       "required": [
         "label",
-        "sourceUrl",
-        "sourceType"
+        "sourceType",
+        "sourceUrl"
       ],
       "type": "object"
     },
@@ -142,6 +160,12 @@
         },
         "label": {
           "type": "string"
+        },
+        "labelTranslations": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
         },
         "propertyIds": {
           "items": {
@@ -174,11 +198,11 @@
         }
       },
       "required": [
-        "id",
         "code",
+        "id",
         "label",
-        "sourceUrl",
         "sourceType",
+        "sourceUrl",
         "target"
       ],
       "type": "object"
@@ -197,8 +221,8 @@
         }
       },
       "required": [
-        "uiIntegrations",
-        "count"
+        "count",
+        "uiIntegrations"
       ],
       "type": "object"
     },
@@ -237,10 +261,8 @@
   "paths": {
     "/integration/v1/ui-integrations": {
       "get": {
-        "consumes": [],
-        "description": "<br>Scopes required: 'integration:ui-integrations.manage'.",
+        "description": "<br>You must have this scope: 'integration:ui-integrations.manage'.",
         "operationId": "IntegrationUi-integrationsGet",
-        "parameters": [],
         "produces": [
           "text/plain",
           "application/json",
@@ -265,6 +287,12 @@
           "403": {
             "description": "Forbidden."
           },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          },
           "500": {
             "description": "An unexpected error occurred."
           },
@@ -287,9 +315,8 @@
     },
     "/integration/v1/ui-integrations/{target}": {
       "delete": {
-        "consumes": [],
         "deprecated": true,
-        "description": "<br>Scopes required: 'integration:ui-integrations.manage'.",
+        "description": "<br>You must have this scope: 'integration:ui-integrations.manage'.",
         "operationId": "IntegrationUi-integrationsByTargetDelete",
         "parameters": [
           {
@@ -308,7 +335,6 @@
             "type": "string"
           }
         ],
-        "produces": [],
         "responses": {
           "400": {
             "description": "Bad request."
@@ -342,9 +368,8 @@
         ]
       },
       "get": {
-        "consumes": [],
         "deprecated": true,
-        "description": "<br>Scopes required: 'integration:ui-integrations.manage'.",
+        "description": "<br>You must have this scope: 'integration:ui-integrations.manage'.",
         "operationId": "IntegrationUi-integrationsByTargetGet",
         "parameters": [
           {
@@ -384,6 +409,12 @@
           "403": {
             "description": "Forbidden."
           },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          },
           "500": {
             "description": "An unexpected error occurred."
           },
@@ -410,7 +441,7 @@
           "text/json",
           "application/*+json"
         ],
-        "description": "<br>Scopes required: 'integration:ui-integrations.manage'.",
+        "description": "<br>You must have this scope: 'integration:ui-integrations.manage'.",
         "operationId": "IntegrationUi-integrationsByTargetPost",
         "parameters": [
           {
@@ -430,7 +461,7 @@
           },
           {
             "in": "body",
-            "name": "createUiIntegrationModel",
+            "name": "body",
             "required": true,
             "schema": {
               "$ref": "#/definitions/CreateUiIntegrationModel"
@@ -465,7 +496,7 @@
             "description": "Unsupported media type."
           },
           "422": {
-            "description": "Validation errors in the request body.",
+            "description": "Validation errors in the request body or query params.",
             "schema": {
               "$ref": "#/definitions/MessageItemCollection"
             }
@@ -497,7 +528,7 @@
           "application/*+json"
         ],
         "deprecated": true,
-        "description": "<br>Scopes required: 'integration:ui-integrations.manage'.",
+        "description": "<br>You must have this scope: 'integration:ui-integrations.manage'.",
         "operationId": "IntegrationUi-integrationsByTargetPut",
         "parameters": [
           {
@@ -517,14 +548,16 @@
           },
           {
             "in": "body",
-            "name": "model",
+            "name": "body",
             "required": true,
             "schema": {
               "$ref": "#/definitions/ReplaceUiIntegrationModel"
             }
           }
         ],
-        "produces": [],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -545,7 +578,7 @@
             "description": "Unsupported media type."
           },
           "422": {
-            "description": "Validation errors in the request body.",
+            "description": "Validation errors in the request body or query params.",
             "schema": {
               "$ref": "#/definitions/MessageItemCollection"
             }
@@ -572,8 +605,7 @@
     },
     "/integration/v1/ui-integrations/{target}/{id}": {
       "delete": {
-        "consumes": [],
-        "description": "<br>Scopes required: 'integration:ui-integrations.manage'.",
+        "description": "<br>You must have this scope: 'integration:ui-integrations.manage'.",
         "operationId": "IntegrationUi-integrationsByTargetByIdDelete",
         "parameters": [
           {
@@ -598,7 +630,6 @@
             "type": "string"
           }
         ],
-        "produces": [],
         "responses": {
           "400": {
             "description": "Bad request."
@@ -632,8 +663,7 @@
         ]
       },
       "get": {
-        "consumes": [],
-        "description": "<br>Scopes required: 'integration:ui-integrations.manage'.",
+        "description": "<br>You must have this scope: 'integration:ui-integrations.manage'.",
         "operationId": "IntegrationUi-integrationsByTargetByIdGet",
         "parameters": [
           {
@@ -682,6 +712,12 @@
           "404": {
             "description": "The Request-URI could not be found."
           },
+          "422": {
+            "description": "Validation errors in the request body or query params.",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
+          },
           "500": {
             "description": "An unexpected error occurred."
           },
@@ -708,7 +744,7 @@
           "text/json",
           "application/*+json"
         ],
-        "description": "<br>Scopes required: 'integration:ui-integrations.manage'.",
+        "description": "<br>You must have this scope: 'integration:ui-integrations.manage'.",
         "operationId": "IntegrationUi-integrationsByTargetByIdPut",
         "parameters": [
           {
@@ -734,14 +770,16 @@
           },
           {
             "in": "body",
-            "name": "model",
+            "name": "body",
             "required": true,
             "schema": {
               "$ref": "#/definitions/ReplaceUiIntegrationModel"
             }
           }
         ],
-        "produces": [],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -762,7 +800,7 @@
             "description": "Unsupported media type."
           },
           "422": {
-            "description": "Validation errors in the request body.",
+            "description": "Validation errors in the request body or query params.",
             "schema": {
               "$ref": "#/definitions/MessageItemCollection"
             }
@@ -789,8 +827,7 @@
     },
     "/integration/v1/ui-integrations/{target}/{id}/$test": {
       "get": {
-        "consumes": [],
-        "description": "Tests that the process of getting the public url from the provided url is done correctly.\r\nIf there are any errors with the process, it will provide information on what might have gone wrong.<br>Scopes required: 'integration:ui-integrations.manage'.",
+        "description": "Tests that the process of getting the public url from the provided url is done correctly.\r\nIf there are any errors with the process, it will provide information on what might have gone wrong.",
         "operationId": "IntegrationUi-integrationsByTargetById$testGet",
         "parameters": [
           {
@@ -842,7 +879,10 @@
             "description": "The Request-URI could not be found."
           },
           "422": {
-            "description": "The private integration could not be found or is a public integration"
+            "description": "The private integration could not be found or is a public integration",
+            "schema": {
+              "$ref": "#/definitions/MessageItemCollection"
+            }
           },
           "500": {
             "description": "An unexpected error occurred."

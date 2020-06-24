@@ -36,7 +36,8 @@ namespace Traces.ApaleoClients.Integration
 
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope:
+        /// 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -44,10 +45,11 @@ namespace Traces.ApaleoClients.Integration
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<UiIntegrationListModel>> IntegrationUiIntegrationsGetWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> IntegrationUiIntegrationsGetWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope:
+        /// 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
@@ -64,7 +66,8 @@ namespace Traces.ApaleoClients.Integration
         Task<HttpOperationResponse> IntegrationUiIntegrationsByTargetDeleteWithHttpMessagesAsync(string target, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope:
+        /// 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
@@ -78,10 +81,11 @@ namespace Traces.ApaleoClients.Integration
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<ObsoleteUiIntegrationModel>> IntegrationUiIntegrationsByTargetGetWithHttpMessagesAsync(string target, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> IntegrationUiIntegrationsByTargetGetWithHttpMessagesAsync(string target, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope:
+        /// 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
@@ -89,7 +93,7 @@ namespace Traces.ApaleoClients.Integration
         /// 'PropertyMenuReports', 'PropertyMenuApps', 'AccountMenuApps',
         /// 'CompanyDetailsTab'
         /// </param>
-        /// <param name='createUiIntegrationModel'>
+        /// <param name='body'>
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -97,10 +101,11 @@ namespace Traces.ApaleoClients.Integration
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(string target, CreateUiIntegrationModel createUiIntegrationModel, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> IntegrationUiIntegrationsByTargetPostWithHttpMessagesAsync(string target, CreateUiIntegrationModel body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope:
+        /// 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
@@ -108,7 +113,7 @@ namespace Traces.ApaleoClients.Integration
         /// 'PropertyMenuReports', 'PropertyMenuApps', 'AccountMenuApps',
         /// 'CompanyDetailsTab'
         /// </param>
-        /// <param name='model'>
+        /// <param name='body'>
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -116,10 +121,11 @@ namespace Traces.ApaleoClients.Integration
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> IntegrationUiIntegrationsByTargetPutWithHttpMessagesAsync(string target, ReplaceUiIntegrationModel model, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessageItemCollection>> IntegrationUiIntegrationsByTargetPutWithHttpMessagesAsync(string target, ReplaceUiIntegrationModel body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope:
+        /// 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
@@ -138,7 +144,8 @@ namespace Traces.ApaleoClients.Integration
         Task<HttpOperationResponse> IntegrationUiIntegrationsByTargetByIdDeleteWithHttpMessagesAsync(string target, string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope:
+        /// 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
@@ -154,10 +161,11 @@ namespace Traces.ApaleoClients.Integration
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<UiIntegrationItemModel>> IntegrationUiIntegrationsByTargetByIdGetWithHttpMessagesAsync(string target, string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> IntegrationUiIntegrationsByTargetByIdGetWithHttpMessagesAsync(string target, string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// &lt;br&gt;Scopes required: 'integration:ui-integrations.manage'.
+        /// &lt;br&gt;You must have this scope:
+        /// 'integration:ui-integrations.manage'.
         /// </summary>
         /// <param name='target'>
         /// Possible values include: 'DashboardPropertyContext',
@@ -167,7 +175,7 @@ namespace Traces.ApaleoClients.Integration
         /// </param>
         /// <param name='id'>
         /// </param>
-        /// <param name='model'>
+        /// <param name='body'>
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -175,7 +183,7 @@ namespace Traces.ApaleoClients.Integration
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> IntegrationUiIntegrationsByTargetByIdPutWithHttpMessagesAsync(string target, string id, ReplaceUiIntegrationModel model, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessageItemCollection>> IntegrationUiIntegrationsByTargetByIdPutWithHttpMessagesAsync(string target, string id, ReplaceUiIntegrationModel body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Tests a private source integration.
@@ -184,8 +192,7 @@ namespace Traces.ApaleoClients.Integration
         /// Tests that the process of getting the public url from the provided
         /// url is done correctly.
         /// If there are any errors with the process, it will provide
-        /// information on what might have gone wrong.&lt;br&gt;Scopes
-        /// required: 'integration:ui-integrations.manage'.
+        /// information on what might have gone wrong.
         /// </remarks>
         /// <param name='target'>
         /// Target for the integration. Possible values include:
@@ -202,7 +209,7 @@ namespace Traces.ApaleoClients.Integration
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<UiIntegrationTestResultModel>> IntegrationUiIntegrationsByTargetByIdtestGetWithHttpMessagesAsync(string target, string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> IntegrationUiIntegrationsByTargetByIdtestGetWithHttpMessagesAsync(string target, string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
     }
 }
