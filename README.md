@@ -1,6 +1,8 @@
 # oss-traces
 This is an open source blueprint for a Traces/To-Do application to be coupled with apaleo UI via apaleo One integrations.
 
+To **try it out** [log into your apaleo account](https://app.apaleo.com/) (or [create a new one](https://identity.apaleo.com/account/register-dev-account)) and go to https://traces.herokuapp.com/ to run traces inside your account.
+
 ## Prerequisites
 
 - You need to have Docker installed
