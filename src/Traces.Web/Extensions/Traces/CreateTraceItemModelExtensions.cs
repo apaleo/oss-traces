@@ -24,6 +24,7 @@ namespace Traces.Web.Extensions.Traces
                 ReservationId = itemModel.ReservationId.SomeNotNull(),
                 AssignedRole = itemModel.AssignedRole.SomeNotNull(),
                 FilesToUpload = itemModel.FilesToUpload.ToCreateTraceFileDtoList().SomeNotNull(),
+                FileContainsNoPii = itemModel.FileContainsNoPii
             };
         }
 
@@ -39,6 +40,7 @@ namespace Traces.Web.Extensions.Traces
                 ReservationId = itemModel.ReservationId.SomeNotNull(),
                 AssignedRole = itemModel.AssignedRole.SomeNotNull(),
                 FilesToUpload = itemModel.FilesToUpload?.ToCreateTraceFileDtoList().SomeNotNull() ?? Option.None<List<CreateTraceFileDto>>(),
+                FileContainsNoPii = itemModel.FileContainsNoPii
             };
         }
     }

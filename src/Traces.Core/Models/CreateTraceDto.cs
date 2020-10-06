@@ -20,5 +20,7 @@ namespace Traces.Core.Models
         public Option<string> AssignedRole { get; set; }
 
         public Option<List<CreateTraceFileDto>> FilesToUpload { get; set; }
+
+        public bool FileContainsNoPii { get; set; }
     }
 }

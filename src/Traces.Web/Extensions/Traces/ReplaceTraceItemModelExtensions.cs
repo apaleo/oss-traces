@@ -20,7 +20,8 @@ namespace Traces.Web.Extensions.Traces
                 DueDate = itemModel.DueDate.ToLocalDateTime().Date,
                 AssignedRole = itemModel.AssignedRole.SomeNotNull(),
                 FilesToDelete = itemModel.FilesToDelete.SomeNotNull(),
-                FilesToUpload = itemModel.FilesToUpload.ToCreateTraceFileDtoList().SomeNotNull()
+                FilesToUpload = itemModel.FilesToUpload.ToCreateTraceFileDtoList().SomeNotNull(),
+                FileContainsNoPii = itemModel.FileContainsNoPii
             };
         }
     }

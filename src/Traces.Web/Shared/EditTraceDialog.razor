@@ -70,6 +70,7 @@
             }
 
             <FilesDragDropZone OnChange="@HandleFileChanged" OnLoadingChanged="@HandleLoadingChanged"></FilesDragDropZone>
+            <Check TValue="bool" @bind-Checked="@EditTraceDialogVm.ConfirmFileContainsNoPii">@TextConstants.ConfirmFileContainsNoPiiText</Check>
         </FieldBody>
     </Field>
     <ModalFooter>
@@ -113,6 +114,8 @@
         _isLoading = true;
 
         await OnSubmit.InvokeAsync(null);
+
+        EditTraceDialogVm.ConfirmFileContainsNoPii = false;
 
         _isLoading = false;
 

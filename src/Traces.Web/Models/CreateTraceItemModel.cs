@@ -26,5 +26,7 @@ namespace Traces.Web.Models
 #pragma warning disable CA2227 // disables argument can be null
         public List<CreateTraceFileItemModel> FilesToUpload { get; set; }
 #pragma warning restore CA2227
+
+        public bool FileContainsNoPii { get; set; }
     }
 }

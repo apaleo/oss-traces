@@ -23,6 +23,8 @@ namespace Traces.Web.ViewModels
 
         public List<FileToUploadModel> FilesToUpload { get; } = new List<FileToUploadModel>();
 
+        public bool ConfirmFileContainsNoPii { get; set; }
+
         public IReadOnlyList<TraceFileItemModel> TraceFiles { get; set; } = new List<TraceFileItemModel>();
 
         public List<string> Roles { get; } = new List<string>();
@@ -38,7 +40,8 @@ namespace Traces.Web.ViewModels
                     SelectedRole == TextConstants.TracesEditDialogNoRoleAssignedText
                         ? null
                         : SelectedRole,
-                FilesToUpload = FilesToUpload.GetValidCreateTraceFileItemModels()
+                FilesToUpload = FilesToUpload.GetValidCreateTraceFileItemModels(),
+                FileContainsNoPii = ConfirmFileContainsNoPii
             };
 
         public ReplaceTraceItemModel GetReplaceTraceItemModel()
@@ -54,7 +57,8 @@ namespace Traces.Web.ViewModels
                         ? null
                         : SelectedRole,
                 FilesToDelete = GetTraceFilesToDelete(),
-                FilesToUpload = FilesToUpload.GetValidCreateTraceFileItemModels()
+                FilesToUpload = FilesToUpload.GetValidCreateTraceFileItemModels(),
+                FileContainsNoPii = ConfirmFileContainsNoPii
             };
 
         public void ClearCurrentState()
