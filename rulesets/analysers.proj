@@ -9,7 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="codecracker.CSharp" Version="1.1.0" />
-    <PackageReference Include="Lindhart.Analyser.MissingAwaitWarning" Version="1.2.0" />
+    <PackageReference Include="Lindhart.Analyser.MissingAwaitWarning" Version="1.2.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Razor" Version="3.1.8" />
     <PackageReference Include="SecurityCodeScan" Version="3.5.3" />
