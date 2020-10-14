@@ -457,7 +457,7 @@ namespace Traces.Core.Tests.Services
         }
 
         [Fact]
-        public async Task ShouldNotCreateTraceFileWhenPiiAsync()
+        public async Task ShouldNotCreateTraceFileWhenPiiNotConfirmedAsync()
         {
             var createTraceFileDto = new CreateTraceFileDto { Name = TestTraceFileName };
             var createTraceFiles = new List<CreateTraceFileDto> { createTraceFileDto };
@@ -609,7 +609,7 @@ namespace Traces.Core.Tests.Services
         }
 
         [Fact]
-        public async Task ShouldNotReplaceTraceWhenPiiAsync()
+        public async Task ShouldNotReplaceTraceWhenPiiNotConfirmedAsync()
         {
             var replaceTraceDto = new ReplaceTraceDto
             {

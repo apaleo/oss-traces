@@ -145,7 +145,7 @@ namespace Traces.Core.Services.Traces
             {
                 if (!createTraceDto.FileContainsNoPii)
                 {
-                    throw new BusinessValidationException(TextConstants.ConfirmFileContainsNoPiiErrorMessage.Trim('"'));
+                    throw new BusinessValidationException(TextConstants.ConfirmFileContainsNoPiiErrorMessage);
                 }
 
                 traceFiles.AddRange(await _traceFileService.UploadStorageFilesAsync(filesToUpload));
@@ -218,7 +218,7 @@ namespace Traces.Core.Services.Traces
             {
                 if (!replaceTraceDto.FileContainsNoPii)
                 {
-                    throw new BusinessValidationException(TextConstants.ConfirmFileContainsNoPiiErrorMessage.Trim('"'));
+                    throw new BusinessValidationException(TextConstants.ConfirmFileContainsNoPiiErrorMessage);
                 }
 
                 traceFiles.AddRange(await _traceFileService.UploadStorageFilesAsync(filesToUpload));
