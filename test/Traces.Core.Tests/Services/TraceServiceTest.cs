@@ -431,7 +431,8 @@ namespace Traces.Core.Tests.Services
                 Title = TestActiveTraceTitle,
                 DueDate = _testActiveTraceDueDate,
                 PropertyId = TestActivePropertyId,
-                FilesToUpload = Option.Some(new List<CreateTraceFileDto> { createTraceFileDto })
+                FilesToUpload = Option.Some(new List<CreateTraceFileDto> { createTraceFileDto }),
+                FileContainsNoPii = true
             };
 
             _traceRepositoryMock.Setup(x => x.Insert(
@@ -456,6 +457,26 @@ namespace Traces.Core.Tests.Services
         }
 
         [Fact]
+        public async Task ShouldNotCreateTraceFileWhenPiiNotConfirmedAsync()
+        {
+            var createTraceFileDto = new CreateTraceFileDto { Name = TestTraceFileName };
+            var createTraceFiles = new List<CreateTraceFileDto> { createTraceFileDto };
+            var createTraceDto = new CreateTraceDto
+            {
+                Description = TestActiveTraceDescription.Some(),
+                Title = TestActiveTraceTitle,
+                DueDate = _testActiveTraceDueDate,
+                PropertyId = TestActivePropertyId,
+                FilesToUpload = Option.Some(createTraceFiles),
+                FileContainsNoPii = false
+            };
+
+            var result = await Assert.ThrowsAsync<BusinessValidationException>(() => _traceService.CreateTraceAsync(createTraceDto));
+
+            result.Message.Should().Be("Please confirm  that the file(s) do NOT contain any sensitive data, such as scans of documents or credit cards.");
+        }
+
+        [Fact]
         public async Task ShouldNotBeAbleToCreateTraceWhenFileCreationFailsAsync()
         {
             var createTraceFileDto = new CreateTraceFileDto { Name = TestTraceFileName };
@@ -466,7 +487,8 @@ namespace Traces.Core.Tests.Services
                 Title = TestActiveTraceTitle,
                 DueDate = _testActiveTraceDueDate,
                 PropertyId = TestActivePropertyId,
-                FilesToUpload = Option.Some(createTraceFiles)
+                FilesToUpload = Option.Some(createTraceFiles),
+                FileContainsNoPii = true
             };
 
             _traceFileServiceMock.Setup(x => x.UploadStorageFilesAsync(It.Is<List<CreateTraceFileDto>>(l => l == createTraceFiles)))
@@ -557,7 +579,8 @@ namespace Traces.Core.Tests.Services
                 Title = TestOverdueTraceTitle,
                 DueDate = LocalDate.FromDateTime(DateTime.Today),
                 FilesToUpload = Option.Some(new List<CreateTraceFileDto> { new CreateTraceFileDto { Name = TestTraceFileName } }),
-                FilesToDelete = Option.Some(new List<int> { TestTraceFileId })
+                FilesToDelete = Option.Some(new List<int> { TestTraceFileId }),
+                FileContainsNoPii = true
             };
 
             _traceFileServiceMock.Setup(x => x.UploadStorageFilesAsync(It.Is<List<CreateTraceFileDto>>(l => l.Exists(tf => tf.Name == TestTraceFileName))))
@@ -583,6 +606,38 @@ namespace Traces.Core.Tests.Services
             var result = await _traceService.ReplaceTraceAsync(TestActiveTraceId, replaceTraceDto);
 
             result.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task ShouldNotReplaceTraceWhenPiiNotConfirmedAsync()
+        {
+            var replaceTraceDto = new ReplaceTraceDto
+            {
+                Title = TestOverdueTraceTitle,
+                DueDate = _testActiveTraceDueDate,
+                FilesToUpload = Option.Some(new List<CreateTraceFileDto> { new CreateTraceFileDto { Name = TestTraceFileName } }),
+                FilesToDelete = Option.Some(new List<int> { TestTraceFileId }),
+                FileContainsNoPii = false
+            };
+
+            _traceFileServiceMock.Setup(x => x.DeleteStorageFilesAsync(It.Is<List<int>>(l => l.Exists(tf => tf == TestTraceFileId))))
+                .Returns(Task.CompletedTask);
+
+            _traceRepositoryMock.Setup(x => x.ExistsAsync(It.IsAny<Expression<Func<Trace, bool>>>()))
+                .ReturnsAsync(true);
+
+            _traceRepositoryMock.Setup(x => x.GetAsync(It.Is<int>(i => i == TestActiveTraceId)))
+                .ReturnsAsync(new Trace
+                {
+                    Title = TestActiveTraceTitle,
+                    DueDate = _testActiveTraceDueDate,
+                    Files = new List<TraceFile> { new TraceFile() }
+                });
+
+            var result = await Assert.ThrowsAsync<BusinessValidationException>(() =>
+                   _traceService.ReplaceTraceAsync(TestActiveTraceId, replaceTraceDto));
+
+            result.Message.Should().Be("Please confirm  that the file(s) do NOT contain any sensitive data, such as scans of documents or credit cards.");
         }
 
         [Fact]

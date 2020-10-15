@@ -140,8 +140,14 @@ namespace Traces.Core.Services.Traces
 
             var traceFiles = new List<TraceFile>();
             var filesToUpload = createTraceDto.FilesToUpload.ValueOr(new List<CreateTraceFileDto>());
+
             if (filesToUpload.Any())
             {
+                if (!createTraceDto.FileContainsNoPii)
+                {
+                    throw new BusinessValidationException(TextConstants.ConfirmFileContainsNoPiiErrorMessage);
+                }
+
                 traceFiles.AddRange(await _traceFileService.UploadStorageFilesAsync(filesToUpload));
             }
 
@@ -210,6 +216,11 @@ namespace Traces.Core.Services.Traces
             var filesToUpload = replaceTraceDto.FilesToUpload.ValueOr(new List<CreateTraceFileDto>());
             if (filesToUpload.Any())
             {
+                if (!replaceTraceDto.FileContainsNoPii)
+                {
+                    throw new BusinessValidationException(TextConstants.ConfirmFileContainsNoPiiErrorMessage);
+                }
+
                 traceFiles.AddRange(await _traceFileService.UploadStorageFilesAsync(filesToUpload));
             }
 

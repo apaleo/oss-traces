@@ -21,5 +21,7 @@ namespace Traces.Web.Models
 
         public List<int> FilesToDelete { get; set; }
 #pragma warning restore CA2227
+
+        public bool FileContainsNoPii { get; set; }
     }
 }

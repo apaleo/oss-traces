@@ -18,5 +18,7 @@ namespace Traces.Core.Models
         public Option<List<CreateTraceFileDto>> FilesToUpload { get; set; }
 
         public Option<List<int>> FilesToDelete { get; set; }
+
+        public bool FileContainsNoPii { get; set; }
     }
 }

@@ -118,6 +118,10 @@ namespace Traces.Common.Constants
 
         public const string UploadFileText = "Drag and drop files here or click to select";
 
+        public const string ConfirmFileContainsNoPiiText = "I confirm that the file(s) do NOT contain any sensitive data, such as scans of documents or credit cards.";
+
+        public const string ConfirmFileContainsNoPiiErrorMessage = "Please confirm  that the file(s) do NOT contain any sensitive data, such as scans of documents or credit cards.";
+
         public const string InvalidUploadSizeErrorMessageFormat = "Allowed max size is {0}, but the file size was {1}. This file will not be uploaded.";
 
         public const string UploadFileSize = "Size {0}";
