@@ -7,88 +7,89 @@
 
 @if (Traces != null && Traces.Any())
 {
-    <TableBody>
-        @foreach (var trace in Traces)
-        {
-            <TableRow class="@(trace.State == TraceState.Completed ? "text-muted" : "")">
-                <TableRowCell>@trace.Title</TableRowCell>
-                <TableRowCell>@trace.Description</TableRowCell>
-                @if (IsDueDateVisible)
-                {
-                    <TableRowCell>@trace.DueDate.ToShortDateString()</TableRowCell>
-                }
-                @if (IsPropertyVisible)
-                {
-                    <TableRowCell>@trace.PropertyId</TableRowCell>
-                }
-                @if (IsReservationVisible)
-                {
-                    <TableRowCell>
-                        @if (string.IsNullOrWhiteSpace(trace.ReservationId))
-                        {
-                            <span>&mdash;</span>
-                        }
-                        else
-                        {
-                            <a href="javascript:void(0)" @onclick="@(() => OnNavigate(trace))">@trace.ReservationId</a>
-                        }
-                    </TableRowCell>
-                }
-                <TableRowCell>
-                    @if (string.IsNullOrWhiteSpace(trace.AssignedRole))
-                    {
-                        <span>&mdash;</span>
-                    }
-                    else
-                    {
-                        @trace.AssignedRole.Humanize()
-                    }
-                </TableRowCell>
-                <TableRowCell>
-                    @if (trace.Files.Count > 0)
-                    {
-                        @trace.Files.Count
-                    }
-                </TableRowCell>
-                <TableRowCell class="fit">
-                    <div class="d-flex justify-content-end">
-                        @if (trace.State == TraceState.Active)
-                        {
-                            <Button class="mr-2" Color="Color.Primary" Disabled="@IsLoading" Loading="@IsLoading" Clicked="@(() => OnComplete(trace))">
-                                <i class="fa fa-check"></i>
-                                @TextConstants.TracesCompleteButtonText
-                            </Button>
-                            <Button class="mr-2" Color="Color.Secondary" Outline="true" Disabled="@IsLoading" Loading="@IsLoading" Clicked="@(() => OnEdit(trace))">
-                                <i class="fa fa-edit"></i>
-                                @TextConstants.TracesEditButtonText
-                            </Button>
-                            <Dropdown RightAligned="true">
-                                <DropdownToggle>
-                                </DropdownToggle>
-                                <DropdownMenu RightAligned="true">
-                                    <DropdownItem class="text-danger" Clicked="@(() => OnDelete(trace))">
-                                        @TextConstants.TracesDeleteButtonText
-                                    </DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                        }
-                        else
-                        {
-                            <Button class="mr-2" Color="Color.Secondary" Outline="true" Disabled="@IsLoading" Loading="@IsLoading" Clicked="@(() => OnRevertComplete(trace))">
-                                <i class="fa fa-history"></i>
-                                @TextConstants.TracesRevertCompleteButtonText
-                            </Button>
-                        }
-                    </div>
-                </TableRowCell>
-            </TableRow>
-        }
-    </TableBody>
-}
+    @foreach (var trace in Traces)
+    {
+        <DataGrid TItem="TraceItemModel"
+                  Data="@(trace.State == TraceState.Completed ? "text-muted" : "")" />
 
-@code
+        <DataGridColumn TItem="trace" Field="nameof(@trace.Title)" Caption="Title" Editable="true" />
+        <DataGridColumn TItem="trace" Field="nameof(@trace.Description)" Caption="Description" Editable="true" />
+        @if (IsDueDateVisible)
+        {
+            <DataGridNumericColumn TItem="trace" Field="nameof(@trace.DueDate.ToShortDateString())" Caption="Date" Editable="true" />
+        }
+        @if (IsPropertyVisible)
+        {
+            <DataGridColumn TItem="trace" Field="nameof(@trace.PropertyId)" Caption="ID" Editable="true" />
+        }
+        @if (IsReservationVisible)
+        {
+            <DataGridCheckColumn TItem="trace" Field="nameof(@trace.ReservationId)" Caption="ReservationId" Editable="false" />
+            <DisplayTemplate>
+                @if (string.IsNullOrWhiteSpace(trace.ReservationId))
+                {
+                    <span>&mdash;</span>
+                }
+                else
+                {
+                    <a href="javascript:void(0)" @onclick="@(() => OnNavigate(trace))"></a>
+                }
+            </DisplayTemplate>
+            <DataGridCheckColumn TItem="trace" Field="nameof(@trace.AssignedRole)" Caption="AssignedRole" Editable="false" />
+            <DisplayTemplate>
+                @if (string.IsNullOrWhiteSpace(trace.AssignedRole))
+                {
+                    <span>&mdash;</span>
+                }
+                else
+                {
+                    @trace.AssignedRole.Humanize()
+                }
+            </DisplayTemplate>
+            <DataGridColumn 
+               @if (trace.Files.Count>0)
+                {
+                        @trace.Files.Count
+                        }
+                        />
+                        < class="fit">
+                        <div class="d-flex justify-content-end">
+                            @if (trace.State == TraceState.Active)
+                            {
+                                <Button class="mr-2" Color="Color.Primary" Disabled="@IsLoading" Loading="@IsLoading" Clicked="@(() => OnComplete(trace))">
+                                    <i class="fa fa-check"></i>
+                                    @TextConstants.TracesCompleteButtonText
+                                </Button>
+                                <Button class="mr-2" Color="Color.Secondary" Outline="true" Disabled="@IsLoading" Loading="@IsLoading" Clicked="@(() => OnEdit(trace))">
+                                    <i class="fa fa-edit"></i>
+                                    @TextConstants.TracesEditButtonText
+                                </Button>
+                                <Dropdown RightAligned="true">
+                                    <DropdownToggle>
+                                    </DropdownToggle>
+                                    <DropdownMenu RightAligned="true">
+                                        <DropdownItem class="text-danger" Clicked="@(() => OnDelete(trace))">
+                                            @TextConstants.TracesDeleteButtonText
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+                            }
+                            else
+                            {
+                                <Button class="mr-2" Color="Color.Secondary" Outline="true" Disabled="@IsLoading" Loading="@IsLoading" Clicked="@(() => OnRevertComplete(trace))">
+                                    <i class="fa fa-history"></i>
+                                    @TextConstants.TracesRevertCompleteButtonText
+                                </Button>
+                            }
+                        </div>
+                        />
+                        </DataGrid>
+                    }
+    }
+
+    @code
 {
-    private bool IsLoading { get; set; }
+private bool IsLoading { get; set; }
 
     [Parameter]
     public EventCallback<TraceItemModel> OnEditClick { get; set; }
@@ -156,4 +157,4 @@
     {
         await OnNavigateClick.InvokeAsync(trace);
     }
-}
+    }
