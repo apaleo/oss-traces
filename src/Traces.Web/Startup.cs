@@ -122,8 +122,7 @@ namespace Traces.Web
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        NameClaimType = JwtClaimTypes.Name,
-                        RoleClaimType = JwtClaimTypes.Role,
+                        NameClaimType = JwtClaimTypes.Name
                     };
                 });
 
