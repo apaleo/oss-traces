@@ -12,7 +12,7 @@ namespace Traces.Common.Tests.Utils
         {
             HerokuUtils
                 .ConvertConnectionStringIfSet("postgres://user:pw@host.name.local:5432/dbName")
-                .Should().Be("Host=host.name.local;Port=5432;Database=dbName;Username=user;Password=pw");
+                .Should().Be("Host=host.name.local;Port=5432;Database=dbName;Username=user;Password=pw;sslmode=require;trustservercertificate=true;");
         }
     }
 }
