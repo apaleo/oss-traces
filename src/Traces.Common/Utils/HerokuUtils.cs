@@ -26,7 +26,7 @@ namespace Traces.Common.Utils
             // cut away the leading "/"
             var dbName = uri.AbsolutePath.Substring(1);
 
-            return $"Host={uri.Host};Port={uri.Port};Database={dbName};Username={userName};Password={password};sslmode=require;trustservercertificate=true;";
+            return $"Host={uri.Host};Port={uri.Port};Database={dbName};Username={userName};Password={password};SSL Mode=Require;Trust Server Certificate=true;";
         }
     }
 }
