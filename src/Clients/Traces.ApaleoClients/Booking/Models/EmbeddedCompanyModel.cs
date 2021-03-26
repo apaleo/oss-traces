@@ -24,16 +24,16 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the EmbeddedCompanyModel class.
         /// </summary>
         /// <param name="id">The company ID</param>
-        /// <param name="canCheckOutOnAr">Whether or not the company can check
-        /// out on AR</param>
         /// <param name="code">The code of the company</param>
         /// <param name="name">The name of the company</param>
-        public EmbeddedCompanyModel(string id, bool? canCheckOutOnAr = default(bool?), string code = default(string), string name = default(string))
+        /// <param name="canCheckOutOnAr">Whether or not the company can check
+        /// out on AR</param>
+        public EmbeddedCompanyModel(string id, string code = default(string), string name = default(string), bool? canCheckOutOnAr = default(bool?))
         {
-            CanCheckOutOnAr = canCheckOutOnAr;
-            Code = code;
             Id = id;
+            Code = code;
             Name = name;
+            CanCheckOutOnAr = canCheckOutOnAr;
             CustomInit();
         }
 
@@ -43,10 +43,10 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets whether or not the company can check out on AR
+        /// Gets or sets the company ID
         /// </summary>
-        [JsonProperty(PropertyName = "canCheckOutOnAr")]
-        public bool? CanCheckOutOnAr { get; set; }
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets the code of the company
@@ -55,16 +55,16 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the company ID
-        /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the name of the company
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether or not the company can check out on AR
+        /// </summary>
+        [JsonProperty(PropertyName = "canCheckOutOnAr")]
+        public bool? CanCheckOutOnAr { get; set; }
 
         /// <summary>
         /// Validate the object.

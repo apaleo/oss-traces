@@ -24,21 +24,21 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the OfferServiceModel class.
         /// </summary>
+        /// <param name="serviceDate">The date this service is
+        /// delivered</param>
         /// <param name="count">The default count of offered services. For
         /// services whose pricing unit is 'Person' it will be based on the
         /// adults and children specified, otherwise 1.</param>
         /// <param name="pricingMode">Whether the service price is included in
         /// or added to the base rate. Possible values include: 'Included',
         /// 'Additional'</param>
-        /// <param name="serviceDate">The date this service is
-        /// delivered</param>
-        public OfferServiceModel(AmountModel amount, int count, PricingMode pricingMode, EmbeddedServiceModel service, System.DateTime serviceDate)
+        public OfferServiceModel(EmbeddedServiceModel service, System.DateTime serviceDate, int count, AmountModel amount, PricingMode pricingMode)
         {
-            Amount = amount;
-            Count = count;
-            PricingMode = pricingMode;
             Service = service;
             ServiceDate = serviceDate;
+            Count = count;
+            Amount = amount;
+            PricingMode = pricingMode;
             CustomInit();
         }
 
@@ -46,26 +46,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "amount")]
-        public AmountModel Amount { get; set; }
-
-        /// <summary>
-        /// Gets or sets the default count of offered services. For services
-        /// whose pricing unit is 'Person' it will be based on the adults and
-        /// children specified, otherwise 1.
-        /// </summary>
-        [JsonProperty(PropertyName = "count")]
-        public int Count { get; set; }
-
-        /// <summary>
-        /// Gets or sets whether the service price is included in or added to
-        /// the base rate. Possible values include: 'Included', 'Additional'
-        /// </summary>
-        [JsonProperty(PropertyName = "pricingMode")]
-        public PricingMode PricingMode { get; set; }
 
         /// <summary>
         /// </summary>
@@ -80,6 +60,26 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime ServiceDate { get; set; }
 
         /// <summary>
+        /// Gets or sets the default count of offered services. For services
+        /// whose pricing unit is 'Person' it will be based on the adults and
+        /// children specified, otherwise 1.
+        /// </summary>
+        [JsonProperty(PropertyName = "count")]
+        public int Count { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "amount")]
+        public AmountModel Amount { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the service price is included in or added to
+        /// the base rate. Possible values include: 'Included', 'Additional'
+        /// </summary>
+        [JsonProperty(PropertyName = "pricingMode")]
+        public PricingMode PricingMode { get; set; }
+
+        /// <summary>
         /// Validate the object.
         /// </summary>
         /// <exception cref="ValidationException">
@@ -87,21 +87,21 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Amount == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Amount");
-            }
             if (Service == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Service");
             }
-            if (Amount != null)
+            if (Amount == null)
             {
-                Amount.Validate();
+                throw new ValidationException(ValidationRules.CannotBeNull, "Amount");
             }
             if (Service != null)
             {
                 Service.Validate();
+            }
+            if (Amount != null)
+            {
+                Amount.Validate();
             }
         }
     }

@@ -6,7 +6,6 @@
 
 namespace Traces.ApaleoClients.Booking.Models
 {
-    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Linq;
 
@@ -23,17 +22,14 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the CreatePaymentAccountModel class.
         /// </summary>
-        /// <param name="accountHolder">The account holder (e.g. card
-        /// holder)</param>
         /// <param name="accountNumber">The account number (e.g. masked credit
         /// card number or last 4 digits)</param>
+        /// <param name="accountHolder">The account holder (e.g. card
+        /// holder)</param>
         /// <param name="expiryMonth">The credit card's expiration
         /// month</param>
         /// <param name="expiryYear">The credit card's expiration year</param>
         /// <param name="paymentMethod">The payment method (e.g. visa)</param>
-        /// <param name="isVirtual">Indicates if the payment account is a
-        /// virtual credit card. If not specified it defaults to
-        /// 'false'</param>
         /// <param name="payerEmail">The email address of the shopper /
         /// customer</param>
         /// <param name="payerReference">The reference used to uniquely
@@ -43,17 +39,20 @@ namespace Traces.ApaleoClients.Booking.Models
         /// transaction. This should be set when a payment transaction has been
         /// already initiated and should be completed upon reservation
         /// creation.</param>
-        public CreatePaymentAccountModel(string accountHolder, string accountNumber, string expiryMonth, string expiryYear, string paymentMethod, bool? isVirtual = default(bool?), string payerEmail = default(string), string payerReference = default(string), string transactionReference = default(string))
+        /// <param name="isVirtual">Indicates if the payment account is a
+        /// virtual credit card. If not specified it defaults to
+        /// 'false'</param>
+        public CreatePaymentAccountModel(string accountNumber = default(string), string accountHolder = default(string), string expiryMonth = default(string), string expiryYear = default(string), string paymentMethod = default(string), string payerEmail = default(string), string payerReference = default(string), string transactionReference = default(string), bool? isVirtual = default(bool?))
         {
-            AccountHolder = accountHolder;
             AccountNumber = accountNumber;
+            AccountHolder = accountHolder;
             ExpiryMonth = expiryMonth;
             ExpiryYear = expiryYear;
-            IsVirtual = isVirtual;
+            PaymentMethod = paymentMethod;
             PayerEmail = payerEmail;
             PayerReference = payerReference;
-            PaymentMethod = paymentMethod;
             TransactionReference = transactionReference;
+            IsVirtual = isVirtual;
             CustomInit();
         }
 
@@ -63,17 +62,17 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the account holder (e.g. card holder)
-        /// </summary>
-        [JsonProperty(PropertyName = "accountHolder")]
-        public string AccountHolder { get; set; }
-
-        /// <summary>
         /// Gets or sets the account number (e.g. masked credit card number or
         /// last 4 digits)
         /// </summary>
         [JsonProperty(PropertyName = "accountNumber")]
         public string AccountNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets the account holder (e.g. card holder)
+        /// </summary>
+        [JsonProperty(PropertyName = "accountHolder")]
+        public string AccountHolder { get; set; }
 
         /// <summary>
         /// Gets or sets the credit card's expiration month
@@ -88,11 +87,10 @@ namespace Traces.ApaleoClients.Booking.Models
         public string ExpiryYear { get; set; }
 
         /// <summary>
-        /// Gets or sets indicates if the payment account is a virtual credit
-        /// card. If not specified it defaults to 'false'
+        /// Gets or sets the payment method (e.g. visa)
         /// </summary>
-        [JsonProperty(PropertyName = "isVirtual")]
-        public bool? IsVirtual { get; set; }
+        [JsonProperty(PropertyName = "paymentMethod")]
+        public string PaymentMethod { get; set; }
 
         /// <summary>
         /// Gets or sets the email address of the shopper / customer
@@ -108,12 +106,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public string PayerReference { get; set; }
 
         /// <summary>
-        /// Gets or sets the payment method (e.g. visa)
-        /// </summary>
-        [JsonProperty(PropertyName = "paymentMethod")]
-        public string PaymentMethod { get; set; }
-
-        /// <summary>
         /// Gets or sets the reference of a payment transaction. This should be
         /// set when a payment transaction has been already initiated and
         /// should be completed upon reservation creation.
@@ -122,33 +114,11 @@ namespace Traces.ApaleoClients.Booking.Models
         public string TransactionReference { get; set; }
 
         /// <summary>
-        /// Validate the object.
+        /// Gets or sets indicates if the payment account is a virtual credit
+        /// card. If not specified it defaults to 'false'
         /// </summary>
-        /// <exception cref="ValidationException">
-        /// Thrown if validation fails
-        /// </exception>
-        public virtual void Validate()
-        {
-            if (AccountHolder == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "AccountHolder");
-            }
-            if (AccountNumber == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "AccountNumber");
-            }
-            if (ExpiryMonth == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "ExpiryMonth");
-            }
-            if (ExpiryYear == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "ExpiryYear");
-            }
-            if (PaymentMethod == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "PaymentMethod");
-            }
-        }
+        [JsonProperty(PropertyName = "isVirtual")]
+        public bool? IsVirtual { get; set; }
+
     }
 }

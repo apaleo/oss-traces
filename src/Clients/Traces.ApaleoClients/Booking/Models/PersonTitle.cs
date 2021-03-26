@@ -25,6 +25,8 @@ namespace Traces.ApaleoClients.Booking.Models
         Dr,
         [EnumMember(Value = "Prof")]
         Prof,
+        [EnumMember(Value = "Mrs")]
+        Mrs,
         [EnumMember(Value = "Other")]
         Other
     }
@@ -47,6 +49,8 @@ namespace Traces.ApaleoClients.Booking.Models
                     return "Dr";
                 case PersonTitle.Prof:
                     return "Prof";
+                case PersonTitle.Mrs:
+                    return "Mrs";
                 case PersonTitle.Other:
                     return "Other";
             }
@@ -65,6 +69,8 @@ namespace Traces.ApaleoClients.Booking.Models
                     return PersonTitle.Dr;
                 case "Prof":
                     return PersonTitle.Prof;
+                case "Mrs":
+                    return PersonTitle.Mrs;
                 case "Other":
                     return PersonTitle.Other;
             }

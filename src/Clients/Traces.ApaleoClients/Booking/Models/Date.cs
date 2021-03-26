@@ -27,11 +27,11 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="serviceDate">The date the service is delivered</param>
         /// <param name="count">The number of services to book for this date.
         /// It defaults to the service offer count when not specified.</param>
-        public Date(System.DateTime serviceDate, MonetaryValueModel amount = default(MonetaryValueModel), int? count = default(int?))
+        public Date(System.DateTime serviceDate, int? count = default(int?), MonetaryValueModel amount = default(MonetaryValueModel))
         {
-            Amount = amount;
-            Count = count;
             ServiceDate = serviceDate;
+            Count = count;
+            Amount = amount;
             CustomInit();
         }
 
@@ -41,9 +41,11 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets the date the service is delivered
         /// </summary>
-        [JsonProperty(PropertyName = "amount")]
-        public MonetaryValueModel Amount { get; set; }
+        [JsonConverter(typeof(DateJsonConverter))]
+        [JsonProperty(PropertyName = "serviceDate")]
+        public System.DateTime ServiceDate { get; set; }
 
         /// <summary>
         /// Gets or sets the number of services to book for this date. It
@@ -53,11 +55,9 @@ namespace Traces.ApaleoClients.Booking.Models
         public int? Count { get; set; }
 
         /// <summary>
-        /// Gets or sets the date the service is delivered
         /// </summary>
-        [JsonConverter(typeof(DateJsonConverter))]
-        [JsonProperty(PropertyName = "serviceDate")]
-        public System.DateTime ServiceDate { get; set; }
+        [JsonProperty(PropertyName = "amount")]
+        public MonetaryValueModel Amount { get; set; }
 
         /// <summary>
         /// Validate the object.

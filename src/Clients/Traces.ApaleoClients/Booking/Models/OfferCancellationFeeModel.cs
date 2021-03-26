@@ -25,6 +25,8 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         /// <param name="code">The code of the cancellation policy
         /// applied</param>
+        /// <param name="name">The name of the cancellation policy
+        /// applied</param>
         /// <param name="description">The description of the cancellation
         /// policy applied</param>
         /// <param name="dueDateTime">The date and time the cancellation fee
@@ -33,15 +35,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="name">The name of the cancellation policy
-        /// applied</param>
-        public OfferCancellationFeeModel(string code, string description, System.DateTime dueDateTime, MonetaryValueModel fee, string name)
+        public OfferCancellationFeeModel(string code, string name, string description, System.DateTime dueDateTime, MonetaryValueModel fee)
         {
             Code = code;
+            Name = name;
             Description = description;
             DueDateTime = dueDateTime;
             Fee = fee;
-            Name = name;
             CustomInit();
         }
 
@@ -55,6 +55,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the cancellation policy applied
+        /// </summary>
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the cancellation policy applied
@@ -79,12 +85,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public MonetaryValueModel Fee { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the cancellation policy applied
-        /// </summary>
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
         /// Validate the object.
         /// </summary>
         /// <exception cref="ValidationException">
@@ -96,6 +96,10 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Code");
             }
+            if (Name == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Name");
+            }
             if (Description == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Description");
@@ -103,10 +107,6 @@ namespace Traces.ApaleoClients.Booking.Models
             if (Fee == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Fee");
-            }
-            if (Name == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Name");
             }
             if (Fee != null)
             {

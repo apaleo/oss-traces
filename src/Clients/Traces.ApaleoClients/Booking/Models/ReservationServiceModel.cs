@@ -24,18 +24,18 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the ReservationServiceModel class.
         /// </summary>
-        /// <param name="bookedAsExtra">Whether this service is already booked
-        /// as extra</param>
-        /// <param name="count">The count of booked services</param>
         /// <param name="serviceDate">The date this service is
         /// delivered</param>
-        public ReservationServiceModel(AmountModel amount, bool bookedAsExtra, int count, EmbeddedServiceModel service, System.DateTime serviceDate)
+        /// <param name="count">The count of booked services</param>
+        /// <param name="bookedAsExtra">Whether this service is already booked
+        /// as extra</param>
+        public ReservationServiceModel(EmbeddedServiceModel service, System.DateTime serviceDate, int count, AmountModel amount, bool bookedAsExtra)
         {
-            Amount = amount;
-            BookedAsExtra = bookedAsExtra;
-            Count = count;
             Service = service;
             ServiceDate = serviceDate;
+            Count = count;
+            Amount = amount;
+            BookedAsExtra = bookedAsExtra;
             CustomInit();
         }
 
@@ -43,23 +43,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "amount")]
-        public AmountModel Amount { get; set; }
-
-        /// <summary>
-        /// Gets or sets whether this service is already booked as extra
-        /// </summary>
-        [JsonProperty(PropertyName = "bookedAsExtra")]
-        public bool BookedAsExtra { get; set; }
-
-        /// <summary>
-        /// Gets or sets the count of booked services
-        /// </summary>
-        [JsonProperty(PropertyName = "count")]
-        public int Count { get; set; }
 
         /// <summary>
         /// </summary>
@@ -74,6 +57,23 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime ServiceDate { get; set; }
 
         /// <summary>
+        /// Gets or sets the count of booked services
+        /// </summary>
+        [JsonProperty(PropertyName = "count")]
+        public int Count { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "amount")]
+        public AmountModel Amount { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether this service is already booked as extra
+        /// </summary>
+        [JsonProperty(PropertyName = "bookedAsExtra")]
+        public bool BookedAsExtra { get; set; }
+
+        /// <summary>
         /// Validate the object.
         /// </summary>
         /// <exception cref="ValidationException">
@@ -81,21 +81,21 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Amount == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Amount");
-            }
             if (Service == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Service");
             }
-            if (Amount != null)
+            if (Amount == null)
             {
-                Amount.Validate();
+                throw new ValidationException(ValidationRules.CannotBeNull, "Amount");
             }
             if (Service != null)
             {
                 Service.Validate();
+            }
+            if (Amount != null)
+            {
+                Amount.Validate();
             }
         }
     }

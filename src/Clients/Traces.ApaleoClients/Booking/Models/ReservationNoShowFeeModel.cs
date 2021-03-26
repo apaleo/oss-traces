@@ -23,10 +23,17 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the ReservationNoShowFeeModel class.
         /// </summary>
+        /// <param name="id">The id of the no-show policy applied</param>
         /// <param name="code">The code of the no-show policy applied</param>
-        public ReservationNoShowFeeModel(string code, MonetaryValueModel fee)
+        /// <param name="name">The name of the no-show policy applied</param>
+        /// <param name="description">The description of the no-show policy
+        /// applied</param>
+        public ReservationNoShowFeeModel(string id, string code, MonetaryValueModel fee, string name = default(string), string description = default(string))
         {
+            Id = id;
             Code = code;
+            Name = name;
+            Description = description;
             Fee = fee;
             CustomInit();
         }
@@ -37,10 +44,28 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets the id of the no-show policy applied
+        /// </summary>
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the code of the no-show policy applied
         /// </summary>
         [JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the no-show policy applied
+        /// </summary>
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description of the no-show policy applied
+        /// </summary>
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// </summary>
@@ -55,6 +80,10 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
+            if (Id == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Id");
+            }
             if (Code == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Code");

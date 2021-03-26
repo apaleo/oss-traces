@@ -29,56 +29,56 @@ namespace Traces.ApaleoClients.Booking.Models
         /// offer&lt;br /&gt;A date and time (without fractional second part)
         /// in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="availableUnits">The number of available units for that
-        /// offer</param>
         /// <param name="departure">The latest departure date and time for this
         /// offer&lt;br /&gt;A date and time (without fractional second part)
         /// in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="isCorporate">Whether the offer is for a corporate rate
-        /// plan</param>
         /// <param name="minGuaranteeType">The minimum guarantee type for this
         /// offer. Possible values include: 'PM6Hold', 'CreditCard',
         /// 'Prepayment', 'Company'</param>
-        /// <param name="taxDetails">Tax breakdown, displaying net and tax
-        /// amount for each VAT type</param>
+        /// <param name="availableUnits">The number of available units for that
+        /// offer</param>
         /// <param name="timeSlices">The breakdown for each time slice for this
         /// offer</param>
-        /// <param name="companyId">ID of the company the offer is created
-        /// for</param>
-        /// <param name="corporateCode">The corporate rate code the offer is
-        /// created for</param>
+        /// <param name="taxDetails">Tax breakdown, displaying net and tax
+        /// amount for each VAT type</param>
+        /// <param name="isCorporate">Whether the offer is for a corporate rate
+        /// plan</param>
+        /// <param name="services">The list of the mandatory services for this
+        /// offer. Such services will be automatically booked when booking this
+        /// offer</param>
         /// <param name="fees">The details of the fees that will be added on
         /// top of the
         /// Apaleo.Api.Modules.Booking.Models.Offer.StayOffer.OfferModel.TotalGrossAmount
         /// when creating the booking</param>
-        /// <param name="services">The list of the mandatory services for this
-        /// offer. Such services will be automatically booked when booking this
-        /// offer</param>
         /// <param name="validationMessages">Validation rules that were applied
         /// to the offer and show the reason why the offer is not
         /// bookable</param>
-        public OfferModel(System.DateTime arrival, int availableUnits, OfferCancellationFeeModel cancellationFee, System.DateTime departure, bool isCorporate, MinGuaranteeType minGuaranteeType, OfferNoShowFeeModel noShowFee, MonetaryValueModel prePaymentAmount, EmbeddedRatePlanModel ratePlan, IList<TaxDetailModel> taxDetails, IList<OfferTimeSliceModel> timeSlices, MonetaryValueModel totalGrossAmount, OfferUnitGroupModel unitGroup, AmountModel cityTax = default(AmountModel), string companyId = default(string), string corporateCode = default(string), IList<OfferFeeModel> fees = default(IList<OfferFeeModel>), IList<ServiceOfferModel> services = default(IList<ServiceOfferModel>), IList<OfferValidationMessageModel> validationMessages = default(IList<OfferValidationMessageModel>))
+        /// <param name="companyId">ID of the company the offer is created
+        /// for</param>
+        /// <param name="corporateCode">The corporate rate code the offer is
+        /// created for</param>
+        public OfferModel(System.DateTime arrival, System.DateTime departure, OfferUnitGroupModel unitGroup, MinGuaranteeType minGuaranteeType, int availableUnits, EmbeddedRatePlanModel ratePlan, MonetaryValueModel totalGrossAmount, OfferCancellationFeeModel cancellationFee, OfferNoShowFeeModel noShowFee, IList<OfferTimeSliceModel> timeSlices, IList<TaxDetailModel> taxDetails, bool isCorporate, MonetaryValueModel prePaymentAmount, IList<ServiceOfferModel> services = default(IList<ServiceOfferModel>), IList<OfferFeeModel> fees = default(IList<OfferFeeModel>), IList<OfferValidationMessageModel> validationMessages = default(IList<OfferValidationMessageModel>), string companyId = default(string), string corporateCode = default(string), AmountModel cityTax = default(AmountModel))
         {
             Arrival = arrival;
+            Departure = departure;
+            UnitGroup = unitGroup;
+            MinGuaranteeType = minGuaranteeType;
             AvailableUnits = availableUnits;
+            RatePlan = ratePlan;
+            TotalGrossAmount = totalGrossAmount;
             CancellationFee = cancellationFee;
-            CityTax = cityTax;
+            NoShowFee = noShowFee;
+            TimeSlices = timeSlices;
+            Services = services;
+            Fees = fees;
+            TaxDetails = taxDetails;
+            ValidationMessages = validationMessages;
             CompanyId = companyId;
             CorporateCode = corporateCode;
-            Departure = departure;
-            Fees = fees;
             IsCorporate = isCorporate;
-            MinGuaranteeType = minGuaranteeType;
-            NoShowFee = noShowFee;
             PrePaymentAmount = prePaymentAmount;
-            RatePlan = ratePlan;
-            Services = services;
-            TaxDetails = taxDetails;
-            TimeSlices = timeSlices;
-            TotalGrossAmount = totalGrossAmount;
-            UnitGroup = unitGroup;
-            ValidationMessages = validationMessages;
+            CityTax = cityTax;
             CustomInit();
         }
 
@@ -97,10 +97,41 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime Arrival { get; set; }
 
         /// <summary>
+        /// Gets or sets the latest departure date and time for this
+        /// offer&amp;lt;br /&amp;gt;A date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "departure")]
+        public System.DateTime Departure { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "unitGroup")]
+        public OfferUnitGroupModel UnitGroup { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum guarantee type for this offer. Possible
+        /// values include: 'PM6Hold', 'CreditCard', 'Prepayment', 'Company'
+        /// </summary>
+        [JsonProperty(PropertyName = "minGuaranteeType")]
+        public MinGuaranteeType MinGuaranteeType { get; set; }
+
+        /// <summary>
         /// Gets or sets the number of available units for that offer
         /// </summary>
         [JsonProperty(PropertyName = "availableUnits")]
         public int AvailableUnits { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "ratePlan")]
+        public EmbeddedRatePlanModel RatePlan { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "totalGrossAmount")]
+        public MonetaryValueModel TotalGrossAmount { get; set; }
 
         /// <summary>
         /// </summary>
@@ -109,8 +140,44 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "cityTax")]
-        public AmountModel CityTax { get; set; }
+        [JsonProperty(PropertyName = "noShowFee")]
+        public OfferNoShowFeeModel NoShowFee { get; set; }
+
+        /// <summary>
+        /// Gets or sets the breakdown for each time slice for this offer
+        /// </summary>
+        [JsonProperty(PropertyName = "timeSlices")]
+        public IList<OfferTimeSliceModel> TimeSlices { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of the mandatory services for this offer.
+        /// Such services will be automatically booked when booking this offer
+        /// </summary>
+        [JsonProperty(PropertyName = "services")]
+        public IList<ServiceOfferModel> Services { get; set; }
+
+        /// <summary>
+        /// Gets or sets the details of the fees that will be added on top of
+        /// the
+        /// Apaleo.Api.Modules.Booking.Models.Offer.StayOffer.OfferModel.TotalGrossAmount
+        /// when creating the booking
+        /// </summary>
+        [JsonProperty(PropertyName = "fees")]
+        public IList<OfferFeeModel> Fees { get; set; }
+
+        /// <summary>
+        /// Gets or sets tax breakdown, displaying net and tax amount for each
+        /// VAT type
+        /// </summary>
+        [JsonProperty(PropertyName = "taxDetails")]
+        public IList<TaxDetailModel> TaxDetails { get; set; }
+
+        /// <summary>
+        /// Gets or sets validation rules that were applied to the offer and
+        /// show the reason why the offer is not bookable
+        /// </summary>
+        [JsonProperty(PropertyName = "validationMessages")]
+        public IList<OfferValidationMessageModel> ValidationMessages { get; set; }
 
         /// <summary>
         /// Gets or sets ID of the company the offer is created for
@@ -125,40 +192,10 @@ namespace Traces.ApaleoClients.Booking.Models
         public string CorporateCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the latest departure date and time for this
-        /// offer&amp;lt;br /&amp;gt;A date and time (without fractional second
-        /// part) in UTC or with UTC offset as defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
-        /// </summary>
-        [JsonProperty(PropertyName = "departure")]
-        public System.DateTime Departure { get; set; }
-
-        /// <summary>
-        /// Gets or sets the details of the fees that will be added on top of
-        /// the
-        /// Apaleo.Api.Modules.Booking.Models.Offer.StayOffer.OfferModel.TotalGrossAmount
-        /// when creating the booking
-        /// </summary>
-        [JsonProperty(PropertyName = "fees")]
-        public IList<OfferFeeModel> Fees { get; set; }
-
-        /// <summary>
         /// Gets or sets whether the offer is for a corporate rate plan
         /// </summary>
         [JsonProperty(PropertyName = "isCorporate")]
         public bool IsCorporate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the minimum guarantee type for this offer. Possible
-        /// values include: 'PM6Hold', 'CreditCard', 'Prepayment', 'Company'
-        /// </summary>
-        [JsonProperty(PropertyName = "minGuaranteeType")]
-        public MinGuaranteeType MinGuaranteeType { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "noShowFee")]
-        public OfferNoShowFeeModel NoShowFee { get; set; }
 
         /// <summary>
         /// </summary>
@@ -167,45 +204,8 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "ratePlan")]
-        public EmbeddedRatePlanModel RatePlan { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of the mandatory services for this offer.
-        /// Such services will be automatically booked when booking this offer
-        /// </summary>
-        [JsonProperty(PropertyName = "services")]
-        public IList<ServiceOfferModel> Services { get; set; }
-
-        /// <summary>
-        /// Gets or sets tax breakdown, displaying net and tax amount for each
-        /// VAT type
-        /// </summary>
-        [JsonProperty(PropertyName = "taxDetails")]
-        public IList<TaxDetailModel> TaxDetails { get; set; }
-
-        /// <summary>
-        /// Gets or sets the breakdown for each time slice for this offer
-        /// </summary>
-        [JsonProperty(PropertyName = "timeSlices")]
-        public IList<OfferTimeSliceModel> TimeSlices { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "totalGrossAmount")]
-        public MonetaryValueModel TotalGrossAmount { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "unitGroup")]
-        public OfferUnitGroupModel UnitGroup { get; set; }
-
-        /// <summary>
-        /// Gets or sets validation rules that were applied to the offer and
-        /// show the reason why the offer is not bookable
-        /// </summary>
-        [JsonProperty(PropertyName = "validationMessages")]
-        public IList<OfferValidationMessageModel> ValidationMessages { get; set; }
+        [JsonProperty(PropertyName = "cityTax")]
+        public AmountModel CityTax { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -215,6 +215,18 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
+            if (UnitGroup == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "UnitGroup");
+            }
+            if (RatePlan == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "RatePlan");
+            }
+            if (TotalGrossAmount == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "TotalGrossAmount");
+            }
             if (CancellationFee == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "CancellationFee");
@@ -223,59 +235,47 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "NoShowFee");
             }
-            if (PrePaymentAmount == null)
+            if (TimeSlices == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "PrePaymentAmount");
-            }
-            if (RatePlan == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "RatePlan");
+                throw new ValidationException(ValidationRules.CannotBeNull, "TimeSlices");
             }
             if (TaxDetails == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "TaxDetails");
             }
-            if (TimeSlices == null)
+            if (PrePaymentAmount == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "TimeSlices");
+                throw new ValidationException(ValidationRules.CannotBeNull, "PrePaymentAmount");
             }
-            if (TotalGrossAmount == null)
+            if (UnitGroup != null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "TotalGrossAmount");
+                UnitGroup.Validate();
             }
-            if (UnitGroup == null)
+            if (RatePlan != null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "UnitGroup");
+                RatePlan.Validate();
+            }
+            if (TotalGrossAmount != null)
+            {
+                TotalGrossAmount.Validate();
             }
             if (CancellationFee != null)
             {
                 CancellationFee.Validate();
             }
-            if (CityTax != null)
+            if (NoShowFee != null)
             {
-                CityTax.Validate();
+                NoShowFee.Validate();
             }
-            if (Fees != null)
+            if (TimeSlices != null)
             {
-                foreach (var element in Fees)
+                foreach (var element in TimeSlices)
                 {
                     if (element != null)
                     {
                         element.Validate();
                     }
                 }
-            }
-            if (NoShowFee != null)
-            {
-                NoShowFee.Validate();
-            }
-            if (PrePaymentAmount != null)
-            {
-                PrePaymentAmount.Validate();
-            }
-            if (RatePlan != null)
-            {
-                RatePlan.Validate();
             }
             if (Services != null)
             {
@@ -287,9 +287,9 @@ namespace Traces.ApaleoClients.Booking.Models
                     }
                 }
             }
-            if (TaxDetails != null)
+            if (Fees != null)
             {
-                foreach (var element2 in TaxDetails)
+                foreach (var element2 in Fees)
                 {
                     if (element2 != null)
                     {
@@ -297,23 +297,15 @@ namespace Traces.ApaleoClients.Booking.Models
                     }
                 }
             }
-            if (TimeSlices != null)
+            if (TaxDetails != null)
             {
-                foreach (var element3 in TimeSlices)
+                foreach (var element3 in TaxDetails)
                 {
                     if (element3 != null)
                     {
                         element3.Validate();
                     }
                 }
-            }
-            if (TotalGrossAmount != null)
-            {
-                TotalGrossAmount.Validate();
-            }
-            if (UnitGroup != null)
-            {
-                UnitGroup.Validate();
             }
             if (ValidationMessages != null)
             {
@@ -324,6 +316,14 @@ namespace Traces.ApaleoClients.Booking.Models
                         element4.Validate();
                     }
                 }
+            }
+            if (PrePaymentAmount != null)
+            {
+                PrePaymentAmount.Validate();
+            }
+            if (CityTax != null)
+            {
+                CityTax.Validate();
             }
         }
     }

@@ -29,11 +29,11 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         /// <param name="dates">The dates the service will be delivered with
         /// its price</param>
-        public ReservationServiceItemModel(IList<ServiceDateItemModel> dates, ServiceModel service, AmountModel totalAmount)
+        public ReservationServiceItemModel(ServiceModel service, AmountModel totalAmount, IList<ServiceDateItemModel> dates)
         {
-            Dates = dates;
             Service = service;
             TotalAmount = totalAmount;
+            Dates = dates;
             CustomInit();
         }
 
@@ -41,12 +41,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
-
-        /// <summary>
-        /// Gets or sets the dates the service will be delivered with its price
-        /// </summary>
-        [JsonProperty(PropertyName = "dates")]
-        public IList<ServiceDateItemModel> Dates { get; set; }
 
         /// <summary>
         /// </summary>
@@ -59,6 +53,12 @@ namespace Traces.ApaleoClients.Booking.Models
         public AmountModel TotalAmount { get; set; }
 
         /// <summary>
+        /// Gets or sets the dates the service will be delivered with its price
+        /// </summary>
+        [JsonProperty(PropertyName = "dates")]
+        public IList<ServiceDateItemModel> Dates { get; set; }
+
+        /// <summary>
         /// Validate the object.
         /// </summary>
         /// <exception cref="ValidationException">
@@ -66,10 +66,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Dates == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Dates");
-            }
             if (Service == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Service");
@@ -77,6 +73,18 @@ namespace Traces.ApaleoClients.Booking.Models
             if (TotalAmount == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "TotalAmount");
+            }
+            if (Dates == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Dates");
+            }
+            if (Service != null)
+            {
+                Service.Validate();
+            }
+            if (TotalAmount != null)
+            {
+                TotalAmount.Validate();
             }
             if (Dates != null)
             {
@@ -87,14 +95,6 @@ namespace Traces.ApaleoClients.Booking.Models
                         element.Validate();
                     }
                 }
-            }
-            if (Service != null)
-            {
-                Service.Validate();
-            }
-            if (TotalAmount != null)
-            {
-                TotalAmount.Validate();
             }
         }
     }

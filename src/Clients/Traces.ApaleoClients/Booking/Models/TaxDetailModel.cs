@@ -26,12 +26,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="vatType">Possible values include: 'Null',
         /// 'VeryReduced', 'Reduced', 'Normal', 'Without', 'Special',
         /// 'ReducedCovid19', 'NormalCovid19'</param>
-        public TaxDetailModel(MonetaryValueModel net, MonetaryValueModel tax, VatType vatType, double? vatPercent = default(double?))
+        public TaxDetailModel(VatType vatType, double vatPercent, MonetaryValueModel net, MonetaryValueModel tax)
         {
+            VatType = vatType;
+            VatPercent = vatPercent;
             Net = net;
             Tax = tax;
-            VatPercent = vatPercent;
-            VatType = vatType;
             CustomInit();
         }
 
@@ -39,6 +39,19 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets possible values include: 'Null', 'VeryReduced',
+        /// 'Reduced', 'Normal', 'Without', 'Special', 'ReducedCovid19',
+        /// 'NormalCovid19'
+        /// </summary>
+        [JsonProperty(PropertyName = "vatType")]
+        public VatType VatType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "vatPercent")]
+        public double VatPercent { get; set; }
 
         /// <summary>
         /// </summary>
@@ -49,19 +62,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "tax")]
         public MonetaryValueModel Tax { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "vatPercent")]
-        public double? VatPercent { get; set; }
-
-        /// <summary>
-        /// Gets or sets possible values include: 'Null', 'VeryReduced',
-        /// 'Reduced', 'Normal', 'Without', 'Special', 'ReducedCovid19',
-        /// 'NormalCovid19'
-        /// </summary>
-        [JsonProperty(PropertyName = "vatType")]
-        public VatType VatType { get; set; }
 
         /// <summary>
         /// Validate the object.

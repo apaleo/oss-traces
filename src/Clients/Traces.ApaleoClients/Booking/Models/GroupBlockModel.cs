@@ -23,43 +23,43 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the GroupBlockModel class.
         /// </summary>
-        /// <param name="blockedUnits">Number of units blocked</param>
-        /// <param name="created">Date of creation&lt;br /&gt;A date and time
-        /// (without fractional second part) in UTC or with UTC offset as
-        /// defined in &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="id">Block id</param>
+        /// <param name="status">Status of the block. Possible values include:
+        /// 'Tentative', 'Definite', 'Canceled'</param>
         /// <param name="fromProperty">Start date and time from which the
         /// inventory will be blocked&lt;br /&gt;A date and time (without
         /// fractional second part) in UTC or with UTC offset as defined in
         /// &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="id">Block id</param>
-        /// <param name="modified">Date of last modification&lt;br /&gt;A date
-        /// and time (without fractional second part) in UTC or with UTC offset
-        /// as defined in &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="pickedReservations">Number of reservations already
-        /// picked from this block</param>
-        /// <param name="status">Status of the block. Possible values include:
-        /// 'Tentative', 'Definite', 'Canceled'</param>
         /// <param name="to">End date and time until which the inventory will
         /// be blocked&lt;br /&gt;A date and time (without fractional second
         /// part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        public GroupBlockModel(int blockedUnits, System.DateTime created, System.DateTime fromProperty, MonetaryValueModel grossDailyRate, string id, System.DateTime modified, int pickedReservations, EmbeddedPropertyModel property, EmbeddedRatePlanModel ratePlan, BlockStatus status, System.DateTime to, EmbeddedUnitGroupModel unitGroup)
+        /// <param name="blockedUnits">Number of units blocked</param>
+        /// <param name="pickedReservations">Number of reservations already
+        /// picked from this block</param>
+        /// <param name="created">Date of creation&lt;br /&gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="modified">Date of last modification&lt;br /&gt;A date
+        /// and time (without fractional second part) in UTC or with UTC offset
+        /// as defined in &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        public GroupBlockModel(string id, BlockStatus status, EmbeddedPropertyModel property, EmbeddedRatePlanModel ratePlan, EmbeddedUnitGroupModel unitGroup, MonetaryValueModel grossDailyRate, System.DateTime fromProperty, System.DateTime to, int blockedUnits, int pickedReservations, System.DateTime created, System.DateTime modified)
         {
-            BlockedUnits = blockedUnits;
-            Created = created;
-            FromProperty = fromProperty;
-            GrossDailyRate = grossDailyRate;
             Id = id;
-            Modified = modified;
-            PickedReservations = pickedReservations;
+            Status = status;
             Property = property;
             RatePlan = ratePlan;
-            Status = status;
-            To = to;
             UnitGroup = unitGroup;
+            GrossDailyRate = grossDailyRate;
+            FromProperty = fromProperty;
+            To = to;
+            BlockedUnits = blockedUnits;
+            PickedReservations = pickedReservations;
+            Created = created;
+            Modified = modified;
             CustomInit();
         }
 
@@ -69,54 +69,17 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets number of units blocked
-        /// </summary>
-        [JsonProperty(PropertyName = "blockedUnits")]
-        public int BlockedUnits { get; set; }
-
-        /// <summary>
-        /// Gets or sets date of creation&amp;lt;br /&amp;gt;A date and time
-        /// (without fractional second part) in UTC or with UTC offset as
-        /// defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
-        /// </summary>
-        [JsonProperty(PropertyName = "created")]
-        public System.DateTime Created { get; set; }
-
-        /// <summary>
-        /// Gets or sets start date and time from which the inventory will be
-        /// blocked&amp;lt;br /&amp;gt;A date and time (without fractional
-        /// second part) in UTC or with UTC offset as defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
-        /// </summary>
-        [JsonProperty(PropertyName = "from")]
-        public System.DateTime FromProperty { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "grossDailyRate")]
-        public MonetaryValueModel GrossDailyRate { get; set; }
-
-        /// <summary>
         /// Gets or sets block id
         /// </summary>
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
         /// <summary>
-        /// Gets or sets date of last modification&amp;lt;br /&amp;gt;A date
-        /// and time (without fractional second part) in UTC or with UTC offset
-        /// as defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// Gets or sets status of the block. Possible values include:
+        /// 'Tentative', 'Definite', 'Canceled'
         /// </summary>
-        [JsonProperty(PropertyName = "modified")]
-        public System.DateTime Modified { get; set; }
-
-        /// <summary>
-        /// Gets or sets number of reservations already picked from this block
-        /// </summary>
-        [JsonProperty(PropertyName = "pickedReservations")]
-        public int PickedReservations { get; set; }
+        [JsonProperty(PropertyName = "status")]
+        public BlockStatus Status { get; set; }
 
         /// <summary>
         /// </summary>
@@ -129,11 +92,23 @@ namespace Traces.ApaleoClients.Booking.Models
         public EmbeddedRatePlanModel RatePlan { get; set; }
 
         /// <summary>
-        /// Gets or sets status of the block. Possible values include:
-        /// 'Tentative', 'Definite', 'Canceled'
         /// </summary>
-        [JsonProperty(PropertyName = "status")]
-        public BlockStatus Status { get; set; }
+        [JsonProperty(PropertyName = "unitGroup")]
+        public EmbeddedUnitGroupModel UnitGroup { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "grossDailyRate")]
+        public MonetaryValueModel GrossDailyRate { get; set; }
+
+        /// <summary>
+        /// Gets or sets start date and time from which the inventory will be
+        /// blocked&amp;lt;br /&amp;gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "from")]
+        public System.DateTime FromProperty { get; set; }
 
         /// <summary>
         /// Gets or sets end date and time until which the inventory will be
@@ -145,9 +120,34 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime To { get; set; }
 
         /// <summary>
+        /// Gets or sets number of units blocked
         /// </summary>
-        [JsonProperty(PropertyName = "unitGroup")]
-        public EmbeddedUnitGroupModel UnitGroup { get; set; }
+        [JsonProperty(PropertyName = "blockedUnits")]
+        public int BlockedUnits { get; set; }
+
+        /// <summary>
+        /// Gets or sets number of reservations already picked from this block
+        /// </summary>
+        [JsonProperty(PropertyName = "pickedReservations")]
+        public int PickedReservations { get; set; }
+
+        /// <summary>
+        /// Gets or sets date of creation&amp;lt;br /&amp;gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "created")]
+        public System.DateTime Created { get; set; }
+
+        /// <summary>
+        /// Gets or sets date of last modification&amp;lt;br /&amp;gt;A date
+        /// and time (without fractional second part) in UTC or with UTC offset
+        /// as defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "modified")]
+        public System.DateTime Modified { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -157,10 +157,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (GrossDailyRate == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "GrossDailyRate");
-            }
             if (Id == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Id");
@@ -177,9 +173,9 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "UnitGroup");
             }
-            if (GrossDailyRate != null)
+            if (GrossDailyRate == null)
             {
-                GrossDailyRate.Validate();
+                throw new ValidationException(ValidationRules.CannotBeNull, "GrossDailyRate");
             }
             if (Property != null)
             {
@@ -192,6 +188,10 @@ namespace Traces.ApaleoClients.Booking.Models
             if (UnitGroup != null)
             {
                 UnitGroup.Validate();
+            }
+            if (GrossDailyRate != null)
+            {
+                GrossDailyRate.Validate();
             }
         }
     }

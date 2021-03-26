@@ -26,12 +26,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="vatType">Possible values include: 'Null',
         /// 'VeryReduced', 'Reduced', 'Normal', 'Without', 'Special',
         /// 'ReducedCovid19', 'NormalCovid19'</param>
-        public AmountModel(string currency, double grossAmount, double netAmount, VatType vatType)
+        public AmountModel(double grossAmount, double netAmount, VatType vatType, double vatPercent, string currency)
         {
-            Currency = currency;
             GrossAmount = grossAmount;
             NetAmount = netAmount;
             VatType = vatType;
+            VatPercent = vatPercent;
+            Currency = currency;
             CustomInit();
         }
 
@@ -39,11 +40,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "currency")]
-        public string Currency { get; set; }
 
         /// <summary>
         /// </summary>
@@ -62,6 +58,16 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "vatType")]
         public VatType VatType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "vatPercent")]
+        public double VatPercent { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "currency")]
+        public string Currency { get; set; }
 
         /// <summary>
         /// Validate the object.

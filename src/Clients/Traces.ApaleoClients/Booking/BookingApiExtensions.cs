@@ -18,390 +18,72 @@ namespace Traces.ApaleoClients.Booking
     public static partial class BookingApiExtensions
     {
             /// <summary>
-            /// Get a list of all available unit groups in a property [DEPRECATED]
+            /// Creates a block
             /// </summary>
             /// <remarks>
-            /// Use /availability/v1/unit-groups instead&lt;br/ &gt;Get the list of
-            /// available unit groups for a specific property and time period.&lt;br&gt;You
-            /// must have this scope: 'availability.read'.
+            /// &lt;br&gt;You must have at least one of these scopes: 'blocks.create,
+            /// reservations.manage'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='propertyId'>
-            /// The property id
+            /// <param name='body'>
+            /// The details for the block you want to create.
             /// </param>
-            /// <param name='fromParameter'>
-            /// First day of the requested time period. The given day will be included in
-            /// the response.
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
             /// </param>
-            /// <param name='to'>
-            /// Last day of the requested time period. The given day will be included in
-            /// the response.
+            /// <param name='idempotencyKey'>
+            /// Unique key for safely retrying requests without accidentally performing the
+            /// same operation twice.
+            /// We'll always send back the same response for requests made with the same
+            /// key,
+            /// and keys can't be reused with different request parameters. Keys expire
+            /// after 24 hours.
             /// </param>
-            /// <param name='timeSliceTemplate'>
-            /// The time slice template, defaults to 'over night'. Possible values include:
-            /// 'DayUse', 'OverNight'
-            /// </param>
-            /// <param name='unitGroupTypes'>
-            /// Filter result by requested unit group types
-            /// </param>
-            /// <param name='timeSliceDefinitionIds'>
-            /// The time slice definition ids
-            /// </param>
-            /// <param name='unitGroupIds'>
-            /// The unit group ids
-            /// </param>
-            /// <param name='adults'>
-            /// The number of adults you want availability for, defaults to 1
-            /// </param>
-            /// <param name='childrenAges'>
-            /// The ages of the children you want availability for
-            /// </param>
-            /// <param name='onlySellable'>
-            /// When set to 'true', only the unit groups sold by the specified time slice
-            /// template and time slice definition ids are returned,
-            /// otherwise all unit groups are returned
-            /// </param>
-            /// <param name='pageNumber'>
-            /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
-            /// are no items on that page.
-            /// </param>
-            /// <param name='pageSize'>
-            /// Page size. If this is not set, the pageNumber will be ignored and all
-            /// values returned.
-            /// </param>
-            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
-            public static object BookingAvailableUnitGroupsGet(this IBookingApi operations, string propertyId, System.DateTime fromParameter, System.DateTime to, TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), bool? onlySellable = default(bool?), int? pageNumber = 1, int? pageSize = 100)
+            public static object BookingBlocksPost(this IBookingApi operations, CreateBlockModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string))
             {
-                return operations.BookingAvailableUnitGroupsGetAsync(propertyId, fromParameter, to, timeSliceTemplate, unitGroupTypes, timeSliceDefinitionIds, unitGroupIds, adults, childrenAges, onlySellable, pageNumber, pageSize).GetAwaiter().GetResult();
+                return operations.BookingBlocksPostAsync(body, apaleoCurrentDateTime, idempotencyKey).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// Get a list of all available unit groups in a property [DEPRECATED]
+            /// Creates a block
             /// </summary>
             /// <remarks>
-            /// Use /availability/v1/unit-groups instead&lt;br/ &gt;Get the list of
-            /// available unit groups for a specific property and time period.&lt;br&gt;You
-            /// must have this scope: 'availability.read'.
+            /// &lt;br&gt;You must have at least one of these scopes: 'blocks.create,
+            /// reservations.manage'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='propertyId'>
-            /// The property id
+            /// <param name='body'>
+            /// The details for the block you want to create.
             /// </param>
-            /// <param name='fromParameter'>
-            /// First day of the requested time period. The given day will be included in
-            /// the response.
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
             /// </param>
-            /// <param name='to'>
-            /// Last day of the requested time period. The given day will be included in
-            /// the response.
-            /// </param>
-            /// <param name='timeSliceTemplate'>
-            /// The time slice template, defaults to 'over night'. Possible values include:
-            /// 'DayUse', 'OverNight'
-            /// </param>
-            /// <param name='unitGroupTypes'>
-            /// Filter result by requested unit group types
-            /// </param>
-            /// <param name='timeSliceDefinitionIds'>
-            /// The time slice definition ids
-            /// </param>
-            /// <param name='unitGroupIds'>
-            /// The unit group ids
-            /// </param>
-            /// <param name='adults'>
-            /// The number of adults you want availability for, defaults to 1
-            /// </param>
-            /// <param name='childrenAges'>
-            /// The ages of the children you want availability for
-            /// </param>
-            /// <param name='onlySellable'>
-            /// When set to 'true', only the unit groups sold by the specified time slice
-            /// template and time slice definition ids are returned,
-            /// otherwise all unit groups are returned
-            /// </param>
-            /// <param name='pageNumber'>
-            /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
-            /// are no items on that page.
-            /// </param>
-            /// <param name='pageSize'>
-            /// Page size. If this is not set, the pageNumber will be ignored and all
-            /// values returned.
+            /// <param name='idempotencyKey'>
+            /// Unique key for safely retrying requests without accidentally performing the
+            /// same operation twice.
+            /// We'll always send back the same response for requests made with the same
+            /// key,
+            /// and keys can't be reused with different request parameters. Keys expire
+            /// after 24 hours.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
-            public static async Task<object> BookingAvailableUnitGroupsGetAsync(this IBookingApi operations, string propertyId, System.DateTime fromParameter, System.DateTime to, TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), bool? onlySellable = default(bool?), int? pageNumber = 1, int? pageSize = 100, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingBlocksPostAsync(this IBookingApi operations, CreateBlockModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingAvailableUnitGroupsGetWithHttpMessagesAsync(propertyId, fromParameter, to, timeSliceTemplate, unitGroupTypes, timeSliceDefinitionIds, unitGroupIds, adults, childrenAges, onlySellable, pageNumber, pageSize, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Get a list of all available units in a property [DEPRECATED]
-            /// </summary>
-            /// <remarks>
-            /// Use /availability/v1/units instead&lt;br/ &gt;Get the list of available
-            /// units for a specific property and time period.&lt;br&gt;You must have this
-            /// scope: 'availability.read'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='propertyId'>
-            /// The property id
-            /// </param>
-            /// <param name='fromParameter'>
-            /// The from date and time&lt;br /&gt;A date and time (without fractional
-            /// second part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-            /// </param>
-            /// <param name='to'>
-            /// The to date and time&lt;br /&gt;A date and time (without fractional second
-            /// part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-            /// </param>
-            /// <param name='unitGroupId'>
-            /// The unit group id
-            /// </param>
-            /// <param name='includeOutOfService'>
-            /// Should units that are set OutOfService in the defined time period be
-            /// returned as available.
-            /// </param>
-            /// <param name='unitCondition'>
-            /// The unit condition. Possible values include: 'Clean', 'CleanToBeInspected',
-            /// 'Dirty'
-            /// </param>
-            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
-            public static object BookingAvailableUnitsGet(this IBookingApi operations, string propertyId, System.DateTime fromParameter, System.DateTime to, string unitGroupId = default(string), bool? includeOutOfService = default(bool?), UnitCondition? unitCondition = default(UnitCondition?))
-            {
-                return operations.BookingAvailableUnitsGetAsync(propertyId, fromParameter, to, unitGroupId, includeOutOfService, unitCondition).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Get a list of all available units in a property [DEPRECATED]
-            /// </summary>
-            /// <remarks>
-            /// Use /availability/v1/units instead&lt;br/ &gt;Get the list of available
-            /// units for a specific property and time period.&lt;br&gt;You must have this
-            /// scope: 'availability.read'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='propertyId'>
-            /// The property id
-            /// </param>
-            /// <param name='fromParameter'>
-            /// The from date and time&lt;br /&gt;A date and time (without fractional
-            /// second part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-            /// </param>
-            /// <param name='to'>
-            /// The to date and time&lt;br /&gt;A date and time (without fractional second
-            /// part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-            /// </param>
-            /// <param name='unitGroupId'>
-            /// The unit group id
-            /// </param>
-            /// <param name='includeOutOfService'>
-            /// Should units that are set OutOfService in the defined time period be
-            /// returned as available.
-            /// </param>
-            /// <param name='unitCondition'>
-            /// The unit condition. Possible values include: 'Clean', 'CleanToBeInspected',
-            /// 'Dirty'
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
-            public static async Task<object> BookingAvailableUnitsGetAsync(this IBookingApi operations, string propertyId, System.DateTime fromParameter, System.DateTime to, string unitGroupId = default(string), bool? includeOutOfService = default(bool?), UnitCondition? unitCondition = default(UnitCondition?), CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingAvailableUnitsGetWithHttpMessagesAsync(propertyId, fromParameter, to, unitGroupId, includeOutOfService, unitCondition, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Cancel a block.
-            /// </summary>
-            /// <remarks>
-            /// Cancel a specific block which is in status 'Definite' or 'Tentative'.
-            /// This changes the status to 'Canceled'.&lt;br&gt;You must have at least one
-            /// of these scopes: 'blocks.manage, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the block that should be processed.
-            /// </param>
-            public static MessageItemCollection BookingBlockActionsByIdCancelPut(this IBookingApi operations, string id)
-            {
-                return operations.BookingBlockActionsByIdCancelPutAsync(id).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Cancel a block.
-            /// </summary>
-            /// <remarks>
-            /// Cancel a specific block which is in status 'Definite' or 'Tentative'.
-            /// This changes the status to 'Canceled'.&lt;br&gt;You must have at least one
-            /// of these scopes: 'blocks.manage, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the block that should be processed.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<MessageItemCollection> BookingBlockActionsByIdCancelPutAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingBlockActionsByIdCancelPutWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Confirm a block.
-            /// </summary>
-            /// <remarks>
-            /// Confirm a specific block which is in status 'Tentative'.
-            /// This changes the status to 'Definite'.&lt;br&gt;You must have at least one
-            /// of these scopes: 'blocks.manage, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the block that should be processed.
-            /// </param>
-            public static MessageItemCollection BookingBlockActionsByIdConfirmPut(this IBookingApi operations, string id)
-            {
-                return operations.BookingBlockActionsByIdConfirmPutAsync(id).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Confirm a block.
-            /// </summary>
-            /// <remarks>
-            /// Confirm a specific block which is in status 'Tentative'.
-            /// This changes the status to 'Definite'.&lt;br&gt;You must have at least one
-            /// of these scopes: 'blocks.manage, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the block that should be processed.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<MessageItemCollection> BookingBlockActionsByIdConfirmPutAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingBlockActionsByIdConfirmPutWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Release a block.
-            /// </summary>
-            /// <remarks>
-            /// Release a specific block which is in status 'Definite'.
-            /// This changes the status to 'Tentative'.&lt;br&gt;You must have at least one
-            /// of these scopes: 'blocks.manage, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the block that should be processed.
-            /// </param>
-            public static MessageItemCollection BookingBlockActionsByIdReleasePut(this IBookingApi operations, string id)
-            {
-                return operations.BookingBlockActionsByIdReleasePutAsync(id).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Release a block.
-            /// </summary>
-            /// <remarks>
-            /// Release a specific block which is in status 'Definite'.
-            /// This changes the status to 'Tentative'.&lt;br&gt;You must have at least one
-            /// of these scopes: 'blocks.manage, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the block that should be processed.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<MessageItemCollection> BookingBlockActionsByIdReleasePutAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingBlockActionsByIdReleasePutWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Wash a block.
-            /// </summary>
-            /// <remarks>
-            /// Wash a specific block which is in status 'Definite'.
-            /// This releases all unpicked units.&lt;br&gt;You must have at least one of
-            /// these scopes: 'blocks.manage, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the block that should be processed.
-            /// </param>
-            public static MessageItemCollection BookingBlockActionsByIdWashPut(this IBookingApi operations, string id)
-            {
-                return operations.BookingBlockActionsByIdWashPutAsync(id).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Wash a block.
-            /// </summary>
-            /// <remarks>
-            /// Wash a specific block which is in status 'Definite'.
-            /// This releases all unpicked units.&lt;br&gt;You must have at least one of
-            /// these scopes: 'blocks.manage, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the block that should be processed.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<MessageItemCollection> BookingBlockActionsByIdWashPutAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingBlockActionsByIdWashPutWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingBlocksPostWithHttpMessagesAsync(body, apaleoCurrentDateTime, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -458,6 +140,13 @@ namespace Traces.ApaleoClients.Booking
             /// part) in UTC or with UTC offset as defined in &lt;a
             /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='pageNumber'>
             /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
             /// are no items on that page.
@@ -471,9 +160,9 @@ namespace Traces.ApaleoClients.Booking
             /// Possible values are: actions, timeSlices. All other values will be silently
             /// ignored.
             /// </param>
-            public static object BookingBlocksGet(this IBookingApi operations, string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>))
+            public static object BookingBlocksGet(this IBookingApi operations, string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>))
             {
-                return operations.BookingBlocksGetAsync(groupId, propertyIds, status, unitGroupIds, ratePlanIds, timeSliceDefinitionIds, unitGroupTypes, timeSliceTemplate, fromParameter, to, pageNumber, pageSize, expand).GetAwaiter().GetResult();
+                return operations.BookingBlocksGetAsync(groupId, propertyIds, status, unitGroupIds, ratePlanIds, timeSliceDefinitionIds, unitGroupTypes, timeSliceTemplate, fromParameter, to, apaleoCurrentDateTime, pageNumber, pageSize, expand).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -527,6 +216,13 @@ namespace Traces.ApaleoClients.Booking
             /// part) in UTC or with UTC offset as defined in &lt;a
             /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='pageNumber'>
             /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
             /// are no items on that page.
@@ -543,67 +239,9 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingBlocksGetAsync(this IBookingApi operations, string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingBlocksGetAsync(this IBookingApi operations, string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingBlocksGetWithHttpMessagesAsync(groupId, propertyIds, status, unitGroupIds, ratePlanIds, timeSliceDefinitionIds, unitGroupTypes, timeSliceTemplate, fromParameter, to, pageNumber, pageSize, expand, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Creates a block
-            /// </summary>
-            /// <remarks>
-            /// &lt;br&gt;You must have at least one of these scopes: 'blocks.create,
-            /// reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='body'>
-            /// The details for the block you want to create.
-            /// </param>
-            /// <param name='idempotencyKey'>
-            /// Unique key for safely retrying requests without accidentally performing the
-            /// same operation twice.
-            /// We'll always send back the same response for requests made with the same
-            /// key,
-            /// and keys can't be reused with different request parameters. Keys expire
-            /// after 24 hours.
-            /// </param>
-            public static object BookingBlocksPost(this IBookingApi operations, CreateBlockModel body, string idempotencyKey = default(string))
-            {
-                return operations.BookingBlocksPostAsync(body, idempotencyKey).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Creates a block
-            /// </summary>
-            /// <remarks>
-            /// &lt;br&gt;You must have at least one of these scopes: 'blocks.create,
-            /// reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='body'>
-            /// The details for the block you want to create.
-            /// </param>
-            /// <param name='idempotencyKey'>
-            /// Unique key for safely retrying requests without accidentally performing the
-            /// same operation twice.
-            /// We'll always send back the same response for requests made with the same
-            /// key,
-            /// and keys can't be reused with different request parameters. Keys expire
-            /// after 24 hours.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<object> BookingBlocksPostAsync(this IBookingApi operations, CreateBlockModel body, string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingBlocksPostWithHttpMessagesAsync(body, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingBlocksGetWithHttpMessagesAsync(groupId, propertyIds, status, unitGroupIds, ratePlanIds, timeSliceDefinitionIds, unitGroupTypes, timeSliceTemplate, fromParameter, to, apaleoCurrentDateTime, pageNumber, pageSize, expand, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -659,9 +297,16 @@ namespace Traces.ApaleoClients.Booking
             /// part) in UTC or with UTC offset as defined in &lt;a
             /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
             /// </param>
-            public static object BookingBlockscountGet(this IBookingApi operations, string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?))
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static object BookingBlockscountGet(this IBookingApi operations, string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingBlockscountGetAsync(groupId, propertyIds, status, unitGroupIds, ratePlanIds, timeSliceDefinitionIds, unitGroupTypes, timeSliceTemplate, fromParameter, to).GetAwaiter().GetResult();
+                return operations.BookingBlockscountGetAsync(groupId, propertyIds, status, unitGroupIds, ratePlanIds, timeSliceDefinitionIds, unitGroupTypes, timeSliceTemplate, fromParameter, to, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -714,12 +359,149 @@ namespace Traces.ApaleoClients.Booking
             /// part) in UTC or with UTC offset as defined in &lt;a
             /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingBlockscountGetAsync(this IBookingApi operations, string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingBlockscountGetAsync(this IBookingApi operations, string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingBlockscountGetWithHttpMessagesAsync(groupId, propertyIds, status, unitGroupIds, ratePlanIds, timeSliceDefinitionIds, unitGroupTypes, timeSliceTemplate, fromParameter, to, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingBlockscountGetWithHttpMessagesAsync(groupId, propertyIds, status, unitGroupIds, ratePlanIds, timeSliceDefinitionIds, unitGroupTypes, timeSliceTemplate, fromParameter, to, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Returns a specific block.
+            /// </summary>
+            /// <remarks>
+            /// Retrieves a block, specified by its ID.&lt;br&gt;You must have at least one
+            /// of these scopes: 'blocks.read, reservations.read, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the block to be retrieved.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='expand'>
+            /// List of all embedded resources that should be expanded in the response.
+            /// Possible values are: actions, timeSlices. All other values will be silently
+            /// ignored.
+            /// </param>
+            public static object BookingBlocksByIdGet(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), IList<string> expand = default(IList<string>))
+            {
+                return operations.BookingBlocksByIdGetAsync(id, apaleoCurrentDateTime, expand).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Returns a specific block.
+            /// </summary>
+            /// <remarks>
+            /// Retrieves a block, specified by its ID.&lt;br&gt;You must have at least one
+            /// of these scopes: 'blocks.read, reservations.read, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the block to be retrieved.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='expand'>
+            /// List of all embedded resources that should be expanded in the response.
+            /// Possible values are: actions, timeSlices. All other values will be silently
+            /// ignored.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<object> BookingBlocksByIdGetAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingBlocksByIdGetWithHttpMessagesAsync(id, apaleoCurrentDateTime, expand, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Allows to modify the block
+            /// </summary>
+            /// <remarks>
+            /// You can replace From, To, GrossDailyRate and BlockedUnits&lt;br&gt;You must
+            /// have at least one of these scopes: 'blocks.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the block to be modified.
+            /// </param>
+            /// <param name='body'>
+            /// Define the list of operations to be applied to the resource. Learn more
+            /// about JSON Patch here: http://jsonpatch.com/.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingBlocksByIdPatch(this IBookingApi operations, string id, IList<Operation> body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingBlocksByIdPatchAsync(id, body, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Allows to modify the block
+            /// </summary>
+            /// <remarks>
+            /// You can replace From, To, GrossDailyRate and BlockedUnits&lt;br&gt;You must
+            /// have at least one of these scopes: 'blocks.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the block to be modified.
+            /// </param>
+            /// <param name='body'>
+            /// Define the list of operations to be applied to the resource. Learn more
+            /// about JSON Patch here: http://jsonpatch.com/.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingBlocksByIdPatchAsync(this IBookingApi operations, string id, IList<Operation> body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingBlocksByIdPatchWithHttpMessagesAsync(id, body, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -740,9 +522,16 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='id'>
             /// The id of the block.
             /// </param>
-            public static void BookingBlocksByIdDelete(this IBookingApi operations, string id)
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingBlocksByIdDelete(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                operations.BookingBlocksByIdDeleteAsync(id).GetAwaiter().GetResult();
+                return operations.BookingBlocksByIdDeleteAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -760,61 +549,19 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='id'>
             /// The id of the block.
             /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task BookingBlocksByIdDeleteAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                (await operations.BookingBlocksByIdDeleteWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false)).Dispose();
-            }
-
-            /// <summary>
-            /// Returns a specific block.
-            /// </summary>
-            /// <remarks>
-            /// Retrieves a block, specified by its ID.&lt;br&gt;You must have at least one
-            /// of these scopes: 'blocks.read, reservations.read, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the block to be retrieved.
-            /// </param>
-            /// <param name='expand'>
-            /// List of all embedded resources that should be expanded in the response.
-            /// Possible values are: actions, timeSlices. All other values will be silently
-            /// ignored.
-            /// </param>
-            public static object BookingBlocksByIdGet(this IBookingApi operations, string id, IList<string> expand = default(IList<string>))
-            {
-                return operations.BookingBlocksByIdGetAsync(id, expand).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Returns a specific block.
-            /// </summary>
-            /// <remarks>
-            /// Retrieves a block, specified by its ID.&lt;br&gt;You must have at least one
-            /// of these scopes: 'blocks.read, reservations.read, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the block to be retrieved.
-            /// </param>
-            /// <param name='expand'>
-            /// List of all embedded resources that should be expanded in the response.
-            /// Possible values are: actions, timeSlices. All other values will be silently
-            /// ignored.
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingBlocksByIdGetAsync(this IBookingApi operations, string id, IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<MessageItemCollection> BookingBlocksByIdDeleteAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingBlocksByIdGetWithHttpMessagesAsync(id, expand, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingBlocksByIdDeleteWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -833,9 +580,16 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='id'>
             /// The id of the block.
             /// </param>
-            public static void BookingBlocksByIdHead(this IBookingApi operations, string id)
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static void BookingBlocksByIdHead(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                operations.BookingBlocksByIdHeadAsync(id).GetAwaiter().GetResult();
+                operations.BookingBlocksByIdHeadAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -851,20 +605,259 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='id'>
             /// The id of the block.
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task BookingBlocksByIdHeadAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task BookingBlocksByIdHeadAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.BookingBlocksByIdHeadWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.BookingBlocksByIdHeadWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
-            /// Allows to modify the block
+            /// Confirm a block.
             /// </summary>
             /// <remarks>
-            /// You can replace From, To, GrossDailyRate and BlockedUnits&lt;br&gt;You must
-            /// have at least one of these scopes: 'blocks.manage, reservations.manage'.
+            /// Confirm a specific block which is in status 'Tentative'.
+            /// This changes the status to 'Definite'.&lt;br&gt;You must have at least one
+            /// of these scopes: 'blocks.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the block that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingBlockActionsByIdConfirmPut(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingBlockActionsByIdConfirmPutAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Confirm a block.
+            /// </summary>
+            /// <remarks>
+            /// Confirm a specific block which is in status 'Tentative'.
+            /// This changes the status to 'Definite'.&lt;br&gt;You must have at least one
+            /// of these scopes: 'blocks.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the block that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingBlockActionsByIdConfirmPutAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingBlockActionsByIdConfirmPutWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Release a block.
+            /// </summary>
+            /// <remarks>
+            /// Release a specific block which is in status 'Definite'.
+            /// This changes the status to 'Tentative'.&lt;br&gt;You must have at least one
+            /// of these scopes: 'blocks.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the block that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingBlockActionsByIdReleasePut(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingBlockActionsByIdReleasePutAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Release a block.
+            /// </summary>
+            /// <remarks>
+            /// Release a specific block which is in status 'Definite'.
+            /// This changes the status to 'Tentative'.&lt;br&gt;You must have at least one
+            /// of these scopes: 'blocks.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the block that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingBlockActionsByIdReleasePutAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingBlockActionsByIdReleasePutWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Cancel a block.
+            /// </summary>
+            /// <remarks>
+            /// Cancel a specific block which is in status 'Definite' or 'Tentative'.
+            /// This changes the status to 'Canceled'.&lt;br&gt;You must have at least one
+            /// of these scopes: 'blocks.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the block that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingBlockActionsByIdCancelPut(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingBlockActionsByIdCancelPutAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Cancel a block.
+            /// </summary>
+            /// <remarks>
+            /// Cancel a specific block which is in status 'Definite' or 'Tentative'.
+            /// This changes the status to 'Canceled'.&lt;br&gt;You must have at least one
+            /// of these scopes: 'blocks.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the block that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingBlockActionsByIdCancelPutAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingBlockActionsByIdCancelPutWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Wash a block.
+            /// </summary>
+            /// <remarks>
+            /// Wash a specific block which is in status 'Definite'.
+            /// This releases all unpicked units.&lt;br&gt;You must have at least one of
+            /// these scopes: 'blocks.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the block that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingBlockActionsByIdWashPut(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingBlockActionsByIdWashPutAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Wash a block.
+            /// </summary>
+            /// <remarks>
+            /// Wash a specific block which is in status 'Definite'.
+            /// This releases all unpicked units.&lt;br&gt;You must have at least one of
+            /// these scopes: 'blocks.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the block that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingBlockActionsByIdWashPutAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingBlockActionsByIdWashPutWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Allow to modify a block
+            /// </summary>
+            /// <remarks>
+            /// Use this call to modify a block.&lt;br&gt;You must have at least one of
+            /// these scopes: 'blocks.manage, reservations.manage'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -873,20 +866,26 @@ namespace Traces.ApaleoClients.Booking
             /// Id of the block to be modified.
             /// </param>
             /// <param name='body'>
-            /// Define the list of operations to be applied to the resource. Learn more
-            /// about JSON Patch here: http://jsonpatch.com/.
+            /// The definition of the block.
             /// </param>
-            public static MessageItemCollection BookingBlocksByIdPatch(this IBookingApi operations, string id, IList<Operation> body)
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingBlockActionsByIdAmendPut(this IBookingApi operations, string id, ReplaceBlockModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingBlocksByIdPatchAsync(id, body).GetAwaiter().GetResult();
+                return operations.BookingBlockActionsByIdAmendPutAsync(id, body, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// Allows to modify the block
+            /// Allow to modify a block
             /// </summary>
             /// <remarks>
-            /// You can replace From, To, GrossDailyRate and BlockedUnits&lt;br&gt;You must
-            /// have at least one of these scopes: 'blocks.manage, reservations.manage'.
+            /// Use this call to modify a block.&lt;br&gt;You must have at least one of
+            /// these scopes: 'blocks.manage, reservations.manage'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -895,15 +894,95 @@ namespace Traces.ApaleoClients.Booking
             /// Id of the block to be modified.
             /// </param>
             /// <param name='body'>
-            /// Define the list of operations to be applied to the resource. Learn more
-            /// about JSON Patch here: http://jsonpatch.com/.
+            /// The definition of the block.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<MessageItemCollection> BookingBlocksByIdPatchAsync(this IBookingApi operations, string id, IList<Operation> body, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<MessageItemCollection> BookingBlockActionsByIdAmendPutAsync(this IBookingApi operations, string id, ReplaceBlockModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingBlocksByIdPatchWithHttpMessagesAsync(id, body, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingBlockActionsByIdAmendPutWithHttpMessagesAsync(id, body, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Creates a booking for one or more reservations.
+            /// </summary>
+            /// <remarks>
+            /// Creates a booking taking a list of reservations as input&lt;br&gt;You must
+            /// have at least one of these scopes: 'reservations.create,
+            /// reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='body'>
+            /// The list of reservations you want to create.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='idempotencyKey'>
+            /// Unique key for safely retrying requests without accidentally performing the
+            /// same operation twice.
+            /// We'll always send back the same response for requests made with the same
+            /// key,
+            /// and keys can't be reused with different request parameters. Keys expire
+            /// after 24 hours.
+            /// </param>
+            public static object BookingBookingsPost(this IBookingApi operations, CreateBookingModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string))
+            {
+                return operations.BookingBookingsPostAsync(body, apaleoCurrentDateTime, idempotencyKey).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Creates a booking for one or more reservations.
+            /// </summary>
+            /// <remarks>
+            /// Creates a booking taking a list of reservations as input&lt;br&gt;You must
+            /// have at least one of these scopes: 'reservations.create,
+            /// reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='body'>
+            /// The list of reservations you want to create.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='idempotencyKey'>
+            /// Unique key for safely retrying requests without accidentally performing the
+            /// same operation twice.
+            /// We'll always send back the same response for requests made with the same
+            /// key,
+            /// and keys can't be reused with different request parameters. Keys expire
+            /// after 24 hours.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<object> BookingBookingsPostAsync(this IBookingApi operations, CreateBookingModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingBookingsPostWithHttpMessagesAsync(body, apaleoCurrentDateTime, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -943,6 +1022,13 @@ namespace Traces.ApaleoClients.Booking
             /// booker
             /// contains one of the provided values
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='pageNumber'>
             /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
             /// are no items on that page.
@@ -956,9 +1042,9 @@ namespace Traces.ApaleoClients.Booking
             /// Possible values are: property, unitGroup, ratePlan, services, reservations.
             /// All other values will be silently ignored.
             /// </param>
-            public static object BookingBookingsGet(this IBookingApi operations, string reservationId = default(string), string groupId = default(string), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), string externalCode = default(string), string textSearch = default(string), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>))
+            public static object BookingBookingsGet(this IBookingApi operations, string reservationId = default(string), string groupId = default(string), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), string externalCode = default(string), string textSearch = default(string), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>))
             {
-                return operations.BookingBookingsGetAsync(reservationId, groupId, channelCode, externalCode, textSearch, pageNumber, pageSize, expand).GetAwaiter().GetResult();
+                return operations.BookingBookingsGetAsync(reservationId, groupId, channelCode, externalCode, textSearch, apaleoCurrentDateTime, pageNumber, pageSize, expand).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -995,6 +1081,13 @@ namespace Traces.ApaleoClients.Booking
             /// booker
             /// contains one of the provided values
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='pageNumber'>
             /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
             /// are no items on that page.
@@ -1011,69 +1104,9 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingBookingsGetAsync(this IBookingApi operations, string reservationId = default(string), string groupId = default(string), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), string externalCode = default(string), string textSearch = default(string), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingBookingsGetAsync(this IBookingApi operations, string reservationId = default(string), string groupId = default(string), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), string externalCode = default(string), string textSearch = default(string), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingBookingsGetWithHttpMessagesAsync(reservationId, groupId, channelCode, externalCode, textSearch, pageNumber, pageSize, expand, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Creates a booking for one or more reservations.
-            /// </summary>
-            /// <remarks>
-            /// Creates a booking taking a list of reservations as input&lt;br&gt;You must
-            /// have at least one of these scopes: 'reservations.create,
-            /// reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='body'>
-            /// The list of reservations you want to create.
-            /// </param>
-            /// <param name='idempotencyKey'>
-            /// Unique key for safely retrying requests without accidentally performing the
-            /// same operation twice.
-            /// We'll always send back the same response for requests made with the same
-            /// key,
-            /// and keys can't be reused with different request parameters. Keys expire
-            /// after 24 hours.
-            /// </param>
-            public static object BookingBookingsPost(this IBookingApi operations, CreateBookingModel body, string idempotencyKey = default(string))
-            {
-                return operations.BookingBookingsPostAsync(body, idempotencyKey).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Creates a booking for one or more reservations.
-            /// </summary>
-            /// <remarks>
-            /// Creates a booking taking a list of reservations as input&lt;br&gt;You must
-            /// have at least one of these scopes: 'reservations.create,
-            /// reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='body'>
-            /// The list of reservations you want to create.
-            /// </param>
-            /// <param name='idempotencyKey'>
-            /// Unique key for safely retrying requests without accidentally performing the
-            /// same operation twice.
-            /// We'll always send back the same response for requests made with the same
-            /// key,
-            /// and keys can't be reused with different request parameters. Keys expire
-            /// after 24 hours.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<object> BookingBookingsPostAsync(this IBookingApi operations, CreateBookingModel body, string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingBookingsPostWithHttpMessagesAsync(body, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingBookingsGetWithHttpMessagesAsync(reservationId, groupId, channelCode, externalCode, textSearch, apaleoCurrentDateTime, pageNumber, pageSize, expand, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -1094,6 +1127,13 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='body'>
             /// The list of reservations you want to create.
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='idempotencyKey'>
             /// Unique key for safely retrying requests without accidentally performing the
             /// same operation twice.
@@ -1102,9 +1142,9 @@ namespace Traces.ApaleoClients.Booking
             /// and keys can't be reused with different request parameters. Keys expire
             /// after 24 hours.
             /// </param>
-            public static object BookingBookingsforcePost(this IBookingApi operations, CreateBookingModel body, string idempotencyKey = default(string))
+            public static object BookingBookingsforcePost(this IBookingApi operations, CreateBookingModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string))
             {
-                return operations.BookingBookingsforcePostAsync(body, idempotencyKey).GetAwaiter().GetResult();
+                return operations.BookingBookingsforcePostAsync(body, apaleoCurrentDateTime, idempotencyKey).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -1122,6 +1162,13 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='body'>
             /// The list of reservations you want to create.
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='idempotencyKey'>
             /// Unique key for safely retrying requests without accidentally performing the
             /// same operation twice.
@@ -1133,9 +1180,171 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingBookingsforcePostAsync(this IBookingApi operations, CreateBookingModel body, string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingBookingsforcePostAsync(this IBookingApi operations, CreateBookingModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingBookingsforcePostWithHttpMessagesAsync(body, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingBookingsforcePostWithHttpMessagesAsync(body, apaleoCurrentDateTime, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Add one or multiple reservations to an existing booking.
+            /// </summary>
+            /// <remarks>
+            /// Creates new reservations and adds them to an existing booking taking a list
+            /// of reservations as input&lt;br&gt;You must have at least one of these
+            /// scopes: 'reservations.create, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the booking the reservations should be attached to.
+            /// </param>
+            /// <param name='body'>
+            /// The list of reservations you want to add.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='idempotencyKey'>
+            /// Unique key for safely retrying requests without accidentally performing the
+            /// same operation twice.
+            /// We'll always send back the same response for requests made with the same
+            /// key,
+            /// and keys can't be reused with different request parameters. Keys expire
+            /// after 24 hours.
+            /// </param>
+            public static object BookingBookingsByIdReservationsPost(this IBookingApi operations, string id, AddReservationsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string))
+            {
+                return operations.BookingBookingsByIdReservationsPostAsync(id, body, apaleoCurrentDateTime, idempotencyKey).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Add one or multiple reservations to an existing booking.
+            /// </summary>
+            /// <remarks>
+            /// Creates new reservations and adds them to an existing booking taking a list
+            /// of reservations as input&lt;br&gt;You must have at least one of these
+            /// scopes: 'reservations.create, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the booking the reservations should be attached to.
+            /// </param>
+            /// <param name='body'>
+            /// The list of reservations you want to add.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='idempotencyKey'>
+            /// Unique key for safely retrying requests without accidentally performing the
+            /// same operation twice.
+            /// We'll always send back the same response for requests made with the same
+            /// key,
+            /// and keys can't be reused with different request parameters. Keys expire
+            /// after 24 hours.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<object> BookingBookingsByIdReservationsPostAsync(this IBookingApi operations, string id, AddReservationsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingBookingsByIdReservationsPostWithHttpMessagesAsync(id, body, apaleoCurrentDateTime, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Add one or multiple reservations to an existing booking regardless of
+            /// availability or restrictions.
+            /// </summary>
+            /// <remarks>
+            /// Creates new reservations and adds them to an existing booking taking a list
+            /// of reservations as input&lt;br&gt;You must have at least one of these
+            /// scopes: 'reservations.force-create, reservations.force-manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the booking the reservations should be attached to.
+            /// </param>
+            /// <param name='body'>
+            /// The list of reservations you want to add.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='idempotencyKey'>
+            /// Unique key for safely retrying requests without accidentally performing the
+            /// same operation twice.
+            /// We'll always send back the same response for requests made with the same
+            /// key,
+            /// and keys can't be reused with different request parameters. Keys expire
+            /// after 24 hours.
+            /// </param>
+            public static object BookingBookingsByIdReservationsforcePost(this IBookingApi operations, string id, AddReservationsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string))
+            {
+                return operations.BookingBookingsByIdReservationsforcePostAsync(id, body, apaleoCurrentDateTime, idempotencyKey).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Add one or multiple reservations to an existing booking regardless of
+            /// availability or restrictions.
+            /// </summary>
+            /// <remarks>
+            /// Creates new reservations and adds them to an existing booking taking a list
+            /// of reservations as input&lt;br&gt;You must have at least one of these
+            /// scopes: 'reservations.force-create, reservations.force-manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the booking the reservations should be attached to.
+            /// </param>
+            /// <param name='body'>
+            /// The list of reservations you want to add.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='idempotencyKey'>
+            /// Unique key for safely retrying requests without accidentally performing the
+            /// same operation twice.
+            /// We'll always send back the same response for requests made with the same
+            /// key,
+            /// and keys can't be reused with different request parameters. Keys expire
+            /// after 24 hours.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<object> BookingBookingsByIdReservationsforcePostAsync(this IBookingApi operations, string id, AddReservationsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingBookingsByIdReservationsforcePostWithHttpMessagesAsync(id, body, apaleoCurrentDateTime, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -1154,14 +1363,21 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='id'>
             /// Id of the booking to be retrieved.
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='expand'>
             /// List of all embedded resources that should be expanded in the response.
             /// Possible values are: property, unitGroup, ratePlan, services, reservations,
             /// propertyValues. All other values will be silently ignored.
             /// </param>
-            public static object BookingBookingsByIdGet(this IBookingApi operations, string id, IList<string> expand = default(IList<string>))
+            public static object BookingBookingsByIdGet(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), IList<string> expand = default(IList<string>))
             {
-                return operations.BookingBookingsByIdGetAsync(id, expand).GetAwaiter().GetResult();
+                return operations.BookingBookingsByIdGetAsync(id, apaleoCurrentDateTime, expand).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -1177,6 +1393,13 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='id'>
             /// Id of the booking to be retrieved.
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='expand'>
             /// List of all embedded resources that should be expanded in the response.
             /// Possible values are: property, unitGroup, ratePlan, services, reservations,
@@ -1185,9 +1408,9 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingBookingsByIdGetAsync(this IBookingApi operations, string id, IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingBookingsByIdGetAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingBookingsByIdGetWithHttpMessagesAsync(id, expand, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingBookingsByIdGetWithHttpMessagesAsync(id, apaleoCurrentDateTime, expand, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -1215,9 +1438,16 @@ namespace Traces.ApaleoClients.Booking
             /// Define the list of operations to be applied to the resource. Learn more
             /// about JSON Patch here: http://jsonpatch.com/.
             /// </param>
-            public static MessageItemCollection BookingBookingsByIdPatch(this IBookingApi operations, string id, IList<Operation> body)
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingBookingsByIdPatch(this IBookingApi operations, string id, IList<Operation> body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingBookingsByIdPatchAsync(id, body).GetAwaiter().GetResult();
+                return operations.BookingBookingsByIdPatchAsync(id, body, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -1242,33 +1472,43 @@ namespace Traces.ApaleoClients.Booking
             /// Define the list of operations to be applied to the resource. Learn more
             /// about JSON Patch here: http://jsonpatch.com/.
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<MessageItemCollection> BookingBookingsByIdPatchAsync(this IBookingApi operations, string id, IList<Operation> body, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<MessageItemCollection> BookingBookingsByIdPatchAsync(this IBookingApi operations, string id, IList<Operation> body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingBookingsByIdPatchWithHttpMessagesAsync(id, body, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingBookingsByIdPatchWithHttpMessagesAsync(id, body, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
             }
 
             /// <summary>
-            /// Add one or multiple reservations to an existing booking.
+            /// Creates a group booking.
             /// </summary>
             /// <remarks>
-            /// Creates new reservations and adds them to an existing booking taking a list
-            /// of reservations as input&lt;br&gt;You must have at least one of these
-            /// scopes: 'reservations.create, reservations.manage'.
+            /// &lt;br&gt;You must have at least one of these scopes: 'groups.create,
+            /// reservations.manage'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='id'>
-            /// Id of the booking the reservations should be attached to.
-            /// </param>
             /// <param name='body'>
-            /// The list of reservations you want to add.
+            /// The details of the group that should be created.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
             /// </param>
             /// <param name='idempotencyKey'>
             /// Unique key for safely retrying requests without accidentally performing the
@@ -1278,27 +1518,30 @@ namespace Traces.ApaleoClients.Booking
             /// and keys can't be reused with different request parameters. Keys expire
             /// after 24 hours.
             /// </param>
-            public static object BookingBookingsByIdReservationsPost(this IBookingApi operations, string id, AddReservationsModel body, string idempotencyKey = default(string))
+            public static object BookingGroupsPost(this IBookingApi operations, CreateGroupModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string))
             {
-                return operations.BookingBookingsByIdReservationsPostAsync(id, body, idempotencyKey).GetAwaiter().GetResult();
+                return operations.BookingGroupsPostAsync(body, apaleoCurrentDateTime, idempotencyKey).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// Add one or multiple reservations to an existing booking.
+            /// Creates a group booking.
             /// </summary>
             /// <remarks>
-            /// Creates new reservations and adds them to an existing booking taking a list
-            /// of reservations as input&lt;br&gt;You must have at least one of these
-            /// scopes: 'reservations.create, reservations.manage'.
+            /// &lt;br&gt;You must have at least one of these scopes: 'groups.create,
+            /// reservations.manage'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='id'>
-            /// Id of the booking the reservations should be attached to.
-            /// </param>
             /// <param name='body'>
-            /// The list of reservations you want to add.
+            /// The details of the group that should be created.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
             /// </param>
             /// <param name='idempotencyKey'>
             /// Unique key for safely retrying requests without accidentally performing the
@@ -1311,77 +1554,9 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingBookingsByIdReservationsPostAsync(this IBookingApi operations, string id, AddReservationsModel body, string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingGroupsPostAsync(this IBookingApi operations, CreateGroupModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingBookingsByIdReservationsPostWithHttpMessagesAsync(id, body, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Add one or multiple reservations to an existing booking regardless of
-            /// availability or restrictions.
-            /// </summary>
-            /// <remarks>
-            /// Creates new reservations and adds them to an existing booking taking a list
-            /// of reservations as input&lt;br&gt;You must have at least one of these
-            /// scopes: 'reservations.force-create, reservations.force-manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the booking the reservations should be attached to.
-            /// </param>
-            /// <param name='body'>
-            /// The list of reservations you want to add.
-            /// </param>
-            /// <param name='idempotencyKey'>
-            /// Unique key for safely retrying requests without accidentally performing the
-            /// same operation twice.
-            /// We'll always send back the same response for requests made with the same
-            /// key,
-            /// and keys can't be reused with different request parameters. Keys expire
-            /// after 24 hours.
-            /// </param>
-            public static object BookingBookingsByIdReservationsforcePost(this IBookingApi operations, string id, AddReservationsModel body, string idempotencyKey = default(string))
-            {
-                return operations.BookingBookingsByIdReservationsforcePostAsync(id, body, idempotencyKey).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Add one or multiple reservations to an existing booking regardless of
-            /// availability or restrictions.
-            /// </summary>
-            /// <remarks>
-            /// Creates new reservations and adds them to an existing booking taking a list
-            /// of reservations as input&lt;br&gt;You must have at least one of these
-            /// scopes: 'reservations.force-create, reservations.force-manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the booking the reservations should be attached to.
-            /// </param>
-            /// <param name='body'>
-            /// The list of reservations you want to add.
-            /// </param>
-            /// <param name='idempotencyKey'>
-            /// Unique key for safely retrying requests without accidentally performing the
-            /// same operation twice.
-            /// We'll always send back the same response for requests made with the same
-            /// key,
-            /// and keys can't be reused with different request parameters. Keys expire
-            /// after 24 hours.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<object> BookingBookingsByIdReservationsforcePostAsync(this IBookingApi operations, string id, AddReservationsModel body, string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingBookingsByIdReservationsforcePostWithHttpMessagesAsync(id, body, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingGroupsPostWithHttpMessagesAsync(body, apaleoCurrentDateTime, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -1422,6 +1597,13 @@ namespace Traces.ApaleoClients.Booking
             /// part) in UTC or with UTC offset as defined in &lt;a
             /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='pageNumber'>
             /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
             /// are no items on that page.
@@ -1435,9 +1617,9 @@ namespace Traces.ApaleoClients.Booking
             /// Possible values are: blocks, actions. All other values will be silently
             /// ignored.
             /// </param>
-            public static object BookingGroupsGet(this IBookingApi operations, string textSearch = default(string), IList<string> propertyIds = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>))
+            public static object BookingGroupsGet(this IBookingApi operations, string textSearch = default(string), IList<string> propertyIds = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>))
             {
-                return operations.BookingGroupsGetAsync(textSearch, propertyIds, fromParameter, to, pageNumber, pageSize, expand).GetAwaiter().GetResult();
+                return operations.BookingGroupsGetAsync(textSearch, propertyIds, fromParameter, to, apaleoCurrentDateTime, pageNumber, pageSize, expand).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -1475,6 +1657,13 @@ namespace Traces.ApaleoClients.Booking
             /// part) in UTC or with UTC offset as defined in &lt;a
             /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='pageNumber'>
             /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
             /// are no items on that page.
@@ -1491,70 +1680,269 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingGroupsGetAsync(this IBookingApi operations, string textSearch = default(string), IList<string> propertyIds = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingGroupsGetAsync(this IBookingApi operations, string textSearch = default(string), IList<string> propertyIds = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingGroupsGetWithHttpMessagesAsync(textSearch, propertyIds, fromParameter, to, pageNumber, pageSize, expand, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingGroupsGetWithHttpMessagesAsync(textSearch, propertyIds, fromParameter, to, apaleoCurrentDateTime, pageNumber, pageSize, expand, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
             }
 
             /// <summary>
-            /// Creates a group booking.
+            /// Returns a specific group booking.
             /// </summary>
             /// <remarks>
-            /// &lt;br&gt;You must have at least one of these scopes: 'groups.create,
+            /// Retrieves a specific group booking with all its related blocks&lt;br&gt;You
+            /// must have at least one of these scopes: 'groups.read, reservations.read,
             /// reservations.manage'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='body'>
-            /// The details of the group that should be created.
+            /// <param name='id'>
+            /// Id of the group booking to be retrieved.
             /// </param>
-            /// <param name='idempotencyKey'>
-            /// Unique key for safely retrying requests without accidentally performing the
-            /// same operation twice.
-            /// We'll always send back the same response for requests made with the same
-            /// key,
-            /// and keys can't be reused with different request parameters. Keys expire
-            /// after 24 hours.
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
             /// </param>
-            public static object BookingGroupsPost(this IBookingApi operations, CreateGroupModel body, string idempotencyKey = default(string))
+            /// <param name='expand'>
+            /// List of all embedded resources that should be expanded in the response.
+            /// Possible values are: blocks, actions. All other values will be silently
+            /// ignored.
+            /// </param>
+            public static object BookingGroupsByIdGet(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), IList<string> expand = default(IList<string>))
             {
-                return operations.BookingGroupsPostAsync(body, idempotencyKey).GetAwaiter().GetResult();
+                return operations.BookingGroupsByIdGetAsync(id, apaleoCurrentDateTime, expand).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// Creates a group booking.
+            /// Returns a specific group booking.
             /// </summary>
             /// <remarks>
-            /// &lt;br&gt;You must have at least one of these scopes: 'groups.create,
+            /// Retrieves a specific group booking with all its related blocks&lt;br&gt;You
+            /// must have at least one of these scopes: 'groups.read, reservations.read,
             /// reservations.manage'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='body'>
-            /// The details of the group that should be created.
+            /// <param name='id'>
+            /// Id of the group booking to be retrieved.
             /// </param>
-            /// <param name='idempotencyKey'>
-            /// Unique key for safely retrying requests without accidentally performing the
-            /// same operation twice.
-            /// We'll always send back the same response for requests made with the same
-            /// key,
-            /// and keys can't be reused with different request parameters. Keys expire
-            /// after 24 hours.
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='expand'>
+            /// List of all embedded resources that should be expanded in the response.
+            /// Possible values are: blocks, actions. All other values will be silently
+            /// ignored.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingGroupsPostAsync(this IBookingApi operations, CreateGroupModel body, string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingGroupsByIdGetAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingGroupsPostWithHttpMessagesAsync(body, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingGroupsByIdGetWithHttpMessagesAsync(id, apaleoCurrentDateTime, expand, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Allows to modify certain group booking properties
+            /// </summary>
+            /// <remarks>
+            /// Here is the list of operations that are currently allowed:
+            /// - Add and replace Name
+            /// - Add, replace and remove Comment
+            /// - Add, replace and remove BookerComment
+            /// - Add, replace and remove PaymentAccount
+            /// - Add, replace and remove PropertyIds
+            /// - Replace Booker&lt;br&gt;You must have at least one of these scopes:
+            /// 'groups.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the group booking to be modified.
+            /// </param>
+            /// <param name='body'>
+            /// Define the list of operations to be applied to the resource. Learn more
+            /// about JSON Patch here: http://jsonpatch.com/.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingGroupsByIdPatch(this IBookingApi operations, string id, IList<Operation> body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingGroupsByIdPatchAsync(id, body, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Allows to modify certain group booking properties
+            /// </summary>
+            /// <remarks>
+            /// Here is the list of operations that are currently allowed:
+            /// - Add and replace Name
+            /// - Add, replace and remove Comment
+            /// - Add, replace and remove BookerComment
+            /// - Add, replace and remove PaymentAccount
+            /// - Add, replace and remove PropertyIds
+            /// - Replace Booker&lt;br&gt;You must have at least one of these scopes:
+            /// 'groups.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the group booking to be modified.
+            /// </param>
+            /// <param name='body'>
+            /// Define the list of operations to be applied to the resource. Learn more
+            /// about JSON Patch here: http://jsonpatch.com/.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingGroupsByIdPatchAsync(this IBookingApi operations, string id, IList<Operation> body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingGroupsByIdPatchWithHttpMessagesAsync(id, body, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Delete a certain group booking
+            /// </summary>
+            /// <remarks>
+            /// Use this call to delete a group booking. This is only possible as long as
+            /// no blocks exist that are linked to
+            /// this group booking&lt;br&gt;You must have at least one of these scopes:
+            /// 'groups.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the group booking to be deleted.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingGroupsByIdDelete(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingGroupsByIdDeleteAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Delete a certain group booking
+            /// </summary>
+            /// <remarks>
+            /// Use this call to delete a group booking. This is only possible as long as
+            /// no blocks exist that are linked to
+            /// this group booking&lt;br&gt;You must have at least one of these scopes:
+            /// 'groups.manage, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the group booking to be deleted.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingGroupsByIdDeleteAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingGroupsByIdDeleteWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Check if a certain group booking exists
+            /// </summary>
+            /// <remarks>
+            /// Check if a group booking exists by id&lt;br&gt;You must have at least one
+            /// of these scopes: 'groups.read, reservations.read, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the group booking to be checked for existence.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static void BookingGroupsByIdHead(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                operations.BookingGroupsByIdHeadAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Check if a certain group booking exists
+            /// </summary>
+            /// <remarks>
+            /// Check if a group booking exists by id&lt;br&gt;You must have at least one
+            /// of these scopes: 'groups.read, reservations.read, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the group booking to be checked for existence.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task BookingGroupsByIdHeadAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.BookingGroupsByIdHeadWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -1591,9 +1979,16 @@ namespace Traces.ApaleoClients.Booking
             /// part) in UTC or with UTC offset as defined in &lt;a
             /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
             /// </param>
-            public static object BookingGroupscountGet(this IBookingApi operations, string textSearch = default(string), IList<string> propertyIds = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?))
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static object BookingGroupscountGet(this IBookingApi operations, string textSearch = default(string), IList<string> propertyIds = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingGroupscountGetAsync(textSearch, propertyIds, fromParameter, to).GetAwaiter().GetResult();
+                return operations.BookingGroupscountGetAsync(textSearch, propertyIds, fromParameter, to, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -1630,210 +2025,19 @@ namespace Traces.ApaleoClients.Booking
             /// part) in UTC or with UTC offset as defined in &lt;a
             /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
             /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<object> BookingGroupscountGetAsync(this IBookingApi operations, string textSearch = default(string), IList<string> propertyIds = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingGroupscountGetWithHttpMessagesAsync(textSearch, propertyIds, fromParameter, to, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Delete a certain group booking
-            /// </summary>
-            /// <remarks>
-            /// Use this call to delete a group booking. This is only possible as long as
-            /// no blocks exist that are linked to
-            /// this group booking&lt;br&gt;You must have at least one of these scopes:
-            /// 'groups.manage, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the group booking to be deleted.
-            /// </param>
-            public static void BookingGroupsByIdDelete(this IBookingApi operations, string id)
-            {
-                operations.BookingGroupsByIdDeleteAsync(id).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Delete a certain group booking
-            /// </summary>
-            /// <remarks>
-            /// Use this call to delete a group booking. This is only possible as long as
-            /// no blocks exist that are linked to
-            /// this group booking&lt;br&gt;You must have at least one of these scopes:
-            /// 'groups.manage, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the group booking to be deleted.
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task BookingGroupsByIdDeleteAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingGroupscountGetAsync(this IBookingApi operations, string textSearch = default(string), IList<string> propertyIds = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.BookingGroupsByIdDeleteWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false)).Dispose();
-            }
-
-            /// <summary>
-            /// Returns a specific group booking.
-            /// </summary>
-            /// <remarks>
-            /// Retrieves a specific group booking with all its related blocks&lt;br&gt;You
-            /// must have at least one of these scopes: 'groups.read, reservations.read,
-            /// reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the group booking to be retrieved.
-            /// </param>
-            /// <param name='expand'>
-            /// List of all embedded resources that should be expanded in the response.
-            /// Possible values are: blocks, actions. All other values will be silently
-            /// ignored.
-            /// </param>
-            public static object BookingGroupsByIdGet(this IBookingApi operations, string id, IList<string> expand = default(IList<string>))
-            {
-                return operations.BookingGroupsByIdGetAsync(id, expand).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Returns a specific group booking.
-            /// </summary>
-            /// <remarks>
-            /// Retrieves a specific group booking with all its related blocks&lt;br&gt;You
-            /// must have at least one of these scopes: 'groups.read, reservations.read,
-            /// reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the group booking to be retrieved.
-            /// </param>
-            /// <param name='expand'>
-            /// List of all embedded resources that should be expanded in the response.
-            /// Possible values are: blocks, actions. All other values will be silently
-            /// ignored.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<object> BookingGroupsByIdGetAsync(this IBookingApi operations, string id, IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingGroupsByIdGetWithHttpMessagesAsync(id, expand, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Check if a certain group booking exists
-            /// </summary>
-            /// <remarks>
-            /// Check if a group booking exists by id&lt;br&gt;You must have at least one
-            /// of these scopes: 'groups.read, reservations.read, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the group booking to be checked for existence.
-            /// </param>
-            public static void BookingGroupsByIdHead(this IBookingApi operations, string id)
-            {
-                operations.BookingGroupsByIdHeadAsync(id).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Check if a certain group booking exists
-            /// </summary>
-            /// <remarks>
-            /// Check if a group booking exists by id&lt;br&gt;You must have at least one
-            /// of these scopes: 'groups.read, reservations.read, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the group booking to be checked for existence.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task BookingGroupsByIdHeadAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                (await operations.BookingGroupsByIdHeadWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false)).Dispose();
-            }
-
-            /// <summary>
-            /// Allows to modify certain group booking properties
-            /// </summary>
-            /// <remarks>
-            /// Here is the list of operations that are currently allowed:
-            /// - Add and replace Name
-            /// - Add, replace and remove Comment
-            /// - Add, replace and remove BookerComment
-            /// - Add, replace and remove PaymentAccount
-            /// - Add, replace and remove PropertyIds
-            /// - Replace Booker&lt;br&gt;You must have at least one of these scopes:
-            /// 'groups.manage, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the group booking to be modified.
-            /// </param>
-            /// <param name='body'>
-            /// Define the list of operations to be applied to the resource. Learn more
-            /// about JSON Patch here: http://jsonpatch.com/.
-            /// </param>
-            public static MessageItemCollection BookingGroupsByIdPatch(this IBookingApi operations, string id, IList<Operation> body)
-            {
-                return operations.BookingGroupsByIdPatchAsync(id, body).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Allows to modify certain group booking properties
-            /// </summary>
-            /// <remarks>
-            /// Here is the list of operations that are currently allowed:
-            /// - Add and replace Name
-            /// - Add, replace and remove Comment
-            /// - Add, replace and remove BookerComment
-            /// - Add, replace and remove PaymentAccount
-            /// - Add, replace and remove PropertyIds
-            /// - Replace Booker&lt;br&gt;You must have at least one of these scopes:
-            /// 'groups.manage, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the group booking to be modified.
-            /// </param>
-            /// <param name='body'>
-            /// Define the list of operations to be applied to the resource. Learn more
-            /// about JSON Patch here: http://jsonpatch.com/.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<MessageItemCollection> BookingGroupsByIdPatchAsync(this IBookingApi operations, string id, IList<Operation> body, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingGroupsByIdPatchWithHttpMessagesAsync(id, body, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingGroupscountGetWithHttpMessagesAsync(textSearch, propertyIds, fromParameter, to, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -1857,6 +2061,13 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='body'>
             /// The list of reservations you want to create.
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='idempotencyKey'>
             /// Unique key for safely retrying requests without accidentally performing the
             /// same operation twice.
@@ -1865,9 +2076,9 @@ namespace Traces.ApaleoClients.Booking
             /// and keys can't be reused with different request parameters. Keys expire
             /// after 24 hours.
             /// </param>
-            public static object BookingGroupsByIdReservationsPost(this IBookingApi operations, string id, PickUpReservationsModel body, string idempotencyKey = default(string))
+            public static object BookingGroupsByIdReservationsPost(this IBookingApi operations, string id, PickUpReservationsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string))
             {
-                return operations.BookingGroupsByIdReservationsPostAsync(id, body, idempotencyKey).GetAwaiter().GetResult();
+                return operations.BookingGroupsByIdReservationsPostAsync(id, body, apaleoCurrentDateTime, idempotencyKey).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -1888,6 +2099,13 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='body'>
             /// The list of reservations you want to create.
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='idempotencyKey'>
             /// Unique key for safely retrying requests without accidentally performing the
             /// same operation twice.
@@ -1899,95 +2117,9 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingGroupsByIdReservationsPostAsync(this IBookingApi operations, string id, PickUpReservationsModel body, string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingGroupsByIdReservationsPostAsync(this IBookingApi operations, string id, PickUpReservationsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingGroupsByIdReservationsPostWithHttpMessagesAsync(id, body, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Returns offers with rates and availabilities for the specified range.
-            /// </summary>
-            /// <remarks>
-            /// Calculates and returns offers per time slice for a specific rate plan,
-            /// arrival and departure date.&lt;br&gt;You must have at least one of these
-            /// scopes: 'offer-index.read, offers.read'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='ratePlanId'>
-            /// </param>
-            /// <param name='fromParameter'>
-            /// &lt;br /&gt;Specify either a pure date or a date and time (without
-            /// fractional second part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-            /// </param>
-            /// <param name='to'>
-            /// &lt;br /&gt;Specify either a pure date or a date and time (without
-            /// fractional second part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-            /// </param>
-            /// <param name='channelCode'>
-            /// Possible values include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
-            /// 'Expedia', 'Homelike'
-            /// </param>
-            /// <param name='pageNumber'>
-            /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
-            /// are no items on that page.
-            /// </param>
-            /// <param name='pageSize'>
-            /// Page size. If this is not set, the pageNumber will be ignored and all
-            /// values returned.
-            /// </param>
-            public static object BookingOfferIndexGet(this IBookingApi operations, string ratePlanId, string fromParameter, string to, ChannelCode channelCode, int? pageNumber = 1, int? pageSize = 100)
-            {
-                return operations.BookingOfferIndexGetAsync(ratePlanId, fromParameter, to, channelCode, pageNumber, pageSize).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Returns offers with rates and availabilities for the specified range.
-            /// </summary>
-            /// <remarks>
-            /// Calculates and returns offers per time slice for a specific rate plan,
-            /// arrival and departure date.&lt;br&gt;You must have at least one of these
-            /// scopes: 'offer-index.read, offers.read'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='ratePlanId'>
-            /// </param>
-            /// <param name='fromParameter'>
-            /// &lt;br /&gt;Specify either a pure date or a date and time (without
-            /// fractional second part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-            /// </param>
-            /// <param name='to'>
-            /// &lt;br /&gt;Specify either a pure date or a date and time (without
-            /// fractional second part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-            /// </param>
-            /// <param name='channelCode'>
-            /// Possible values include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
-            /// 'Expedia', 'Homelike'
-            /// </param>
-            /// <param name='pageNumber'>
-            /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
-            /// are no items on that page.
-            /// </param>
-            /// <param name='pageSize'>
-            /// Page size. If this is not set, the pageNumber will be ignored and all
-            /// values returned.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<object> BookingOfferIndexGetAsync(this IBookingApi operations, string ratePlanId, string fromParameter, string to, ChannelCode channelCode, int? pageNumber = 1, int? pageSize = 100, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingOfferIndexGetWithHttpMessagesAsync(ratePlanId, fromParameter, to, channelCode, pageNumber, pageSize, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingGroupsByIdReservationsPostWithHttpMessagesAsync(id, body, apaleoCurrentDateTime, idempotencyKey, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -2052,9 +2184,16 @@ namespace Traces.ApaleoClients.Booking
             /// Return also offers that are currently not publicly bookable as restrictions
             /// are violated. By default only available offers are returned
             /// </param>
-            public static object BookingOffersGet(this IBookingApi operations, string propertyId, string arrival, string departure, int adults, TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), string corporateCode = default(string), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?))
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static object BookingOffersGet(this IBookingApi operations, string propertyId, string arrival, string departure, int adults, TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), string corporateCode = default(string), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingOffersGetAsync(propertyId, arrival, departure, adults, timeSliceTemplate, timeSliceDefinitionIds, unitGroupIds, unitGroupTypes, channelCode, promoCode, corporateCode, childrenAges, includeUnavailable).GetAwaiter().GetResult();
+                return operations.BookingOffersGetAsync(propertyId, arrival, departure, adults, timeSliceTemplate, timeSliceDefinitionIds, unitGroupIds, unitGroupTypes, channelCode, promoCode, corporateCode, childrenAges, includeUnavailable, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -2116,12 +2255,19 @@ namespace Traces.ApaleoClients.Booking
             /// Return also offers that are currently not publicly bookable as restrictions
             /// are violated. By default only available offers are returned
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingOffersGetAsync(this IBookingApi operations, string propertyId, string arrival, string departure, int adults, TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), string corporateCode = default(string), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingOffersGetAsync(this IBookingApi operations, string propertyId, string arrival, string departure, int adults, TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), string corporateCode = default(string), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingOffersGetWithHttpMessagesAsync(propertyId, arrival, departure, adults, timeSliceTemplate, timeSliceDefinitionIds, unitGroupIds, unitGroupTypes, channelCode, promoCode, corporateCode, childrenAges, includeUnavailable, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingOffersGetWithHttpMessagesAsync(propertyId, arrival, departure, adults, timeSliceTemplate, timeSliceDefinitionIds, unitGroupIds, unitGroupTypes, channelCode, promoCode, corporateCode, childrenAges, includeUnavailable, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -2167,9 +2313,16 @@ namespace Traces.ApaleoClients.Booking
             /// Return also offers that are currently not publicly bookable as restrictions
             /// are violated. By default only available offers are returned
             /// </param>
-            public static object BookingRatePlanOffersGet(this IBookingApi operations, string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?))
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static object BookingRatePlanOffersGet(this IBookingApi operations, string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingRatePlanOffersGetAsync(ratePlanId, arrival, departure, adults, channelCode, childrenAges, includeUnavailable).GetAwaiter().GetResult();
+                return operations.BookingRatePlanOffersGetAsync(ratePlanId, arrival, departure, adults, channelCode, childrenAges, includeUnavailable, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -2212,544 +2365,241 @@ namespace Traces.ApaleoClients.Booking
             /// Return also offers that are currently not publicly bookable as restrictions
             /// are violated. By default only available offers are returned
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingRatePlanOffersGetAsync(this IBookingApi operations, string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingRatePlanOffersGetAsync(this IBookingApi operations, string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingRatePlanOffersGetWithHttpMessagesAsync(ratePlanId, arrival, departure, adults, channelCode, childrenAges, includeUnavailable, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingRatePlanOffersGetWithHttpMessagesAsync(ratePlanId, arrival, departure, adults, channelCode, childrenAges, includeUnavailable, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
             }
 
             /// <summary>
-            /// Allows you to amend the stay details of a reservation
+            /// Returns service offers for one specific stay.
             /// </summary>
             /// <remarks>
-            /// Modifies the stay-related data of a reservation.&lt;br /&gt;
-            /// If a reservation is 'Confirmed', you can change all fields.&lt;br /&gt;
-            /// If a reservation is 'InHouse', only changes to future time slices are
-            /// possible.&lt;br /&gt;
-            /// Changes to reservations that are in the status 'CheckedOut' or 'Canceled'
-            /// are not possible at all.&lt;br&gt;You must have this scope:
-            /// 'reservations.manage'.
+            /// &lt;br&gt;You must have at least one of these scopes: 'offers.read,
+            /// reservations.manage'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='id'>
-            /// Id of the reservation that should be modified
+            /// <param name='ratePlanId'>
+            /// The rate plan ID
             /// </param>
-            /// <param name='body'>
-            /// The new stay details that should be applied to the reservation.
+            /// <param name='arrival'>
+            /// Date and optional time of arrival&lt;br /&gt;Specify either a pure date or
+            /// a date and time (without fractional second part) in UTC or with UTC offset
+            /// as defined in &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
             /// </param>
-            public static MessageItemCollection BookingReservationActionsByIdAmendPut(this IBookingApi operations, string id, DesiredStayDetailsModel body)
+            /// <param name='departure'>
+            /// Date and optional time of departure. Cannot be more than 5 years after
+            /// arrival.&lt;br /&gt;Specify either a pure date or a date and time (without
+            /// fractional second part) in UTC or with UTC offset as defined in &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+            /// </param>
+            /// <param name='adults'>
+            /// The number of adults you want offers for
+            /// </param>
+            /// <param name='channelCode'>
+            /// The channel code used to filter the services. Possible values include:
+            /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
+            /// </param>
+            /// <param name='childrenAges'>
+            /// The ages of the children you want offers for
+            /// </param>
+            /// <param name='onlyDefaultDates'>
+            /// Depending on the postNextDay setting of a service it will be posted before
+            /// or after midnight.
+            /// Breakfast is usually delivered on the next morning, having 'postNextDay'
+            /// set to true. Its 'default dates' are from the day after
+            /// arrival until the departure day. For services like dinner 'postNextDay' is
+            /// false, and default dates are day of arrival until one
+            /// day before departure.
+            /// With this query parameter set to 'false', you can also ask for dates
+            /// outside of those default dates. It defaults to true.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static object BookingServiceOffersGet(this IBookingApi operations, string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? onlyDefaultDates = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingReservationActionsByIdAmendPutAsync(id, body).GetAwaiter().GetResult();
+                return operations.BookingServiceOffersGetAsync(ratePlanId, arrival, departure, adults, channelCode, childrenAges, onlyDefaultDates, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// Allows you to amend the stay details of a reservation
+            /// Returns service offers for one specific stay.
             /// </summary>
             /// <remarks>
-            /// Modifies the stay-related data of a reservation.&lt;br /&gt;
-            /// If a reservation is 'Confirmed', you can change all fields.&lt;br /&gt;
-            /// If a reservation is 'InHouse', only changes to future time slices are
-            /// possible.&lt;br /&gt;
-            /// Changes to reservations that are in the status 'CheckedOut' or 'Canceled'
-            /// are not possible at all.&lt;br&gt;You must have this scope:
-            /// 'reservations.manage'.
+            /// &lt;br&gt;You must have at least one of these scopes: 'offers.read,
+            /// reservations.manage'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='id'>
-            /// Id of the reservation that should be modified
+            /// <param name='ratePlanId'>
+            /// The rate plan ID
             /// </param>
-            /// <param name='body'>
-            /// The new stay details that should be applied to the reservation.
+            /// <param name='arrival'>
+            /// Date and optional time of arrival&lt;br /&gt;Specify either a pure date or
+            /// a date and time (without fractional second part) in UTC or with UTC offset
+            /// as defined in &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+            /// </param>
+            /// <param name='departure'>
+            /// Date and optional time of departure. Cannot be more than 5 years after
+            /// arrival.&lt;br /&gt;Specify either a pure date or a date and time (without
+            /// fractional second part) in UTC or with UTC offset as defined in &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+            /// </param>
+            /// <param name='adults'>
+            /// The number of adults you want offers for
+            /// </param>
+            /// <param name='channelCode'>
+            /// The channel code used to filter the services. Possible values include:
+            /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
+            /// </param>
+            /// <param name='childrenAges'>
+            /// The ages of the children you want offers for
+            /// </param>
+            /// <param name='onlyDefaultDates'>
+            /// Depending on the postNextDay setting of a service it will be posted before
+            /// or after midnight.
+            /// Breakfast is usually delivered on the next morning, having 'postNextDay'
+            /// set to true. Its 'default dates' are from the day after
+            /// arrival until the departure day. For services like dinner 'postNextDay' is
+            /// false, and default dates are day of arrival until one
+            /// day before departure.
+            /// With this query parameter set to 'false', you can also ask for dates
+            /// outside of those default dates. It defaults to true.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<MessageItemCollection> BookingReservationActionsByIdAmendPutAsync(this IBookingApi operations, string id, DesiredStayDetailsModel body, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingServiceOffersGetAsync(this IBookingApi operations, string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? onlyDefaultDates = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingReservationActionsByIdAmendPutWithHttpMessagesAsync(id, body, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingServiceOffersGetWithHttpMessagesAsync(ratePlanId, arrival, departure, adults, channelCode, childrenAges, onlyDefaultDates, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
             }
 
             /// <summary>
-            /// Allows you to amend the stay details of a reservation regardless of
-            /// availability or restrictions.
+            /// Returns offers with rates and availabilities for the specified range.
             /// </summary>
             /// <remarks>
-            /// Modifies the stay-related data of a reservation.&lt;br /&gt;
-            /// If a reservation is 'Confirmed', you can change all fields.&lt;br /&gt;
-            /// If a reservation is 'InHouse', only changes to future time slices are
-            /// possible.&lt;br /&gt;
-            /// Changes to reservations that are in the status 'CheckedOut' or 'Canceled'
-            /// are not possible at all.&lt;br&gt;You must have this scope:
-            /// 'reservations.force-manage'.
+            /// Calculates and returns offers per time slice for a specific rate plan,
+            /// arrival and departure date.&lt;br&gt;You must have at least one of these
+            /// scopes: 'offer-index.read, offers.read'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='id'>
-            /// Id of the reservation that should be modified
-            /// </param>
-            /// <param name='body'>
-            /// The new stay details that should be applied to the reservation.
-            /// </param>
-            public static MessageItemCollection BookingReservationActionsByIdAmendforcePut(this IBookingApi operations, string id, DesiredStayDetailsModel body)
-            {
-                return operations.BookingReservationActionsByIdAmendforcePutAsync(id, body).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Allows you to amend the stay details of a reservation regardless of
-            /// availability or restrictions.
-            /// </summary>
-            /// <remarks>
-            /// Modifies the stay-related data of a reservation.&lt;br /&gt;
-            /// If a reservation is 'Confirmed', you can change all fields.&lt;br /&gt;
-            /// If a reservation is 'InHouse', only changes to future time slices are
-            /// possible.&lt;br /&gt;
-            /// Changes to reservations that are in the status 'CheckedOut' or 'Canceled'
-            /// are not possible at all.&lt;br&gt;You must have this scope:
-            /// 'reservations.force-manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation that should be modified
-            /// </param>
-            /// <param name='body'>
-            /// The new stay details that should be applied to the reservation.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<MessageItemCollection> BookingReservationActionsByIdAmendforcePutAsync(this IBookingApi operations, string id, DesiredStayDetailsModel body, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingReservationActionsByIdAmendforcePutWithHttpMessagesAsync(id, body, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Assign a unit to a reservation.
-            /// </summary>
-            /// <remarks>
-            /// Assigns one of the available units to a reservation which is in state
-            /// 'Confirmed' or 'InHouse'.&lt;br&gt;You must have at least one of these
-            /// scopes: 'reservations.assign-unit, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation a unit should be assigned to.
-            /// </param>
-            public static object BookingReservationActionsByIdAssignUnitPut(this IBookingApi operations, string id)
-            {
-                return operations.BookingReservationActionsByIdAssignUnitPutAsync(id).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Assign a unit to a reservation.
-            /// </summary>
-            /// <remarks>
-            /// Assigns one of the available units to a reservation which is in state
-            /// 'Confirmed' or 'InHouse'.&lt;br&gt;You must have at least one of these
-            /// scopes: 'reservations.assign-unit, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation a unit should be assigned to.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<object> BookingReservationActionsByIdAssignUnitPutAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingReservationActionsByIdAssignUnitPutWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Assign a specific unit to a reservation.
-            /// </summary>
-            /// <remarks>
-            /// Assigns a specific unit to a reservation which is in state 'Confirmed' or
-            /// 'InHouse'.&lt;br /&gt;If the unit is not available, the call will return an
-            /// error, and no unit will be assigned.&lt;br&gt;You must have at least one of
-            /// these scopes: 'reservations.assign-unit, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation the unit should be assigned to.
-            /// </param>
-            /// <param name='unitId'>
-            /// The id of the unit to be assigned.
+            /// <param name='ratePlanId'>
             /// </param>
             /// <param name='fromParameter'>
-            /// The start date and optional time for the unit assignment. If not specified,
-            /// the reservation's arrival will be used.&lt;br /&gt;Specify either a pure
-            /// date or a date and time (without fractional second part) in UTC or with UTC
-            /// offset as defined in &lt;a
+            /// &lt;br /&gt;Specify either a pure date or a date and time (without
+            /// fractional second part) in UTC or with UTC offset as defined in &lt;a
             /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
             /// </param>
             /// <param name='to'>
-            /// The end date and optional time for the unit assignment. If not specified,
-            /// the reservation's departure will be used.&lt;br /&gt;Specify either a pure
-            /// date or a date and time (without fractional second part) in UTC or with UTC
-            /// offset as defined in &lt;a
+            /// &lt;br /&gt;Specify either a pure date or a date and time (without
+            /// fractional second part) in UTC or with UTC offset as defined in &lt;a
             /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
             /// </param>
-            public static object BookingReservationActionsByIdAssignUnitByUnitIdPut(this IBookingApi operations, string id, string unitId, string fromParameter = default(string), string to = default(string))
+            /// <param name='channelCode'>
+            /// Possible values include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
+            /// 'Expedia', 'Homelike'
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='pageNumber'>
+            /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
+            /// are no items on that page.
+            /// </param>
+            /// <param name='pageSize'>
+            /// Page size. If this is not set, the pageNumber will be ignored and all
+            /// values returned.
+            /// </param>
+            public static object BookingOfferIndexGet(this IBookingApi operations, string ratePlanId, string fromParameter, string to, ChannelCode channelCode, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100)
             {
-                return operations.BookingReservationActionsByIdAssignUnitByUnitIdPutAsync(id, unitId, fromParameter, to).GetAwaiter().GetResult();
+                return operations.BookingOfferIndexGetAsync(ratePlanId, fromParameter, to, channelCode, apaleoCurrentDateTime, pageNumber, pageSize).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// Assign a specific unit to a reservation.
+            /// Returns offers with rates and availabilities for the specified range.
             /// </summary>
             /// <remarks>
-            /// Assigns a specific unit to a reservation which is in state 'Confirmed' or
-            /// 'InHouse'.&lt;br /&gt;If the unit is not available, the call will return an
-            /// error, and no unit will be assigned.&lt;br&gt;You must have at least one of
-            /// these scopes: 'reservations.assign-unit, reservations.manage'.
+            /// Calculates and returns offers per time slice for a specific rate plan,
+            /// arrival and departure date.&lt;br&gt;You must have at least one of these
+            /// scopes: 'offer-index.read, offers.read'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='id'>
-            /// Id of the reservation the unit should be assigned to.
-            /// </param>
-            /// <param name='unitId'>
-            /// The id of the unit to be assigned.
+            /// <param name='ratePlanId'>
             /// </param>
             /// <param name='fromParameter'>
-            /// The start date and optional time for the unit assignment. If not specified,
-            /// the reservation's arrival will be used.&lt;br /&gt;Specify either a pure
-            /// date or a date and time (without fractional second part) in UTC or with UTC
-            /// offset as defined in &lt;a
+            /// &lt;br /&gt;Specify either a pure date or a date and time (without
+            /// fractional second part) in UTC or with UTC offset as defined in &lt;a
             /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
             /// </param>
             /// <param name='to'>
-            /// The end date and optional time for the unit assignment. If not specified,
-            /// the reservation's departure will be used.&lt;br /&gt;Specify either a pure
-            /// date or a date and time (without fractional second part) in UTC or with UTC
-            /// offset as defined in &lt;a
+            /// &lt;br /&gt;Specify either a pure date or a date and time (without
+            /// fractional second part) in UTC or with UTC offset as defined in &lt;a
             /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
             /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
+            /// <param name='channelCode'>
+            /// Possible values include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
+            /// 'Expedia', 'Homelike'
             /// </param>
-            public static async Task<object> BookingReservationActionsByIdAssignUnitByUnitIdPutAsync(this IBookingApi operations, string id, string unitId, string fromParameter = default(string), string to = default(string), CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingReservationActionsByIdAssignUnitByUnitIdPutWithHttpMessagesAsync(id, unitId, fromParameter, to, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Book the service for a specific reservation.
-            /// </summary>
-            /// <remarks>
-            /// Use this to book a service for a specific reservation.
-            /// Please note that when dates are specified, all desired dates must be
-            /// specified or they will be removed if not posted to the folio.&lt;br&gt;You
-            /// must have this scope: 'reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
             /// </param>
-            /// <param name='id'>
-            /// Id of the reservation.
+            /// <param name='pageNumber'>
+            /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
+            /// are no items on that page.
             /// </param>
-            /// <param name='body'>
-            /// </param>
-            public static MessageItemCollection BookingReservationActionsByIdBookServicePut(this IBookingApi operations, string id, BookReservationServiceModel body)
-            {
-                return operations.BookingReservationActionsByIdBookServicePutAsync(id, body).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Book the service for a specific reservation.
-            /// </summary>
-            /// <remarks>
-            /// Use this to book a service for a specific reservation.
-            /// Please note that when dates are specified, all desired dates must be
-            /// specified or they will be removed if not posted to the folio.&lt;br&gt;You
-            /// must have this scope: 'reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation.
-            /// </param>
-            /// <param name='body'>
+            /// <param name='pageSize'>
+            /// Page size. If this is not set, the pageNumber will be ignored and all
+            /// values returned.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<MessageItemCollection> BookingReservationActionsByIdBookServicePutAsync(this IBookingApi operations, string id, BookReservationServiceModel body, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingOfferIndexGetAsync(this IBookingApi operations, string ratePlanId, string fromParameter, string to, ChannelCode channelCode, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingReservationActionsByIdBookServicePutWithHttpMessagesAsync(id, body, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Cancel a reservation.
-            /// </summary>
-            /// <remarks>
-            /// Cancel a specific reservation which is in status 'Confirmed' and where the
-            /// arrival time is in the future.
-            /// This changes the status to 'Canceled', and sets the cancellation date and
-            /// time.&lt;br&gt;You must have this scope: 'reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation that should be processed.
-            /// </param>
-            public static MessageItemCollection BookingReservationActionsByIdCancelPut(this IBookingApi operations, string id)
-            {
-                return operations.BookingReservationActionsByIdCancelPutAsync(id).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Cancel a reservation.
-            /// </summary>
-            /// <remarks>
-            /// Cancel a specific reservation which is in status 'Confirmed' and where the
-            /// arrival time is in the future.
-            /// This changes the status to 'Canceled', and sets the cancellation date and
-            /// time.&lt;br&gt;You must have this scope: 'reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation that should be processed.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<MessageItemCollection> BookingReservationActionsByIdCancelPutAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingReservationActionsByIdCancelPutWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Check-in of a reservation.
-            /// </summary>
-            /// <remarks>
-            /// Check in a specific reservation which is in status 'Confirmed', and has a
-            /// unit assigned. This changes the status to 'InHouse', and sets the check-in
-            /// date and time.&lt;br&gt;You must have this scope: 'reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation that should be processed.
-            /// </param>
-            /// <param name='withCityTax'>
-            /// </param>
-            public static MessageItemCollection BookingReservationActionsByIdCheckinPut(this IBookingApi operations, string id, bool? withCityTax = default(bool?))
-            {
-                return operations.BookingReservationActionsByIdCheckinPutAsync(id, withCityTax).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Check-in of a reservation.
-            /// </summary>
-            /// <remarks>
-            /// Check in a specific reservation which is in status 'Confirmed', and has a
-            /// unit assigned. This changes the status to 'InHouse', and sets the check-in
-            /// date and time.&lt;br&gt;You must have this scope: 'reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation that should be processed.
-            /// </param>
-            /// <param name='withCityTax'>
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<MessageItemCollection> BookingReservationActionsByIdCheckinPutAsync(this IBookingApi operations, string id, bool? withCityTax = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingReservationActionsByIdCheckinPutWithHttpMessagesAsync(id, withCityTax, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Check-out of a reservation.
-            /// </summary>
-            /// <remarks>
-            /// Check out a specific reservation which is in status 'InHouse'. This changes
-            /// the status to 'CheckedOut', and sets the check-out date and time.
-            /// All open charges on the folio will be posted.
-            /// &lt;br /&gt;
-            /// Check-out is only possible, if the departure date is not later than
-            /// tomorrow. Otherwise, first amend the reservation and shorten the
-            /// stay.&lt;br&gt;You must have this scope: 'reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation that should be processed.
-            /// </param>
-            public static MessageItemCollection BookingReservationActionsByIdCheckoutPut(this IBookingApi operations, string id)
-            {
-                return operations.BookingReservationActionsByIdCheckoutPutAsync(id).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Check-out of a reservation.
-            /// </summary>
-            /// <remarks>
-            /// Check out a specific reservation which is in status 'InHouse'. This changes
-            /// the status to 'CheckedOut', and sets the check-out date and time.
-            /// All open charges on the folio will be posted.
-            /// &lt;br /&gt;
-            /// Check-out is only possible, if the departure date is not later than
-            /// tomorrow. Otherwise, first amend the reservation and shorten the
-            /// stay.&lt;br&gt;You must have this scope: 'reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation that should be processed.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<MessageItemCollection> BookingReservationActionsByIdCheckoutPutAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingReservationActionsByIdCheckoutPutWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Set a reservation to No-show.
-            /// </summary>
-            /// <remarks>
-            /// Set a specific reservation to No-show which is in status 'Confirmed' and
-            /// where the arrival date is in the past.
-            /// This changes the status to 'NoShow', and sets the no-show date and
-            /// time.&lt;br&gt;You must have this scope: 'reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation that should be processed.
-            /// </param>
-            public static MessageItemCollection BookingReservationActionsByIdNoshowPut(this IBookingApi operations, string id)
-            {
-                return operations.BookingReservationActionsByIdNoshowPutAsync(id).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Set a reservation to No-show.
-            /// </summary>
-            /// <remarks>
-            /// Set a specific reservation to No-show which is in status 'Confirmed' and
-            /// where the arrival date is in the past.
-            /// This changes the status to 'NoShow', and sets the no-show date and
-            /// time.&lt;br&gt;You must have this scope: 'reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation that should be processed.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<MessageItemCollection> BookingReservationActionsByIdNoshowPutAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingReservationActionsByIdNoshowPutWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Unassign units from a reservation.
-            /// </summary>
-            /// <remarks>
-            /// Unassigns units for all time slices of the given reservation. If no units
-            /// are assigned for the
-            /// reservation nothing will happen. It will fail for reservations in status
-            /// 'CheckedOut'.&lt;br&gt;You must have at least one of these scopes:
-            /// 'reservations.assign-unit, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation the unit should be unassigned for.
-            /// </param>
-            public static MessageItemCollection BookingReservationActionsByIdUnassignUnitsPut(this IBookingApi operations, string id)
-            {
-                return operations.BookingReservationActionsByIdUnassignUnitsPutAsync(id).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Unassign units from a reservation.
-            /// </summary>
-            /// <remarks>
-            /// Unassigns units for all time slices of the given reservation. If no units
-            /// are assigned for the
-            /// reservation nothing will happen. It will fail for reservations in status
-            /// 'CheckedOut'.&lt;br&gt;You must have at least one of these scopes:
-            /// 'reservations.assign-unit, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation the unit should be unassigned for.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<MessageItemCollection> BookingReservationActionsByIdUnassignUnitsPutAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingReservationActionsByIdUnassignUnitsPutWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingOfferIndexGetWithHttpMessagesAsync(ratePlanId, fromParameter, to, channelCode, apaleoCurrentDateTime, pageNumber, pageSize, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -2853,6 +2703,13 @@ namespace Traces.ApaleoClients.Booking
             /// If set to {false}, returns only reservations, in which some of the folios
             /// are open or don't have an invoice
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='pageNumber'>
             /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
             /// are no items on that page.
@@ -2873,9 +2730,9 @@ namespace Traces.ApaleoClients.Booking
             /// Possible values are: booker, actions, timeSlices, services, assignedUnits,
             /// company. All other values will be silently ignored.
             /// </param>
-            public static object BookingReservationsGet(this IBookingApi operations, string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), int? pageNumber = 1, int? pageSize = 100, IList<string> sort = default(IList<string>), IList<string> expand = default(IList<string>))
+            public static object BookingReservationsGet(this IBookingApi operations, string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> sort = default(IList<string>), IList<string> expand = default(IList<string>))
             {
-                return operations.BookingReservationsGetAsync(bookingId, propertyIds, ratePlanIds, companyIds, unitIds, unitGroupIds, unitGroupTypes, blockIds, status, dateFilter, fromParameter, to, channelCode, sources, validationMessageCategory, externalCode, textSearch, balanceFilter, allFoliosHaveInvoice, pageNumber, pageSize, sort, expand).GetAwaiter().GetResult();
+                return operations.BookingReservationsGetAsync(bookingId, propertyIds, ratePlanIds, companyIds, unitIds, unitGroupIds, unitGroupTypes, blockIds, status, dateFilter, fromParameter, to, channelCode, sources, validationMessageCategory, externalCode, textSearch, balanceFilter, allFoliosHaveInvoice, apaleoCurrentDateTime, pageNumber, pageSize, sort, expand).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -2976,6 +2833,13 @@ namespace Traces.ApaleoClients.Booking
             /// If set to {false}, returns only reservations, in which some of the folios
             /// are open or don't have an invoice
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='pageNumber'>
             /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
             /// are no items on that page.
@@ -2999,9 +2863,9 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingReservationsGetAsync(this IBookingApi operations, string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), int? pageNumber = 1, int? pageSize = 100, IList<string> sort = default(IList<string>), IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingReservationsGetAsync(this IBookingApi operations, string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> sort = default(IList<string>), IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingReservationsGetWithHttpMessagesAsync(bookingId, propertyIds, ratePlanIds, companyIds, unitIds, unitGroupIds, unitGroupTypes, blockIds, status, dateFilter, fromParameter, to, channelCode, sources, validationMessageCategory, externalCode, textSearch, balanceFilter, allFoliosHaveInvoice, pageNumber, pageSize, sort, expand, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingReservationsGetWithHttpMessagesAsync(bookingId, propertyIds, ratePlanIds, companyIds, unitIds, unitGroupIds, unitGroupTypes, blockIds, status, dateFilter, fromParameter, to, channelCode, sources, validationMessageCategory, externalCode, textSearch, balanceFilter, allFoliosHaveInvoice, apaleoCurrentDateTime, pageNumber, pageSize, sort, expand, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -3106,9 +2970,16 @@ namespace Traces.ApaleoClients.Booking
             /// If set to {false}, returns only reservations, in which some of the folios
             /// are open or don't have an invoice
             /// </param>
-            public static object BookingReservationscountGet(this IBookingApi operations, string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?))
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static object BookingReservationscountGet(this IBookingApi operations, string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingReservationscountGetAsync(bookingId, propertyIds, ratePlanIds, companyIds, unitIds, unitGroupIds, unitGroupTypes, blockIds, status, dateFilter, fromParameter, to, channelCode, sources, validationMessageCategory, externalCode, textSearch, balanceFilter, allFoliosHaveInvoice).GetAwaiter().GetResult();
+                return operations.BookingReservationscountGetAsync(bookingId, propertyIds, ratePlanIds, companyIds, unitIds, unitGroupIds, unitGroupTypes, blockIds, status, dateFilter, fromParameter, to, channelCode, sources, validationMessageCategory, externalCode, textSearch, balanceFilter, allFoliosHaveInvoice, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -3210,12 +3081,19 @@ namespace Traces.ApaleoClients.Booking
             /// If set to {false}, returns only reservations, in which some of the folios
             /// are open or don't have an invoice
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingReservationscountGetAsync(this IBookingApi operations, string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingReservationscountGetAsync(this IBookingApi operations, string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingReservationscountGetWithHttpMessagesAsync(bookingId, propertyIds, ratePlanIds, companyIds, unitIds, unitGroupIds, unitGroupTypes, blockIds, status, dateFilter, fromParameter, to, channelCode, sources, validationMessageCategory, externalCode, textSearch, balanceFilter, allFoliosHaveInvoice, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingReservationscountGetWithHttpMessagesAsync(bookingId, propertyIds, ratePlanIds, companyIds, unitIds, unitGroupIds, unitGroupTypes, blockIds, status, dateFilter, fromParameter, to, channelCode, sources, validationMessageCategory, externalCode, textSearch, balanceFilter, allFoliosHaveInvoice, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -3234,14 +3112,21 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='id'>
             /// Id of the reservation to be retrieved.
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='expand'>
             /// List of all embedded resources that should be expanded in the response.
             /// Possible values are: timeSlices, services, booker, actions, company. All
             /// other values will be silently ignored.
             /// </param>
-            public static object BookingReservationsByIdGet(this IBookingApi operations, string id, IList<string> expand = default(IList<string>))
+            public static object BookingReservationsByIdGet(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), IList<string> expand = default(IList<string>))
             {
-                return operations.BookingReservationsByIdGetAsync(id, expand).GetAwaiter().GetResult();
+                return operations.BookingReservationsByIdGetAsync(id, apaleoCurrentDateTime, expand).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -3257,6 +3142,13 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='id'>
             /// Id of the reservation to be retrieved.
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='expand'>
             /// List of all embedded resources that should be expanded in the response.
             /// Possible values are: timeSlices, services, booker, actions, company. All
@@ -3265,9 +3157,9 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingReservationsByIdGetAsync(this IBookingApi operations, string id, IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingReservationsByIdGetAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), IList<string> expand = default(IList<string>), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingReservationsByIdGetWithHttpMessagesAsync(id, expand, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingReservationsByIdGetWithHttpMessagesAsync(id, apaleoCurrentDateTime, expand, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -3299,9 +3191,16 @@ namespace Traces.ApaleoClients.Booking
             /// Define the list of operations to be applied to the resource. Learn more
             /// about JSON Patch here: http://jsonpatch.com/.
             /// </param>
-            public static MessageItemCollection BookingReservationsByIdPatch(this IBookingApi operations, string id, IList<Operation> body)
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingReservationsByIdPatch(this IBookingApi operations, string id, IList<Operation> body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingReservationsByIdPatchAsync(id, body).GetAwaiter().GetResult();
+                return operations.BookingReservationsByIdPatchAsync(id, body, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -3330,104 +3229,19 @@ namespace Traces.ApaleoClients.Booking
             /// Define the list of operations to be applied to the resource. Learn more
             /// about JSON Patch here: http://jsonpatch.com/.
             /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<MessageItemCollection> BookingReservationsByIdPatchAsync(this IBookingApi operations, string id, IList<Operation> body, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.BookingReservationsByIdPatchWithHttpMessagesAsync(id, body, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Get a list of all available units for a reservation [DEPRECATED]
-            /// </summary>
-            /// <remarks>
-            /// This method has been moved to availability, use
-            /// /availability/v1/reservations/{id}/units instead. It will be removed on
-            /// 10/07/2020&lt;br/ &gt;Get the list of available units for a specific
-            /// reservation and time period.&lt;br&gt;You must have at least one of these
-            /// scopes: 'availability.read, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// The id of the reservation
-            /// </param>
-            /// <param name='unitGroupId'>
-            /// The unit group id
-            /// </param>
-            /// <param name='fromParameter'>
-            /// The from date and time&lt;br /&gt;A date and time (without fractional
-            /// second part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-            /// </param>
-            /// <param name='to'>
-            /// The to date and time&lt;br /&gt;A date and time (without fractional second
-            /// part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-            /// </param>
-            /// <param name='includeOutOfService'>
-            /// Should units that are set OutOfService in the defined time period be
-            /// returned as available.
-            /// </param>
-            /// <param name='unitCondition'>
-            /// The unit condition. Possible values include: 'Clean', 'CleanToBeInspected',
-            /// 'Dirty'
-            /// </param>
-            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
-            public static object BookingReservationsByIdAvailableUnitsGet(this IBookingApi operations, string id, string unitGroupId = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeOutOfService = default(bool?), UnitCondition? unitCondition = default(UnitCondition?))
-            {
-                return operations.BookingReservationsByIdAvailableUnitsGetAsync(id, unitGroupId, fromParameter, to, includeOutOfService, unitCondition).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Get a list of all available units for a reservation [DEPRECATED]
-            /// </summary>
-            /// <remarks>
-            /// This method has been moved to availability, use
-            /// /availability/v1/reservations/{id}/units instead. It will be removed on
-            /// 10/07/2020&lt;br/ &gt;Get the list of available units for a specific
-            /// reservation and time period.&lt;br&gt;You must have at least one of these
-            /// scopes: 'availability.read, reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// The id of the reservation
-            /// </param>
-            /// <param name='unitGroupId'>
-            /// The unit group id
-            /// </param>
-            /// <param name='fromParameter'>
-            /// The from date and time&lt;br /&gt;A date and time (without fractional
-            /// second part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-            /// </param>
-            /// <param name='to'>
-            /// The to date and time&lt;br /&gt;A date and time (without fractional second
-            /// part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-            /// </param>
-            /// <param name='includeOutOfService'>
-            /// Should units that are set OutOfService in the defined time period be
-            /// returned as available.
-            /// </param>
-            /// <param name='unitCondition'>
-            /// The unit condition. Possible values include: 'Clean', 'CleanToBeInspected',
-            /// 'Dirty'
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
-            public static async Task<object> BookingReservationsByIdAvailableUnitsGetAsync(this IBookingApi operations, string id, string unitGroupId = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeOutOfService = default(bool?), UnitCondition? unitCondition = default(UnitCondition?), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<MessageItemCollection> BookingReservationsByIdPatchAsync(this IBookingApi operations, string id, IList<Operation> body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingReservationsByIdAvailableUnitsGetWithHttpMessagesAsync(id, unitGroupId, fromParameter, to, includeOutOfService, unitCondition, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingReservationsByIdPatchWithHttpMessagesAsync(id, body, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -3481,9 +3295,16 @@ namespace Traces.ApaleoClients.Booking
             /// Return also offers that are currently not publicly bookable as restrictions
             /// are violated. By default only available offers are returned
             /// </param>
-            public static object BookingReservationsByIdOffersGet(this IBookingApi operations, string id, string arrival = default(string), string departure = default(string), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), bool? requote = default(bool?), bool? includeUnavailable = default(bool?))
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static object BookingReservationsByIdOffersGet(this IBookingApi operations, string id, string arrival = default(string), string departure = default(string), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), bool? requote = default(bool?), bool? includeUnavailable = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingReservationsByIdOffersGetAsync(id, arrival, departure, adults, childrenAges, channelCode, promoCode, requote, includeUnavailable).GetAwaiter().GetResult();
+                return operations.BookingReservationsByIdOffersGetAsync(id, arrival, departure, adults, childrenAges, channelCode, promoCode, requote, includeUnavailable, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -3534,12 +3355,19 @@ namespace Traces.ApaleoClients.Booking
             /// Return also offers that are currently not publicly bookable as restrictions
             /// are violated. By default only available offers are returned
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingReservationsByIdOffersGetAsync(this IBookingApi operations, string id, string arrival = default(string), string departure = default(string), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), bool? requote = default(bool?), bool? includeUnavailable = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingReservationsByIdOffersGetAsync(this IBookingApi operations, string id, string arrival = default(string), string departure = default(string), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), bool? requote = default(bool?), bool? includeUnavailable = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingReservationsByIdOffersGetWithHttpMessagesAsync(id, arrival, departure, adults, childrenAges, channelCode, promoCode, requote, includeUnavailable, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingReservationsByIdOffersGetWithHttpMessagesAsync(id, arrival, departure, adults, childrenAges, channelCode, promoCode, requote, includeUnavailable, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -3573,9 +3401,16 @@ namespace Traces.ApaleoClients.Booking
             /// With this query parameter, you can also ask for the dates, that usually the
             /// service will not be booked. It defaults to true.
             /// </param>
-            public static object BookingReservationsByIdServiceOffersGet(this IBookingApi operations, string id, ChannelCode? channelCode = default(ChannelCode?), bool? onlyDefaultDates = default(bool?))
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static object BookingReservationsByIdServiceOffersGet(this IBookingApi operations, string id, ChannelCode? channelCode = default(ChannelCode?), bool? onlyDefaultDates = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingReservationsByIdServiceOffersGetAsync(id, channelCode, onlyDefaultDates).GetAwaiter().GetResult();
+                return operations.BookingReservationsByIdServiceOffersGetAsync(id, channelCode, onlyDefaultDates, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -3606,62 +3441,22 @@ namespace Traces.ApaleoClients.Booking
             /// With this query parameter, you can also ask for the dates, that usually the
             /// service will not be booked. It defaults to true.
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingReservationsByIdServiceOffersGetAsync(this IBookingApi operations, string id, ChannelCode? channelCode = default(ChannelCode?), bool? onlyDefaultDates = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingReservationsByIdServiceOffersGetAsync(this IBookingApi operations, string id, ChannelCode? channelCode = default(ChannelCode?), bool? onlyDefaultDates = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingReservationsByIdServiceOffersGetWithHttpMessagesAsync(id, channelCode, onlyDefaultDates, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingReservationsByIdServiceOffersGetWithHttpMessagesAsync(id, channelCode, onlyDefaultDates, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
-            }
-
-            /// <summary>
-            /// Removes a service from a reservation.
-            /// </summary>
-            /// <remarks>
-            /// Removes a service from a reservation. The service will not be removed if it
-            /// is already posted or if the service date is in the past.&lt;br&gt;You must
-            /// have this scope: 'reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation.
-            /// </param>
-            /// <param name='serviceId'>
-            /// The id of the service to delete
-            /// </param>
-            public static void BookingReservationsByIdServicesDelete(this IBookingApi operations, string id, string serviceId)
-            {
-                operations.BookingReservationsByIdServicesDeleteAsync(id, serviceId).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Removes a service from a reservation.
-            /// </summary>
-            /// <remarks>
-            /// Removes a service from a reservation. The service will not be removed if it
-            /// is already posted or if the service date is in the past.&lt;br&gt;You must
-            /// have this scope: 'reservations.manage'.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the reservation.
-            /// </param>
-            /// <param name='serviceId'>
-            /// The id of the service to delete
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task BookingReservationsByIdServicesDeleteAsync(this IBookingApi operations, string id, string serviceId, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                (await operations.BookingReservationsByIdServicesDeleteWithHttpMessagesAsync(id, serviceId, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -3678,9 +3473,16 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='id'>
             /// Id of the reservation.
             /// </param>
-            public static object BookingReservationsByIdServicesGet(this IBookingApi operations, string id)
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static object BookingReservationsByIdServicesGet(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingReservationsByIdServicesGetAsync(id).GetAwaiter().GetResult();
+                return operations.BookingReservationsByIdServicesGetAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -3697,120 +3499,871 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='id'>
             /// Id of the reservation.
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingReservationsByIdServicesGetAsync(this IBookingApi operations, string id, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingReservationsByIdServicesGetAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingReservationsByIdServicesGetWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingReservationsByIdServicesGetWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
             }
 
             /// <summary>
-            /// Returns service offers for one specific stay.
+            /// Removes a service from a reservation.
             /// </summary>
             /// <remarks>
-            /// &lt;br&gt;You must have at least one of these scopes: 'offers.read,
-            /// reservations.manage'.
+            /// Removes a service from a reservation. The service will not be removed if it
+            /// is mandatory, already posted or if the service date is in the
+            /// past.&lt;br&gt;You must have this scope: 'reservations.manage'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='ratePlanId'>
-            /// The rate plan ID
+            /// <param name='id'>
+            /// Id of the reservation.
             /// </param>
-            /// <param name='arrival'>
-            /// Date and optional time of arrival&lt;br /&gt;Specify either a pure date or
-            /// a date and time (without fractional second part) in UTC or with UTC offset
-            /// as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+            /// <param name='serviceId'>
+            /// The id of the service to delete
             /// </param>
-            /// <param name='departure'>
-            /// Date and optional time of departure. Cannot be more than 5 years after
-            /// arrival.&lt;br /&gt;Specify either a pure date or a date and time (without
-            /// fractional second part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
             /// </param>
-            /// <param name='adults'>
-            /// The number of adults you want offers for
-            /// </param>
-            /// <param name='channelCode'>
-            /// The channel code used to filter the services. Possible values include:
-            /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
-            /// </param>
-            /// <param name='childrenAges'>
-            /// The ages of the children you want offers for
-            /// </param>
-            /// <param name='onlyDefaultDates'>
-            /// Depending on the postNextDay setting of a service it will be posted before
-            /// or after midnight.
-            /// Breakfast is usually delivered on the next morning, having 'postNextDay'
-            /// set to true. Its 'default dates' are from the day after
-            /// arrival until the departure day. For services like dinner 'postNextDay' is
-            /// false, and default dates are day of arrival until one
-            /// day before departure.
-            /// With this query parameter set to 'false', you can also ask for dates
-            /// outside of those default dates. It defaults to true.
-            /// </param>
-            public static object BookingServiceOffersGet(this IBookingApi operations, string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? onlyDefaultDates = default(bool?))
+            public static MessageItemCollection BookingReservationsByIdServicesDelete(this IBookingApi operations, string id, string serviceId, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingServiceOffersGetAsync(ratePlanId, arrival, departure, adults, channelCode, childrenAges, onlyDefaultDates).GetAwaiter().GetResult();
+                return operations.BookingReservationsByIdServicesDeleteAsync(id, serviceId, apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// Returns service offers for one specific stay.
+            /// Removes a service from a reservation.
             /// </summary>
             /// <remarks>
-            /// &lt;br&gt;You must have at least one of these scopes: 'offers.read,
-            /// reservations.manage'.
+            /// Removes a service from a reservation. The service will not be removed if it
+            /// is mandatory, already posted or if the service date is in the
+            /// past.&lt;br&gt;You must have this scope: 'reservations.manage'.
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='ratePlanId'>
-            /// The rate plan ID
+            /// <param name='id'>
+            /// Id of the reservation.
             /// </param>
-            /// <param name='arrival'>
-            /// Date and optional time of arrival&lt;br /&gt;Specify either a pure date or
-            /// a date and time (without fractional second part) in UTC or with UTC offset
-            /// as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+            /// <param name='serviceId'>
+            /// The id of the service to delete
             /// </param>
-            /// <param name='departure'>
-            /// Date and optional time of departure. Cannot be more than 5 years after
-            /// arrival.&lt;br /&gt;Specify either a pure date or a date and time (without
-            /// fractional second part) in UTC or with UTC offset as defined in &lt;a
-            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-            /// </param>
-            /// <param name='adults'>
-            /// The number of adults you want offers for
-            /// </param>
-            /// <param name='channelCode'>
-            /// The channel code used to filter the services. Possible values include:
-            /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
-            /// </param>
-            /// <param name='childrenAges'>
-            /// The ages of the children you want offers for
-            /// </param>
-            /// <param name='onlyDefaultDates'>
-            /// Depending on the postNextDay setting of a service it will be posted before
-            /// or after midnight.
-            /// Breakfast is usually delivered on the next morning, having 'postNextDay'
-            /// set to true. Its 'default dates' are from the day after
-            /// arrival until the departure day. For services like dinner 'postNextDay' is
-            /// false, and default dates are day of arrival until one
-            /// day before departure.
-            /// With this query parameter set to 'false', you can also ask for dates
-            /// outside of those default dates. It defaults to true.
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingServiceOffersGetAsync(this IBookingApi operations, string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? onlyDefaultDates = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<MessageItemCollection> BookingReservationsByIdServicesDeleteAsync(this IBookingApi operations, string id, string serviceId, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingServiceOffersGetWithHttpMessagesAsync(ratePlanId, arrival, departure, adults, channelCode, childrenAges, onlyDefaultDates, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingReservationsByIdServicesDeleteWithHttpMessagesAsync(id, serviceId, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Assign a unit to a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Assigns one of the available units to a reservation which is in state
+            /// 'Confirmed' or 'InHouse'.&lt;br&gt;You must have at least one of these
+            /// scopes: 'reservations.assign-unit, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation a unit should be assigned to.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static object BookingReservationActionsByIdAssignUnitPut(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingReservationActionsByIdAssignUnitPutAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Assign a unit to a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Assigns one of the available units to a reservation which is in state
+            /// 'Confirmed' or 'InHouse'.&lt;br&gt;You must have at least one of these
+            /// scopes: 'reservations.assign-unit, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation a unit should be assigned to.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<object> BookingReservationActionsByIdAssignUnitPutAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingReservationActionsByIdAssignUnitPutWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Assign a specific unit to a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Assigns a specific unit to a reservation which is in state 'Confirmed' or
+            /// 'InHouse'.&lt;br /&gt;If the unit is not available, the call will return an
+            /// error, and no unit will be assigned.&lt;br&gt;You must have at least one of
+            /// these scopes: 'reservations.assign-unit, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation the unit should be assigned to.
+            /// </param>
+            /// <param name='unitId'>
+            /// The id of the unit to be assigned.
+            /// </param>
+            /// <param name='fromParameter'>
+            /// The start date and optional time for the unit assignment. If not specified,
+            /// the reservation's arrival will be used.&lt;br /&gt;Specify either a pure
+            /// date or a date and time (without fractional second part) in UTC or with UTC
+            /// offset as defined in &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+            /// </param>
+            /// <param name='to'>
+            /// The end date and optional time for the unit assignment. If not specified,
+            /// the reservation's departure will be used.&lt;br /&gt;Specify either a pure
+            /// date or a date and time (without fractional second part) in UTC or with UTC
+            /// offset as defined in &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static object BookingReservationActionsByIdAssignUnitByUnitIdPut(this IBookingApi operations, string id, string unitId, string fromParameter = default(string), string to = default(string), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingReservationActionsByIdAssignUnitByUnitIdPutAsync(id, unitId, fromParameter, to, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Assign a specific unit to a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Assigns a specific unit to a reservation which is in state 'Confirmed' or
+            /// 'InHouse'.&lt;br /&gt;If the unit is not available, the call will return an
+            /// error, and no unit will be assigned.&lt;br&gt;You must have at least one of
+            /// these scopes: 'reservations.assign-unit, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation the unit should be assigned to.
+            /// </param>
+            /// <param name='unitId'>
+            /// The id of the unit to be assigned.
+            /// </param>
+            /// <param name='fromParameter'>
+            /// The start date and optional time for the unit assignment. If not specified,
+            /// the reservation's arrival will be used.&lt;br /&gt;Specify either a pure
+            /// date or a date and time (without fractional second part) in UTC or with UTC
+            /// offset as defined in &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+            /// </param>
+            /// <param name='to'>
+            /// The end date and optional time for the unit assignment. If not specified,
+            /// the reservation's departure will be used.&lt;br /&gt;Specify either a pure
+            /// date or a date and time (without fractional second part) in UTC or with UTC
+            /// offset as defined in &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<object> BookingReservationActionsByIdAssignUnitByUnitIdPutAsync(this IBookingApi operations, string id, string unitId, string fromParameter = default(string), string to = default(string), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingReservationActionsByIdAssignUnitByUnitIdPutWithHttpMessagesAsync(id, unitId, fromParameter, to, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Unassign units from a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Unassigns units for all time slices of the given reservation. If no units
+            /// are assigned for the
+            /// reservation nothing will happen. It will fail for reservations in status
+            /// 'CheckedOut'.&lt;br&gt;You must have at least one of these scopes:
+            /// 'reservations.assign-unit, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation the unit should be unassigned for.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingReservationActionsByIdUnassignUnitsPut(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingReservationActionsByIdUnassignUnitsPutAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Unassign units from a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Unassigns units for all time slices of the given reservation. If no units
+            /// are assigned for the
+            /// reservation nothing will happen. It will fail for reservations in status
+            /// 'CheckedOut'.&lt;br&gt;You must have at least one of these scopes:
+            /// 'reservations.assign-unit, reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation the unit should be unassigned for.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingReservationActionsByIdUnassignUnitsPutAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingReservationActionsByIdUnassignUnitsPutWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Check-in of a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Check in a specific reservation which is in status 'Confirmed', and has a
+            /// unit assigned. This changes the status to 'InHouse', and sets the check-in
+            /// date and time.&lt;br&gt;You must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation that should be processed.
+            /// </param>
+            /// <param name='withCityTax'>
+            /// Define if city tax should be added for this reservation or not. The default
+            /// is "true".
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingReservationActionsByIdCheckinPut(this IBookingApi operations, string id, bool? withCityTax = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingReservationActionsByIdCheckinPutAsync(id, withCityTax, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Check-in of a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Check in a specific reservation which is in status 'Confirmed', and has a
+            /// unit assigned. This changes the status to 'InHouse', and sets the check-in
+            /// date and time.&lt;br&gt;You must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation that should be processed.
+            /// </param>
+            /// <param name='withCityTax'>
+            /// Define if city tax should be added for this reservation or not. The default
+            /// is "true".
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingReservationActionsByIdCheckinPutAsync(this IBookingApi operations, string id, bool? withCityTax = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingReservationActionsByIdCheckinPutWithHttpMessagesAsync(id, withCityTax, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Check-out of a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Check out a specific reservation which is in status 'InHouse'. This changes
+            /// the status to 'CheckedOut', and sets the check-out date and time.
+            /// All open charges on the folio will be posted.
+            /// &lt;br /&gt;
+            /// Check-out is only possible, if the departure date is not later than
+            /// tomorrow. Otherwise, first amend the reservation and shorten the
+            /// stay.&lt;br&gt;You must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingReservationActionsByIdCheckoutPut(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingReservationActionsByIdCheckoutPutAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Check-out of a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Check out a specific reservation which is in status 'InHouse'. This changes
+            /// the status to 'CheckedOut', and sets the check-out date and time.
+            /// All open charges on the folio will be posted.
+            /// &lt;br /&gt;
+            /// Check-out is only possible, if the departure date is not later than
+            /// tomorrow. Otherwise, first amend the reservation and shorten the
+            /// stay.&lt;br&gt;You must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingReservationActionsByIdCheckoutPutAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingReservationActionsByIdCheckoutPutWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Cancel a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Cancel a specific reservation which is in status 'Confirmed' and where the
+            /// arrival time is in the future.
+            /// This changes the status to 'Canceled', and sets the cancellation date and
+            /// time.&lt;br&gt;You must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingReservationActionsByIdCancelPut(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingReservationActionsByIdCancelPutAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Cancel a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Cancel a specific reservation which is in status 'Confirmed' and where the
+            /// arrival time is in the future.
+            /// This changes the status to 'Canceled', and sets the cancellation date and
+            /// time.&lt;br&gt;You must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingReservationActionsByIdCancelPutAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingReservationActionsByIdCancelPutWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Set a reservation to No-show.
+            /// </summary>
+            /// <remarks>
+            /// Set a specific reservation to No-show which is in status 'Confirmed' and
+            /// where the arrival date is in the past.
+            /// This changes the status to 'NoShow', and sets the no-show date and
+            /// time.&lt;br&gt;You must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingReservationActionsByIdNoshowPut(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingReservationActionsByIdNoshowPutAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Set a reservation to No-show.
+            /// </summary>
+            /// <remarks>
+            /// Set a specific reservation to No-show which is in status 'Confirmed' and
+            /// where the arrival date is in the past.
+            /// This changes the status to 'NoShow', and sets the no-show date and
+            /// time.&lt;br&gt;You must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation that should be processed.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingReservationActionsByIdNoshowPutAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingReservationActionsByIdNoshowPutWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Allows you to amend the stay details of a reservation
+            /// </summary>
+            /// <remarks>
+            /// Modifies the stay-related data of a reservation.&lt;br /&gt;
+            /// If a reservation is 'Confirmed', you can change all fields.&lt;br /&gt;
+            /// If a reservation is 'InHouse', only changes to future time slices are
+            /// possible.&lt;br /&gt;
+            /// Changes to reservations that are in the status 'CheckedOut' or 'Canceled'
+            /// are not possible at all.&lt;br&gt;You must have this scope:
+            /// 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation that should be modified
+            /// </param>
+            /// <param name='body'>
+            /// The new stay details that should be applied to the reservation.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingReservationActionsByIdAmendPut(this IBookingApi operations, string id, DesiredStayDetailsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingReservationActionsByIdAmendPutAsync(id, body, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Allows you to amend the stay details of a reservation
+            /// </summary>
+            /// <remarks>
+            /// Modifies the stay-related data of a reservation.&lt;br /&gt;
+            /// If a reservation is 'Confirmed', you can change all fields.&lt;br /&gt;
+            /// If a reservation is 'InHouse', only changes to future time slices are
+            /// possible.&lt;br /&gt;
+            /// Changes to reservations that are in the status 'CheckedOut' or 'Canceled'
+            /// are not possible at all.&lt;br&gt;You must have this scope:
+            /// 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation that should be modified
+            /// </param>
+            /// <param name='body'>
+            /// The new stay details that should be applied to the reservation.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingReservationActionsByIdAmendPutAsync(this IBookingApi operations, string id, DesiredStayDetailsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingReservationActionsByIdAmendPutWithHttpMessagesAsync(id, body, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Allows you to amend the stay details of a reservation regardless of
+            /// availability or restrictions.
+            /// </summary>
+            /// <remarks>
+            /// Modifies the stay-related data of a reservation.&lt;br /&gt;
+            /// If a reservation is 'Confirmed', you can change all fields.&lt;br /&gt;
+            /// If a reservation is 'InHouse', only changes to future time slices are
+            /// possible.&lt;br /&gt;
+            /// Changes to reservations that are in the status 'CheckedOut' or 'Canceled'
+            /// are not possible at all.&lt;br&gt;You must have this scope:
+            /// 'reservations.force-manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation that should be modified
+            /// </param>
+            /// <param name='body'>
+            /// The new stay details that should be applied to the reservation.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingReservationActionsByIdAmendforcePut(this IBookingApi operations, string id, DesiredStayDetailsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingReservationActionsByIdAmendforcePutAsync(id, body, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Allows you to amend the stay details of a reservation regardless of
+            /// availability or restrictions.
+            /// </summary>
+            /// <remarks>
+            /// Modifies the stay-related data of a reservation.&lt;br /&gt;
+            /// If a reservation is 'Confirmed', you can change all fields.&lt;br /&gt;
+            /// If a reservation is 'InHouse', only changes to future time slices are
+            /// possible.&lt;br /&gt;
+            /// Changes to reservations that are in the status 'CheckedOut' or 'Canceled'
+            /// are not possible at all.&lt;br&gt;You must have this scope:
+            /// 'reservations.force-manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation that should be modified
+            /// </param>
+            /// <param name='body'>
+            /// The new stay details that should be applied to the reservation.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingReservationActionsByIdAmendforcePutAsync(this IBookingApi operations, string id, DesiredStayDetailsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingReservationActionsByIdAmendforcePutWithHttpMessagesAsync(id, body, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Book the service for a specific reservation.
+            /// </summary>
+            /// <remarks>
+            /// Use this to book a service for a specific reservation.
+            /// Please note that when dates are specified, all desired dates must be
+            /// specified or they will be removed if not posted to the folio.&lt;br&gt;You
+            /// must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation.
+            /// </param>
+            /// <param name='body'>
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingReservationActionsByIdBookServicePut(this IBookingApi operations, string id, BookReservationServiceModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingReservationActionsByIdBookServicePutAsync(id, body, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Book the service for a specific reservation.
+            /// </summary>
+            /// <remarks>
+            /// Use this to book a service for a specific reservation.
+            /// Please note that when dates are specified, all desired dates must be
+            /// specified or they will be removed if not posted to the folio.&lt;br&gt;You
+            /// must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation.
+            /// </param>
+            /// <param name='body'>
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingReservationActionsByIdBookServicePutAsync(this IBookingApi operations, string id, BookReservationServiceModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingReservationActionsByIdBookServicePutWithHttpMessagesAsync(id, body, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Removes the city tax from a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Use this is you want to remove the city tax from a reservation before the
+            /// stay.&lt;br&gt;You must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingReservationActionsByIdRemoveCityTaxPut(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingReservationActionsByIdRemoveCityTaxPutAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Removes the city tax from a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Use this is you want to remove the city tax from a reservation before the
+            /// stay.&lt;br&gt;You must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingReservationActionsByIdRemoveCityTaxPutAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingReservationActionsByIdRemoveCityTaxPutWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Adds the city tax to a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Use this if you want to add the city tax to a reservation.&lt;br&gt;You
+            /// must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static MessageItemCollection BookingReservationActionsByIdAddCityTaxPut(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
+            {
+                return operations.BookingReservationActionsByIdAddCityTaxPutAsync(id, apaleoCurrentDateTime).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Adds the city tax to a reservation.
+            /// </summary>
+            /// <remarks>
+            /// Use this if you want to add the city tax to a reservation.&lt;br&gt;You
+            /// must have this scope: 'reservations.manage'.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Id of the reservation.
+            /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<MessageItemCollection> BookingReservationActionsByIdAddCityTaxPutAsync(this IBookingApi operations, string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BookingReservationActionsByIdAddCityTaxPutWithHttpMessagesAsync(id, apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -3826,9 +4379,16 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            public static object BookingTypesSourcesGet(this IBookingApi operations)
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
+            public static object BookingTypesSourcesGet(this IBookingApi operations, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?))
             {
-                return operations.BookingTypesSourcesGetAsync().GetAwaiter().GetResult();
+                return operations.BookingTypesSourcesGetAsync(apaleoCurrentDateTime).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -3841,12 +4401,19 @@ namespace Traces.ApaleoClients.Booking
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='apaleoCurrentDateTime'>
+            /// Use this parameter to override the current date and time for the current
+            /// request. Specify a date and time (without fractional second part) in UTC or
+            /// with UTC offset as defined in the &lt;a
+            /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+            /// header will only take effect on development environments.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> BookingTypesSourcesGetAsync(this IBookingApi operations, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> BookingTypesSourcesGetAsync(this IBookingApi operations, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BookingTypesSourcesGetWithHttpMessagesAsync(null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BookingTypesSourcesGetWithHttpMessagesAsync(apaleoCurrentDateTime, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }

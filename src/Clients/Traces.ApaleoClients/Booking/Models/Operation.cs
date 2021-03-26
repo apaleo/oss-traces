@@ -22,12 +22,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the Operation class.
         /// </summary>
-        public Operation(string fromProperty = default(string), string op = default(string), string path = default(string), object value = default(object))
+        public Operation(object value = default(object), string path = default(string), string op = default(string), string fromProperty = default(string))
         {
-            FromProperty = fromProperty;
-            Op = op;
-            Path = path;
             Value = value;
+            Path = path;
+            Op = op;
+            FromProperty = fromProperty;
             CustomInit();
         }
 
@@ -38,13 +38,8 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "from")]
-        public string FromProperty { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "op")]
-        public string Op { get; set; }
+        [JsonProperty(PropertyName = "value")]
+        public object Value { get; set; }
 
         /// <summary>
         /// </summary>
@@ -53,8 +48,13 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "value")]
-        public object Value { get; set; }
+        [JsonProperty(PropertyName = "op")]
+        public string Op { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "from")]
+        public string FromProperty { get; set; }
 
     }
 }

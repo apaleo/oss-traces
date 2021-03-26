@@ -28,40 +28,40 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the PickUpReservationModel class.
         /// </summary>
-        /// <param name="adults">Number of adults</param>
+        /// <param name="blockId">ID of the block</param>
         /// <param name="arrival">Date of arrival and the optional time with
         /// UTC offset&lt;br /&gt;Specify either a pure date or a date and time
         /// (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="blockId">ID of the block</param>
         /// <param name="departure">Date of departure and the optional time
         /// with UTC offset&lt;br /&gt;Specify either a pure date or a date and
         /// time (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="additionalGuests">Additional guests of the
-        /// reservation.</param>
+        /// <param name="adults">Number of adults</param>
+        /// <param name="services">Additional services (extras, add-ons) that
+        /// should be added to the reservation</param>
         /// <param name="childrenAges">The ages of the children</param>
         /// <param name="comment">Additional information and comments</param>
         /// <param name="guestComment">Additional information and comment by
         /// the guest</param>
-        /// <param name="services">Additional services (extras, add-ons) that
-        /// should be added to the reservation</param>
+        /// <param name="additionalGuests">Additional guests of the
+        /// reservation.</param>
         /// <param name="travelPurpose">The purpose of the trip, leisure or
         /// business. Possible values include: 'Business', 'Leisure'</param>
-        public PickUpReservationModel(int adults, string arrival, string blockId, string departure, IList<GuestModel> additionalGuests = default(IList<GuestModel>), IList<int?> childrenAges = default(IList<int?>), string comment = default(string), string guestComment = default(string), GuestModel primaryGuest = default(GuestModel), IList<BookReservationServiceModel> services = default(IList<BookReservationServiceModel>), TravelPurpose? travelPurpose = default(TravelPurpose?))
+        public PickUpReservationModel(string blockId, string arrival, string departure, int adults, IList<BookReservationServiceModel> services = default(IList<BookReservationServiceModel>), IList<int?> childrenAges = default(IList<int?>), string comment = default(string), string guestComment = default(string), GuestModel primaryGuest = default(GuestModel), IList<GuestModel> additionalGuests = default(IList<GuestModel>), TravelPurpose? travelPurpose = default(TravelPurpose?))
         {
-            AdditionalGuests = additionalGuests;
-            Adults = adults;
-            Arrival = arrival;
             BlockId = blockId;
+            Services = services;
+            Arrival = arrival;
+            Departure = departure;
+            Adults = adults;
             ChildrenAges = childrenAges;
             Comment = comment;
-            Departure = departure;
             GuestComment = guestComment;
             PrimaryGuest = primaryGuest;
-            Services = services;
+            AdditionalGuests = additionalGuests;
             TravelPurpose = travelPurpose;
             CustomInit();
         }
@@ -72,16 +72,17 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets additional guests of the reservation.
+        /// Gets or sets ID of the block
         /// </summary>
-        [JsonProperty(PropertyName = "additionalGuests")]
-        public IList<GuestModel> AdditionalGuests { get; set; }
+        [JsonProperty(PropertyName = "blockId")]
+        public string BlockId { get; set; }
 
         /// <summary>
-        /// Gets or sets number of adults
+        /// Gets or sets additional services (extras, add-ons) that should be
+        /// added to the reservation
         /// </summary>
-        [JsonProperty(PropertyName = "adults")]
-        public int Adults { get; set; }
+        [JsonProperty(PropertyName = "services")]
+        public IList<BookReservationServiceModel> Services { get; set; }
 
         /// <summary>
         /// Gets or sets date of arrival and the optional time with UTC
@@ -94,10 +95,20 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Arrival { get; set; }
 
         /// <summary>
-        /// Gets or sets ID of the block
+        /// Gets or sets date of departure and the optional time with UTC
+        /// offset&amp;lt;br /&amp;gt;Specify either a pure date or a date and
+        /// time (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
-        [JsonProperty(PropertyName = "blockId")]
-        public string BlockId { get; set; }
+        [JsonProperty(PropertyName = "departure")]
+        public string Departure { get; set; }
+
+        /// <summary>
+        /// Gets or sets number of adults
+        /// </summary>
+        [JsonProperty(PropertyName = "adults")]
+        public int Adults { get; set; }
 
         /// <summary>
         /// Gets or sets the ages of the children
@@ -112,16 +123,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Comment { get; set; }
 
         /// <summary>
-        /// Gets or sets date of departure and the optional time with UTC
-        /// offset&amp;lt;br /&amp;gt;Specify either a pure date or a date and
-        /// time (without fractional second part) in UTC or with UTC offset as
-        /// defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
-        /// </summary>
-        [JsonProperty(PropertyName = "departure")]
-        public string Departure { get; set; }
-
-        /// <summary>
         /// Gets or sets additional information and comment by the guest
         /// </summary>
         [JsonProperty(PropertyName = "guestComment")]
@@ -133,11 +134,10 @@ namespace Traces.ApaleoClients.Booking.Models
         public GuestModel PrimaryGuest { get; set; }
 
         /// <summary>
-        /// Gets or sets additional services (extras, add-ons) that should be
-        /// added to the reservation
+        /// Gets or sets additional guests of the reservation.
         /// </summary>
-        [JsonProperty(PropertyName = "services")]
-        public IList<BookReservationServiceModel> Services { get; set; }
+        [JsonProperty(PropertyName = "additionalGuests")]
+        public IList<GuestModel> AdditionalGuests { get; set; }
 
         /// <summary>
         /// Gets or sets the purpose of the trip, leisure or business. Possible
@@ -154,21 +154,21 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Arrival == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Arrival");
-            }
             if (BlockId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "BlockId");
+            }
+            if (Arrival == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Arrival");
             }
             if (Departure == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Departure");
             }
-            if (AdditionalGuests != null)
+            if (Services != null)
             {
-                foreach (var element in AdditionalGuests)
+                foreach (var element in Services)
                 {
                     if (element != null)
                     {
@@ -180,9 +180,9 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 PrimaryGuest.Validate();
             }
-            if (Services != null)
+            if (AdditionalGuests != null)
             {
-                foreach (var element1 in Services)
+                foreach (var element1 in AdditionalGuests)
                 {
                     if (element1 != null)
                     {

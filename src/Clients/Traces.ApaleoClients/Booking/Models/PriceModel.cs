@@ -23,22 +23,22 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the PriceModel class.
         /// </summary>
-        /// <param name="afterTax">Price including all included services, VAT
-        /// and any other taxes like city tax</param>
-        /// <param name="beforeTax">Price including all included services
-        /// without VAT or any other taxes like city tax</param>
-        /// <param name="currency">The currency for all prices and tax
-        /// details</param>
         /// <param name="grossAmount">Price including all included services and
         /// VAT - &lt;b&gt;DEPRECATED: This field will be removed soon, use
         /// BeforeTax + Taxes.Tax instead&lt;/b&gt;</param>
-        public PriceModel(double afterTax, double beforeTax, string currency, double grossAmount, TaxesModel taxes)
+        /// <param name="beforeTax">Price including all included services
+        /// without VAT or any other taxes like city tax</param>
+        /// <param name="afterTax">Price including all included services, VAT
+        /// and any other taxes like city tax</param>
+        /// <param name="currency">The currency for all prices and tax
+        /// details</param>
+        public PriceModel(double grossAmount, double beforeTax, double afterTax, TaxesModel taxes, string currency)
         {
-            AfterTax = afterTax;
-            BeforeTax = beforeTax;
-            Currency = currency;
             GrossAmount = grossAmount;
+            BeforeTax = beforeTax;
+            AfterTax = afterTax;
             Taxes = taxes;
+            Currency = currency;
             CustomInit();
         }
 
@@ -46,26 +46,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
-
-        /// <summary>
-        /// Gets or sets price including all included services, VAT and any
-        /// other taxes like city tax
-        /// </summary>
-        [JsonProperty(PropertyName = "afterTax")]
-        public double AfterTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets price including all included services without VAT or
-        /// any other taxes like city tax
-        /// </summary>
-        [JsonProperty(PropertyName = "beforeTax")]
-        public double BeforeTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets the currency for all prices and tax details
-        /// </summary>
-        [JsonProperty(PropertyName = "currency")]
-        public string Currency { get; set; }
 
         /// <summary>
         /// Gets or sets price including all included services and VAT -
@@ -76,9 +56,29 @@ namespace Traces.ApaleoClients.Booking.Models
         public double GrossAmount { get; set; }
 
         /// <summary>
+        /// Gets or sets price including all included services without VAT or
+        /// any other taxes like city tax
+        /// </summary>
+        [JsonProperty(PropertyName = "beforeTax")]
+        public double BeforeTax { get; set; }
+
+        /// <summary>
+        /// Gets or sets price including all included services, VAT and any
+        /// other taxes like city tax
+        /// </summary>
+        [JsonProperty(PropertyName = "afterTax")]
+        public double AfterTax { get; set; }
+
+        /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "taxes")]
         public TaxesModel Taxes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the currency for all prices and tax details
+        /// </summary>
+        [JsonProperty(PropertyName = "currency")]
+        public string Currency { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -88,13 +88,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Currency == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Currency");
-            }
             if (Taxes == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Taxes");
+            }
+            if (Currency == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Currency");
             }
             if (Taxes != null)
             {
