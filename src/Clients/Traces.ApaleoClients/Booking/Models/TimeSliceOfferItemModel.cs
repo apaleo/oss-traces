@@ -31,15 +31,15 @@ namespace Traces.ApaleoClients.Booking.Models
         /// offer. Possible values include: 'PM6Hold', 'CreditCard',
         /// 'Prepayment', 'Company', 'Ota'</param>
         /// <param name="prices">The prices for this offer</param>
-        public TimeSliceOfferItemModel(int available, EmbeddedUnitGroupModel unitGroup, PeriodModel maxAdvance = default(PeriodModel), PeriodModel minAdvance = default(PeriodModel), GuaranteeType? minGuaranteeType = default(GuaranteeType?), IList<PerOccupancyPriceItemModel> prices = default(IList<PerOccupancyPriceItemModel>), RateRestrictionsModel restrictions = default(RateRestrictionsModel))
+        public TimeSliceOfferItemModel(EmbeddedUnitGroupModel unitGroup, int available, GuaranteeType? minGuaranteeType = default(GuaranteeType?), PeriodModel minAdvance = default(PeriodModel), PeriodModel maxAdvance = default(PeriodModel), RateRestrictionsModel restrictions = default(RateRestrictionsModel), IList<PerOccupancyPriceItemModel> prices = default(IList<PerOccupancyPriceItemModel>))
         {
-            Available = available;
-            MaxAdvance = maxAdvance;
-            MinAdvance = minAdvance;
-            MinGuaranteeType = minGuaranteeType;
-            Prices = prices;
-            Restrictions = restrictions;
             UnitGroup = unitGroup;
+            MinGuaranteeType = minGuaranteeType;
+            MinAdvance = minAdvance;
+            MaxAdvance = maxAdvance;
+            Available = available;
+            Restrictions = restrictions;
+            Prices = prices;
             CustomInit();
         }
 
@@ -49,20 +49,9 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the number of available units for the offer
         /// </summary>
-        [JsonProperty(PropertyName = "available")]
-        public int Available { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "maxAdvance")]
-        public PeriodModel MaxAdvance { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "minAdvance")]
-        public PeriodModel MinAdvance { get; set; }
+        [JsonProperty(PropertyName = "unitGroup")]
+        public EmbeddedUnitGroupModel UnitGroup { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum guarantee type for the offer. Possible
@@ -73,10 +62,20 @@ namespace Traces.ApaleoClients.Booking.Models
         public GuaranteeType? MinGuaranteeType { get; set; }
 
         /// <summary>
-        /// Gets or sets the prices for this offer
         /// </summary>
-        [JsonProperty(PropertyName = "prices")]
-        public IList<PerOccupancyPriceItemModel> Prices { get; set; }
+        [JsonProperty(PropertyName = "minAdvance")]
+        public PeriodModel MinAdvance { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "maxAdvance")]
+        public PeriodModel MaxAdvance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of available units for the offer
+        /// </summary>
+        [JsonProperty(PropertyName = "available")]
+        public int Available { get; set; }
 
         /// <summary>
         /// </summary>
@@ -84,9 +83,10 @@ namespace Traces.ApaleoClients.Booking.Models
         public RateRestrictionsModel Restrictions { get; set; }
 
         /// <summary>
+        /// Gets or sets the prices for this offer
         /// </summary>
-        [JsonProperty(PropertyName = "unitGroup")]
-        public EmbeddedUnitGroupModel UnitGroup { get; set; }
+        [JsonProperty(PropertyName = "prices")]
+        public IList<PerOccupancyPriceItemModel> Prices { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -100,6 +100,14 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "UnitGroup");
             }
+            if (UnitGroup != null)
+            {
+                UnitGroup.Validate();
+            }
+            if (Restrictions != null)
+            {
+                Restrictions.Validate();
+            }
             if (Prices != null)
             {
                 foreach (var element in Prices)
@@ -109,14 +117,6 @@ namespace Traces.ApaleoClients.Booking.Models
                         element.Validate();
                     }
                 }
-            }
-            if (Restrictions != null)
-            {
-                Restrictions.Validate();
-            }
-            if (UnitGroup != null)
-            {
-                UnitGroup.Validate();
             }
         }
     }

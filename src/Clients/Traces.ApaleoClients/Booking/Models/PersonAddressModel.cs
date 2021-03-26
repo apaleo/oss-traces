@@ -22,13 +22,14 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the PersonAddressModel class.
         /// </summary>
-        public PersonAddressModel(string addressLine1 = default(string), string addressLine2 = default(string), string city = default(string), string countryCode = default(string), string postalCode = default(string))
+        public PersonAddressModel(string addressLine1 = default(string), string addressLine2 = default(string), string postalCode = default(string), string city = default(string), string regionCode = default(string), string countryCode = default(string))
         {
             AddressLine1 = addressLine1;
             AddressLine2 = addressLine2;
-            City = city;
-            CountryCode = countryCode;
             PostalCode = postalCode;
+            City = city;
+            RegionCode = regionCode;
+            CountryCode = countryCode;
             CustomInit();
         }
 
@@ -49,18 +50,23 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// </summary>
+        [JsonProperty(PropertyName = "postalCode")]
+        public string PostalCode { get; set; }
+
+        /// <summary>
+        /// </summary>
         [JsonProperty(PropertyName = "city")]
         public string City { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "countryCode")]
-        public string CountryCode { get; set; }
+        [JsonProperty(PropertyName = "regionCode")]
+        public string RegionCode { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "postalCode")]
-        public string PostalCode { get; set; }
+        [JsonProperty(PropertyName = "countryCode")]
+        public string CountryCode { get; set; }
 
     }
 }

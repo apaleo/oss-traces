@@ -26,14 +26,14 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="id">The property id</param>
         /// <param name="code">The code for the property that can be shown in
         /// reports and table views</param>
-        /// <param name="description">The description for the property</param>
         /// <param name="name">The name for the property</param>
-        public EmbeddedPropertyModel(string id, string code = default(string), string description = default(string), string name = default(string))
+        /// <param name="description">The description for the property</param>
+        public EmbeddedPropertyModel(string id, string code = default(string), string name = default(string), string description = default(string))
         {
-            Code = code;
-            Description = description;
             Id = id;
+            Code = code;
             Name = name;
+            Description = description;
             CustomInit();
         }
 
@@ -43,6 +43,12 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets the property id
+        /// </summary>
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the code for the property that can be shown in reports
         /// and table views
         /// </summary>
@@ -50,22 +56,16 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Code { get; set; }
 
         /// <summary>
-        /// Gets the description for the property
-        /// </summary>
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the property id
-        /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the name for the property
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets the description for the property
+        /// </summary>
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; private set; }
 
         /// <summary>
         /// Validate the object.

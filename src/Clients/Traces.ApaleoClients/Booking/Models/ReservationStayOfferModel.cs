@@ -29,47 +29,47 @@ namespace Traces.ApaleoClients.Booking.Models
         /// offer&lt;br /&gt;A date and time (without fractional second part)
         /// in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="availableUnits">The number of available units for that
-        /// offer</param>
         /// <param name="departure">The latest departure date and time for this
         /// offer&lt;br /&gt;A date and time (without fractional second part)
         /// in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="isCorporate">Whether the offer is for a corporate rate
-        /// plan</param>
         /// <param name="minGuaranteeType">The minimum guarantee type for this
         /// offer. Possible values include: 'PM6Hold', 'CreditCard',
         /// 'Prepayment', 'Company'</param>
-        /// <param name="taxDetails">Tax breakdown, displaying net and tax
-        /// amount for each VAT type</param>
+        /// <param name="availableUnits">The number of available units for that
+        /// offer</param>
         /// <param name="timeSlices">The breakdown for each time slice for this
         /// offer</param>
-        /// <param name="companyId">ID of the company the offer is created
-        /// for</param>
-        /// <param name="corporateCode">The corporate rate code the offer is
-        /// created for</param>
+        /// <param name="taxDetails">Tax breakdown, displaying net and tax
+        /// amount for each VAT type</param>
+        /// <param name="isCorporate">Whether the offer is for a corporate rate
+        /// plan</param>
         /// <param name="services">The breakdown for extra services reserved
         /// for this offer</param>
         /// <param name="validationMessages">Validation rules that were applied
         /// to the offer and show the reason why the offer is not
         /// bookable</param>
-        public ReservationStayOfferModel(System.DateTime arrival, int availableUnits, OfferCancellationFeeModel cancellationFee, System.DateTime departure, bool isCorporate, MinGuaranteeType minGuaranteeType, OfferNoShowFeeModel noShowFee, IList<TaxDetailModel> taxDetails, IList<ReservationStayOfferTimeSliceModel> timeSlices, MonetaryValueModel totalGrossAmount, AmountModel cityTax = default(AmountModel), string companyId = default(string), string corporateCode = default(string), IList<ServiceOfferModel> services = default(IList<ServiceOfferModel>), IList<OfferValidationMessageModel> validationMessages = default(IList<OfferValidationMessageModel>))
+        /// <param name="companyId">ID of the company the offer is created
+        /// for</param>
+        /// <param name="corporateCode">The corporate rate code the offer is
+        /// created for</param>
+        public ReservationStayOfferModel(System.DateTime arrival, System.DateTime departure, MinGuaranteeType minGuaranteeType, int availableUnits, MonetaryValueModel totalGrossAmount, OfferCancellationFeeModel cancellationFee, OfferNoShowFeeModel noShowFee, IList<ReservationStayOfferTimeSliceModel> timeSlices, IList<TaxDetailModel> taxDetails, bool isCorporate, IList<ServiceOfferModel> services = default(IList<ServiceOfferModel>), IList<OfferValidationMessageModel> validationMessages = default(IList<OfferValidationMessageModel>), string companyId = default(string), string corporateCode = default(string), AmountModel cityTax = default(AmountModel))
         {
             Arrival = arrival;
-            AvailableUnits = availableUnits;
-            CancellationFee = cancellationFee;
-            CityTax = cityTax;
-            CompanyId = companyId;
-            CorporateCode = corporateCode;
             Departure = departure;
-            IsCorporate = isCorporate;
             MinGuaranteeType = minGuaranteeType;
+            AvailableUnits = availableUnits;
+            TotalGrossAmount = totalGrossAmount;
+            CancellationFee = cancellationFee;
             NoShowFee = noShowFee;
+            TimeSlices = timeSlices;
             Services = services;
             TaxDetails = taxDetails;
-            TimeSlices = timeSlices;
-            TotalGrossAmount = totalGrossAmount;
             ValidationMessages = validationMessages;
+            CompanyId = companyId;
+            CorporateCode = corporateCode;
+            IsCorporate = isCorporate;
+            CityTax = cityTax;
             CustomInit();
         }
 
@@ -88,34 +88,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime Arrival { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of available units for that offer
-        /// </summary>
-        [JsonProperty(PropertyName = "availableUnits")]
-        public int AvailableUnits { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "cancellationFee")]
-        public OfferCancellationFeeModel CancellationFee { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "cityTax")]
-        public AmountModel CityTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets ID of the company the offer is created for
-        /// </summary>
-        [JsonProperty(PropertyName = "companyId")]
-        public string CompanyId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the corporate rate code the offer is created for
-        /// </summary>
-        [JsonProperty(PropertyName = "corporateCode")]
-        public string CorporateCode { get; set; }
-
-        /// <summary>
         /// Gets or sets the latest departure date and time for this
         /// offer&amp;lt;br /&amp;gt;A date and time (without fractional second
         /// part) in UTC or with UTC offset as defined in &amp;lt;a
@@ -125,12 +97,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime Departure { get; set; }
 
         /// <summary>
-        /// Gets or sets whether the offer is for a corporate rate plan
-        /// </summary>
-        [JsonProperty(PropertyName = "isCorporate")]
-        public bool IsCorporate { get; set; }
-
-        /// <summary>
         /// Gets or sets the minimum guarantee type for this offer. Possible
         /// values include: 'PM6Hold', 'CreditCard', 'Prepayment', 'Company'
         /// </summary>
@@ -138,9 +104,31 @@ namespace Traces.ApaleoClients.Booking.Models
         public MinGuaranteeType MinGuaranteeType { get; set; }
 
         /// <summary>
+        /// Gets or sets the number of available units for that offer
+        /// </summary>
+        [JsonProperty(PropertyName = "availableUnits")]
+        public int AvailableUnits { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "totalGrossAmount")]
+        public MonetaryValueModel TotalGrossAmount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "cancellationFee")]
+        public OfferCancellationFeeModel CancellationFee { get; set; }
+
+        /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "noShowFee")]
         public OfferNoShowFeeModel NoShowFee { get; set; }
+
+        /// <summary>
+        /// Gets or sets the breakdown for each time slice for this offer
+        /// </summary>
+        [JsonProperty(PropertyName = "timeSlices")]
+        public IList<ReservationStayOfferTimeSliceModel> TimeSlices { get; set; }
 
         /// <summary>
         /// Gets or sets the breakdown for extra services reserved for this
@@ -157,22 +145,34 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<TaxDetailModel> TaxDetails { get; set; }
 
         /// <summary>
-        /// Gets or sets the breakdown for each time slice for this offer
-        /// </summary>
-        [JsonProperty(PropertyName = "timeSlices")]
-        public IList<ReservationStayOfferTimeSliceModel> TimeSlices { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "totalGrossAmount")]
-        public MonetaryValueModel TotalGrossAmount { get; set; }
-
-        /// <summary>
         /// Gets or sets validation rules that were applied to the offer and
         /// show the reason why the offer is not bookable
         /// </summary>
         [JsonProperty(PropertyName = "validationMessages")]
         public IList<OfferValidationMessageModel> ValidationMessages { get; set; }
+
+        /// <summary>
+        /// Gets or sets ID of the company the offer is created for
+        /// </summary>
+        [JsonProperty(PropertyName = "companyId")]
+        public string CompanyId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the corporate rate code the offer is created for
+        /// </summary>
+        [JsonProperty(PropertyName = "corporateCode")]
+        public string CorporateCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the offer is for a corporate rate plan
+        /// </summary>
+        [JsonProperty(PropertyName = "isCorporate")]
+        public bool IsCorporate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "cityTax")]
+        public AmountModel CityTax { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -182,6 +182,10 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
+            if (TotalGrossAmount == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "TotalGrossAmount");
+            }
             if (CancellationFee == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "CancellationFee");
@@ -190,33 +194,29 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "NoShowFee");
             }
-            if (TaxDetails == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "TaxDetails");
-            }
             if (TimeSlices == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "TimeSlices");
             }
-            if (TotalGrossAmount == null)
+            if (TaxDetails == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "TotalGrossAmount");
+                throw new ValidationException(ValidationRules.CannotBeNull, "TaxDetails");
+            }
+            if (TotalGrossAmount != null)
+            {
+                TotalGrossAmount.Validate();
             }
             if (CancellationFee != null)
             {
                 CancellationFee.Validate();
             }
-            if (CityTax != null)
-            {
-                CityTax.Validate();
-            }
             if (NoShowFee != null)
             {
                 NoShowFee.Validate();
             }
-            if (Services != null)
+            if (TimeSlices != null)
             {
-                foreach (var element in Services)
+                foreach (var element in TimeSlices)
                 {
                     if (element != null)
                     {
@@ -224,9 +224,9 @@ namespace Traces.ApaleoClients.Booking.Models
                     }
                 }
             }
-            if (TaxDetails != null)
+            if (Services != null)
             {
-                foreach (var element1 in TaxDetails)
+                foreach (var element1 in Services)
                 {
                     if (element1 != null)
                     {
@@ -234,19 +234,15 @@ namespace Traces.ApaleoClients.Booking.Models
                     }
                 }
             }
-            if (TimeSlices != null)
+            if (TaxDetails != null)
             {
-                foreach (var element2 in TimeSlices)
+                foreach (var element2 in TaxDetails)
                 {
                     if (element2 != null)
                     {
                         element2.Validate();
                     }
                 }
-            }
-            if (TotalGrossAmount != null)
-            {
-                TotalGrossAmount.Validate();
             }
             if (ValidationMessages != null)
             {
@@ -257,6 +253,10 @@ namespace Traces.ApaleoClients.Booking.Models
                         element3.Validate();
                     }
                 }
+            }
+            if (CityTax != null)
+            {
+                CityTax.Validate();
             }
         }
     }

@@ -24,6 +24,8 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the ServiceOfferItemModel class.
         /// </summary>
+        /// <param name="serviceDate">The date this service is
+        /// delivered</param>
         /// <param name="isDefaultDate">Depending on the postNextDay setting of
         /// the service it will by default be posted before or after midnight.
         /// Breakfast is usually delivered on the next morning, so all the
@@ -37,14 +39,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// When booking an offer for such rate plans, those services are
         /// automatically booked.
         /// They are marked as mandatory and they cannot be removed.</param>
-        /// <param name="serviceDate">The date this service is
-        /// delivered</param>
-        public ServiceOfferItemModel(AmountModel amount, bool isDefaultDate, bool isMandatory, System.DateTime serviceDate)
+        public ServiceOfferItemModel(System.DateTime serviceDate, AmountModel amount, bool isDefaultDate, bool isMandatory)
         {
+            ServiceDate = serviceDate;
             Amount = amount;
             IsDefaultDate = isDefaultDate;
             IsMandatory = isMandatory;
-            ServiceDate = serviceDate;
             CustomInit();
         }
 
@@ -52,6 +52,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets the date this service is delivered
+        /// </summary>
+        [JsonConverter(typeof(DateJsonConverter))]
+        [JsonProperty(PropertyName = "serviceDate")]
+        public System.DateTime ServiceDate { get; set; }
 
         /// <summary>
         /// </summary>
@@ -79,13 +86,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "isMandatory")]
         public bool IsMandatory { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date this service is delivered
-        /// </summary>
-        [JsonConverter(typeof(DateJsonConverter))]
-        [JsonProperty(PropertyName = "serviceDate")]
-        public System.DateTime ServiceDate { get; set; }
 
         /// <summary>
         /// Validate the object.

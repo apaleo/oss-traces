@@ -26,24 +26,10 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the StayOffersModel class.
         /// </summary>
         /// <param name="offers">List of offered unit groups with rates</param>
-        /// <param name="arrivalRequested">The requested arrival date and time
-        /// - &lt;b&gt;DEPRECATED: This field will be removed
-        /// 27.06.2020.&lt;/b&gt;&lt;br /&gt;A date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="departureRequested">The requested departure date and
-        /// time - &lt;b&gt;DEPRECATED: This field will be removed
-        /// 27.06.2020.&lt;/b&gt;&lt;br /&gt;A date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        public StayOffersModel(IList<OfferModel> offers, EmbeddedPropertyModel property, System.DateTime? arrivalRequested = default(System.DateTime?), System.DateTime? departureRequested = default(System.DateTime?))
+        public StayOffersModel(EmbeddedPropertyModel property, IList<OfferModel> offers)
         {
-            ArrivalRequested = arrivalRequested;
-            DepartureRequested = departureRequested;
-            Offers = offers;
             Property = property;
+            Offers = offers;
             CustomInit();
         }
 
@@ -53,37 +39,15 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the requested arrival date and time -
-        /// &amp;lt;b&amp;gt;DEPRECATED: This field will be removed
-        /// 27.06.2020.&amp;lt;/b&amp;gt;&amp;lt;br /&amp;gt;A date and time
-        /// (without fractional second part) in UTC or with UTC offset as
-        /// defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
-        [JsonProperty(PropertyName = "arrivalRequested")]
-        public System.DateTime? ArrivalRequested { get; set; }
-
-        /// <summary>
-        /// Gets or sets the requested departure date and time -
-        /// &amp;lt;b&amp;gt;DEPRECATED: This field will be removed
-        /// 27.06.2020.&amp;lt;/b&amp;gt;&amp;lt;br /&amp;gt;A date and time
-        /// (without fractional second part) in UTC or with UTC offset as
-        /// defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
-        /// </summary>
-        [JsonProperty(PropertyName = "departureRequested")]
-        public System.DateTime? DepartureRequested { get; set; }
+        [JsonProperty(PropertyName = "property")]
+        public EmbeddedPropertyModel Property { get; set; }
 
         /// <summary>
         /// Gets or sets list of offered unit groups with rates
         /// </summary>
         [JsonProperty(PropertyName = "offers")]
         public IList<OfferModel> Offers { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "property")]
-        public EmbeddedPropertyModel Property { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -93,13 +57,17 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
+            if (Property == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Property");
+            }
             if (Offers == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Offers");
             }
-            if (Property == null)
+            if (Property != null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Property");
+                Property.Validate();
             }
             if (Offers != null)
             {
@@ -110,10 +78,6 @@ namespace Traces.ApaleoClients.Booking.Models
                         element.Validate();
                     }
                 }
-            }
-            if (Property != null)
-            {
-                Property.Validate();
             }
         }
     }

@@ -36,55 +36,29 @@ namespace Traces.ApaleoClients.Booking
 
 
         /// <summary>
-        /// Get a list of all available unit groups in a property [DEPRECATED]
+        /// Creates a block
         /// </summary>
         /// <remarks>
-        /// Use /availability/v1/unit-groups instead&lt;br/ &gt;Get the list of
-        /// available unit groups for a specific property and time
-        /// period.&lt;br&gt;You must have this scope: 'availability.read'.
+        /// &lt;br&gt;You must have at least one of these scopes:
+        /// 'blocks.create, reservations.manage'.
         /// </remarks>
-        /// <param name='propertyId'>
-        /// The property id
+        /// <param name='body'>
+        /// The details for the block you want to create.
         /// </param>
-        /// <param name='fromParameter'>
-        /// First day of the requested time period. The given day will be
-        /// included in the response.
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
         /// </param>
-        /// <param name='to'>
-        /// Last day of the requested time period. The given day will be
-        /// included in the response.
-        /// </param>
-        /// <param name='timeSliceTemplate'>
-        /// The time slice template, defaults to 'over night'. Possible values
-        /// include: 'DayUse', 'OverNight'
-        /// </param>
-        /// <param name='unitGroupTypes'>
-        /// Filter result by requested unit group types
-        /// </param>
-        /// <param name='timeSliceDefinitionIds'>
-        /// The time slice definition ids
-        /// </param>
-        /// <param name='unitGroupIds'>
-        /// The unit group ids
-        /// </param>
-        /// <param name='adults'>
-        /// The number of adults you want availability for, defaults to 1
-        /// </param>
-        /// <param name='childrenAges'>
-        /// The ages of the children you want availability for
-        /// </param>
-        /// <param name='onlySellable'>
-        /// When set to 'true', only the unit groups sold by the specified time
-        /// slice template and time slice definition ids are returned,
-        /// otherwise all unit groups are returned
-        /// </param>
-        /// <param name='pageNumber'>
-        /// Page number, starting from 1 and defaulting to 1. Results in 204 if
-        /// there are no items on that page.
-        /// </param>
-        /// <param name='pageSize'>
-        /// Page size. If this is not set, the pageNumber will be ignored and
-        /// all values returned.
+        /// <param name='idempotencyKey'>
+        /// Unique key for safely retrying requests without accidentally
+        /// performing the same operation twice.
+        /// We'll always send back the same response for requests made with the
+        /// same key,
+        /// and keys can't be reused with different request parameters. Keys
+        /// expire after 24 hours.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -92,125 +66,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingAvailableUnitGroupsGetWithHttpMessagesAsync(string propertyId, System.DateTime fromParameter, System.DateTime to, TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), bool? onlySellable = default(bool?), int? pageNumber = 1, int? pageSize = 100, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Get a list of all available units in a property [DEPRECATED]
-        /// </summary>
-        /// <remarks>
-        /// Use /availability/v1/units instead&lt;br/ &gt;Get the list of
-        /// available units for a specific property and time
-        /// period.&lt;br&gt;You must have this scope: 'availability.read'.
-        /// </remarks>
-        /// <param name='propertyId'>
-        /// The property id
-        /// </param>
-        /// <param name='fromParameter'>
-        /// The from date and time&lt;br /&gt;A date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-        /// </param>
-        /// <param name='to'>
-        /// The to date and time&lt;br /&gt;A date and time (without fractional
-        /// second part) in UTC or with UTC offset as defined in &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-        /// </param>
-        /// <param name='unitGroupId'>
-        /// The unit group id
-        /// </param>
-        /// <param name='includeOutOfService'>
-        /// Should units that are set OutOfService in the defined time period
-        /// be returned as available.
-        /// </param>
-        /// <param name='unitCondition'>
-        /// The unit condition. Possible values include: 'Clean',
-        /// 'CleanToBeInspected', 'Dirty'
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<object>> BookingAvailableUnitsGetWithHttpMessagesAsync(string propertyId, System.DateTime fromParameter, System.DateTime to, string unitGroupId = default(string), bool? includeOutOfService = default(bool?), UnitCondition? unitCondition = default(UnitCondition?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Cancel a block.
-        /// </summary>
-        /// <remarks>
-        /// Cancel a specific block which is in status 'Definite' or
-        /// 'Tentative'.
-        /// This changes the status to 'Canceled'.&lt;br&gt;You must have at
-        /// least one of these scopes: 'blocks.manage, reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the block that should be processed.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingBlockActionsByIdCancelPutWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Confirm a block.
-        /// </summary>
-        /// <remarks>
-        /// Confirm a specific block which is in status 'Tentative'.
-        /// This changes the status to 'Definite'.&lt;br&gt;You must have at
-        /// least one of these scopes: 'blocks.manage, reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the block that should be processed.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingBlockActionsByIdConfirmPutWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Release a block.
-        /// </summary>
-        /// <remarks>
-        /// Release a specific block which is in status 'Definite'.
-        /// This changes the status to 'Tentative'.&lt;br&gt;You must have at
-        /// least one of these scopes: 'blocks.manage, reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the block that should be processed.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingBlockActionsByIdReleasePutWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Wash a block.
-        /// </summary>
-        /// <remarks>
-        /// Wash a specific block which is in status 'Definite'.
-        /// This releases all unpicked units.&lt;br&gt;You must have at least
-        /// one of these scopes: 'blocks.manage, reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the block that should be processed.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingBlockActionsByIdWashPutWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object,BookingBlocksPostHeaders>> BookingBlocksPostWithHttpMessagesAsync(CreateBlockModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns a list of blocks
@@ -260,6 +116,13 @@ namespace Traces.ApaleoClients.Booking
         /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='pageNumber'>
         /// Page number, starting from 1 and defaulting to 1. Results in 204 if
         /// there are no items on that page.
@@ -279,33 +142,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingBlocksGetWithHttpMessagesAsync(string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Creates a block
-        /// </summary>
-        /// <remarks>
-        /// &lt;br&gt;You must have at least one of these scopes:
-        /// 'blocks.create, reservations.manage'.
-        /// </remarks>
-        /// <param name='body'>
-        /// The details for the block you want to create.
-        /// </param>
-        /// <param name='idempotencyKey'>
-        /// Unique key for safely retrying requests without accidentally
-        /// performing the same operation twice.
-        /// We'll always send back the same response for requests made with the
-        /// same key,
-        /// and keys can't be reused with different request parameters. Keys
-        /// expire after 24 hours.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<object,BookingBlocksPostHeaders>> BookingBlocksPostWithHttpMessagesAsync(CreateBlockModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingBlocksGetWithHttpMessagesAsync(string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns number of blocks
@@ -354,25 +191,12 @@ namespace Traces.ApaleoClients.Booking
         /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<object>> BookingBlockscountGetWithHttpMessagesAsync(string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Delete a specific block
-        /// </summary>
-        /// <remarks>
-        /// Use this call to delete a block. This is only possible as long as
-        /// no reservation was picked up yet even if all of
-        /// them are canceled&lt;br&gt;You must have at least one of these
-        /// scopes: 'blocks.manage, reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// The id of the block.
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -380,7 +204,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse> BookingBlocksByIdDeleteWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingBlockscountGetWithHttpMessagesAsync(string groupId = default(string), IList<string> propertyIds = default(IList<string>), IList<BlockStatus?> status = default(IList<BlockStatus?>), IList<string> unitGroupIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns a specific block.
@@ -393,6 +217,13 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='id'>
         /// Id of the block to be retrieved.
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='expand'>
         /// List of all embedded resources that should be expanded in the
         /// response. Possible values are: actions, timeSlices. All other
@@ -404,26 +235,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingBlocksByIdGetWithHttpMessagesAsync(string id, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Check if a block exists
-        /// </summary>
-        /// <remarks>
-        /// Check if a block exists by id&lt;br&gt;You must have at least one
-        /// of these scopes: 'blocks.read, reservations.read,
-        /// reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// The id of the block.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse> BookingBlocksByIdHeadWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingBlocksByIdGetWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Allows to modify the block
@@ -440,13 +252,240 @@ namespace Traces.ApaleoClients.Booking
         /// Define the list of operations to be applied to the resource. Learn
         /// more about JSON Patch here: http://jsonpatch.com/.
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingBlocksByIdPatchWithHttpMessagesAsync(string id, IList<Operation> body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessageItemCollection>> BookingBlocksByIdPatchWithHttpMessagesAsync(string id, IList<Operation> body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Delete a specific block
+        /// </summary>
+        /// <remarks>
+        /// Use this call to delete a block. This is only possible as long as
+        /// no reservation was picked up yet even if all of
+        /// them are canceled&lt;br&gt;You must have at least one of these
+        /// scopes: 'blocks.manage, reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// The id of the block.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingBlocksByIdDeleteWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Check if a block exists
+        /// </summary>
+        /// <remarks>
+        /// Check if a block exists by id&lt;br&gt;You must have at least one
+        /// of these scopes: 'blocks.read, reservations.read,
+        /// reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// The id of the block.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse> BookingBlocksByIdHeadWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Confirm a block.
+        /// </summary>
+        /// <remarks>
+        /// Confirm a specific block which is in status 'Tentative'.
+        /// This changes the status to 'Definite'.&lt;br&gt;You must have at
+        /// least one of these scopes: 'blocks.manage, reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the block that should be processed.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingBlockActionsByIdConfirmPutWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Release a block.
+        /// </summary>
+        /// <remarks>
+        /// Release a specific block which is in status 'Definite'.
+        /// This changes the status to 'Tentative'.&lt;br&gt;You must have at
+        /// least one of these scopes: 'blocks.manage, reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the block that should be processed.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingBlockActionsByIdReleasePutWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Cancel a block.
+        /// </summary>
+        /// <remarks>
+        /// Cancel a specific block which is in status 'Definite' or
+        /// 'Tentative'.
+        /// This changes the status to 'Canceled'.&lt;br&gt;You must have at
+        /// least one of these scopes: 'blocks.manage, reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the block that should be processed.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingBlockActionsByIdCancelPutWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Wash a block.
+        /// </summary>
+        /// <remarks>
+        /// Wash a specific block which is in status 'Definite'.
+        /// This releases all unpicked units.&lt;br&gt;You must have at least
+        /// one of these scopes: 'blocks.manage, reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the block that should be processed.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingBlockActionsByIdWashPutWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Allow to modify a block
+        /// </summary>
+        /// <remarks>
+        /// Use this call to modify a block.&lt;br&gt;You must have at least
+        /// one of these scopes: 'blocks.manage, reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the block to be modified.
+        /// </param>
+        /// <param name='body'>
+        /// The definition of the block.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingBlockActionsByIdAmendPutWithHttpMessagesAsync(string id, ReplaceBlockModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Creates a booking for one or more reservations.
+        /// </summary>
+        /// <remarks>
+        /// Creates a booking taking a list of reservations as
+        /// input&lt;br&gt;You must have at least one of these scopes:
+        /// 'reservations.create, reservations.manage'.
+        /// </remarks>
+        /// <param name='body'>
+        /// The list of reservations you want to create.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='idempotencyKey'>
+        /// Unique key for safely retrying requests without accidentally
+        /// performing the same operation twice.
+        /// We'll always send back the same response for requests made with the
+        /// same key,
+        /// and keys can't be reused with different request parameters. Keys
+        /// expire after 24 hours.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<object,BookingBookingsPostHeaders>> BookingBookingsPostWithHttpMessagesAsync(CreateBookingModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns a list of all bookings, filtered by the specified
@@ -481,6 +520,13 @@ namespace Traces.ApaleoClients.Booking
         /// company name of the booker
         /// contains one of the provided values
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='pageNumber'>
         /// Page number, starting from 1 and defaulting to 1. Results in 204 if
         /// there are no items on that page.
@@ -500,34 +546,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingBookingsGetWithHttpMessagesAsync(string reservationId = default(string), string groupId = default(string), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), string externalCode = default(string), string textSearch = default(string), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Creates a booking for one or more reservations.
-        /// </summary>
-        /// <remarks>
-        /// Creates a booking taking a list of reservations as
-        /// input&lt;br&gt;You must have at least one of these scopes:
-        /// 'reservations.create, reservations.manage'.
-        /// </remarks>
-        /// <param name='body'>
-        /// The list of reservations you want to create.
-        /// </param>
-        /// <param name='idempotencyKey'>
-        /// Unique key for safely retrying requests without accidentally
-        /// performing the same operation twice.
-        /// We'll always send back the same response for requests made with the
-        /// same key,
-        /// and keys can't be reused with different request parameters. Keys
-        /// expire after 24 hours.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<object,BookingBookingsPostHeaders>> BookingBookingsPostWithHttpMessagesAsync(CreateBookingModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingBookingsGetWithHttpMessagesAsync(string reservationId = default(string), string groupId = default(string), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), string externalCode = default(string), string textSearch = default(string), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Creates a booking for one or more reservations regardless of
@@ -541,6 +560,13 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='body'>
         /// The list of reservations you want to create.
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='idempotencyKey'>
         /// Unique key for safely retrying requests without accidentally
         /// performing the same operation twice.
@@ -555,7 +581,84 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object,BookingBookingsforcePostHeaders>> BookingBookingsforcePostWithHttpMessagesAsync(CreateBookingModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object,BookingBookingsforcePostHeaders>> BookingBookingsforcePostWithHttpMessagesAsync(CreateBookingModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Add one or multiple reservations to an existing booking.
+        /// </summary>
+        /// <remarks>
+        /// Creates new reservations and adds them to an existing booking
+        /// taking a list of reservations as input&lt;br&gt;You must have at
+        /// least one of these scopes: 'reservations.create,
+        /// reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the booking the reservations should be attached to.
+        /// </param>
+        /// <param name='body'>
+        /// The list of reservations you want to add.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='idempotencyKey'>
+        /// Unique key for safely retrying requests without accidentally
+        /// performing the same operation twice.
+        /// We'll always send back the same response for requests made with the
+        /// same key,
+        /// and keys can't be reused with different request parameters. Keys
+        /// expire after 24 hours.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<object,BookingBookingsByIdReservationsPostHeaders>> BookingBookingsByIdReservationsPostWithHttpMessagesAsync(string id, AddReservationsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Add one or multiple reservations to an existing booking regardless
+        /// of availability or restrictions.
+        /// </summary>
+        /// <remarks>
+        /// Creates new reservations and adds them to an existing booking
+        /// taking a list of reservations as input&lt;br&gt;You must have at
+        /// least one of these scopes: 'reservations.force-create,
+        /// reservations.force-manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the booking the reservations should be attached to.
+        /// </param>
+        /// <param name='body'>
+        /// The list of reservations you want to add.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='idempotencyKey'>
+        /// Unique key for safely retrying requests without accidentally
+        /// performing the same operation twice.
+        /// We'll always send back the same response for requests made with the
+        /// same key,
+        /// and keys can't be reused with different request parameters. Keys
+        /// expire after 24 hours.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<object,BookingBookingsByIdReservationsforcePostHeaders>> BookingBookingsByIdReservationsforcePostWithHttpMessagesAsync(string id, AddReservationsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns a specific booking.
@@ -567,6 +670,13 @@ namespace Traces.ApaleoClients.Booking
         /// </remarks>
         /// <param name='id'>
         /// Id of the booking to be retrieved.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
         /// </param>
         /// <param name='expand'>
         /// List of all embedded resources that should be expanded in the
@@ -580,7 +690,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingBookingsByIdGetWithHttpMessagesAsync(string id, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingBookingsByIdGetWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Allows to modify certain booking properties
@@ -602,28 +712,37 @@ namespace Traces.ApaleoClients.Booking
         /// Define the list of operations to be applied to the resource. Learn
         /// more about JSON Patch here: http://jsonpatch.com/.
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingBookingsByIdPatchWithHttpMessagesAsync(string id, IList<Operation> body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessageItemCollection>> BookingBookingsByIdPatchWithHttpMessagesAsync(string id, IList<Operation> body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// Add one or multiple reservations to an existing booking.
+        /// Creates a group booking.
         /// </summary>
         /// <remarks>
-        /// Creates new reservations and adds them to an existing booking
-        /// taking a list of reservations as input&lt;br&gt;You must have at
-        /// least one of these scopes: 'reservations.create,
-        /// reservations.manage'.
+        /// &lt;br&gt;You must have at least one of these scopes:
+        /// 'groups.create, reservations.manage'.
         /// </remarks>
-        /// <param name='id'>
-        /// Id of the booking the reservations should be attached to.
-        /// </param>
         /// <param name='body'>
-        /// The list of reservations you want to add.
+        /// The details of the group that should be created.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
         /// </param>
         /// <param name='idempotencyKey'>
         /// Unique key for safely retrying requests without accidentally
@@ -639,39 +758,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object,BookingBookingsByIdReservationsPostHeaders>> BookingBookingsByIdReservationsPostWithHttpMessagesAsync(string id, AddReservationsModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Add one or multiple reservations to an existing booking regardless
-        /// of availability or restrictions.
-        /// </summary>
-        /// <remarks>
-        /// Creates new reservations and adds them to an existing booking
-        /// taking a list of reservations as input&lt;br&gt;You must have at
-        /// least one of these scopes: 'reservations.force-create,
-        /// reservations.force-manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the booking the reservations should be attached to.
-        /// </param>
-        /// <param name='body'>
-        /// The list of reservations you want to add.
-        /// </param>
-        /// <param name='idempotencyKey'>
-        /// Unique key for safely retrying requests without accidentally
-        /// performing the same operation twice.
-        /// We'll always send back the same response for requests made with the
-        /// same key,
-        /// and keys can't be reused with different request parameters. Keys
-        /// expire after 24 hours.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<object,BookingBookingsByIdReservationsforcePostHeaders>> BookingBookingsByIdReservationsforcePostWithHttpMessagesAsync(string id, AddReservationsModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object,BookingGroupsPostHeaders>> BookingGroupsPostWithHttpMessagesAsync(CreateGroupModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns a list of all group bookings, filtered by the specified
@@ -707,6 +794,13 @@ namespace Traces.ApaleoClients.Booking
         /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='pageNumber'>
         /// Page number, starting from 1 and defaulting to 1. Results in 204 if
         /// there are no items on that page.
@@ -726,25 +820,30 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingGroupsGetWithHttpMessagesAsync(string textSearch = default(string), IList<string> propertyIds = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingGroupsGetWithHttpMessagesAsync(string textSearch = default(string), IList<string> propertyIds = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// Creates a group booking.
+        /// Returns a specific group booking.
         /// </summary>
         /// <remarks>
-        /// &lt;br&gt;You must have at least one of these scopes:
-        /// 'groups.create, reservations.manage'.
+        /// Retrieves a specific group booking with all its related
+        /// blocks&lt;br&gt;You must have at least one of these scopes:
+        /// 'groups.read, reservations.read, reservations.manage'.
         /// </remarks>
-        /// <param name='body'>
-        /// The details of the group that should be created.
+        /// <param name='id'>
+        /// Id of the group booking to be retrieved.
         /// </param>
-        /// <param name='idempotencyKey'>
-        /// Unique key for safely retrying requests without accidentally
-        /// performing the same operation twice.
-        /// We'll always send back the same response for requests made with the
-        /// same key,
-        /// and keys can't be reused with different request parameters. Keys
-        /// expire after 24 hours.
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='expand'>
+        /// List of all embedded resources that should be expanded in the
+        /// response. Possible values are: blocks, actions. All other values
+        /// will be silently ignored.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -752,7 +851,95 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object,BookingGroupsPostHeaders>> BookingGroupsPostWithHttpMessagesAsync(CreateGroupModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingGroupsByIdGetWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Allows to modify certain group booking properties
+        /// </summary>
+        /// <remarks>
+        /// Here is the list of operations that are currently allowed:
+        /// - Add and replace Name
+        /// - Add, replace and remove Comment
+        /// - Add, replace and remove BookerComment
+        /// - Add, replace and remove PaymentAccount
+        /// - Add, replace and remove PropertyIds
+        /// - Replace Booker&lt;br&gt;You must have at least one of these
+        /// scopes: 'groups.manage, reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the group booking to be modified.
+        /// </param>
+        /// <param name='body'>
+        /// Define the list of operations to be applied to the resource. Learn
+        /// more about JSON Patch here: http://jsonpatch.com/.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingGroupsByIdPatchWithHttpMessagesAsync(string id, IList<Operation> body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Delete a certain group booking
+        /// </summary>
+        /// <remarks>
+        /// Use this call to delete a group booking. This is only possible as
+        /// long as no blocks exist that are linked to
+        /// this group booking&lt;br&gt;You must have at least one of these
+        /// scopes: 'groups.manage, reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the group booking to be deleted.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingGroupsByIdDeleteWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Check if a certain group booking exists
+        /// </summary>
+        /// <remarks>
+        /// Check if a group booking exists by id&lt;br&gt;You must have at
+        /// least one of these scopes: 'groups.read, reservations.read,
+        /// reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the group booking to be checked for existence.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse> BookingGroupsByIdHeadWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns number of group bookings
@@ -785,25 +972,12 @@ namespace Traces.ApaleoClients.Booking
         /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<object>> BookingGroupscountGetWithHttpMessagesAsync(string textSearch = default(string), IList<string> propertyIds = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Delete a certain group booking
-        /// </summary>
-        /// <remarks>
-        /// Use this call to delete a group booking. This is only possible as
-        /// long as no blocks exist that are linked to
-        /// this group booking&lt;br&gt;You must have at least one of these
-        /// scopes: 'groups.manage, reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the group booking to be deleted.
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -811,78 +985,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse> BookingGroupsByIdDeleteWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Returns a specific group booking.
-        /// </summary>
-        /// <remarks>
-        /// Retrieves a specific group booking with all its related
-        /// blocks&lt;br&gt;You must have at least one of these scopes:
-        /// 'groups.read, reservations.read, reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the group booking to be retrieved.
-        /// </param>
-        /// <param name='expand'>
-        /// List of all embedded resources that should be expanded in the
-        /// response. Possible values are: blocks, actions. All other values
-        /// will be silently ignored.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<object>> BookingGroupsByIdGetWithHttpMessagesAsync(string id, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Check if a certain group booking exists
-        /// </summary>
-        /// <remarks>
-        /// Check if a group booking exists by id&lt;br&gt;You must have at
-        /// least one of these scopes: 'groups.read, reservations.read,
-        /// reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the group booking to be checked for existence.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse> BookingGroupsByIdHeadWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Allows to modify certain group booking properties
-        /// </summary>
-        /// <remarks>
-        /// Here is the list of operations that are currently allowed:
-        /// - Add and replace Name
-        /// - Add, replace and remove Comment
-        /// - Add, replace and remove BookerComment
-        /// - Add, replace and remove PaymentAccount
-        /// - Add, replace and remove PropertyIds
-        /// - Replace Booker&lt;br&gt;You must have at least one of these
-        /// scopes: 'groups.manage, reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the group booking to be modified.
-        /// </param>
-        /// <param name='body'>
-        /// Define the list of operations to be applied to the resource. Learn
-        /// more about JSON Patch here: http://jsonpatch.com/.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingGroupsByIdPatchWithHttpMessagesAsync(string id, IList<Operation> body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingGroupscountGetWithHttpMessagesAsync(string textSearch = default(string), IList<string> propertyIds = default(IList<string>), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Add one or multiple reservations to an existing group booking using
@@ -899,6 +1002,13 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='body'>
         /// The list of reservations you want to create.
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='idempotencyKey'>
         /// Unique key for safely retrying requests without accidentally
         /// performing the same operation twice.
@@ -913,50 +1023,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object,BookingGroupsByIdReservationsPostHeaders>> BookingGroupsByIdReservationsPostWithHttpMessagesAsync(string id, PickUpReservationsModel body, string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Returns offers with rates and availabilities for the specified
-        /// range.
-        /// </summary>
-        /// <remarks>
-        /// Calculates and returns offers per time slice for a specific rate
-        /// plan, arrival and departure date.&lt;br&gt;You must have at least
-        /// one of these scopes: 'offer-index.read, offers.read'.
-        /// </remarks>
-        /// <param name='ratePlanId'>
-        /// </param>
-        /// <param name='fromParameter'>
-        /// &lt;br /&gt;Specify either a pure date or a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-        /// </param>
-        /// <param name='to'>
-        /// &lt;br /&gt;Specify either a pure date or a date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-        /// </param>
-        /// <param name='channelCode'>
-        /// Possible values include: 'Direct', 'BookingCom', 'Ibe',
-        /// 'ChannelManager', 'Expedia', 'Homelike'
-        /// </param>
-        /// <param name='pageNumber'>
-        /// Page number, starting from 1 and defaulting to 1. Results in 204 if
-        /// there are no items on that page.
-        /// </param>
-        /// <param name='pageSize'>
-        /// Page size. If this is not set, the pageNumber will be ignored and
-        /// all values returned.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<object>> BookingOfferIndexGetWithHttpMessagesAsync(string ratePlanId, string fromParameter, string to, ChannelCode channelCode, int? pageNumber = 1, int? pageSize = 100, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object,BookingGroupsByIdReservationsPostHeaders>> BookingGroupsByIdReservationsPostWithHttpMessagesAsync(string id, PickUpReservationsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), string idempotencyKey = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns offers for one specific stay.
@@ -1017,13 +1084,20 @@ namespace Traces.ApaleoClients.Booking
         /// restrictions are violated. By default only available offers are
         /// returned
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingOffersGetWithHttpMessagesAsync(string propertyId, string arrival, string departure, int adults, TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), string corporateCode = default(string), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingOffersGetWithHttpMessagesAsync(string propertyId, string arrival, string departure, int adults, TimeSliceTemplate? timeSliceTemplate = default(TimeSliceTemplate?), IList<string> timeSliceDefinitionIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), string corporateCode = default(string), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns offers for a specific rate plan.
@@ -1064,32 +1138,12 @@ namespace Traces.ApaleoClients.Booking
         /// restrictions are violated. By default only available offers are
         /// returned
         /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<object>> BookingRatePlanOffersGetWithHttpMessagesAsync(string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Allows you to amend the stay details of a reservation
-        /// </summary>
-        /// <remarks>
-        /// Modifies the stay-related data of a reservation.&lt;br /&gt;
-        /// If a reservation is 'Confirmed', you can change all fields.&lt;br
-        /// /&gt;
-        /// If a reservation is 'InHouse', only changes to future time slices
-        /// are possible.&lt;br /&gt;
-        /// Changes to reservations that are in the status 'CheckedOut' or
-        /// 'Canceled' are not possible at all.&lt;br&gt;You must have this
-        /// scope: 'reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the reservation that should be modified
-        /// </param>
-        /// <param name='body'>
-        /// The new stay details that should be applied to the reservation.
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1097,27 +1151,61 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdAmendPutWithHttpMessagesAsync(string id, DesiredStayDetailsModel body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingRatePlanOffersGetWithHttpMessagesAsync(string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? includeUnavailable = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// Allows you to amend the stay details of a reservation regardless of
-        /// availability or restrictions.
+        /// Returns service offers for one specific stay.
         /// </summary>
         /// <remarks>
-        /// Modifies the stay-related data of a reservation.&lt;br /&gt;
-        /// If a reservation is 'Confirmed', you can change all fields.&lt;br
-        /// /&gt;
-        /// If a reservation is 'InHouse', only changes to future time slices
-        /// are possible.&lt;br /&gt;
-        /// Changes to reservations that are in the status 'CheckedOut' or
-        /// 'Canceled' are not possible at all.&lt;br&gt;You must have this
-        /// scope: 'reservations.force-manage'.
+        /// &lt;br&gt;You must have at least one of these scopes: 'offers.read,
+        /// reservations.manage'.
         /// </remarks>
-        /// <param name='id'>
-        /// Id of the reservation that should be modified
+        /// <param name='ratePlanId'>
+        /// The rate plan ID
         /// </param>
-        /// <param name='body'>
-        /// The new stay details that should be applied to the reservation.
+        /// <param name='arrival'>
+        /// Date and optional time of arrival&lt;br /&gt;Specify either a pure
+        /// date or a date and time (without fractional second part) in UTC or
+        /// with UTC offset as defined in &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+        /// </param>
+        /// <param name='departure'>
+        /// Date and optional time of departure. Cannot be more than 5 years
+        /// after arrival.&lt;br /&gt;Specify either a pure date or a date and
+        /// time (without fractional second part) in UTC or with UTC offset as
+        /// defined in &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+        /// </param>
+        /// <param name='adults'>
+        /// The number of adults you want offers for
+        /// </param>
+        /// <param name='channelCode'>
+        /// The channel code used to filter the services. Possible values
+        /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
+        /// 'Expedia', 'Homelike'
+        /// </param>
+        /// <param name='childrenAges'>
+        /// The ages of the children you want offers for
+        /// </param>
+        /// <param name='onlyDefaultDates'>
+        /// Depending on the postNextDay setting of a service it will be posted
+        /// before or after midnight.
+        /// Breakfast is usually delivered on the next morning, having
+        /// 'postNextDay' set to true. Its 'default dates' are from the day
+        /// after
+        /// arrival until the departure day. For services like dinner
+        /// 'postNextDay' is false, and default dates are day of arrival until
+        /// one
+        /// day before departure.
+        /// With this query parameter set to 'false', you can also ask for
+        /// dates outside of those default dates. It defaults to true.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1125,80 +1213,49 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdAmendforcePutWithHttpMessagesAsync(string id, DesiredStayDetailsModel body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingServiceOffersGetWithHttpMessagesAsync(string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? onlyDefaultDates = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// Assign a unit to a reservation.
+        /// Returns offers with rates and availabilities for the specified
+        /// range.
         /// </summary>
         /// <remarks>
-        /// Assigns one of the available units to a reservation which is in
-        /// state 'Confirmed' or 'InHouse'.&lt;br&gt;You must have at least one
-        /// of these scopes: 'reservations.assign-unit, reservations.manage'.
+        /// Calculates and returns offers per time slice for a specific rate
+        /// plan, arrival and departure date.&lt;br&gt;You must have at least
+        /// one of these scopes: 'offer-index.read, offers.read'.
         /// </remarks>
-        /// <param name='id'>
-        /// Id of the reservation a unit should be assigned to.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationActionsByIdAssignUnitPutWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Assign a specific unit to a reservation.
-        /// </summary>
-        /// <remarks>
-        /// Assigns a specific unit to a reservation which is in state
-        /// 'Confirmed' or 'InHouse'.&lt;br /&gt;If the unit is not available,
-        /// the call will return an error, and no unit will be
-        /// assigned.&lt;br&gt;You must have at least one of these scopes:
-        /// 'reservations.assign-unit, reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the reservation the unit should be assigned to.
-        /// </param>
-        /// <param name='unitId'>
-        /// The id of the unit to be assigned.
+        /// <param name='ratePlanId'>
         /// </param>
         /// <param name='fromParameter'>
-        /// The start date and optional time for the unit assignment. If not
-        /// specified, the reservation's arrival will be used.&lt;br
-        /// /&gt;Specify either a pure date or a date and time (without
+        /// &lt;br /&gt;Specify either a pure date or a date and time (without
         /// fractional second part) in UTC or with UTC offset as defined in
         /// &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
         /// <param name='to'>
-        /// The end date and optional time for the unit assignment. If not
-        /// specified, the reservation's departure will be used.&lt;br
-        /// /&gt;Specify either a pure date or a date and time (without
+        /// &lt;br /&gt;Specify either a pure date or a date and time (without
         /// fractional second part) in UTC or with UTC offset as defined in
         /// &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
         /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
+        /// <param name='channelCode'>
+        /// Possible values include: 'Direct', 'BookingCom', 'Ibe',
+        /// 'ChannelManager', 'Expedia', 'Homelike'
         /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationActionsByIdAssignUnitByUnitIdPutWithHttpMessagesAsync(string id, string unitId, string fromParameter = default(string), string to = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Book the service for a specific reservation.
-        /// </summary>
-        /// <remarks>
-        /// Use this to book a service for a specific reservation.
-        /// Please note that when dates are specified, all desired dates must
-        /// be specified or they will be removed if not posted to the
-        /// folio.&lt;br&gt;You must have this scope: 'reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the reservation.
+        /// <param name='pageNumber'>
+        /// Page number, starting from 1 and defaulting to 1. Results in 204 if
+        /// there are no items on that page.
         /// </param>
-        /// <param name='body'>
+        /// <param name='pageSize'>
+        /// Page size. If this is not set, the pageNumber will be ignored and
+        /// all values returned.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1206,115 +1263,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdBookServicePutWithHttpMessagesAsync(string id, BookReservationServiceModel body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Cancel a reservation.
-        /// </summary>
-        /// <remarks>
-        /// Cancel a specific reservation which is in status 'Confirmed' and
-        /// where the arrival time is in the future.
-        /// This changes the status to 'Canceled', and sets the cancellation
-        /// date and time.&lt;br&gt;You must have this scope:
-        /// 'reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the reservation that should be processed.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdCancelPutWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Check-in of a reservation.
-        /// </summary>
-        /// <remarks>
-        /// Check in a specific reservation which is in status 'Confirmed', and
-        /// has a unit assigned. This changes the status to 'InHouse', and sets
-        /// the check-in date and time.&lt;br&gt;You must have this scope:
-        /// 'reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the reservation that should be processed.
-        /// </param>
-        /// <param name='withCityTax'>
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdCheckinPutWithHttpMessagesAsync(string id, bool? withCityTax = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Check-out of a reservation.
-        /// </summary>
-        /// <remarks>
-        /// Check out a specific reservation which is in status 'InHouse'. This
-        /// changes the status to 'CheckedOut', and sets the check-out date and
-        /// time.
-        /// All open charges on the folio will be posted.
-        /// &lt;br /&gt;
-        /// Check-out is only possible, if the departure date is not later than
-        /// tomorrow. Otherwise, first amend the reservation and shorten the
-        /// stay.&lt;br&gt;You must have this scope: 'reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the reservation that should be processed.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdCheckoutPutWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Set a reservation to No-show.
-        /// </summary>
-        /// <remarks>
-        /// Set a specific reservation to No-show which is in status
-        /// 'Confirmed' and where the arrival date is in the past.
-        /// This changes the status to 'NoShow', and sets the no-show date and
-        /// time.&lt;br&gt;You must have this scope: 'reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the reservation that should be processed.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdNoshowPutWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Unassign units from a reservation.
-        /// </summary>
-        /// <remarks>
-        /// Unassigns units for all time slices of the given reservation. If no
-        /// units are assigned for the
-        /// reservation nothing will happen. It will fail for reservations in
-        /// status 'CheckedOut'.&lt;br&gt;You must have at least one of these
-        /// scopes: 'reservations.assign-unit, reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the reservation the unit should be unassigned for.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdUnassignUnitsPutWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingOfferIndexGetWithHttpMessagesAsync(string ratePlanId, string fromParameter, string to, ChannelCode channelCode, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns a list of all reservations, filtered by the specified
@@ -1418,6 +1367,13 @@ namespace Traces.ApaleoClients.Booking
         /// If set to {false}, returns only reservations, in which some of the
         /// folios are open or don't have an invoice
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='pageNumber'>
         /// Page number, starting from 1 and defaulting to 1. Results in 204 if
         /// there are no items on that page.
@@ -1446,7 +1402,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationsGetWithHttpMessagesAsync(string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), int? pageNumber = 1, int? pageSize = 100, IList<string> sort = default(IList<string>), IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingReservationsGetWithHttpMessagesAsync(string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), int? pageNumber = 1, int? pageSize = 100, IList<string> sort = default(IList<string>), IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns the number of reservations fulfilling the criteria
@@ -1549,13 +1505,20 @@ namespace Traces.ApaleoClients.Booking
         /// If set to {false}, returns only reservations, in which some of the
         /// folios are open or don't have an invoice
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationscountGetWithHttpMessagesAsync(string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingReservationscountGetWithHttpMessagesAsync(string bookingId = default(string), IList<string> propertyIds = default(IList<string>), IList<string> ratePlanIds = default(IList<string>), IList<string> companyIds = default(IList<string>), IList<string> unitIds = default(IList<string>), IList<string> unitGroupIds = default(IList<string>), IList<UnitGroupType?> unitGroupTypes = default(IList<UnitGroupType?>), IList<string> blockIds = default(IList<string>), IList<ReservationStatus?> status = default(IList<ReservationStatus?>), DateFilterType? dateFilter = default(DateFilterType?), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), IList<ChannelCode?> channelCode = default(IList<ChannelCode?>), IList<string> sources = default(IList<string>), IList<ValidationMessageCategory?> validationMessageCategory = default(IList<ValidationMessageCategory?>), string externalCode = default(string), string textSearch = default(string), IList<string> balanceFilter = default(IList<string>), bool? allFoliosHaveInvoice = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns a specific reservation.
@@ -1568,6 +1531,13 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='id'>
         /// Id of the reservation to be retrieved.
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='expand'>
         /// List of all embedded resources that should be expanded in the
         /// response. Possible values are: timeSlices, services, booker,
@@ -1579,7 +1549,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationsByIdGetWithHttpMessagesAsync(string id, IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingReservationsByIdGetWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), IList<string> expand = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Allows to modify certain reservation properties
@@ -1604,49 +1574,12 @@ namespace Traces.ApaleoClients.Booking
         /// Define the list of operations to be applied to the resource. Learn
         /// more about JSON Patch here: http://jsonpatch.com/.
         /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationsByIdPatchWithHttpMessagesAsync(string id, IList<Operation> body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Get a list of all available units for a reservation [DEPRECATED]
-        /// </summary>
-        /// <remarks>
-        /// This method has been moved to availability, use
-        /// /availability/v1/reservations/{id}/units instead. It will be
-        /// removed on 10/07/2020&lt;br/ &gt;Get the list of available units
-        /// for a specific reservation and time period.&lt;br&gt;You must have
-        /// at least one of these scopes: 'availability.read,
-        /// reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// The id of the reservation
-        /// </param>
-        /// <param name='unitGroupId'>
-        /// The unit group id
-        /// </param>
-        /// <param name='fromParameter'>
-        /// The from date and time&lt;br /&gt;A date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-        /// </param>
-        /// <param name='to'>
-        /// The to date and time&lt;br /&gt;A date and time (without fractional
-        /// second part) in UTC or with UTC offset as defined in &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-        /// </param>
-        /// <param name='includeOutOfService'>
-        /// Should units that are set OutOfService in the defined time period
-        /// be returned as available.
-        /// </param>
-        /// <param name='unitCondition'>
-        /// The unit condition. Possible values include: 'Clean',
-        /// 'CleanToBeInspected', 'Dirty'
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1654,7 +1587,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationsByIdAvailableUnitsGetWithHttpMessagesAsync(string id, string unitGroupId = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeOutOfService = default(bool?), UnitCondition? unitCondition = default(UnitCondition?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationsByIdPatchWithHttpMessagesAsync(string id, IList<Operation> body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns offers for one specific reservation.
@@ -1706,13 +1639,20 @@ namespace Traces.ApaleoClients.Booking
         /// restrictions are violated. By default only available offers are
         /// returned
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationsByIdOffersGetWithHttpMessagesAsync(string id, string arrival = default(string), string departure = default(string), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), bool? requote = default(bool?), bool? includeUnavailable = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingReservationsByIdOffersGetWithHttpMessagesAsync(string id, string arrival = default(string), string departure = default(string), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), bool? requote = default(bool?), bool? includeUnavailable = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns service offers for one specific reservation.
@@ -1740,27 +1680,12 @@ namespace Traces.ApaleoClients.Booking
         /// With this query parameter, you can also ask for the dates, that
         /// usually the service will not be booked. It defaults to true.
         /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationsByIdServiceOffersGetWithHttpMessagesAsync(string id, ChannelCode? channelCode = default(ChannelCode?), bool? onlyDefaultDates = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Removes a service from a reservation.
-        /// </summary>
-        /// <remarks>
-        /// Removes a service from a reservation. The service will not be
-        /// removed if it is already posted or if the service date is in the
-        /// past.&lt;br&gt;You must have this scope: 'reservations.manage'.
-        /// </remarks>
-        /// <param name='id'>
-        /// Id of the reservation.
-        /// </param>
-        /// <param name='serviceId'>
-        /// The id of the service to delete
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1768,7 +1693,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse> BookingReservationsByIdServicesDeleteWithHttpMessagesAsync(string id, string serviceId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingReservationsByIdServiceOffersGetWithHttpMessagesAsync(string id, ChannelCode? channelCode = default(ChannelCode?), bool? onlyDefaultDates = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns the services booked for a specific reservation.
@@ -1781,60 +1706,42 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='id'>
         /// Id of the reservation.
         /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationsByIdServicesGetWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingReservationsByIdServicesGetWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// Returns service offers for one specific stay.
+        /// Removes a service from a reservation.
         /// </summary>
         /// <remarks>
-        /// &lt;br&gt;You must have at least one of these scopes: 'offers.read,
-        /// reservations.manage'.
+        /// Removes a service from a reservation. The service will not be
+        /// removed if it is mandatory, already posted or if the service date
+        /// is in the past.&lt;br&gt;You must have this scope:
+        /// 'reservations.manage'.
         /// </remarks>
-        /// <param name='ratePlanId'>
-        /// The rate plan ID
+        /// <param name='id'>
+        /// Id of the reservation.
         /// </param>
-        /// <param name='arrival'>
-        /// Date and optional time of arrival&lt;br /&gt;Specify either a pure
-        /// date or a date and time (without fractional second part) in UTC or
-        /// with UTC offset as defined in &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+        /// <param name='serviceId'>
+        /// The id of the service to delete
         /// </param>
-        /// <param name='departure'>
-        /// Date and optional time of departure. Cannot be more than 5 years
-        /// after arrival.&lt;br /&gt;Specify either a pure date or a date and
-        /// time (without fractional second part) in UTC or with UTC offset as
-        /// defined in &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
-        /// </param>
-        /// <param name='adults'>
-        /// The number of adults you want offers for
-        /// </param>
-        /// <param name='channelCode'>
-        /// The channel code used to filter the services. Possible values
-        /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
-        /// 'Expedia', 'Homelike'
-        /// </param>
-        /// <param name='childrenAges'>
-        /// The ages of the children you want offers for
-        /// </param>
-        /// <param name='onlyDefaultDates'>
-        /// Depending on the postNextDay setting of a service it will be posted
-        /// before or after midnight.
-        /// Breakfast is usually delivered on the next morning, having
-        /// 'postNextDay' set to true. Its 'default dates' are from the day
-        /// after
-        /// arrival until the departure day. For services like dinner
-        /// 'postNextDay' is false, and default dates are day of arrival until
-        /// one
-        /// day before departure.
-        /// With this query parameter set to 'false', you can also ask for
-        /// dates outside of those default dates. It defaults to true.
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1842,7 +1749,375 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingServiceOffersGetWithHttpMessagesAsync(string ratePlanId, string arrival, string departure, int adults, ChannelCode? channelCode = default(ChannelCode?), IList<int?> childrenAges = default(IList<int?>), bool? onlyDefaultDates = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationsByIdServicesDeleteWithHttpMessagesAsync(string id, string serviceId, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Assign a unit to a reservation.
+        /// </summary>
+        /// <remarks>
+        /// Assigns one of the available units to a reservation which is in
+        /// state 'Confirmed' or 'InHouse'.&lt;br&gt;You must have at least one
+        /// of these scopes: 'reservations.assign-unit, reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the reservation a unit should be assigned to.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<object>> BookingReservationActionsByIdAssignUnitPutWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Assign a specific unit to a reservation.
+        /// </summary>
+        /// <remarks>
+        /// Assigns a specific unit to a reservation which is in state
+        /// 'Confirmed' or 'InHouse'.&lt;br /&gt;If the unit is not available,
+        /// the call will return an error, and no unit will be
+        /// assigned.&lt;br&gt;You must have at least one of these scopes:
+        /// 'reservations.assign-unit, reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the reservation the unit should be assigned to.
+        /// </param>
+        /// <param name='unitId'>
+        /// The id of the unit to be assigned.
+        /// </param>
+        /// <param name='fromParameter'>
+        /// The start date and optional time for the unit assignment. If not
+        /// specified, the reservation's arrival will be used.&lt;br
+        /// /&gt;Specify either a pure date or a date and time (without
+        /// fractional second part) in UTC or with UTC offset as defined in
+        /// &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+        /// </param>
+        /// <param name='to'>
+        /// The end date and optional time for the unit assignment. If not
+        /// specified, the reservation's departure will be used.&lt;br
+        /// /&gt;Specify either a pure date or a date and time (without
+        /// fractional second part) in UTC or with UTC offset as defined in
+        /// &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<object>> BookingReservationActionsByIdAssignUnitByUnitIdPutWithHttpMessagesAsync(string id, string unitId, string fromParameter = default(string), string to = default(string), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Unassign units from a reservation.
+        /// </summary>
+        /// <remarks>
+        /// Unassigns units for all time slices of the given reservation. If no
+        /// units are assigned for the
+        /// reservation nothing will happen. It will fail for reservations in
+        /// status 'CheckedOut'.&lt;br&gt;You must have at least one of these
+        /// scopes: 'reservations.assign-unit, reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the reservation the unit should be unassigned for.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdUnassignUnitsPutWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Check-in of a reservation.
+        /// </summary>
+        /// <remarks>
+        /// Check in a specific reservation which is in status 'Confirmed', and
+        /// has a unit assigned. This changes the status to 'InHouse', and sets
+        /// the check-in date and time.&lt;br&gt;You must have this scope:
+        /// 'reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the reservation that should be processed.
+        /// </param>
+        /// <param name='withCityTax'>
+        /// Define if city tax should be added for this reservation or not. The
+        /// default is "true".
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdCheckinPutWithHttpMessagesAsync(string id, bool? withCityTax = default(bool?), System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Check-out of a reservation.
+        /// </summary>
+        /// <remarks>
+        /// Check out a specific reservation which is in status 'InHouse'. This
+        /// changes the status to 'CheckedOut', and sets the check-out date and
+        /// time.
+        /// All open charges on the folio will be posted.
+        /// &lt;br /&gt;
+        /// Check-out is only possible, if the departure date is not later than
+        /// tomorrow. Otherwise, first amend the reservation and shorten the
+        /// stay.&lt;br&gt;You must have this scope: 'reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the reservation that should be processed.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdCheckoutPutWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Cancel a reservation.
+        /// </summary>
+        /// <remarks>
+        /// Cancel a specific reservation which is in status 'Confirmed' and
+        /// where the arrival time is in the future.
+        /// This changes the status to 'Canceled', and sets the cancellation
+        /// date and time.&lt;br&gt;You must have this scope:
+        /// 'reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the reservation that should be processed.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdCancelPutWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Set a reservation to No-show.
+        /// </summary>
+        /// <remarks>
+        /// Set a specific reservation to No-show which is in status
+        /// 'Confirmed' and where the arrival date is in the past.
+        /// This changes the status to 'NoShow', and sets the no-show date and
+        /// time.&lt;br&gt;You must have this scope: 'reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the reservation that should be processed.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdNoshowPutWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Allows you to amend the stay details of a reservation
+        /// </summary>
+        /// <remarks>
+        /// Modifies the stay-related data of a reservation.&lt;br /&gt;
+        /// If a reservation is 'Confirmed', you can change all fields.&lt;br
+        /// /&gt;
+        /// If a reservation is 'InHouse', only changes to future time slices
+        /// are possible.&lt;br /&gt;
+        /// Changes to reservations that are in the status 'CheckedOut' or
+        /// 'Canceled' are not possible at all.&lt;br&gt;You must have this
+        /// scope: 'reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the reservation that should be modified
+        /// </param>
+        /// <param name='body'>
+        /// The new stay details that should be applied to the reservation.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdAmendPutWithHttpMessagesAsync(string id, DesiredStayDetailsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Allows you to amend the stay details of a reservation regardless of
+        /// availability or restrictions.
+        /// </summary>
+        /// <remarks>
+        /// Modifies the stay-related data of a reservation.&lt;br /&gt;
+        /// If a reservation is 'Confirmed', you can change all fields.&lt;br
+        /// /&gt;
+        /// If a reservation is 'InHouse', only changes to future time slices
+        /// are possible.&lt;br /&gt;
+        /// Changes to reservations that are in the status 'CheckedOut' or
+        /// 'Canceled' are not possible at all.&lt;br&gt;You must have this
+        /// scope: 'reservations.force-manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the reservation that should be modified
+        /// </param>
+        /// <param name='body'>
+        /// The new stay details that should be applied to the reservation.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdAmendforcePutWithHttpMessagesAsync(string id, DesiredStayDetailsModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Book the service for a specific reservation.
+        /// </summary>
+        /// <remarks>
+        /// Use this to book a service for a specific reservation.
+        /// Please note that when dates are specified, all desired dates must
+        /// be specified or they will be removed if not posted to the
+        /// folio.&lt;br&gt;You must have this scope: 'reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the reservation.
+        /// </param>
+        /// <param name='body'>
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdBookServicePutWithHttpMessagesAsync(string id, BookReservationServiceModel body, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the city tax from a reservation.
+        /// </summary>
+        /// <remarks>
+        /// Use this is you want to remove the city tax from a reservation
+        /// before the stay.&lt;br&gt;You must have this scope:
+        /// 'reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the reservation.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdRemoveCityTaxPutWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the city tax to a reservation.
+        /// </summary>
+        /// <remarks>
+        /// Use this if you want to add the city tax to a
+        /// reservation.&lt;br&gt;You must have this scope:
+        /// 'reservations.manage'.
+        /// </remarks>
+        /// <param name='id'>
+        /// Id of the reservation.
+        /// </param>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<MessageItemCollection>> BookingReservationActionsByIdAddCityTaxPutWithHttpMessagesAsync(string id, System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns a list of supported sources.
@@ -1851,13 +2126,20 @@ namespace Traces.ApaleoClients.Booking
         /// Returns a list of channels that could be used as a source to create
         /// bookings.
         /// </remarks>
+        /// <param name='apaleoCurrentDateTime'>
+        /// Use this parameter to override the current date and time for the
+        /// current request. Specify a date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in the &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;.This
+        /// header will only take effect on development environments.
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingTypesSourcesGetWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingTypesSourcesGetWithHttpMessagesAsync(System.DateTime? apaleoCurrentDateTime = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
     }
 }

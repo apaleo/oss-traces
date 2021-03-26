@@ -24,14 +24,14 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the EmbeddedUnitModel class.
         /// </summary>
         /// <param name="id">The unit id</param>
-        /// <param name="description">The description for the unit</param>
         /// <param name="name">The name for the unit</param>
+        /// <param name="description">The description for the unit</param>
         /// <param name="unitGroupId">The unit group id</param>
-        public EmbeddedUnitModel(string id, string description = default(string), string name = default(string), string unitGroupId = default(string))
+        public EmbeddedUnitModel(string id, string name = default(string), string description = default(string), string unitGroupId = default(string))
         {
-            Description = description;
             Id = id;
             Name = name;
+            Description = description;
             UnitGroupId = unitGroupId;
             CustomInit();
         }
@@ -40,12 +40,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
-
-        /// <summary>
-        /// Gets or sets the description for the unit
-        /// </summary>
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the unit id
@@ -58,6 +52,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description for the unit
+        /// </summary>
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the unit group id

@@ -25,7 +25,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the DesiredStayDetailsModel class.
         /// </summary>
-        /// <param name="adults">Number of adults</param>
         /// <param name="arrival">Date and optional time of arrival&lt;br
         /// /&gt;Specify either a pure date or a date and time (without
         /// fractional second part) in UTC or with UTC offset as defined in
@@ -36,6 +35,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// pure date or a date and time (without fractional second part) in
         /// UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="adults">Number of adults</param>
         /// <param name="timeSlices">The list of time slices</param>
         /// <param name="childrenAges">Ages of the children</param>
         /// <param name="requote">Whether the prices for time slices with no
@@ -43,12 +43,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// prices, or if
         /// only additions like change of number of adults should be
         /// calculated. Defaults to 'false'.</param>
-        public DesiredStayDetailsModel(int adults, string arrival, string departure, IList<DesiredTimeSliceModel> timeSlices, IList<int?> childrenAges = default(IList<int?>), bool? requote = default(bool?))
+        public DesiredStayDetailsModel(string arrival, string departure, int adults, IList<DesiredTimeSliceModel> timeSlices, IList<int?> childrenAges = default(IList<int?>), bool? requote = default(bool?))
         {
-            Adults = adults;
             Arrival = arrival;
-            ChildrenAges = childrenAges;
             Departure = departure;
+            Adults = adults;
+            ChildrenAges = childrenAges;
             Requote = requote;
             TimeSlices = timeSlices;
             CustomInit();
@@ -58,12 +58,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
-
-        /// <summary>
-        /// Gets or sets number of adults
-        /// </summary>
-        [JsonProperty(PropertyName = "adults")]
-        public int Adults { get; set; }
 
         /// <summary>
         /// Gets or sets date and optional time of arrival&amp;lt;br
@@ -76,12 +70,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Arrival { get; set; }
 
         /// <summary>
-        /// Gets or sets ages of the children
-        /// </summary>
-        [JsonProperty(PropertyName = "childrenAges")]
-        public IList<int?> ChildrenAges { get; set; }
-
-        /// <summary>
         /// Gets or sets date and optional time of departure. Cannot be more
         /// than 5 years after arrival.&amp;lt;br /&amp;gt;Specify either a
         /// pure date or a date and time (without fractional second part) in
@@ -90,6 +78,18 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "departure")]
         public string Departure { get; set; }
+
+        /// <summary>
+        /// Gets or sets number of adults
+        /// </summary>
+        [JsonProperty(PropertyName = "adults")]
+        public int Adults { get; set; }
+
+        /// <summary>
+        /// Gets or sets ages of the children
+        /// </summary>
+        [JsonProperty(PropertyName = "childrenAges")]
+        public IList<int?> ChildrenAges { get; set; }
 
         /// <summary>
         /// Gets or sets whether the prices for time slices with no change to

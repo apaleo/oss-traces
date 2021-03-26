@@ -22,13 +22,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the PeriodModel class.
         /// </summary>
-        /// <param name="days">The number of days within the period</param>
         /// <param name="hours">The number of hours within the period</param>
+        /// <param name="days">The number of days within the period</param>
         /// <param name="months">The number of months within the period</param>
-        public PeriodModel(int? days = default(int?), long? hours = default(long?), int? months = default(int?))
+        public PeriodModel(long? hours = default(long?), int? days = default(int?), int? months = default(int?))
         {
-            Days = days;
             Hours = hours;
+            Days = days;
             Months = months;
             CustomInit();
         }
@@ -39,16 +39,16 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the number of days within the period
-        /// </summary>
-        [JsonProperty(PropertyName = "days")]
-        public int? Days { get; set; }
-
-        /// <summary>
         /// Gets or sets the number of hours within the period
         /// </summary>
         [JsonProperty(PropertyName = "hours")]
         public long? Hours { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of days within the period
+        /// </summary>
+        [JsonProperty(PropertyName = "days")]
+        public int? Days { get; set; }
 
         /// <summary>
         /// Gets or sets the number of months within the period

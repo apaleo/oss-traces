@@ -25,16 +25,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the ReservationItemModel class.
         /// </summary>
-        /// <param name="adults">Number of adults</param>
-        /// <param name="arrival">Date of arrival&lt;br /&gt;A date and time
-        /// (without fractional second part) in UTC or with UTC offset as
-        /// defined in &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="id">Reservation id</param>
         /// <param name="bookingId">Booking id</param>
-        /// <param name="channelCode">Channel code. Possible values include:
-        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia',
-        /// 'Homelike'</param>
-        /// <param name="created">Date of creation&lt;br /&gt;A date and time
+        /// <param name="status">Status of the reservation. Possible values
+        /// include: 'Confirmed', 'InHouse', 'CheckedOut', 'Canceled',
+        /// 'NoShow'</param>
+        /// <param name="arrival">Date of arrival&lt;br /&gt;A date and time
         /// (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
@@ -42,34 +38,26 @@ namespace Traces.ApaleoClients.Booking.Models
         /// time (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="created">Date of creation&lt;br /&gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="modified">Date of last modification&lt;br /&gt;A date
+        /// and time (without fractional second part) in UTC or with UTC offset
+        /// as defined in &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="adults">Number of adults</param>
+        /// <param name="channelCode">Channel code. Possible values include:
+        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia',
+        /// 'Homelike'</param>
         /// <param name="guaranteeType">The strongest guarantee for the rate
         /// plans booked in this reservation. Possible values include:
         /// 'PM6Hold', 'CreditCard', 'Prepayment', 'Company', 'Ota'</param>
         /// <param name="hasCityTax">Whether the city tax has already been
         /// added to the reservation. Set to false, if the property does not
         /// have city tax configured</param>
-        /// <param name="id">Reservation id</param>
-        /// <param name="modified">Date of last modification&lt;br /&gt;A date
-        /// and time (without fractional second part) in UTC or with UTC offset
-        /// as defined in &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="status">Status of the reservation. Possible values
-        /// include: 'Confirmed', 'InHouse', 'CheckedOut', 'Canceled',
-        /// 'NoShow'</param>
-        /// <param name="actions">The list of actions for this
-        /// reservation</param>
-        /// <param name="additionalGuests">Additional guests of the
-        /// reservation.</param>
-        /// <param name="allFoliosHaveInvoice">Whether all folios of a
-        /// reservation have an invoice</param>
-        /// <param name="assignedUnits">The list of units assigned to this
-        /// reservation</param>
         /// <param name="blockId">Block id</param>
-        /// <param name="cancellationTime">Time of cancellation, if the
-        /// reservation was canceled&lt;br /&gt;A date and time (without
-        /// fractional second part) in UTC or with UTC offset as defined in
-        /// &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="groupName">Name of the group</param>
         /// <param name="checkInTime">Time of check-in&lt;br /&gt;A date and
         /// time (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
@@ -78,27 +66,32 @@ namespace Traces.ApaleoClients.Booking.Models
         /// time (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="childrenAges">The ages of the children</param>
-        /// <param name="comment">Additional information and comments</param>
-        /// <param name="corporateCode">Corporate code provided during
-        /// creation. Used to find offers during amend.</param>
-        /// <param name="externalCode">Code in external system</param>
-        /// <param name="guestComment">Additional information and comment by
-        /// the guest</param>
+        /// <param name="cancellationTime">Time of cancellation, if the
+        /// reservation was canceled&lt;br /&gt;A date and time (without
+        /// fractional second part) in UTC or with UTC offset as defined in
+        /// &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="noShowTime">Time of setting no-show reservation
         /// status&lt;br /&gt;A date and time (without fractional second part)
         /// in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="promoCode">The promo code associated with a certain
-        /// special offer used to create the reservation</param>
-        /// <param name="services">The list of additional services (extras,
-        /// add-ons) reserved for the stay</param>
+        /// <param name="childrenAges">The ages of the children</param>
+        /// <param name="comment">Additional information and comments</param>
+        /// <param name="guestComment">Additional information and comment by
+        /// the guest</param>
+        /// <param name="externalCode">Code in external system</param>
         /// <param name="source">Source of the reservation (e.g Hotels.com,
         /// Orbitz, etc.)</param>
-        /// <param name="timeSlices">The list of time slices with the reserved
-        /// units / unit groups for the stay</param>
+        /// <param name="additionalGuests">Additional guests of the
+        /// reservation.</param>
         /// <param name="travelPurpose">The purpose of the trip, leisure or
         /// business. Possible values include: 'Business', 'Leisure'</param>
+        /// <param name="assignedUnits">The list of units assigned to this
+        /// reservation</param>
+        /// <param name="timeSlices">The list of time slices with the reserved
+        /// units / unit groups for the stay</param>
+        /// <param name="services">The list of additional services (extras,
+        /// add-ons) reserved for the stay</param>
         /// <param name="validationMessages">Validation rules are applied to
         /// reservations during their lifetime.
         /// For example a reservation that was created while the house or unit
@@ -107,52 +100,61 @@ namespace Traces.ApaleoClients.Booking.Models
         /// will be added to this list.
         /// They can be deleted whenever the hotel staff worked them
         /// off.</param>
-        public ReservationItemModel(int adults, System.DateTime arrival, MonetaryValueModel balance, string bookingId, ReservationCancellationFeeModel cancellationFee, ChannelCode channelCode, System.DateTime created, System.DateTime departure, GuaranteeType guaranteeType, bool hasCityTax, string id, System.DateTime modified, ReservationNoShowFeeModel noShowFee, GuestModel primaryGuest, EmbeddedPropertyModel property, EmbeddedRatePlanModel ratePlan, ReservationStatus status, MonetaryValueModel totalGrossAmount, EmbeddedUnitGroupModel unitGroup, IList<ActionModelReservationActionNotAllowedReservationActionReason> actions = default(IList<ActionModelReservationActionNotAllowedReservationActionReason>), IList<GuestModel> additionalGuests = default(IList<GuestModel>), bool? allFoliosHaveInvoice = default(bool?), IList<ReservationAssignedUnitModel> assignedUnits = default(IList<ReservationAssignedUnitModel>), string blockId = default(string), BookerModel booker = default(BookerModel), System.DateTime? cancellationTime = default(System.DateTime?), System.DateTime? checkInTime = default(System.DateTime?), System.DateTime? checkOutTime = default(System.DateTime?), IList<int?> childrenAges = default(IList<int?>), string comment = default(string), CommissionModel commission = default(CommissionModel), EmbeddedCompanyModel company = default(EmbeddedCompanyModel), string corporateCode = default(string), string externalCode = default(string), string guestComment = default(string), System.DateTime? noShowTime = default(System.DateTime?), PaymentAccountModel paymentAccount = default(PaymentAccountModel), string promoCode = default(string), IList<ReservationServiceItemModel> services = default(IList<ReservationServiceItemModel>), string source = default(string), IList<TimeSliceModel> timeSlices = default(IList<TimeSliceModel>), TravelPurpose? travelPurpose = default(TravelPurpose?), EmbeddedUnitModel unit = default(EmbeddedUnitModel), IList<ReservationValidationMessageModel> validationMessages = default(IList<ReservationValidationMessageModel>))
+        /// <param name="actions">The list of actions for this
+        /// reservation</param>
+        /// <param name="corporateCode">Corporate code provided during
+        /// creation. Used to find offers during amend.</param>
+        /// <param name="allFoliosHaveInvoice">Whether all folios of a
+        /// reservation have an invoice</param>
+        /// <param name="promoCode">The promo code associated with a certain
+        /// special offer used to create the reservation</param>
+        public ReservationItemModel(string id, string bookingId, ReservationStatus status, EmbeddedPropertyModel property, EmbeddedRatePlanModel ratePlan, EmbeddedUnitGroupModel unitGroup, MonetaryValueModel totalGrossAmount, System.DateTime arrival, System.DateTime departure, System.DateTime created, System.DateTime modified, int adults, ChannelCode channelCode, GuaranteeType guaranteeType, ReservationCancellationFeeModel cancellationFee, ReservationNoShowFeeModel noShowFee, MonetaryValueModel balance, bool hasCityTax, string blockId = default(string), string groupName = default(string), System.DateTime? checkInTime = default(System.DateTime?), System.DateTime? checkOutTime = default(System.DateTime?), System.DateTime? cancellationTime = default(System.DateTime?), System.DateTime? noShowTime = default(System.DateTime?), EmbeddedUnitModel unit = default(EmbeddedUnitModel), IList<int?> childrenAges = default(IList<int?>), string comment = default(string), string guestComment = default(string), string externalCode = default(string), string source = default(string), GuestModel primaryGuest = default(GuestModel), IList<GuestModel> additionalGuests = default(IList<GuestModel>), BookerModel booker = default(BookerModel), PaymentAccountModel paymentAccount = default(PaymentAccountModel), TravelPurpose? travelPurpose = default(TravelPurpose?), IList<ReservationAssignedUnitModel> assignedUnits = default(IList<ReservationAssignedUnitModel>), IList<TimeSliceModel> timeSlices = default(IList<TimeSliceModel>), IList<ReservationServiceItemModel> services = default(IList<ReservationServiceItemModel>), IList<ReservationValidationMessageModel> validationMessages = default(IList<ReservationValidationMessageModel>), IList<ActionModelReservationActionNotAllowedReservationActionReason> actions = default(IList<ActionModelReservationActionNotAllowedReservationActionReason>), EmbeddedCompanyModel company = default(EmbeddedCompanyModel), string corporateCode = default(string), bool? allFoliosHaveInvoice = default(bool?), CommissionModel commission = default(CommissionModel), string promoCode = default(string))
         {
-            Actions = actions;
-            AdditionalGuests = additionalGuests;
-            Adults = adults;
-            AllFoliosHaveInvoice = allFoliosHaveInvoice;
-            Arrival = arrival;
-            AssignedUnits = assignedUnits;
-            Balance = balance;
-            BlockId = blockId;
-            Booker = booker;
+            Id = id;
             BookingId = bookingId;
-            CancellationFee = cancellationFee;
-            CancellationTime = cancellationTime;
-            ChannelCode = channelCode;
+            BlockId = blockId;
+            GroupName = groupName;
+            Status = status;
             CheckInTime = checkInTime;
             CheckOutTime = checkOutTime;
-            ChildrenAges = childrenAges;
-            Comment = comment;
-            Commission = commission;
-            Company = company;
-            CorporateCode = corporateCode;
-            Created = created;
-            Departure = departure;
-            ExternalCode = externalCode;
-            GuaranteeType = guaranteeType;
-            GuestComment = guestComment;
-            HasCityTax = hasCityTax;
-            Id = id;
-            Modified = modified;
-            NoShowFee = noShowFee;
+            CancellationTime = cancellationTime;
             NoShowTime = noShowTime;
-            PaymentAccount = paymentAccount;
-            PrimaryGuest = primaryGuest;
-            PromoCode = promoCode;
             Property = property;
             RatePlan = ratePlan;
-            Services = services;
-            Source = source;
-            Status = status;
-            TimeSlices = timeSlices;
-            TotalGrossAmount = totalGrossAmount;
-            TravelPurpose = travelPurpose;
-            Unit = unit;
             UnitGroup = unitGroup;
+            Unit = unit;
+            TotalGrossAmount = totalGrossAmount;
+            Arrival = arrival;
+            Departure = departure;
+            Created = created;
+            Modified = modified;
+            Adults = adults;
+            ChildrenAges = childrenAges;
+            Comment = comment;
+            GuestComment = guestComment;
+            ExternalCode = externalCode;
+            ChannelCode = channelCode;
+            Source = source;
+            PrimaryGuest = primaryGuest;
+            AdditionalGuests = additionalGuests;
+            Booker = booker;
+            PaymentAccount = paymentAccount;
+            GuaranteeType = guaranteeType;
+            CancellationFee = cancellationFee;
+            NoShowFee = noShowFee;
+            TravelPurpose = travelPurpose;
+            Balance = balance;
+            AssignedUnits = assignedUnits;
+            TimeSlices = timeSlices;
+            Services = services;
             ValidationMessages = validationMessages;
+            Actions = actions;
+            Company = company;
+            CorporateCode = corporateCode;
+            AllFoliosHaveInvoice = allFoliosHaveInvoice;
+            HasCityTax = hasCityTax;
+            Commission = commission;
+            PromoCode = promoCode;
             CustomInit();
         }
 
@@ -162,59 +164,10 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the list of actions for this reservation
+        /// Gets or sets reservation id
         /// </summary>
-        [JsonProperty(PropertyName = "actions")]
-        public IList<ActionModelReservationActionNotAllowedReservationActionReason> Actions { get; set; }
-
-        /// <summary>
-        /// Gets or sets additional guests of the reservation.
-        /// </summary>
-        [JsonProperty(PropertyName = "additionalGuests")]
-        public IList<GuestModel> AdditionalGuests { get; set; }
-
-        /// <summary>
-        /// Gets or sets number of adults
-        /// </summary>
-        [JsonProperty(PropertyName = "adults")]
-        public int Adults { get; set; }
-
-        /// <summary>
-        /// Gets or sets whether all folios of a reservation have an invoice
-        /// </summary>
-        [JsonProperty(PropertyName = "allFoliosHaveInvoice")]
-        public bool? AllFoliosHaveInvoice { get; set; }
-
-        /// <summary>
-        /// Gets or sets date of arrival&amp;lt;br /&amp;gt;A date and time
-        /// (without fractional second part) in UTC or with UTC offset as
-        /// defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
-        /// </summary>
-        [JsonProperty(PropertyName = "arrival")]
-        public System.DateTime Arrival { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of units assigned to this reservation
-        /// </summary>
-        [JsonProperty(PropertyName = "assignedUnits")]
-        public IList<ReservationAssignedUnitModel> AssignedUnits { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "balance")]
-        public MonetaryValueModel Balance { get; set; }
-
-        /// <summary>
-        /// Gets or sets block id
-        /// </summary>
-        [JsonProperty(PropertyName = "blockId")]
-        public string BlockId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "booker")]
-        public BookerModel Booker { get; set; }
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets booking id
@@ -223,25 +176,23 @@ namespace Traces.ApaleoClients.Booking.Models
         public string BookingId { get; set; }
 
         /// <summary>
+        /// Gets or sets block id
         /// </summary>
-        [JsonProperty(PropertyName = "cancellationFee")]
-        public ReservationCancellationFeeModel CancellationFee { get; set; }
+        [JsonProperty(PropertyName = "blockId")]
+        public string BlockId { get; set; }
 
         /// <summary>
-        /// Gets or sets time of cancellation, if the reservation was
-        /// canceled&amp;lt;br /&amp;gt;A date and time (without fractional
-        /// second part) in UTC or with UTC offset as defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// Gets or sets name of the group
         /// </summary>
-        [JsonProperty(PropertyName = "cancellationTime")]
-        public System.DateTime? CancellationTime { get; set; }
+        [JsonProperty(PropertyName = "groupName")]
+        public string GroupName { get; set; }
 
         /// <summary>
-        /// Gets or sets channel code. Possible values include: 'Direct',
-        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
+        /// Gets or sets status of the reservation. Possible values include:
+        /// 'Confirmed', 'InHouse', 'CheckedOut', 'Canceled', 'NoShow'
         /// </summary>
-        [JsonProperty(PropertyName = "channelCode")]
-        public ChannelCode ChannelCode { get; set; }
+        [JsonProperty(PropertyName = "status")]
+        public ReservationStatus Status { get; set; }
 
         /// <summary>
         /// Gets or sets time of check-in&amp;lt;br /&amp;gt;A date and time
@@ -262,99 +213,13 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime? CheckOutTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the ages of the children
-        /// </summary>
-        [JsonProperty(PropertyName = "childrenAges")]
-        public IList<int?> ChildrenAges { get; set; }
-
-        /// <summary>
-        /// Gets or sets additional information and comments
-        /// </summary>
-        [JsonProperty(PropertyName = "comment")]
-        public string Comment { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "commission")]
-        public CommissionModel Commission { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "company")]
-        public EmbeddedCompanyModel Company { get; set; }
-
-        /// <summary>
-        /// Gets or sets corporate code provided during creation. Used to find
-        /// offers during amend.
-        /// </summary>
-        [JsonProperty(PropertyName = "corporateCode")]
-        public string CorporateCode { get; set; }
-
-        /// <summary>
-        /// Gets or sets date of creation&amp;lt;br /&amp;gt;A date and time
-        /// (without fractional second part) in UTC or with UTC offset as
-        /// defined in &amp;lt;a
+        /// Gets or sets time of cancellation, if the reservation was
+        /// canceled&amp;lt;br /&amp;gt;A date and time (without fractional
+        /// second part) in UTC or with UTC offset as defined in &amp;lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
-        [JsonProperty(PropertyName = "created")]
-        public System.DateTime Created { get; set; }
-
-        /// <summary>
-        /// Gets or sets date of departure&amp;lt;br /&amp;gt;A date and time
-        /// (without fractional second part) in UTC or with UTC offset as
-        /// defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
-        /// </summary>
-        [JsonProperty(PropertyName = "departure")]
-        public System.DateTime Departure { get; set; }
-
-        /// <summary>
-        /// Gets or sets code in external system
-        /// </summary>
-        [JsonProperty(PropertyName = "externalCode")]
-        public string ExternalCode { get; set; }
-
-        /// <summary>
-        /// Gets or sets the strongest guarantee for the rate plans booked in
-        /// this reservation. Possible values include: 'PM6Hold', 'CreditCard',
-        /// 'Prepayment', 'Company', 'Ota'
-        /// </summary>
-        [JsonProperty(PropertyName = "guaranteeType")]
-        public GuaranteeType GuaranteeType { get; set; }
-
-        /// <summary>
-        /// Gets or sets additional information and comment by the guest
-        /// </summary>
-        [JsonProperty(PropertyName = "guestComment")]
-        public string GuestComment { get; set; }
-
-        /// <summary>
-        /// Gets or sets whether the city tax has already been added to the
-        /// reservation. Set to false, if the property does not have city tax
-        /// configured
-        /// </summary>
-        [JsonProperty(PropertyName = "hasCityTax")]
-        public bool HasCityTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets reservation id
-        /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets date of last modification&amp;lt;br /&amp;gt;A date
-        /// and time (without fractional second part) in UTC or with UTC offset
-        /// as defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
-        /// </summary>
-        [JsonProperty(PropertyName = "modified")]
-        public System.DateTime Modified { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "noShowFee")]
-        public ReservationNoShowFeeModel NoShowFee { get; set; }
+        [JsonProperty(PropertyName = "cancellationTime")]
+        public System.DateTime? CancellationTime { get; set; }
 
         /// <summary>
         /// Gets or sets time of setting no-show reservation status&amp;lt;br
@@ -367,23 +232,6 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "paymentAccount")]
-        public PaymentAccountModel PaymentAccount { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "primaryGuest")]
-        public GuestModel PrimaryGuest { get; set; }
-
-        /// <summary>
-        /// Gets or sets the promo code associated with a certain special offer
-        /// used to create the reservation
-        /// </summary>
-        [JsonProperty(PropertyName = "promoCode")]
-        public string PromoCode { get; set; }
-
-        /// <summary>
-        /// </summary>
         [JsonProperty(PropertyName = "property")]
         public EmbeddedPropertyModel Property { get; set; }
 
@@ -393,11 +241,92 @@ namespace Traces.ApaleoClients.Booking.Models
         public EmbeddedRatePlanModel RatePlan { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of additional services (extras, add-ons)
-        /// reserved for the stay
         /// </summary>
-        [JsonProperty(PropertyName = "services")]
-        public IList<ReservationServiceItemModel> Services { get; set; }
+        [JsonProperty(PropertyName = "unitGroup")]
+        public EmbeddedUnitGroupModel UnitGroup { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "unit")]
+        public EmbeddedUnitModel Unit { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "totalGrossAmount")]
+        public MonetaryValueModel TotalGrossAmount { get; set; }
+
+        /// <summary>
+        /// Gets or sets date of arrival&amp;lt;br /&amp;gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "arrival")]
+        public System.DateTime Arrival { get; set; }
+
+        /// <summary>
+        /// Gets or sets date of departure&amp;lt;br /&amp;gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "departure")]
+        public System.DateTime Departure { get; set; }
+
+        /// <summary>
+        /// Gets or sets date of creation&amp;lt;br /&amp;gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "created")]
+        public System.DateTime Created { get; set; }
+
+        /// <summary>
+        /// Gets or sets date of last modification&amp;lt;br /&amp;gt;A date
+        /// and time (without fractional second part) in UTC or with UTC offset
+        /// as defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "modified")]
+        public System.DateTime Modified { get; set; }
+
+        /// <summary>
+        /// Gets or sets number of adults
+        /// </summary>
+        [JsonProperty(PropertyName = "adults")]
+        public int Adults { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ages of the children
+        /// </summary>
+        [JsonProperty(PropertyName = "childrenAges")]
+        public IList<int?> ChildrenAges { get; set; }
+
+        /// <summary>
+        /// Gets or sets additional information and comments
+        /// </summary>
+        [JsonProperty(PropertyName = "comment")]
+        public string Comment { get; set; }
+
+        /// <summary>
+        /// Gets or sets additional information and comment by the guest
+        /// </summary>
+        [JsonProperty(PropertyName = "guestComment")]
+        public string GuestComment { get; set; }
+
+        /// <summary>
+        /// Gets or sets code in external system
+        /// </summary>
+        [JsonProperty(PropertyName = "externalCode")]
+        public string ExternalCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets channel code. Possible values include: 'Direct',
+        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
+        /// </summary>
+        [JsonProperty(PropertyName = "channelCode")]
+        public ChannelCode ChannelCode { get; set; }
 
         /// <summary>
         /// Gets or sets source of the reservation (e.g Hotels.com, Orbitz,
@@ -407,23 +336,43 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Source { get; set; }
 
         /// <summary>
-        /// Gets or sets status of the reservation. Possible values include:
-        /// 'Confirmed', 'InHouse', 'CheckedOut', 'Canceled', 'NoShow'
         /// </summary>
-        [JsonProperty(PropertyName = "status")]
-        public ReservationStatus Status { get; set; }
+        [JsonProperty(PropertyName = "primaryGuest")]
+        public GuestModel PrimaryGuest { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of time slices with the reserved units / unit
-        /// groups for the stay
+        /// Gets or sets additional guests of the reservation.
         /// </summary>
-        [JsonProperty(PropertyName = "timeSlices")]
-        public IList<TimeSliceModel> TimeSlices { get; set; }
+        [JsonProperty(PropertyName = "additionalGuests")]
+        public IList<GuestModel> AdditionalGuests { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "totalGrossAmount")]
-        public MonetaryValueModel TotalGrossAmount { get; set; }
+        [JsonProperty(PropertyName = "booker")]
+        public BookerModel Booker { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "paymentAccount")]
+        public PaymentAccountModel PaymentAccount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the strongest guarantee for the rate plans booked in
+        /// this reservation. Possible values include: 'PM6Hold', 'CreditCard',
+        /// 'Prepayment', 'Company', 'Ota'
+        /// </summary>
+        [JsonProperty(PropertyName = "guaranteeType")]
+        public GuaranteeType GuaranteeType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "cancellationFee")]
+        public ReservationCancellationFeeModel CancellationFee { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "noShowFee")]
+        public ReservationNoShowFeeModel NoShowFee { get; set; }
 
         /// <summary>
         /// Gets or sets the purpose of the trip, leisure or business. Possible
@@ -434,13 +383,28 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "unit")]
-        public EmbeddedUnitModel Unit { get; set; }
+        [JsonProperty(PropertyName = "balance")]
+        public MonetaryValueModel Balance { get; set; }
 
         /// <summary>
+        /// Gets or sets the list of units assigned to this reservation
         /// </summary>
-        [JsonProperty(PropertyName = "unitGroup")]
-        public EmbeddedUnitGroupModel UnitGroup { get; set; }
+        [JsonProperty(PropertyName = "assignedUnits")]
+        public IList<ReservationAssignedUnitModel> AssignedUnits { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of time slices with the reserved units / unit
+        /// groups for the stay
+        /// </summary>
+        [JsonProperty(PropertyName = "timeSlices")]
+        public IList<TimeSliceModel> TimeSlices { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of additional services (extras, add-ons)
+        /// reserved for the stay
+        /// </summary>
+        [JsonProperty(PropertyName = "services")]
+        public IList<ReservationServiceItemModel> Services { get; set; }
 
         /// <summary>
         /// Gets or sets validation rules are applied to reservations during
@@ -455,6 +419,50 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<ReservationValidationMessageModel> ValidationMessages { get; set; }
 
         /// <summary>
+        /// Gets or sets the list of actions for this reservation
+        /// </summary>
+        [JsonProperty(PropertyName = "actions")]
+        public IList<ActionModelReservationActionNotAllowedReservationActionReason> Actions { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "company")]
+        public EmbeddedCompanyModel Company { get; set; }
+
+        /// <summary>
+        /// Gets or sets corporate code provided during creation. Used to find
+        /// offers during amend.
+        /// </summary>
+        [JsonProperty(PropertyName = "corporateCode")]
+        public string CorporateCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether all folios of a reservation have an invoice
+        /// </summary>
+        [JsonProperty(PropertyName = "allFoliosHaveInvoice")]
+        public bool? AllFoliosHaveInvoice { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the city tax has already been added to the
+        /// reservation. Set to false, if the property does not have city tax
+        /// configured
+        /// </summary>
+        [JsonProperty(PropertyName = "hasCityTax")]
+        public bool HasCityTax { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "commission")]
+        public CommissionModel Commission { get; set; }
+
+        /// <summary>
+        /// Gets or sets the promo code associated with a certain special offer
+        /// used to create the reservation
+        /// </summary>
+        [JsonProperty(PropertyName = "promoCode")]
+        public string PromoCode { get; set; }
+
+        /// <summary>
         /// Validate the object.
         /// </summary>
         /// <exception cref="ValidationException">
@@ -462,29 +470,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Balance == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Balance");
-            }
-            if (BookingId == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "BookingId");
-            }
-            if (CancellationFee == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "CancellationFee");
-            }
             if (Id == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Id");
             }
-            if (NoShowFee == null)
+            if (BookingId == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "NoShowFee");
-            }
-            if (PrimaryGuest == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "PrimaryGuest");
+                throw new ValidationException(ValidationRules.CannotBeNull, "BookingId");
             }
             if (Property == null)
             {
@@ -494,75 +486,25 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "RatePlan");
             }
-            if (TotalGrossAmount == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "TotalGrossAmount");
-            }
             if (UnitGroup == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "UnitGroup");
             }
-            if (Actions != null)
+            if (TotalGrossAmount == null)
             {
-                foreach (var element in Actions)
-                {
-                    if (element != null)
-                    {
-                        element.Validate();
-                    }
-                }
+                throw new ValidationException(ValidationRules.CannotBeNull, "TotalGrossAmount");
             }
-            if (AdditionalGuests != null)
+            if (CancellationFee == null)
             {
-                foreach (var element1 in AdditionalGuests)
-                {
-                    if (element1 != null)
-                    {
-                        element1.Validate();
-                    }
-                }
+                throw new ValidationException(ValidationRules.CannotBeNull, "CancellationFee");
             }
-            if (AssignedUnits != null)
+            if (NoShowFee == null)
             {
-                foreach (var element2 in AssignedUnits)
-                {
-                    if (element2 != null)
-                    {
-                        element2.Validate();
-                    }
-                }
+                throw new ValidationException(ValidationRules.CannotBeNull, "NoShowFee");
             }
-            if (Balance != null)
+            if (Balance == null)
             {
-                Balance.Validate();
-            }
-            if (Booker != null)
-            {
-                Booker.Validate();
-            }
-            if (CancellationFee != null)
-            {
-                CancellationFee.Validate();
-            }
-            if (Commission != null)
-            {
-                Commission.Validate();
-            }
-            if (Company != null)
-            {
-                Company.Validate();
-            }
-            if (NoShowFee != null)
-            {
-                NoShowFee.Validate();
-            }
-            if (PaymentAccount != null)
-            {
-                PaymentAccount.Validate();
-            }
-            if (PrimaryGuest != null)
-            {
-                PrimaryGuest.Validate();
+                throw new ValidationException(ValidationRules.CannotBeNull, "Balance");
             }
             if (Property != null)
             {
@@ -571,6 +513,72 @@ namespace Traces.ApaleoClients.Booking.Models
             if (RatePlan != null)
             {
                 RatePlan.Validate();
+            }
+            if (UnitGroup != null)
+            {
+                UnitGroup.Validate();
+            }
+            if (Unit != null)
+            {
+                Unit.Validate();
+            }
+            if (TotalGrossAmount != null)
+            {
+                TotalGrossAmount.Validate();
+            }
+            if (PrimaryGuest != null)
+            {
+                PrimaryGuest.Validate();
+            }
+            if (AdditionalGuests != null)
+            {
+                foreach (var element in AdditionalGuests)
+                {
+                    if (element != null)
+                    {
+                        element.Validate();
+                    }
+                }
+            }
+            if (Booker != null)
+            {
+                Booker.Validate();
+            }
+            if (PaymentAccount != null)
+            {
+                PaymentAccount.Validate();
+            }
+            if (CancellationFee != null)
+            {
+                CancellationFee.Validate();
+            }
+            if (NoShowFee != null)
+            {
+                NoShowFee.Validate();
+            }
+            if (Balance != null)
+            {
+                Balance.Validate();
+            }
+            if (AssignedUnits != null)
+            {
+                foreach (var element1 in AssignedUnits)
+                {
+                    if (element1 != null)
+                    {
+                        element1.Validate();
+                    }
+                }
+            }
+            if (TimeSlices != null)
+            {
+                foreach (var element2 in TimeSlices)
+                {
+                    if (element2 != null)
+                    {
+                        element2.Validate();
+                    }
+                }
             }
             if (Services != null)
             {
@@ -582,9 +590,9 @@ namespace Traces.ApaleoClients.Booking.Models
                     }
                 }
             }
-            if (TimeSlices != null)
+            if (ValidationMessages != null)
             {
-                foreach (var element4 in TimeSlices)
+                foreach (var element4 in ValidationMessages)
                 {
                     if (element4 != null)
                     {
@@ -592,27 +600,23 @@ namespace Traces.ApaleoClients.Booking.Models
                     }
                 }
             }
-            if (TotalGrossAmount != null)
+            if (Actions != null)
             {
-                TotalGrossAmount.Validate();
-            }
-            if (Unit != null)
-            {
-                Unit.Validate();
-            }
-            if (UnitGroup != null)
-            {
-                UnitGroup.Validate();
-            }
-            if (ValidationMessages != null)
-            {
-                foreach (var element5 in ValidationMessages)
+                foreach (var element5 in Actions)
                 {
                     if (element5 != null)
                     {
                         element5.Validate();
                     }
                 }
+            }
+            if (Company != null)
+            {
+                Company.Validate();
+            }
+            if (Commission != null)
+            {
+                Commission.Validate();
             }
         }
     }

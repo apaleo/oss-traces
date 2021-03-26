@@ -34,14 +34,14 @@ namespace Traces.ApaleoClients.Booking.Models
         /// top of the
         /// Apaleo.Api.Modules.Booking.Models.Offer.ServiceOffer.ServiceOfferModel.TotalAmount
         /// when booking the service</param>
-        public ServiceOfferModel(int count, IList<ServiceOfferItemModel> dates, MonetaryValueModel prePaymentAmount, ServiceModel service, AmountModel totalAmount, IList<OfferFeeModel> fees = default(IList<OfferFeeModel>))
+        public ServiceOfferModel(ServiceModel service, int count, AmountModel totalAmount, MonetaryValueModel prePaymentAmount, IList<ServiceOfferItemModel> dates, IList<OfferFeeModel> fees = default(IList<OfferFeeModel>))
         {
-            Count = count;
-            Dates = dates;
-            Fees = fees;
-            PrePaymentAmount = prePaymentAmount;
             Service = service;
+            Count = count;
             TotalAmount = totalAmount;
+            PrePaymentAmount = prePaymentAmount;
+            Fees = fees;
+            Dates = dates;
             CustomInit();
         }
 
@@ -49,6 +49,11 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "service")]
+        public ServiceModel Service { get; set; }
 
         /// <summary>
         /// Gets or sets the default count of offered services. For services
@@ -59,10 +64,14 @@ namespace Traces.ApaleoClients.Booking.Models
         public int Count { get; set; }
 
         /// <summary>
-        /// Gets or sets the dates the service will be delivered with its price
         /// </summary>
-        [JsonProperty(PropertyName = "dates")]
-        public IList<ServiceOfferItemModel> Dates { get; set; }
+        [JsonProperty(PropertyName = "totalAmount")]
+        public AmountModel TotalAmount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "prePaymentAmount")]
+        public MonetaryValueModel PrePaymentAmount { get; set; }
 
         /// <summary>
         /// Gets or sets the details of the fees that will be added on top of
@@ -74,19 +83,10 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<OfferFeeModel> Fees { get; set; }
 
         /// <summary>
+        /// Gets or sets the dates the service will be delivered with its price
         /// </summary>
-        [JsonProperty(PropertyName = "prePaymentAmount")]
-        public MonetaryValueModel PrePaymentAmount { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "service")]
-        public ServiceModel Service { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "totalAmount")]
-        public AmountModel TotalAmount { get; set; }
+        [JsonProperty(PropertyName = "dates")]
+        public IList<ServiceOfferItemModel> Dates { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -96,14 +96,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Dates == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Dates");
-            }
-            if (PrePaymentAmount == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "PrePaymentAmount");
-            }
             if (Service == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Service");
@@ -112,29 +104,13 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "TotalAmount");
             }
-            if (Dates != null)
+            if (PrePaymentAmount == null)
             {
-                foreach (var element in Dates)
-                {
-                    if (element != null)
-                    {
-                        element.Validate();
-                    }
-                }
+                throw new ValidationException(ValidationRules.CannotBeNull, "PrePaymentAmount");
             }
-            if (Fees != null)
+            if (Dates == null)
             {
-                foreach (var element1 in Fees)
-                {
-                    if (element1 != null)
-                    {
-                        element1.Validate();
-                    }
-                }
-            }
-            if (PrePaymentAmount != null)
-            {
-                PrePaymentAmount.Validate();
+                throw new ValidationException(ValidationRules.CannotBeNull, "Dates");
             }
             if (Service != null)
             {
@@ -143,6 +119,30 @@ namespace Traces.ApaleoClients.Booking.Models
             if (TotalAmount != null)
             {
                 TotalAmount.Validate();
+            }
+            if (PrePaymentAmount != null)
+            {
+                PrePaymentAmount.Validate();
+            }
+            if (Fees != null)
+            {
+                foreach (var element in Fees)
+                {
+                    if (element != null)
+                    {
+                        element.Validate();
+                    }
+                }
+            }
+            if (Dates != null)
+            {
+                foreach (var element1 in Dates)
+                {
+                    if (element1 != null)
+                    {
+                        element1.Validate();
+                    }
+                }
             }
         }
     }

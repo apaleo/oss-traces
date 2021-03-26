@@ -24,19 +24,19 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the ServiceDateItemModel class.
         /// </summary>
+        /// <param name="serviceDate">The date this service is
+        /// delivered</param>
         /// <param name="count">The count of booked services</param>
         /// <param name="isMandatory">Rate plans can have additional services.
         /// When booking an offer for such rate plans, those services are
         /// automatically booked.
         /// They are marked as mandatory and they cannot be removed.</param>
-        /// <param name="serviceDate">The date this service is
-        /// delivered</param>
-        public ServiceDateItemModel(AmountModel amount, int count, bool isMandatory, System.DateTime serviceDate)
+        public ServiceDateItemModel(System.DateTime serviceDate, int count, AmountModel amount, bool isMandatory)
         {
-            Amount = amount;
-            Count = count;
-            IsMandatory = isMandatory;
             ServiceDate = serviceDate;
+            Count = count;
+            Amount = amount;
+            IsMandatory = isMandatory;
             CustomInit();
         }
 
@@ -46,15 +46,22 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets the date this service is delivered
         /// </summary>
-        [JsonProperty(PropertyName = "amount")]
-        public AmountModel Amount { get; set; }
+        [JsonConverter(typeof(DateJsonConverter))]
+        [JsonProperty(PropertyName = "serviceDate")]
+        public System.DateTime ServiceDate { get; set; }
 
         /// <summary>
         /// Gets or sets the count of booked services
         /// </summary>
         [JsonProperty(PropertyName = "count")]
         public int Count { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "amount")]
+        public AmountModel Amount { get; set; }
 
         /// <summary>
         /// Gets or sets rate plans can have additional services. When booking
@@ -64,13 +71,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "isMandatory")]
         public bool IsMandatory { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date this service is delivered
-        /// </summary>
-        [JsonConverter(typeof(DateJsonConverter))]
-        [JsonProperty(PropertyName = "serviceDate")]
-        public System.DateTime ServiceDate { get; set; }
 
         /// <summary>
         /// Validate the object.

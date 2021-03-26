@@ -29,15 +29,15 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the CreateBookingModel class.
         /// </summary>
         /// <param name="reservations">List of reservations to create</param>
+        /// <param name="comment">Additional information and comments</param>
         /// <param name="bookerComment">Additional information and comments by
         /// the booker</param>
-        /// <param name="comment">Additional information and comments</param>
-        public CreateBookingModel(BookerModel booker, IList<CreateReservationModel> reservations, string bookerComment = default(string), string comment = default(string), CreatePaymentAccountModel paymentAccount = default(CreatePaymentAccountModel))
+        public CreateBookingModel(BookerModel booker, IList<CreateReservationModel> reservations, CreatePaymentAccountModel paymentAccount = default(CreatePaymentAccountModel), string comment = default(string), string bookerComment = default(string))
         {
-            Booker = booker;
-            BookerComment = bookerComment;
-            Comment = comment;
             PaymentAccount = paymentAccount;
+            Booker = booker;
+            Comment = comment;
+            BookerComment = bookerComment;
             Reservations = reservations;
             CustomInit();
         }
@@ -49,14 +49,13 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "booker")]
-        public BookerModel Booker { get; set; }
+        [JsonProperty(PropertyName = "paymentAccount")]
+        public CreatePaymentAccountModel PaymentAccount { get; set; }
 
         /// <summary>
-        /// Gets or sets additional information and comments by the booker
         /// </summary>
-        [JsonProperty(PropertyName = "bookerComment")]
-        public string BookerComment { get; set; }
+        [JsonProperty(PropertyName = "booker")]
+        public BookerModel Booker { get; set; }
 
         /// <summary>
         /// Gets or sets additional information and comments
@@ -65,9 +64,10 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Comment { get; set; }
 
         /// <summary>
+        /// Gets or sets additional information and comments by the booker
         /// </summary>
-        [JsonProperty(PropertyName = "paymentAccount")]
-        public CreatePaymentAccountModel PaymentAccount { get; set; }
+        [JsonProperty(PropertyName = "bookerComment")]
+        public string BookerComment { get; set; }
 
         /// <summary>
         /// Gets or sets list of reservations to create
@@ -94,10 +94,6 @@ namespace Traces.ApaleoClients.Booking.Models
             if (Booker != null)
             {
                 Booker.Validate();
-            }
-            if (PaymentAccount != null)
-            {
-                PaymentAccount.Validate();
             }
             if (Reservations != null)
             {

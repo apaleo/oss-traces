@@ -25,23 +25,18 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the GroupModel class.
         /// </summary>
+        /// <param name="id">Group id</param>
+        /// <param name="name">Name of the group</param>
         /// <param name="created">Date of creation&lt;br /&gt;A date and time
         /// (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="id">Group id</param>
         /// <param name="modified">Date of last modification&lt;br /&gt;A date
         /// and time (without fractional second part) in UTC or with UTC offset
         /// as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="name">Name of the group</param>
         /// <param name="propertyIds">The list of property ids this group
         /// belongs to</param>
-        /// <param name="actions">The list of actions for this group</param>
-        /// <param name="blocks">Blocks within this group</param>
-        /// <param name="bookerComment">Additional information and comment by
-        /// the booker</param>
-        /// <param name="comment">Additional information and comments</param>
         /// <param name="fromProperty">Start date and time of the earliest
         /// block for this group&lt;br /&gt;A date and time (without fractional
         /// second part) in UTC or with UTC offset as defined in &lt;a
@@ -50,21 +45,26 @@ namespace Traces.ApaleoClients.Booking.Models
         /// group&lt;br /&gt;A date and time (without fractional second part)
         /// in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        public GroupModel(BookerModel booker, System.DateTime created, string id, System.DateTime modified, string name, IList<string> propertyIds, IList<ActionModelGroupActionNotAllowedGroupActionReason> actions = default(IList<ActionModelGroupActionNotAllowedGroupActionReason>), IList<GroupBlockModel> blocks = default(IList<GroupBlockModel>), string bookerComment = default(string), string comment = default(string), System.DateTime? fromProperty = default(System.DateTime?), PaymentAccountModel paymentAccount = default(PaymentAccountModel), System.DateTime? to = default(System.DateTime?))
+        /// <param name="comment">Additional information and comments</param>
+        /// <param name="bookerComment">Additional information and comment by
+        /// the booker</param>
+        /// <param name="blocks">Blocks within this group</param>
+        /// <param name="actions">The list of actions for this group</param>
+        public GroupModel(string id, string name, System.DateTime created, System.DateTime modified, IList<string> propertyIds, System.DateTime? fromProperty = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), BookerModel booker = default(BookerModel), string comment = default(string), string bookerComment = default(string), PaymentAccountModel paymentAccount = default(PaymentAccountModel), IList<GroupBlockModel> blocks = default(IList<GroupBlockModel>), IList<ActionModelGroupActionNotAllowedGroupActionReason> actions = default(IList<ActionModelGroupActionNotAllowedGroupActionReason>))
         {
-            Actions = actions;
-            Blocks = blocks;
-            Booker = booker;
-            BookerComment = bookerComment;
-            Comment = comment;
-            Created = created;
-            FromProperty = fromProperty;
             Id = id;
-            Modified = modified;
             Name = name;
-            PaymentAccount = paymentAccount;
-            PropertyIds = propertyIds;
+            FromProperty = fromProperty;
             To = to;
+            Booker = booker;
+            Comment = comment;
+            BookerComment = bookerComment;
+            PaymentAccount = paymentAccount;
+            Created = created;
+            Modified = modified;
+            Blocks = blocks;
+            Actions = actions;
+            PropertyIds = propertyIds;
             CustomInit();
         }
 
@@ -74,42 +74,16 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the list of actions for this group
+        /// Gets or sets group id
         /// </summary>
-        [JsonProperty(PropertyName = "actions")]
-        public IList<ActionModelGroupActionNotAllowedGroupActionReason> Actions { get; set; }
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
         /// <summary>
-        /// Gets or sets blocks within this group
+        /// Gets or sets name of the group
         /// </summary>
-        [JsonProperty(PropertyName = "blocks")]
-        public IList<GroupBlockModel> Blocks { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "booker")]
-        public BookerModel Booker { get; set; }
-
-        /// <summary>
-        /// Gets or sets additional information and comment by the booker
-        /// </summary>
-        [JsonProperty(PropertyName = "bookerComment")]
-        public string BookerComment { get; set; }
-
-        /// <summary>
-        /// Gets or sets additional information and comments
-        /// </summary>
-        [JsonProperty(PropertyName = "comment")]
-        public string Comment { get; set; }
-
-        /// <summary>
-        /// Gets or sets date of creation&amp;lt;br /&amp;gt;A date and time
-        /// (without fractional second part) in UTC or with UTC offset as
-        /// defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
-        /// </summary>
-        [JsonProperty(PropertyName = "created")]
-        public System.DateTime Created { get; set; }
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets start date and time of the earliest block for this
@@ -121,10 +95,44 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime? FromProperty { get; set; }
 
         /// <summary>
-        /// Gets or sets group id
+        /// Gets or sets end date and time of the latest block for this
+        /// group&amp;lt;br /&amp;gt;A date and time (without fractional second
+        /// part) in UTC or with UTC offset as defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
+        [JsonProperty(PropertyName = "to")]
+        public System.DateTime? To { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "booker")]
+        public BookerModel Booker { get; set; }
+
+        /// <summary>
+        /// Gets or sets additional information and comments
+        /// </summary>
+        [JsonProperty(PropertyName = "comment")]
+        public string Comment { get; set; }
+
+        /// <summary>
+        /// Gets or sets additional information and comment by the booker
+        /// </summary>
+        [JsonProperty(PropertyName = "bookerComment")]
+        public string BookerComment { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "paymentAccount")]
+        public PaymentAccountModel PaymentAccount { get; set; }
+
+        /// <summary>
+        /// Gets or sets date of creation&amp;lt;br /&amp;gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "created")]
+        public System.DateTime Created { get; set; }
 
         /// <summary>
         /// Gets or sets date of last modification&amp;lt;br /&amp;gt;A date
@@ -136,30 +144,22 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime Modified { get; set; }
 
         /// <summary>
-        /// Gets or sets name of the group
+        /// Gets or sets blocks within this group
         /// </summary>
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+        [JsonProperty(PropertyName = "blocks")]
+        public IList<GroupBlockModel> Blocks { get; set; }
 
         /// <summary>
+        /// Gets or sets the list of actions for this group
         /// </summary>
-        [JsonProperty(PropertyName = "paymentAccount")]
-        public PaymentAccountModel PaymentAccount { get; set; }
+        [JsonProperty(PropertyName = "actions")]
+        public IList<ActionModelGroupActionNotAllowedGroupActionReason> Actions { get; set; }
 
         /// <summary>
         /// Gets or sets the list of property ids this group belongs to
         /// </summary>
         [JsonProperty(PropertyName = "propertyIds")]
         public IList<string> PropertyIds { get; set; }
-
-        /// <summary>
-        /// Gets or sets end date and time of the latest block for this
-        /// group&amp;lt;br /&amp;gt;A date and time (without fractional second
-        /// part) in UTC or with UTC offset as defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
-        /// </summary>
-        [JsonProperty(PropertyName = "to")]
-        public System.DateTime? To { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -169,10 +169,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Booker == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Booker");
-            }
             if (Id == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Id");
@@ -185,26 +181,6 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "PropertyIds");
             }
-            if (Actions != null)
-            {
-                foreach (var element in Actions)
-                {
-                    if (element != null)
-                    {
-                        element.Validate();
-                    }
-                }
-            }
-            if (Blocks != null)
-            {
-                foreach (var element1 in Blocks)
-                {
-                    if (element1 != null)
-                    {
-                        element1.Validate();
-                    }
-                }
-            }
             if (Booker != null)
             {
                 Booker.Validate();
@@ -212,6 +188,26 @@ namespace Traces.ApaleoClients.Booking.Models
             if (PaymentAccount != null)
             {
                 PaymentAccount.Validate();
+            }
+            if (Blocks != null)
+            {
+                foreach (var element in Blocks)
+                {
+                    if (element != null)
+                    {
+                        element.Validate();
+                    }
+                }
+            }
+            if (Actions != null)
+            {
+                foreach (var element1 in Actions)
+                {
+                    if (element1 != null)
+                    {
+                        element1.Validate();
+                    }
+                }
             }
         }
     }

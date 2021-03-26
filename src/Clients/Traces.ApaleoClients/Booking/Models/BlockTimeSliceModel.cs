@@ -23,25 +23,25 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the BlockTimeSliceModel class.
         /// </summary>
-        /// <param name="blockedUnits">Number of units blocked for this time
-        /// slice</param>
         /// <param name="fromProperty">Start date and time from which units
         /// will be blocked&lt;br /&gt;A date and time (without fractional
         /// second part) in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="pickedUnits">Number of units which have picked
-        /// reservations for this time slice</param>
         /// <param name="to">End date and time until which units will be
         /// blocked&lt;br /&gt;A date and time (without fractional second part)
         /// in UTC or with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        public BlockTimeSliceModel(AmountModel baseAmount, int blockedUnits, System.DateTime fromProperty, int pickedUnits, System.DateTime to, MonetaryValueModel totalGrossAmount)
+        /// <param name="blockedUnits">Number of units blocked for this time
+        /// slice</param>
+        /// <param name="pickedUnits">Number of units which have picked
+        /// reservations for this time slice</param>
+        public BlockTimeSliceModel(System.DateTime fromProperty, System.DateTime to, int blockedUnits, int pickedUnits, AmountModel baseAmount, MonetaryValueModel totalGrossAmount)
         {
-            BaseAmount = baseAmount;
-            BlockedUnits = blockedUnits;
             FromProperty = fromProperty;
-            PickedUnits = pickedUnits;
             To = to;
+            BlockedUnits = blockedUnits;
+            PickedUnits = pickedUnits;
+            BaseAmount = baseAmount;
             TotalGrossAmount = totalGrossAmount;
             CustomInit();
         }
@@ -50,17 +50,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "baseAmount")]
-        public AmountModel BaseAmount { get; set; }
-
-        /// <summary>
-        /// Gets or sets number of units blocked for this time slice
-        /// </summary>
-        [JsonProperty(PropertyName = "blockedUnits")]
-        public int BlockedUnits { get; set; }
 
         /// <summary>
         /// Gets or sets start date and time from which units will be
@@ -72,13 +61,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime FromProperty { get; set; }
 
         /// <summary>
-        /// Gets or sets number of units which have picked reservations for
-        /// this time slice
-        /// </summary>
-        [JsonProperty(PropertyName = "pickedUnits")]
-        public int PickedUnits { get; set; }
-
-        /// <summary>
         /// Gets or sets end date and time until which units will be
         /// blocked&amp;lt;br /&amp;gt;A date and time (without fractional
         /// second part) in UTC or with UTC offset as defined in &amp;lt;a
@@ -86,6 +68,24 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "to")]
         public System.DateTime To { get; set; }
+
+        /// <summary>
+        /// Gets or sets number of units blocked for this time slice
+        /// </summary>
+        [JsonProperty(PropertyName = "blockedUnits")]
+        public int BlockedUnits { get; set; }
+
+        /// <summary>
+        /// Gets or sets number of units which have picked reservations for
+        /// this time slice
+        /// </summary>
+        [JsonProperty(PropertyName = "pickedUnits")]
+        public int PickedUnits { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "baseAmount")]
+        public AmountModel BaseAmount { get; set; }
 
         /// <summary>
         /// </summary>

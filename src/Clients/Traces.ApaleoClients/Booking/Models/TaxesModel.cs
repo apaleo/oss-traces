@@ -22,13 +22,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the TaxesModel class.
         /// </summary>
-        /// <param name="cityTax">The amount of City Tax including VAT</param>
         /// <param name="tax">The amount of taxes, which are VAT or Sales Taxes
         /// depending on the country of the property</param>
-        public TaxesModel(double cityTax, double tax)
+        /// <param name="cityTax">The amount of City Tax including VAT</param>
+        public TaxesModel(double tax, double cityTax)
         {
-            CityTax = cityTax;
             Tax = tax;
+            CityTax = cityTax;
             CustomInit();
         }
 
@@ -38,17 +38,17 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the amount of City Tax including VAT
-        /// </summary>
-        [JsonProperty(PropertyName = "cityTax")]
-        public double CityTax { get; set; }
-
-        /// <summary>
         /// Gets or sets the amount of taxes, which are VAT or Sales Taxes
         /// depending on the country of the property
         /// </summary>
         [JsonProperty(PropertyName = "tax")]
         public double Tax { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount of City Tax including VAT
+        /// </summary>
+        [JsonProperty(PropertyName = "cityTax")]
+        public double CityTax { get; set; }
 
         /// <summary>
         /// Validate the object.

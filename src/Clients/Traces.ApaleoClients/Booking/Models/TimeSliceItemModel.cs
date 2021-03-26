@@ -36,8 +36,8 @@ namespace Traces.ApaleoClients.Booking.Models
         public TimeSliceItemModel(System.DateTime fromProperty, System.DateTime to, IList<TimeSliceOfferItemModel> offers = default(IList<TimeSliceOfferItemModel>))
         {
             FromProperty = fromProperty;
-            Offers = offers;
             To = to;
+            Offers = offers;
             CustomInit();
         }
 
@@ -56,12 +56,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime FromProperty { get; set; }
 
         /// <summary>
-        /// Gets or sets list of offers for this time slice
-        /// </summary>
-        [JsonProperty(PropertyName = "offers")]
-        public IList<TimeSliceOfferItemModel> Offers { get; set; }
-
-        /// <summary>
         /// Gets or sets date and time the time slice ends&amp;lt;br /&amp;gt;A
         /// date and time (without fractional second part) in UTC or with UTC
         /// offset as defined in &amp;lt;a
@@ -69,6 +63,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "to")]
         public System.DateTime To { get; set; }
+
+        /// <summary>
+        /// Gets or sets list of offers for this time slice
+        /// </summary>
+        [JsonProperty(PropertyName = "offers")]
+        public IList<TimeSliceOfferItemModel> Offers { get; set; }
 
         /// <summary>
         /// Validate the object.
