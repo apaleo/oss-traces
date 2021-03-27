@@ -23,11 +23,11 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the PropertyValueModel class.
         /// </summary>
-        public PropertyValueModel(MonetaryValueModel balance, EmbeddedPropertyModel property, MonetaryValueModel totalGrossAmount)
+        public PropertyValueModel(EmbeddedPropertyModel property, MonetaryValueModel totalGrossAmount, MonetaryValueModel balance)
         {
-            Balance = balance;
             Property = property;
             TotalGrossAmount = totalGrossAmount;
+            Balance = balance;
             CustomInit();
         }
 
@@ -35,11 +35,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "balance")]
-        public MonetaryValueModel Balance { get; set; }
 
         /// <summary>
         /// </summary>
@@ -52,6 +47,11 @@ namespace Traces.ApaleoClients.Booking.Models
         public MonetaryValueModel TotalGrossAmount { get; set; }
 
         /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "balance")]
+        public MonetaryValueModel Balance { get; set; }
+
+        /// <summary>
         /// Validate the object.
         /// </summary>
         /// <exception cref="ValidationException">
@@ -59,10 +59,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Balance == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Balance");
-            }
             if (Property == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Property");
@@ -71,9 +67,9 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "TotalGrossAmount");
             }
-            if (Balance != null)
+            if (Balance == null)
             {
-                Balance.Validate();
+                throw new ValidationException(ValidationRules.CannotBeNull, "Balance");
             }
             if (Property != null)
             {
@@ -82,6 +78,10 @@ namespace Traces.ApaleoClients.Booking.Models
             if (TotalGrossAmount != null)
             {
                 TotalGrossAmount.Validate();
+            }
+            if (Balance != null)
+            {
+                Balance.Validate();
             }
         }
     }

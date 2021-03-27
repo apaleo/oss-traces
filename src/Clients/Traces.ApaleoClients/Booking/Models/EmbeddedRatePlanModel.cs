@@ -28,15 +28,15 @@ namespace Traces.ApaleoClients.Booking.Models
         /// to city tax or not</param>
         /// <param name="code">The code for the rate plan that can be shown in
         /// reports and table views</param>
-        /// <param name="description">The description for the rate plan</param>
         /// <param name="name">The name for the rate plan</param>
-        public EmbeddedRatePlanModel(string id, bool isSubjectToCityTax, string code = default(string), string description = default(string), string name = default(string))
+        /// <param name="description">The description for the rate plan</param>
+        public EmbeddedRatePlanModel(string id, bool isSubjectToCityTax, string code = default(string), string name = default(string), string description = default(string))
         {
-            Code = code;
-            Description = description;
             Id = id;
-            IsSubjectToCityTax = isSubjectToCityTax;
+            Code = code;
             Name = name;
+            Description = description;
+            IsSubjectToCityTax = isSubjectToCityTax;
             CustomInit();
         }
 
@@ -46,11 +46,23 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets the rate plan id
+        /// </summary>
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the code for the rate plan that can be shown in
         /// reports and table views
         /// </summary>
         [JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name for the rate plan
+        /// </summary>
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the description for the rate plan
@@ -59,22 +71,10 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the rate plan id
-        /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-        /// <summary>
         /// Gets or sets whether the rate plan is subject to city tax or not
         /// </summary>
         [JsonProperty(PropertyName = "isSubjectToCityTax")]
         public bool IsSubjectToCityTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name for the rate plan
-        /// </summary>
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
 
         /// <summary>
         /// Validate the object.

@@ -29,10 +29,10 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         /// <param name="timeRanges">The time ranges for which the unit is
         /// assigned to the reservation</param>
-        public ReservationAssignedUnitModel(IList<ReservationAssignedUnitTimeRangeModel> timeRanges, EmbeddedUnitModel unit)
+        public ReservationAssignedUnitModel(EmbeddedUnitModel unit, IList<ReservationAssignedUnitTimeRangeModel> timeRanges)
         {
-            TimeRanges = timeRanges;
             Unit = unit;
+            TimeRanges = timeRanges;
             CustomInit();
         }
 
@@ -42,16 +42,16 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "unit")]
+        public EmbeddedUnitModel Unit { get; set; }
+
+        /// <summary>
         /// Gets or sets the time ranges for which the unit is assigned to the
         /// reservation
         /// </summary>
         [JsonProperty(PropertyName = "timeRanges")]
         public IList<ReservationAssignedUnitTimeRangeModel> TimeRanges { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "unit")]
-        public EmbeddedUnitModel Unit { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -61,13 +61,17 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
+            if (Unit == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Unit");
+            }
             if (TimeRanges == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "TimeRanges");
             }
-            if (Unit == null)
+            if (Unit != null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Unit");
+                Unit.Validate();
             }
             if (TimeRanges != null)
             {
@@ -78,10 +82,6 @@ namespace Traces.ApaleoClients.Booking.Models
                         element.Validate();
                     }
                 }
-            }
-            if (Unit != null)
-            {
-                Unit.Validate();
             }
         }
     }

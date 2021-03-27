@@ -23,13 +23,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the OfferFeeModel class.
         /// </summary>
-        /// <param name="code">The code for the fee</param>
         /// <param name="id">The fee id</param>
+        /// <param name="code">The code for the fee</param>
         /// <param name="name">The name for the fee</param>
-        public OfferFeeModel(string code, string id, string name, AmountModel totalAmount)
+        public OfferFeeModel(string id, string code, string name, AmountModel totalAmount)
         {
-            Code = code;
             Id = id;
+            Code = code;
             Name = name;
             TotalAmount = totalAmount;
             CustomInit();
@@ -41,16 +41,16 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the code for the fee
-        /// </summary>
-        [JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
-
-        /// <summary>
         /// Gets or sets the fee id
         /// </summary>
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the code for the fee
+        /// </summary>
+        [JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
 
         /// <summary>
         /// Gets or sets the name for the fee
@@ -71,13 +71,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Code == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Code");
-            }
             if (Id == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Id");
+            }
+            if (Code == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Code");
             }
             if (Name == null)
             {

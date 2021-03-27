@@ -25,8 +25,8 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         public CommissionModel(MonetaryValueModel commissionAmount, MonetaryValueModel beforeCommissionAmount = default(MonetaryValueModel))
         {
-            BeforeCommissionAmount = beforeCommissionAmount;
             CommissionAmount = commissionAmount;
+            BeforeCommissionAmount = beforeCommissionAmount;
             CustomInit();
         }
 
@@ -37,13 +37,13 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "beforeCommissionAmount")]
-        public MonetaryValueModel BeforeCommissionAmount { get; set; }
+        [JsonProperty(PropertyName = "commissionAmount")]
+        public MonetaryValueModel CommissionAmount { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "commissionAmount")]
-        public MonetaryValueModel CommissionAmount { get; set; }
+        [JsonProperty(PropertyName = "beforeCommissionAmount")]
+        public MonetaryValueModel BeforeCommissionAmount { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -57,13 +57,13 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "CommissionAmount");
             }
-            if (BeforeCommissionAmount != null)
-            {
-                BeforeCommissionAmount.Validate();
-            }
             if (CommissionAmount != null)
             {
                 CommissionAmount.Validate();
+            }
+            if (BeforeCommissionAmount != null)
+            {
+                BeforeCommissionAmount.Validate();
             }
         }
     }

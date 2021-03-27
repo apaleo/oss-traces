@@ -23,21 +23,21 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the ServiceModel class.
         /// </summary>
-        /// <param name="code">The code for the service</param>
-        /// <param name="description">The description for the service</param>
         /// <param name="id">The service id</param>
+        /// <param name="code">The code for the service</param>
         /// <param name="name">The name for the service</param>
+        /// <param name="description">The description for the service</param>
         /// <param name="pricingUnit">Defines the granularity (room, person)
         /// for which this item is offered and priced. Possible values include:
         /// 'Room', 'Person'</param>
-        public ServiceModel(string code, MonetaryValueModel defaultGrossPrice, string description, string id, string name, PricedUnit pricingUnit)
+        public ServiceModel(string id, string code, string name, string description, PricedUnit pricingUnit, MonetaryValueModel defaultGrossPrice)
         {
-            Code = code;
-            DefaultGrossPrice = defaultGrossPrice;
-            Description = description;
             Id = id;
+            Code = code;
             Name = name;
+            Description = description;
             PricingUnit = pricingUnit;
+            DefaultGrossPrice = defaultGrossPrice;
             CustomInit();
         }
 
@@ -47,33 +47,28 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the code for the service
-        /// </summary>
-        [JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "defaultGrossPrice")]
-        public MonetaryValueModel DefaultGrossPrice { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description for the service
-        /// </summary>
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
         /// Gets or sets the service id
         /// </summary>
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
         /// <summary>
+        /// Gets or sets the code for the service
+        /// </summary>
+        [JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
+
+        /// <summary>
         /// Gets or sets the name for the service
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description for the service
+        /// </summary>
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets defines the granularity (room, person) for which this
@@ -84,6 +79,11 @@ namespace Traces.ApaleoClients.Booking.Models
         public PricedUnit PricingUnit { get; set; }
 
         /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "defaultGrossPrice")]
+        public MonetaryValueModel DefaultGrossPrice { get; set; }
+
+        /// <summary>
         /// Validate the object.
         /// </summary>
         /// <exception cref="ValidationException">
@@ -91,25 +91,25 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
+            if (Id == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Id");
+            }
             if (Code == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Code");
             }
-            if (DefaultGrossPrice == null)
+            if (Name == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "DefaultGrossPrice");
+                throw new ValidationException(ValidationRules.CannotBeNull, "Name");
             }
             if (Description == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Description");
             }
-            if (Id == null)
+            if (DefaultGrossPrice == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Id");
-            }
-            if (Name == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Name");
+                throw new ValidationException(ValidationRules.CannotBeNull, "DefaultGrossPrice");
             }
             if (DefaultGrossPrice != null)
             {

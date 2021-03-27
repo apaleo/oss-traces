@@ -31,11 +31,11 @@ namespace Traces.ApaleoClients.Booking.Models
         /// /&gt;A date and time (without fractional second part) in UTC or
         /// with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        public AutoAssignedUnitItemModel(System.DateTime fromProperty, System.DateTime to, EmbeddedUnitModel unit)
+        public AutoAssignedUnitItemModel(EmbeddedUnitModel unit, System.DateTime fromProperty, System.DateTime to)
         {
+            Unit = unit;
             FromProperty = fromProperty;
             To = to;
-            Unit = unit;
             CustomInit();
         }
 
@@ -43,6 +43,11 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "unit")]
+        public EmbeddedUnitModel Unit { get; set; }
 
         /// <summary>
         /// Gets or sets the start date and time for this time slice&amp;lt;br
@@ -61,11 +66,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "to")]
         public System.DateTime To { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "unit")]
-        public EmbeddedUnitModel Unit { get; set; }
 
         /// <summary>
         /// Validate the object.

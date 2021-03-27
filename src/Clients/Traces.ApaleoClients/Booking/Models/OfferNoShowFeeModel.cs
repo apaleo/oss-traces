@@ -24,9 +24,14 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the OfferNoShowFeeModel class.
         /// </summary>
         /// <param name="code">The code of the no-show policy applied</param>
-        public OfferNoShowFeeModel(string code, MonetaryValueModel fee)
+        /// <param name="name">The name of the no-show policy applied</param>
+        /// <param name="description">The description of the no-show policy
+        /// applied</param>
+        public OfferNoShowFeeModel(string code, MonetaryValueModel fee, string name = default(string), string description = default(string))
         {
             Code = code;
+            Name = name;
+            Description = description;
             Fee = fee;
             CustomInit();
         }
@@ -41,6 +46,18 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the no-show policy applied
+        /// </summary>
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description of the no-show policy applied
+        /// </summary>
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// </summary>

@@ -25,50 +25,50 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the BookingReservationModel class.
         /// </summary>
-        /// <param name="adults">Number of adults</param>
-        /// <param name="arrival">Date of arrival&lt;br /&gt;A date and time
-        /// (without fractional second part) in UTC or with UTC offset as
-        /// defined in &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="channelCode">Channel code. Possible values include:
-        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia',
-        /// 'Homelike'</param>
-        /// <param name="departure">Date of departure&lt;br /&gt;A date and
-        /// time (without fractional second part) in UTC or with UTC offset as
-        /// defined in &lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="id">Reservation id</param>
         /// <param name="status">Status of the reservation. Possible values
         /// include: 'Confirmed', 'InHouse', 'CheckedOut', 'Canceled',
         /// 'NoShow'</param>
-        /// <param name="childrenAges">The ages of the children</param>
+        /// <param name="channelCode">Channel code. Possible values include:
+        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia',
+        /// 'Homelike'</param>
+        /// <param name="arrival">Date of arrival&lt;br /&gt;A date and time
+        /// (without fractional second part) in UTC or with UTC offset as
+        /// defined in &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="departure">Date of departure&lt;br /&gt;A date and
+        /// time (without fractional second part) in UTC or with UTC offset as
+        /// defined in &lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="adults">Number of adults</param>
         /// <param name="externalCode">Code in external system</param>
-        /// <param name="guestComment">Additional information and comment by
-        /// the guest</param>
-        /// <param name="services">The list of additional services (extras,
-        /// add-ons) reserved for the stay</param>
         /// <param name="source">Source of the reservation (e.g Hotels.com,
         /// Orbitz, etc.)</param>
-        public BookingReservationModel(int adults, System.DateTime arrival, ReservationCancellationFeeModel cancellationFee, ChannelCode channelCode, System.DateTime departure, string id, EmbeddedPropertyModel property, EmbeddedRatePlanModel ratePlan, ReservationStatus status, MonetaryValueModel totalGrossAmount, EmbeddedUnitGroupModel unitGroup, IList<int?> childrenAges = default(IList<int?>), EmbeddedCompanyModel company = default(EmbeddedCompanyModel), string externalCode = default(string), string guestComment = default(string), PaymentAccountModel paymentAccount = default(PaymentAccountModel), IList<ReservationServiceItemModel> services = default(IList<ReservationServiceItemModel>), string source = default(string))
+        /// <param name="childrenAges">The ages of the children</param>
+        /// <param name="services">The list of additional services (extras,
+        /// add-ons) reserved for the stay</param>
+        /// <param name="guestComment">Additional information and comment by
+        /// the guest</param>
+        public BookingReservationModel(string id, ReservationStatus status, ChannelCode channelCode, System.DateTime arrival, System.DateTime departure, int adults, MonetaryValueModel totalGrossAmount, EmbeddedPropertyModel property, EmbeddedRatePlanModel ratePlan, EmbeddedUnitGroupModel unitGroup, ReservationCancellationFeeModel cancellationFee, string externalCode = default(string), string source = default(string), PaymentAccountModel paymentAccount = default(PaymentAccountModel), IList<int?> childrenAges = default(IList<int?>), IList<ReservationServiceItemModel> services = default(IList<ReservationServiceItemModel>), string guestComment = default(string), EmbeddedCompanyModel company = default(EmbeddedCompanyModel))
         {
-            Adults = adults;
-            Arrival = arrival;
-            CancellationFee = cancellationFee;
-            ChannelCode = channelCode;
-            ChildrenAges = childrenAges;
-            Company = company;
-            Departure = departure;
-            ExternalCode = externalCode;
-            GuestComment = guestComment;
             Id = id;
+            Status = status;
+            ExternalCode = externalCode;
+            ChannelCode = channelCode;
+            Source = source;
             PaymentAccount = paymentAccount;
+            Arrival = arrival;
+            Departure = departure;
+            Adults = adults;
+            ChildrenAges = childrenAges;
+            TotalGrossAmount = totalGrossAmount;
             Property = property;
             RatePlan = ratePlan;
-            Services = services;
-            Source = source;
-            Status = status;
-            TotalGrossAmount = totalGrossAmount;
             UnitGroup = unitGroup;
+            Services = services;
+            GuestComment = guestComment;
+            CancellationFee = cancellationFee;
+            Company = company;
             CustomInit();
         }
 
@@ -78,10 +78,42 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets number of adults
+        /// Gets or sets reservation id
         /// </summary>
-        [JsonProperty(PropertyName = "adults")]
-        public int Adults { get; set; }
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets status of the reservation. Possible values include:
+        /// 'Confirmed', 'InHouse', 'CheckedOut', 'Canceled', 'NoShow'
+        /// </summary>
+        [JsonProperty(PropertyName = "status")]
+        public ReservationStatus Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets code in external system
+        /// </summary>
+        [JsonProperty(PropertyName = "externalCode")]
+        public string ExternalCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets channel code. Possible values include: 'Direct',
+        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
+        /// </summary>
+        [JsonProperty(PropertyName = "channelCode")]
+        public ChannelCode ChannelCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets source of the reservation (e.g Hotels.com, Orbitz,
+        /// etc.)
+        /// </summary>
+        [JsonProperty(PropertyName = "source")]
+        public string Source { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "paymentAccount")]
+        public PaymentAccountModel PaymentAccount { get; set; }
 
         /// <summary>
         /// Gets or sets date of arrival&amp;lt;br /&amp;gt;A date and time
@@ -93,29 +125,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime Arrival { get; set; }
 
         /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "cancellationFee")]
-        public ReservationCancellationFeeModel CancellationFee { get; set; }
-
-        /// <summary>
-        /// Gets or sets channel code. Possible values include: 'Direct',
-        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
-        /// </summary>
-        [JsonProperty(PropertyName = "channelCode")]
-        public ChannelCode ChannelCode { get; set; }
-
-        /// <summary>
-        /// Gets or sets the ages of the children
-        /// </summary>
-        [JsonProperty(PropertyName = "childrenAges")]
-        public IList<int?> ChildrenAges { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "company")]
-        public EmbeddedCompanyModel Company { get; set; }
-
-        /// <summary>
         /// Gets or sets date of departure&amp;lt;br /&amp;gt;A date and time
         /// (without fractional second part) in UTC or with UTC offset as
         /// defined in &amp;lt;a
@@ -125,27 +134,21 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime Departure { get; set; }
 
         /// <summary>
-        /// Gets or sets code in external system
+        /// Gets or sets number of adults
         /// </summary>
-        [JsonProperty(PropertyName = "externalCode")]
-        public string ExternalCode { get; set; }
+        [JsonProperty(PropertyName = "adults")]
+        public int Adults { get; set; }
 
         /// <summary>
-        /// Gets or sets additional information and comment by the guest
+        /// Gets or sets the ages of the children
         /// </summary>
-        [JsonProperty(PropertyName = "guestComment")]
-        public string GuestComment { get; set; }
-
-        /// <summary>
-        /// Gets or sets reservation id
-        /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
+        [JsonProperty(PropertyName = "childrenAges")]
+        public IList<int?> ChildrenAges { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "paymentAccount")]
-        public PaymentAccountModel PaymentAccount { get; set; }
+        [JsonProperty(PropertyName = "totalGrossAmount")]
+        public MonetaryValueModel TotalGrossAmount { get; set; }
 
         /// <summary>
         /// </summary>
@@ -158,6 +161,11 @@ namespace Traces.ApaleoClients.Booking.Models
         public EmbeddedRatePlanModel RatePlan { get; set; }
 
         /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "unitGroup")]
+        public EmbeddedUnitGroupModel UnitGroup { get; set; }
+
+        /// <summary>
         /// Gets or sets the list of additional services (extras, add-ons)
         /// reserved for the stay
         /// </summary>
@@ -165,28 +173,20 @@ namespace Traces.ApaleoClients.Booking.Models
         public IList<ReservationServiceItemModel> Services { get; set; }
 
         /// <summary>
-        /// Gets or sets source of the reservation (e.g Hotels.com, Orbitz,
-        /// etc.)
+        /// Gets or sets additional information and comment by the guest
         /// </summary>
-        [JsonProperty(PropertyName = "source")]
-        public string Source { get; set; }
-
-        /// <summary>
-        /// Gets or sets status of the reservation. Possible values include:
-        /// 'Confirmed', 'InHouse', 'CheckedOut', 'Canceled', 'NoShow'
-        /// </summary>
-        [JsonProperty(PropertyName = "status")]
-        public ReservationStatus Status { get; set; }
+        [JsonProperty(PropertyName = "guestComment")]
+        public string GuestComment { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "totalGrossAmount")]
-        public MonetaryValueModel TotalGrossAmount { get; set; }
+        [JsonProperty(PropertyName = "cancellationFee")]
+        public ReservationCancellationFeeModel CancellationFee { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "unitGroup")]
-        public EmbeddedUnitGroupModel UnitGroup { get; set; }
+        [JsonProperty(PropertyName = "company")]
+        public EmbeddedCompanyModel Company { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -196,13 +196,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (CancellationFee == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "CancellationFee");
-            }
             if (Id == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Id");
+            }
+            if (TotalGrossAmount == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "TotalGrossAmount");
             }
             if (Property == null)
             {
@@ -212,25 +212,21 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "RatePlan");
             }
-            if (TotalGrossAmount == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "TotalGrossAmount");
-            }
             if (UnitGroup == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "UnitGroup");
             }
-            if (CancellationFee != null)
+            if (CancellationFee == null)
             {
-                CancellationFee.Validate();
-            }
-            if (Company != null)
-            {
-                Company.Validate();
+                throw new ValidationException(ValidationRules.CannotBeNull, "CancellationFee");
             }
             if (PaymentAccount != null)
             {
                 PaymentAccount.Validate();
+            }
+            if (TotalGrossAmount != null)
+            {
+                TotalGrossAmount.Validate();
             }
             if (Property != null)
             {
@@ -239,6 +235,10 @@ namespace Traces.ApaleoClients.Booking.Models
             if (RatePlan != null)
             {
                 RatePlan.Validate();
+            }
+            if (UnitGroup != null)
+            {
+                UnitGroup.Validate();
             }
             if (Services != null)
             {
@@ -250,13 +250,13 @@ namespace Traces.ApaleoClients.Booking.Models
                     }
                 }
             }
-            if (TotalGrossAmount != null)
+            if (CancellationFee != null)
             {
-                TotalGrossAmount.Validate();
+                CancellationFee.Validate();
             }
-            if (UnitGroup != null)
+            if (Company != null)
             {
-                UnitGroup.Validate();
+                Company.Validate();
             }
         }
     }

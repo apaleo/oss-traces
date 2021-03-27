@@ -25,14 +25,14 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         /// <param name="id">The service id</param>
         /// <param name="code">The code for the service</param>
-        /// <param name="description">The description for the service</param>
         /// <param name="name">The name for the service</param>
-        public EmbeddedServiceModel(string id, string code = default(string), string description = default(string), string name = default(string))
+        /// <param name="description">The description for the service</param>
+        public EmbeddedServiceModel(string id, string code = default(string), string name = default(string), string description = default(string))
         {
-            Code = code;
-            Description = description;
             Id = id;
+            Code = code;
             Name = name;
+            Description = description;
             CustomInit();
         }
 
@@ -42,28 +42,28 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the code for the service
-        /// </summary>
-        [JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description for the service
-        /// </summary>
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
         /// Gets or sets the service id
         /// </summary>
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
         /// <summary>
+        /// Gets or sets the code for the service
+        /// </summary>
+        [JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
+
+        /// <summary>
         /// Gets or sets the name for the service
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description for the service
+        /// </summary>
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Validate the object.

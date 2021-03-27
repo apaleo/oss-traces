@@ -29,21 +29,21 @@ namespace Traces.ApaleoClients.Booking.Models
         /// reservation's arrival date</param>
         /// <param name="closedOnDeparture">Whether the rate can be booked on
         /// the reservation's departure date</param>
-        /// <param name="maxLengthOfStay">The maximum length of stay in order
-        /// to book the rate. If not more than this number
-        /// of time slices are covered by the stay duration the rate will be
-        /// offered.</param>
         /// <param name="minLengthOfStay">The minimum length of stay in order
         /// to book the rate. If at least this number
         /// of time slices are covered by the stay duration the rate will be
         /// offered.</param>
-        public RateRestrictionsModel(bool closed, bool closedOnArrival, bool closedOnDeparture, int? maxLengthOfStay = default(int?), int? minLengthOfStay = default(int?))
+        /// <param name="maxLengthOfStay">The maximum length of stay in order
+        /// to book the rate. If not more than this number
+        /// of time slices are covered by the stay duration the rate will be
+        /// offered.</param>
+        public RateRestrictionsModel(bool closed, bool closedOnArrival, bool closedOnDeparture, int? minLengthOfStay = default(int?), int? maxLengthOfStay = default(int?))
         {
+            MinLengthOfStay = minLengthOfStay;
+            MaxLengthOfStay = maxLengthOfStay;
             Closed = closed;
             ClosedOnArrival = closedOnArrival;
             ClosedOnDeparture = closedOnDeparture;
-            MaxLengthOfStay = maxLengthOfStay;
-            MinLengthOfStay = minLengthOfStay;
             CustomInit();
         }
 
@@ -51,6 +51,24 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets the minimum length of stay in order to book the rate.
+        /// If at least this number
+        /// of time slices are covered by the stay duration the rate will be
+        /// offered.
+        /// </summary>
+        [JsonProperty(PropertyName = "minLengthOfStay")]
+        public int? MinLengthOfStay { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum length of stay in order to book the rate.
+        /// If not more than this number
+        /// of time slices are covered by the stay duration the rate will be
+        /// offered.
+        /// </summary>
+        [JsonProperty(PropertyName = "maxLengthOfStay")]
+        public int? MaxLengthOfStay { get; set; }
 
         /// <summary>
         /// Gets or sets whether the rate can be booked for a stay-through
@@ -74,24 +92,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public bool ClosedOnDeparture { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum length of stay in order to book the rate.
-        /// If not more than this number
-        /// of time slices are covered by the stay duration the rate will be
-        /// offered.
-        /// </summary>
-        [JsonProperty(PropertyName = "maxLengthOfStay")]
-        public int? MaxLengthOfStay { get; set; }
-
-        /// <summary>
-        /// Gets or sets the minimum length of stay in order to book the rate.
-        /// If at least this number
-        /// of time slices are covered by the stay duration the rate will be
-        /// offered.
-        /// </summary>
-        [JsonProperty(PropertyName = "minLengthOfStay")]
-        public int? MinLengthOfStay { get; set; }
-
-        /// <summary>
         /// Validate the object.
         /// </summary>
         /// <exception cref="ValidationException">
@@ -99,14 +99,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (MaxLengthOfStay > 2147483647)
-            {
-                throw new ValidationException(ValidationRules.InclusiveMaximum, "MaxLengthOfStay", 2147483647);
-            }
-            if (MaxLengthOfStay < 1)
-            {
-                throw new ValidationException(ValidationRules.InclusiveMinimum, "MaxLengthOfStay", 1);
-            }
             if (MinLengthOfStay > 2147483647)
             {
                 throw new ValidationException(ValidationRules.InclusiveMaximum, "MinLengthOfStay", 2147483647);
@@ -114,6 +106,14 @@ namespace Traces.ApaleoClients.Booking.Models
             if (MinLengthOfStay < 1)
             {
                 throw new ValidationException(ValidationRules.InclusiveMinimum, "MinLengthOfStay", 1);
+            }
+            if (MaxLengthOfStay > 2147483647)
+            {
+                throw new ValidationException(ValidationRules.InclusiveMaximum, "MaxLengthOfStay", 2147483647);
+            }
+            if (MaxLengthOfStay < 1)
+            {
+                throw new ValidationException(ValidationRules.InclusiveMinimum, "MaxLengthOfStay", 1);
             }
         }
     }
