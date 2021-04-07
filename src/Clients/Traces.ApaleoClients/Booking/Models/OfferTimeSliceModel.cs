@@ -25,8 +25,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the OfferTimeSliceModel class.
         /// </summary>
-        /// <param name="availableUnits">The number of available units for that
-        /// time slice</param>
         /// <param name="fromProperty">The start date and time for this time
         /// slice&lt;br /&gt;A date and time (without fractional second part)
         /// in UTC or with UTC offset as defined in &lt;a
@@ -35,16 +33,18 @@ namespace Traces.ApaleoClients.Booking.Models
         /// /&gt;A date and time (without fractional second part) in UTC or
         /// with UTC offset as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="availableUnits">The number of available units for that
+        /// time slice</param>
         /// <param name="includedServices">The breakdown for services included
         /// in the offer</param>
-        public OfferTimeSliceModel(int availableUnits, AmountModel baseAmount, System.DateTime fromProperty, System.DateTime to, MonetaryValueModel totalGrossAmount, IList<OfferServiceModel> includedServices = default(IList<OfferServiceModel>))
+        public OfferTimeSliceModel(System.DateTime fromProperty, System.DateTime to, int availableUnits, AmountModel baseAmount, MonetaryValueModel totalGrossAmount, IList<OfferServiceModel> includedServices = default(IList<OfferServiceModel>))
         {
+            FromProperty = fromProperty;
+            To = to;
             AvailableUnits = availableUnits;
             BaseAmount = baseAmount;
-            FromProperty = fromProperty;
-            IncludedServices = includedServices;
-            To = to;
             TotalGrossAmount = totalGrossAmount;
+            IncludedServices = includedServices;
             CustomInit();
         }
 
@@ -52,6 +52,24 @@ namespace Traces.ApaleoClients.Booking.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets the start date and time for this time slice&amp;lt;br
+        /// /&amp;gt;A date and time (without fractional second part) in UTC or
+        /// with UTC offset as defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "from")]
+        public System.DateTime FromProperty { get; set; }
+
+        /// <summary>
+        /// Gets or sets the end date and time for this time slice&amp;lt;br
+        /// /&amp;gt;A date and time (without fractional second part) in UTC or
+        /// with UTC offset as defined in &amp;lt;a
+        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
+        /// </summary>
+        [JsonProperty(PropertyName = "to")]
+        public System.DateTime To { get; set; }
 
         /// <summary>
         /// Gets or sets the number of available units for that time slice
@@ -65,33 +83,15 @@ namespace Traces.ApaleoClients.Booking.Models
         public AmountModel BaseAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets the start date and time for this time slice&amp;lt;br
-        /// /&amp;gt;A date and time (without fractional second part) in UTC or
-        /// with UTC offset as defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
         /// </summary>
-        [JsonProperty(PropertyName = "from")]
-        public System.DateTime FromProperty { get; set; }
+        [JsonProperty(PropertyName = "totalGrossAmount")]
+        public MonetaryValueModel TotalGrossAmount { get; set; }
 
         /// <summary>
         /// Gets or sets the breakdown for services included in the offer
         /// </summary>
         [JsonProperty(PropertyName = "includedServices")]
         public IList<OfferServiceModel> IncludedServices { get; set; }
-
-        /// <summary>
-        /// Gets or sets the end date and time for this time slice&amp;lt;br
-        /// /&amp;gt;A date and time (without fractional second part) in UTC or
-        /// with UTC offset as defined in &amp;lt;a
-        /// href="https://en.wikipedia.org/wiki/ISO_8601"&amp;gt;ISO8601:2004&amp;lt;/a&amp;gt;
-        /// </summary>
-        [JsonProperty(PropertyName = "to")]
-        public System.DateTime To { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "totalGrossAmount")]
-        public MonetaryValueModel TotalGrossAmount { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -113,6 +113,10 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 BaseAmount.Validate();
             }
+            if (TotalGrossAmount != null)
+            {
+                TotalGrossAmount.Validate();
+            }
             if (IncludedServices != null)
             {
                 foreach (var element in IncludedServices)
@@ -122,10 +126,6 @@ namespace Traces.ApaleoClients.Booking.Models
                         element.Validate();
                     }
                 }
-            }
-            if (TotalGrossAmount != null)
-            {
-                TotalGrossAmount.Validate();
             }
         }
     }

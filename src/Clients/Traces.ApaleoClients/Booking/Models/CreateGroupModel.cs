@@ -31,15 +31,15 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="name">Name of the group</param>
         /// <param name="propertyIds">List of property ids the group booking
         /// belongs to</param>
+        /// <param name="comment">Additional information and comments</param>
         /// <param name="bookerComment">Additional information and comment by
         /// the booker</param>
-        /// <param name="comment">Additional information and comments</param>
-        public CreateGroupModel(BookerModel booker, string name, IList<string> propertyIds, string bookerComment = default(string), string comment = default(string), CreatePaymentAccountModel paymentAccount = default(CreatePaymentAccountModel))
+        public CreateGroupModel(string name, BookerModel booker, IList<string> propertyIds, string comment = default(string), string bookerComment = default(string), CreatePaymentAccountModel paymentAccount = default(CreatePaymentAccountModel))
         {
-            Booker = booker;
-            BookerComment = bookerComment;
-            Comment = comment;
             Name = name;
+            Booker = booker;
+            Comment = comment;
+            BookerComment = bookerComment;
             PaymentAccount = paymentAccount;
             PropertyIds = propertyIds;
             CustomInit();
@@ -51,15 +51,15 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets name of the group
+        /// </summary>
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "booker")]
         public BookerModel Booker { get; set; }
-
-        /// <summary>
-        /// Gets or sets additional information and comment by the booker
-        /// </summary>
-        [JsonProperty(PropertyName = "bookerComment")]
-        public string BookerComment { get; set; }
 
         /// <summary>
         /// Gets or sets additional information and comments
@@ -68,10 +68,10 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Comment { get; set; }
 
         /// <summary>
-        /// Gets or sets name of the group
+        /// Gets or sets additional information and comment by the booker
         /// </summary>
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+        [JsonProperty(PropertyName = "bookerComment")]
+        public string BookerComment { get; set; }
 
         /// <summary>
         /// </summary>
@@ -92,13 +92,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Booker == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Booker");
-            }
             if (Name == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Name");
+            }
+            if (Booker == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Booker");
             }
             if (PropertyIds == null)
             {
@@ -107,10 +107,6 @@ namespace Traces.ApaleoClients.Booking.Models
             if (Booker != null)
             {
                 Booker.Validate();
-            }
-            if (PaymentAccount != null)
-            {
-                PaymentAccount.Validate();
             }
         }
     }

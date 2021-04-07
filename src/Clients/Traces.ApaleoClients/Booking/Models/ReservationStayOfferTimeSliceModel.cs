@@ -37,15 +37,15 @@ namespace Traces.ApaleoClients.Booking.Models
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
         /// <param name="includedServices">The breakdown for services included
         /// in the offer</param>
-        public ReservationStayOfferTimeSliceModel(AmountModel baseAmount, System.DateTime fromProperty, EmbeddedRatePlanModel ratePlan, System.DateTime to, MonetaryValueModel totalGrossAmount, OfferUnitGroupModel unitGroup, IList<ReservationStayOfferServiceModel> includedServices = default(IList<ReservationStayOfferServiceModel>))
+        public ReservationStayOfferTimeSliceModel(System.DateTime fromProperty, System.DateTime to, EmbeddedRatePlanModel ratePlan, OfferUnitGroupModel unitGroup, AmountModel baseAmount, MonetaryValueModel totalGrossAmount, IList<ReservationStayOfferServiceModel> includedServices = default(IList<ReservationStayOfferServiceModel>))
         {
-            BaseAmount = baseAmount;
             FromProperty = fromProperty;
-            IncludedServices = includedServices;
-            RatePlan = ratePlan;
             To = to;
-            TotalGrossAmount = totalGrossAmount;
+            RatePlan = ratePlan;
             UnitGroup = unitGroup;
+            BaseAmount = baseAmount;
+            TotalGrossAmount = totalGrossAmount;
+            IncludedServices = includedServices;
             CustomInit();
         }
 
@@ -55,11 +55,6 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "baseAmount")]
-        public AmountModel BaseAmount { get; set; }
-
-        /// <summary>
         /// Gets or sets the start date and time for this time slice&amp;lt;br
         /// /&amp;gt;A date and time (without fractional second part) in UTC or
         /// with UTC offset as defined in &amp;lt;a
@@ -67,17 +62,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "from")]
         public System.DateTime FromProperty { get; set; }
-
-        /// <summary>
-        /// Gets or sets the breakdown for services included in the offer
-        /// </summary>
-        [JsonProperty(PropertyName = "includedServices")]
-        public IList<ReservationStayOfferServiceModel> IncludedServices { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "ratePlan")]
-        public EmbeddedRatePlanModel RatePlan { get; set; }
 
         /// <summary>
         /// Gets or sets the end date and time for this time slice&amp;lt;br
@@ -90,13 +74,29 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "totalGrossAmount")]
-        public MonetaryValueModel TotalGrossAmount { get; set; }
+        [JsonProperty(PropertyName = "ratePlan")]
+        public EmbeddedRatePlanModel RatePlan { get; set; }
 
         /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "unitGroup")]
         public OfferUnitGroupModel UnitGroup { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "baseAmount")]
+        public AmountModel BaseAmount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "totalGrossAmount")]
+        public MonetaryValueModel TotalGrossAmount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the breakdown for services included in the offer
+        /// </summary>
+        [JsonProperty(PropertyName = "includedServices")]
+        public IList<ReservationStayOfferServiceModel> IncludedServices { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -106,25 +106,37 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (BaseAmount == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "BaseAmount");
-            }
             if (RatePlan == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "RatePlan");
-            }
-            if (TotalGrossAmount == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "TotalGrossAmount");
             }
             if (UnitGroup == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "UnitGroup");
             }
+            if (BaseAmount == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "BaseAmount");
+            }
+            if (TotalGrossAmount == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "TotalGrossAmount");
+            }
+            if (RatePlan != null)
+            {
+                RatePlan.Validate();
+            }
+            if (UnitGroup != null)
+            {
+                UnitGroup.Validate();
+            }
             if (BaseAmount != null)
             {
                 BaseAmount.Validate();
+            }
+            if (TotalGrossAmount != null)
+            {
+                TotalGrossAmount.Validate();
             }
             if (IncludedServices != null)
             {
@@ -135,18 +147,6 @@ namespace Traces.ApaleoClients.Booking.Models
                         element.Validate();
                     }
                 }
-            }
-            if (RatePlan != null)
-            {
-                RatePlan.Validate();
-            }
-            if (TotalGrossAmount != null)
-            {
-                TotalGrossAmount.Validate();
-            }
-            if (UnitGroup != null)
-            {
-                UnitGroup.Validate();
             }
         }
     }

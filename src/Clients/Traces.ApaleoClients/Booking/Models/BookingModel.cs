@@ -28,32 +28,32 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the BookingModel class.
         /// </summary>
+        /// <param name="id">Booking id</param>
         /// <param name="created">Date of creation&lt;br /&gt;A date and time
         /// (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
-        /// <param name="id">Booking id</param>
         /// <param name="modified">Date of last modification&lt;br /&gt;A date
         /// and time (without fractional second part) in UTC or with UTC offset
         /// as defined in &lt;a
         /// href="https://en.wikipedia.org/wiki/ISO_8601"&gt;ISO8601:2004&lt;/a&gt;</param>
+        /// <param name="groupId">Group id</param>
+        /// <param name="comment">Additional information and comments</param>
         /// <param name="bookerComment">Additional information and comment by
         /// the booker</param>
-        /// <param name="comment">Additional information and comments</param>
-        /// <param name="groupId">Group id</param>
         /// <param name="propertyValues">Property specific values like total
         /// amount and balance</param>
         /// <param name="reservations">Reservations within this booking</param>
-        public BookingModel(BookerModel booker, System.DateTime created, string id, System.DateTime modified, string bookerComment = default(string), string comment = default(string), string groupId = default(string), PaymentAccountModel paymentAccount = default(PaymentAccountModel), IList<PropertyValueModel> propertyValues = default(IList<PropertyValueModel>), IList<BookingReservationModel> reservations = default(IList<BookingReservationModel>))
+        public BookingModel(string id, System.DateTime created, System.DateTime modified, string groupId = default(string), BookerModel booker = default(BookerModel), PaymentAccountModel paymentAccount = default(PaymentAccountModel), string comment = default(string), string bookerComment = default(string), IList<PropertyValueModel> propertyValues = default(IList<PropertyValueModel>), IList<BookingReservationModel> reservations = default(IList<BookingReservationModel>))
         {
-            Booker = booker;
-            BookerComment = bookerComment;
-            Comment = comment;
-            Created = created;
-            GroupId = groupId;
             Id = id;
-            Modified = modified;
+            GroupId = groupId;
+            Booker = booker;
             PaymentAccount = paymentAccount;
+            Comment = comment;
+            BookerComment = bookerComment;
+            Created = created;
+            Modified = modified;
             PropertyValues = propertyValues;
             Reservations = reservations;
             CustomInit();
@@ -65,21 +65,38 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets booking id
+        /// </summary>
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets group id
+        /// </summary>
+        [JsonProperty(PropertyName = "groupId")]
+        public string GroupId { get; set; }
+
+        /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "booker")]
         public BookerModel Booker { get; set; }
 
         /// <summary>
-        /// Gets or sets additional information and comment by the booker
         /// </summary>
-        [JsonProperty(PropertyName = "bookerComment")]
-        public string BookerComment { get; set; }
+        [JsonProperty(PropertyName = "paymentAccount")]
+        public PaymentAccountModel PaymentAccount { get; set; }
 
         /// <summary>
         /// Gets or sets additional information and comments
         /// </summary>
         [JsonProperty(PropertyName = "comment")]
         public string Comment { get; set; }
+
+        /// <summary>
+        /// Gets or sets additional information and comment by the booker
+        /// </summary>
+        [JsonProperty(PropertyName = "bookerComment")]
+        public string BookerComment { get; set; }
 
         /// <summary>
         /// Gets or sets date of creation&amp;lt;br /&amp;gt;A date and time
@@ -91,18 +108,6 @@ namespace Traces.ApaleoClients.Booking.Models
         public System.DateTime Created { get; set; }
 
         /// <summary>
-        /// Gets or sets group id
-        /// </summary>
-        [JsonProperty(PropertyName = "groupId")]
-        public string GroupId { get; set; }
-
-        /// <summary>
-        /// Gets or sets booking id
-        /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-        /// <summary>
         /// Gets or sets date of last modification&amp;lt;br /&amp;gt;A date
         /// and time (without fractional second part) in UTC or with UTC offset
         /// as defined in &amp;lt;a
@@ -110,11 +115,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "modified")]
         public System.DateTime Modified { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "paymentAccount")]
-        public PaymentAccountModel PaymentAccount { get; set; }
 
         /// <summary>
         /// Gets or sets property specific values like total amount and balance
@@ -136,10 +136,6 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Booker == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Booker");
-            }
             if (Id == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Id");

@@ -28,8 +28,8 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="timeSlices">List of time slices</param>
         public TimeSliceListModel(long count, IList<TimeSliceItemModel> timeSlices = default(IList<TimeSliceItemModel>))
         {
-            Count = count;
             TimeSlices = timeSlices;
+            Count = count;
             CustomInit();
         }
 
@@ -39,16 +39,16 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets total count of items
-        /// </summary>
-        [JsonProperty(PropertyName = "count")]
-        public long Count { get; set; }
-
-        /// <summary>
         /// Gets or sets list of time slices
         /// </summary>
         [JsonProperty(PropertyName = "timeSlices")]
         public IList<TimeSliceItemModel> TimeSlices { get; set; }
+
+        /// <summary>
+        /// Gets or sets total count of items
+        /// </summary>
+        [JsonProperty(PropertyName = "count")]
+        public long Count { get; set; }
 
         /// <summary>
         /// Validate the object.

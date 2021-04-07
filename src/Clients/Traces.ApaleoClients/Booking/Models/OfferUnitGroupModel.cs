@@ -23,22 +23,22 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the OfferUnitGroupModel class.
         /// </summary>
+        /// <param name="id">The unit group id</param>
         /// <param name="code">The code for the unit group that can be shown in
         /// reports and table views</param>
+        /// <param name="name">The name for the unit group</param>
         /// <param name="description">The description for the unit
         /// group</param>
-        /// <param name="id">The unit group id</param>
         /// <param name="maxPersons">Maximum number of persons for the unit
         /// group</param>
-        /// <param name="name">The name for the unit group</param>
         /// <param name="rank">The unit group rank</param>
-        public OfferUnitGroupModel(string code, string description, string id, int maxPersons, string name, int? rank = default(int?))
+        public OfferUnitGroupModel(string id, string code, string name, string description, int maxPersons, int? rank = default(int?))
         {
-            Code = code;
-            Description = description;
             Id = id;
-            MaxPersons = maxPersons;
+            Code = code;
             Name = name;
+            Description = description;
+            MaxPersons = maxPersons;
             Rank = rank;
             CustomInit();
         }
@@ -49,11 +49,23 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets the unit group id
+        /// </summary>
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the code for the unit group that can be shown in
         /// reports and table views
         /// </summary>
         [JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name for the unit group
+        /// </summary>
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the description for the unit group
@@ -62,22 +74,10 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the unit group id
-        /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-        /// <summary>
         /// Gets or sets maximum number of persons for the unit group
         /// </summary>
         [JsonProperty(PropertyName = "maxPersons")]
         public int MaxPersons { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name for the unit group
-        /// </summary>
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the unit group rank
@@ -93,21 +93,21 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (Code == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Code");
-            }
-            if (Description == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Description");
-            }
             if (Id == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Id");
             }
+            if (Code == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Code");
+            }
             if (Name == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Name");
+            }
+            if (Description == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Description");
             }
         }
     }

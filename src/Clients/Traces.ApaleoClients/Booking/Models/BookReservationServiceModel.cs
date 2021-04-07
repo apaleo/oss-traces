@@ -35,12 +35,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="dates">The optional dates you want to book the service
         /// for; if not specified the default service pattern will be used
         /// (e.g. whole stay).</param>
-        public BookReservationServiceModel(string serviceId, MonetaryValueModel amount = default(MonetaryValueModel), int? count = default(int?), IList<Date> dates = default(IList<Date>))
+        public BookReservationServiceModel(string serviceId, int? count = default(int?), MonetaryValueModel amount = default(MonetaryValueModel), IList<Date> dates = default(IList<Date>))
         {
-            Amount = amount;
-            Count = count;
-            Dates = dates;
             ServiceId = serviceId;
+            Count = count;
+            Amount = amount;
+            Dates = dates;
             CustomInit();
         }
 
@@ -50,9 +50,10 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets the id of the service you want to book
         /// </summary>
-        [JsonProperty(PropertyName = "amount")]
-        public MonetaryValueModel Amount { get; set; }
+        [JsonProperty(PropertyName = "serviceId")]
+        public string ServiceId { get; set; }
 
         /// <summary>
         /// Gets or sets the number of services to book for each service date.
@@ -62,18 +63,17 @@ namespace Traces.ApaleoClients.Booking.Models
         public int? Count { get; set; }
 
         /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "amount")]
+        public MonetaryValueModel Amount { get; set; }
+
+        /// <summary>
         /// Gets or sets the optional dates you want to book the service for;
         /// if not specified the default service pattern will be used (e.g.
         /// whole stay).
         /// </summary>
         [JsonProperty(PropertyName = "dates")]
         public IList<Date> Dates { get; set; }
-
-        /// <summary>
-        /// Gets or sets the id of the service you want to book
-        /// </summary>
-        [JsonProperty(PropertyName = "serviceId")]
-        public string ServiceId { get; set; }
 
         /// <summary>
         /// Validate the object.

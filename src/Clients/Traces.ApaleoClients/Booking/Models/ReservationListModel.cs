@@ -25,12 +25,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <summary>
         /// Initializes a new instance of the ReservationListModel class.
         /// </summary>
-        /// <param name="count">Total count of items</param>
         /// <param name="reservations">List of reservations</param>
-        public ReservationListModel(long count, IList<ReservationItemModel> reservations)
+        /// <param name="count">Total count of items</param>
+        public ReservationListModel(IList<ReservationItemModel> reservations, long count)
         {
-            Count = count;
             Reservations = reservations;
+            Count = count;
             CustomInit();
         }
 
@@ -40,16 +40,16 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets total count of items
-        /// </summary>
-        [JsonProperty(PropertyName = "count")]
-        public long Count { get; set; }
-
-        /// <summary>
         /// Gets or sets list of reservations
         /// </summary>
         [JsonProperty(PropertyName = "reservations")]
         public IList<ReservationItemModel> Reservations { get; set; }
+
+        /// <summary>
+        /// Gets or sets total count of items
+        /// </summary>
+        [JsonProperty(PropertyName = "count")]
+        public long Count { get; set; }
 
         /// <summary>
         /// Validate the object.

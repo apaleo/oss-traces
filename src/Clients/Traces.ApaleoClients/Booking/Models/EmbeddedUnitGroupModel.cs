@@ -26,15 +26,15 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="id">The unit group id</param>
         /// <param name="code">The code for the unit group that can be shown in
         /// reports and table views</param>
+        /// <param name="name">The name for the unit group</param>
         /// <param name="description">The description for the unit
         /// group</param>
-        /// <param name="name">The name for the unit group</param>
-        public EmbeddedUnitGroupModel(string id, string code = default(string), string description = default(string), string name = default(string))
+        public EmbeddedUnitGroupModel(string id, string code = default(string), string name = default(string), string description = default(string))
         {
-            Code = code;
-            Description = description;
             Id = id;
+            Code = code;
             Name = name;
+            Description = description;
             CustomInit();
         }
 
@@ -44,6 +44,12 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets the unit group id
+        /// </summary>
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the code for the unit group that can be shown in
         /// reports and table views
         /// </summary>
@@ -51,22 +57,16 @@ namespace Traces.ApaleoClients.Booking.Models
         public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the description for the unit group
-        /// </summary>
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the unit group id
-        /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the name for the unit group
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description for the unit group
+        /// </summary>
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Validate the object.

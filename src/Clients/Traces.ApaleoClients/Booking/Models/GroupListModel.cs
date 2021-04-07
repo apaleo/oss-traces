@@ -26,10 +26,10 @@ namespace Traces.ApaleoClients.Booking.Models
         /// Initializes a new instance of the GroupListModel class.
         /// </summary>
         /// <param name="count">Total count of items</param>
-        public GroupListModel(long count, IList<GroupItemModel> groups)
+        public GroupListModel(IList<GroupItemModel> groups, long count)
         {
-            Count = count;
             Groups = groups;
+            Count = count;
             CustomInit();
         }
 
@@ -39,15 +39,15 @@ namespace Traces.ApaleoClients.Booking.Models
         partial void CustomInit();
 
         /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "groups")]
+        public IList<GroupItemModel> Groups { get; set; }
+
+        /// <summary>
         /// Gets or sets total count of items
         /// </summary>
         [JsonProperty(PropertyName = "count")]
         public long Count { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "groups")]
-        public IList<GroupItemModel> Groups { get; set; }
 
         /// <summary>
         /// Validate the object.
