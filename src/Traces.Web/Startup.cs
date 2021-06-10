@@ -169,6 +169,7 @@ namespace Traces.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
+            app.UseMiddleware<SecurityHeadersMiddleware>();
 
             app.UseRouting();
 
