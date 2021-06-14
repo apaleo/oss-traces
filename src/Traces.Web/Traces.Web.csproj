@@ -14,7 +14,7 @@
     <ItemGroup>
       <PackageReference Include="BlazorInputFile" Version="0.2.0" />
       <PackageReference Include="Blazorise.Bootstrap" Version="0.9.1.2" />
-      <PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.9.1.2" />
+      <PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.9.3.8" />
       <PackageReference Include="Humanizer.Core" Version="2.8.26" />
       <PackageReference Include="IdentityModel" Version="5.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="3.1.8" />
