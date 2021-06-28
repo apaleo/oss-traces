@@ -4968,7 +4968,8 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='channelCode'>
         /// Channel code, used to filter the rate plans. Possible values include:
-        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
+        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike',
+        /// 'Hrs'
         /// </param>
         /// <param name='promoCode'>
         /// The promo code associated with a certain special offer
@@ -5231,7 +5232,7 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='channelCode'>
         /// The channel code. Possible values include: 'Direct', 'BookingCom', 'Ibe',
-        /// 'ChannelManager', 'Expedia', 'Homelike'
+        /// 'ChannelManager', 'Expedia', 'Homelike', 'Hrs'
         /// </param>
         /// <param name='childrenAges'>
         /// The ages of the children you want offers for
@@ -5457,7 +5458,8 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='channelCode'>
         /// The channel code used to filter the services. Possible values include:
-        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
+        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike',
+        /// 'Hrs'
         /// </param>
         /// <param name='childrenAges'>
         /// The ages of the children you want offers for
@@ -5685,7 +5687,7 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='channelCode'>
         /// Possible values include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
-        /// 'Expedia', 'Homelike'
+        /// 'Expedia', 'Homelike', 'Hrs'
         /// </param>
         /// <param name='pageNumber'>
         /// Page number, starting from 1 and defaulting to 1. Results in 204 if there
@@ -6593,8 +6595,8 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='expand'>
         /// List of all embedded resources that should be expanded in the response.
-        /// Possible values are: timeSlices, services, booker, actions, company. All
-        /// other values will be silently ignored.
+        /// Possible values are: timeSlices, services, booker, actions, company,
+        /// assignedUnits. All other values will be silently ignored.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -6947,7 +6949,8 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='channelCode'>
         /// The channel code used to filter the rate plans. Possible values include:
-        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
+        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike',
+        /// 'Hrs'
         /// </param>
         /// <param name='promoCode'>
         /// The promo code associated with a certain special offer, like corporate rate
@@ -6960,6 +6963,9 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='includeUnavailable'>
         /// Return also offers that are currently not publicly bookable as restrictions
         /// are violated. By default only available offers are returned
+        /// </param>
+        /// <param name='unitGroupIds'>
+        /// The list of unit groups used to filter the offers.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -6982,7 +6988,7 @@ namespace Traces.ApaleoClients.Booking
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<object>> BookingReservationsByIdOffersGetWithHttpMessagesAsync(string id, string arrival = default(string), string departure = default(string), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), bool? requote = default(bool?), bool? includeUnavailable = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<object>> BookingReservationsByIdOffersGetWithHttpMessagesAsync(string id, string arrival = default(string), string departure = default(string), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), bool? requote = default(bool?), bool? includeUnavailable = default(bool?), IList<string> unitGroupIds = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (id == null)
             {
@@ -7004,6 +7010,7 @@ namespace Traces.ApaleoClients.Booking
                 tracingParameters.Add("promoCode", promoCode);
                 tracingParameters.Add("requote", requote);
                 tracingParameters.Add("includeUnavailable", includeUnavailable);
+                tracingParameters.Add("unitGroupIds", unitGroupIds);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "BookingReservationsByIdOffersGet", tracingParameters);
             }
@@ -7043,6 +7050,10 @@ namespace Traces.ApaleoClients.Booking
             if (includeUnavailable != null)
             {
                 _queryParameters.Add(string.Format("includeUnavailable={0}", System.Uri.EscapeDataString(SafeJsonConvert.SerializeObject(includeUnavailable, SerializationSettings).Trim('"'))));
+            }
+            if (unitGroupIds != null)
+            {
+                _queryParameters.Add(string.Format("unitGroupIds={0}", System.Uri.EscapeDataString(string.Join(",", unitGroupIds))));
             }
             if (_queryParameters.Count > 0)
             {
@@ -7166,7 +7177,8 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='channelCode'>
         /// The channel code used to filter the services. Possible values include:
-        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
+        /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike',
+        /// 'Hrs'
         /// </param>
         /// <param name='onlyDefaultDates'>
         /// Depending on the postNextDay setting of a service it will by default be
@@ -8843,7 +8855,7 @@ namespace Traces.ApaleoClients.Booking
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 204 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 404 && (int)_statusCode != 415 && (int)_statusCode != 422 && (int)_statusCode != 500 && (int)_statusCode != 503)
+            if ((int)_statusCode != 204 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 404 && (int)_statusCode != 415 && (int)_statusCode != 422 && (int)_statusCode != 500 && (int)_statusCode != 503)
             {
                 var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -9006,7 +9018,7 @@ namespace Traces.ApaleoClients.Booking
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 204 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 404 && (int)_statusCode != 415 && (int)_statusCode != 422 && (int)_statusCode != 500 && (int)_statusCode != 503)
+            if ((int)_statusCode != 204 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 404 && (int)_statusCode != 415 && (int)_statusCode != 422 && (int)_statusCode != 500 && (int)_statusCode != 503)
             {
                 var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -9164,7 +9176,7 @@ namespace Traces.ApaleoClients.Booking
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 204 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 404 && (int)_statusCode != 415 && (int)_statusCode != 422 && (int)_statusCode != 500 && (int)_statusCode != 503)
+            if ((int)_statusCode != 204 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 404 && (int)_statusCode != 415 && (int)_statusCode != 422 && (int)_statusCode != 500 && (int)_statusCode != 503)
             {
                 var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -9303,7 +9315,7 @@ namespace Traces.ApaleoClients.Booking
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 204 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 404 && (int)_statusCode != 422 && (int)_statusCode != 500 && (int)_statusCode != 503)
+            if ((int)_statusCode != 204 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 404 && (int)_statusCode != 422 && (int)_statusCode != 500 && (int)_statusCode != 503)
             {
                 var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -9442,7 +9454,7 @@ namespace Traces.ApaleoClients.Booking
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 204 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 404 && (int)_statusCode != 422 && (int)_statusCode != 500 && (int)_statusCode != 503)
+            if ((int)_statusCode != 204 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 403 && (int)_statusCode != 404 && (int)_statusCode != 422 && (int)_statusCode != 500 && (int)_statusCode != 503)
             {
                 var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {

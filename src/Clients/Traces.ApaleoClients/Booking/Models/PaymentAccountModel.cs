@@ -42,7 +42,9 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="isVirtual">Indicates if the payment account is a
         /// virtual credit card. If not specified it defaults to
         /// 'false'</param>
-        public PaymentAccountModel(bool isActive, string accountNumber = default(string), string accountHolder = default(string), string expiryMonth = default(string), string expiryYear = default(string), string paymentMethod = default(string), string payerEmail = default(string), string payerReference = default(string), bool? isVirtual = default(bool?))
+        /// <param name="inactiveReason">A reason why account is
+        /// inactive</param>
+        public PaymentAccountModel(bool isActive, string accountNumber = default(string), string accountHolder = default(string), string expiryMonth = default(string), string expiryYear = default(string), string paymentMethod = default(string), string payerEmail = default(string), string payerReference = default(string), bool? isVirtual = default(bool?), string inactiveReason = default(string))
         {
             AccountNumber = accountNumber;
             AccountHolder = accountHolder;
@@ -53,6 +55,7 @@ namespace Traces.ApaleoClients.Booking.Models
             PayerReference = payerReference;
             IsVirtual = isVirtual;
             IsActive = isActive;
+            InactiveReason = inactiveReason;
             CustomInit();
         }
 
@@ -120,6 +123,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "isActive")]
         public bool IsActive { get; set; }
+
+        /// <summary>
+        /// Gets or sets a reason why account is inactive
+        /// </summary>
+        [JsonProperty(PropertyName = "inactiveReason")]
+        public string InactiveReason { get; set; }
 
         /// <summary>
         /// Validate the object.

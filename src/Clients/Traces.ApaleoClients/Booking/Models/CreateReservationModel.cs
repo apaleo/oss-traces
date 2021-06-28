@@ -41,7 +41,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="adults">Number of adults</param>
         /// <param name="channelCode">Channel code. Possible values include:
         /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia',
-        /// 'Homelike'</param>
+        /// 'Homelike', 'Hrs'</param>
         /// <param name="timeSlices">Gross prices including services and taxes
         /// for each time slice. They will be applied to the reservation
         /// timeslices
@@ -151,7 +151,7 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets channel code. Possible values include: 'Direct',
-        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
+        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike', 'Hrs'
         /// </summary>
         [JsonProperty(PropertyName = "channelCode")]
         public ChannelCode ChannelCode { get; set; }

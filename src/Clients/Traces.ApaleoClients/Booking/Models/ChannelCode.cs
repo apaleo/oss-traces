@@ -28,7 +28,9 @@ namespace Traces.ApaleoClients.Booking.Models
         [EnumMember(Value = "Expedia")]
         Expedia,
         [EnumMember(Value = "Homelike")]
-        Homelike
+        Homelike,
+        [EnumMember(Value = "Hrs")]
+        Hrs
     }
     internal static class ChannelCodeEnumExtension
     {
@@ -53,6 +55,8 @@ namespace Traces.ApaleoClients.Booking.Models
                     return "Expedia";
                 case ChannelCode.Homelike:
                     return "Homelike";
+                case ChannelCode.Hrs:
+                    return "Hrs";
             }
             return null;
         }
@@ -73,6 +77,8 @@ namespace Traces.ApaleoClients.Booking.Models
                     return ChannelCode.Expedia;
                 case "Homelike":
                     return ChannelCode.Homelike;
+                case "Hrs":
+                    return ChannelCode.Hrs;
             }
             return null;
         }

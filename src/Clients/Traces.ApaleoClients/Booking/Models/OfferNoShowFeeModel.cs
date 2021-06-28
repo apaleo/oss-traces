@@ -27,7 +27,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="name">The name of the no-show policy applied</param>
         /// <param name="description">The description of the no-show policy
         /// applied</param>
-        public OfferNoShowFeeModel(string code, MonetaryValueModel fee, string name = default(string), string description = default(string))
+        public OfferNoShowFeeModel(string code, string name, string description, MonetaryValueModel fee)
         {
             Code = code;
             Name = name;
@@ -75,6 +75,14 @@ namespace Traces.ApaleoClients.Booking.Models
             if (Code == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Code");
+            }
+            if (Name == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Name");
+            }
+            if (Description == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Description");
             }
             if (Fee == null)
             {

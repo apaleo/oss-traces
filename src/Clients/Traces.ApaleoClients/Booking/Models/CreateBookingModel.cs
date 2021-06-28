@@ -32,13 +32,18 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="comment">Additional information and comments</param>
         /// <param name="bookerComment">Additional information and comments by
         /// the booker</param>
-        public CreateBookingModel(BookerModel booker, IList<CreateReservationModel> reservations, CreatePaymentAccountModel paymentAccount = default(CreatePaymentAccountModel), string comment = default(string), string bookerComment = default(string))
+        /// <param name="transactionReference">The reference of a payment
+        /// transaction. This should be set when a payment transaction has been
+        /// initiated and should be used to complete the transaction upon
+        /// reservation creation.</param>
+        public CreateBookingModel(BookerModel booker, IList<CreateReservationModel> reservations, CreatePaymentAccountModel paymentAccount = default(CreatePaymentAccountModel), string comment = default(string), string bookerComment = default(string), string transactionReference = default(string))
         {
             PaymentAccount = paymentAccount;
             Booker = booker;
             Comment = comment;
             BookerComment = bookerComment;
             Reservations = reservations;
+            TransactionReference = transactionReference;
             CustomInit();
         }
 
@@ -74,6 +79,14 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "reservations")]
         public IList<CreateReservationModel> Reservations { get; set; }
+
+        /// <summary>
+        /// Gets or sets the reference of a payment transaction. This should be
+        /// set when a payment transaction has been initiated and should be
+        /// used to complete the transaction upon reservation creation.
+        /// </summary>
+        [JsonProperty(PropertyName = "transactionReference")]
+        public string TransactionReference { get; set; }
 
         /// <summary>
         /// Validate the object.
