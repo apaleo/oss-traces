@@ -8984,7 +8984,7 @@
     "oauth2": {
       "type": "oauth2",
       "flow": "implicit",
-      "authorizationUrl": "https://identity.apaleo-staging.com/connect/authorize",
+      "authorizationUrl": "https://identity.apaleo.com/connect/authorize",
       "scopes": {
         "admin": "Full access",
         "reservations.import": "Import reservations"
