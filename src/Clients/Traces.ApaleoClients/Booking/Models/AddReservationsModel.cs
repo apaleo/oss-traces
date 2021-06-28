@@ -30,9 +30,14 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         /// <param name="reservations">List of reservations to add to the
         /// existing booking</param>
-        public AddReservationsModel(IList<CreateReservationModel> reservations)
+        /// <param name="transactionReference">The reference of a payment
+        /// transaction. This should be set when a payment transaction has been
+        /// initiated and should be used to complete the transaction upon
+        /// reservation creation.</param>
+        public AddReservationsModel(IList<CreateReservationModel> reservations, string transactionReference = default(string))
         {
             Reservations = reservations;
+            TransactionReference = transactionReference;
             CustomInit();
         }
 
@@ -46,6 +51,14 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "reservations")]
         public IList<CreateReservationModel> Reservations { get; set; }
+
+        /// <summary>
+        /// Gets or sets the reference of a payment transaction. This should be
+        /// set when a payment transaction has been initiated and should be
+        /// used to complete the transaction upon reservation creation.
+        /// </summary>
+        [JsonProperty(PropertyName = "transactionReference")]
+        public string TransactionReference { get; set; }
 
         /// <summary>
         /// Validate the object.

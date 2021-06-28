@@ -37,12 +37,16 @@ namespace Traces.ApaleoClients.Booking.Models
         /// recurring payments</param>
         /// <param name="transactionReference">The reference of a payment
         /// transaction. This should be set when a payment transaction has been
-        /// already initiated and should be completed upon reservation
-        /// creation.</param>
+        /// initiated and should be used to complete the transaction upon
+        /// reservation creation. - &lt;b&gt;DEPRECATED: This property will be
+        /// removed 17.07.2021. Use `TransactionReference` on the
+        /// booking/reservation model instead&lt;/b&gt;</param>
         /// <param name="isVirtual">Indicates if the payment account is a
         /// virtual credit card. If not specified it defaults to
         /// 'false'</param>
-        public CreatePaymentAccountModel(string accountNumber = default(string), string accountHolder = default(string), string expiryMonth = default(string), string expiryYear = default(string), string paymentMethod = default(string), string payerEmail = default(string), string payerReference = default(string), string transactionReference = default(string), bool? isVirtual = default(bool?))
+        /// <param name="inactiveReason">A reason why account is inactive when
+        /// PayerReference was not provided</param>
+        public CreatePaymentAccountModel(string accountNumber = default(string), string accountHolder = default(string), string expiryMonth = default(string), string expiryYear = default(string), string paymentMethod = default(string), string payerEmail = default(string), string payerReference = default(string), string transactionReference = default(string), bool? isVirtual = default(bool?), string inactiveReason = default(string))
         {
             AccountNumber = accountNumber;
             AccountHolder = accountHolder;
@@ -53,6 +57,7 @@ namespace Traces.ApaleoClients.Booking.Models
             PayerReference = payerReference;
             TransactionReference = transactionReference;
             IsVirtual = isVirtual;
+            InactiveReason = inactiveReason;
             CustomInit();
         }
 
@@ -107,8 +112,11 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets the reference of a payment transaction. This should be
-        /// set when a payment transaction has been already initiated and
-        /// should be completed upon reservation creation.
+        /// set when a payment transaction has been initiated and should be
+        /// used to complete the transaction upon reservation creation. -
+        /// &amp;lt;b&amp;gt;DEPRECATED: This property will be removed
+        /// 17.07.2021. Use `TransactionReference` on the booking/reservation
+        /// model instead&amp;lt;/b&amp;gt;
         /// </summary>
         [JsonProperty(PropertyName = "transactionReference")]
         public string TransactionReference { get; set; }
@@ -119,6 +127,13 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "isVirtual")]
         public bool? IsVirtual { get; set; }
+
+        /// <summary>
+        /// Gets or sets a reason why account is inactive when PayerReference
+        /// was not provided
+        /// </summary>
+        [JsonProperty(PropertyName = "inactiveReason")]
+        public string InactiveReason { get; set; }
 
     }
 }

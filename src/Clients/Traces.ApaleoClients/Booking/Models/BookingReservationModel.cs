@@ -31,7 +31,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// 'NoShow'</param>
         /// <param name="channelCode">Channel code. Possible values include:
         /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia',
-        /// 'Homelike'</param>
+        /// 'Homelike', 'Hrs'</param>
         /// <param name="arrival">Date of arrival&lt;br /&gt;A date and time
         /// (without fractional second part) in UTC or with UTC offset as
         /// defined in &lt;a
@@ -49,7 +49,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// add-ons) reserved for the stay</param>
         /// <param name="guestComment">Additional information and comment by
         /// the guest</param>
-        public BookingReservationModel(string id, ReservationStatus status, ChannelCode channelCode, System.DateTime arrival, System.DateTime departure, int adults, MonetaryValueModel totalGrossAmount, EmbeddedPropertyModel property, EmbeddedRatePlanModel ratePlan, EmbeddedUnitGroupModel unitGroup, ReservationCancellationFeeModel cancellationFee, string externalCode = default(string), string source = default(string), PaymentAccountModel paymentAccount = default(PaymentAccountModel), IList<int?> childrenAges = default(IList<int?>), IList<ReservationServiceItemModel> services = default(IList<ReservationServiceItemModel>), string guestComment = default(string), EmbeddedCompanyModel company = default(EmbeddedCompanyModel))
+        public BookingReservationModel(string id, ReservationStatus status, ChannelCode channelCode, System.DateTime arrival, System.DateTime departure, int adults, MonetaryValueModel totalGrossAmount, EmbeddedPropertyModel property, EmbeddedRatePlanModel ratePlan, EmbeddedUnitGroupModel unitGroup, ReservationCancellationFeeModel cancellationFee, ReservationNoShowFeeModel noShowFee, string externalCode = default(string), string source = default(string), PaymentAccountModel paymentAccount = default(PaymentAccountModel), IList<int?> childrenAges = default(IList<int?>), IList<ReservationServiceItemModel> services = default(IList<ReservationServiceItemModel>), string guestComment = default(string), EmbeddedCompanyModel company = default(EmbeddedCompanyModel))
         {
             Id = id;
             Status = status;
@@ -68,6 +68,7 @@ namespace Traces.ApaleoClients.Booking.Models
             Services = services;
             GuestComment = guestComment;
             CancellationFee = cancellationFee;
+            NoShowFee = noShowFee;
             Company = company;
             CustomInit();
         }
@@ -98,7 +99,7 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets channel code. Possible values include: 'Direct',
-        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
+        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike', 'Hrs'
         /// </summary>
         [JsonProperty(PropertyName = "channelCode")]
         public ChannelCode ChannelCode { get; set; }
@@ -185,6 +186,11 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// </summary>
+        [JsonProperty(PropertyName = "noShowFee")]
+        public ReservationNoShowFeeModel NoShowFee { get; set; }
+
+        /// <summary>
+        /// </summary>
         [JsonProperty(PropertyName = "company")]
         public EmbeddedCompanyModel Company { get; set; }
 
@@ -220,6 +226,10 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "CancellationFee");
             }
+            if (NoShowFee == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "NoShowFee");
+            }
             if (PaymentAccount != null)
             {
                 PaymentAccount.Validate();
@@ -253,6 +263,10 @@ namespace Traces.ApaleoClients.Booking.Models
             if (CancellationFee != null)
             {
                 CancellationFee.Validate();
+            }
+            if (NoShowFee != null)
+            {
+                NoShowFee.Validate();
             }
             if (Company != null)
             {

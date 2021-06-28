@@ -49,7 +49,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// <param name="adults">Number of adults</param>
         /// <param name="channelCode">Channel code. Possible values include:
         /// 'Direct', 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia',
-        /// 'Homelike'</param>
+        /// 'Homelike', 'Hrs'</param>
         /// <param name="guaranteeType">The strongest guarantee for the rate
         /// plans booked in this reservation. Possible values include:
         /// 'PM6Hold', 'CreditCard', 'Prepayment', 'Company', 'Ota'</param>
@@ -92,6 +92,8 @@ namespace Traces.ApaleoClients.Booking.Models
         /// add-ons) reserved for the stay</param>
         /// <param name="travelPurpose">The purpose of the trip, leisure or
         /// business. Possible values include: 'Business', 'Leisure'</param>
+        /// <param name="assignedUnits">The list of units assigned to this
+        /// reservation</param>
         /// <param name="validationMessages">Validation rules are applied to
         /// reservations during their lifetime.
         /// For example a reservation that was created while the house or unit
@@ -108,7 +110,7 @@ namespace Traces.ApaleoClients.Booking.Models
         /// reservation have an invoice</param>
         /// <param name="promoCode">The promo code associated with a certain
         /// special offer used to create the reservation</param>
-        public ReservationModel(string id, string bookingId, ReservationStatus status, EmbeddedPropertyModel property, EmbeddedRatePlanModel ratePlan, EmbeddedUnitGroupModel unitGroup, MonetaryValueModel totalGrossAmount, System.DateTime arrival, System.DateTime departure, System.DateTime created, System.DateTime modified, int adults, ChannelCode channelCode, GuaranteeType guaranteeType, ReservationCancellationFeeModel cancellationFee, ReservationNoShowFeeModel noShowFee, MonetaryValueModel balance, IList<TaxDetailModel> taxDetails, bool hasCityTax, PayableAmountModel payableAmount, string blockId = default(string), string groupName = default(string), System.DateTime? checkInTime = default(System.DateTime?), System.DateTime? checkOutTime = default(System.DateTime?), System.DateTime? cancellationTime = default(System.DateTime?), System.DateTime? noShowTime = default(System.DateTime?), EmbeddedUnitModel unit = default(EmbeddedUnitModel), IList<int?> childrenAges = default(IList<int?>), string comment = default(string), string guestComment = default(string), string externalCode = default(string), string source = default(string), GuestModel primaryGuest = default(GuestModel), IList<GuestModel> additionalGuests = default(IList<GuestModel>), BookerModel booker = default(BookerModel), PaymentAccountModel paymentAccount = default(PaymentAccountModel), IList<TimeSliceModel> timeSlices = default(IList<TimeSliceModel>), IList<ReservationServiceItemModel> services = default(IList<ReservationServiceItemModel>), TravelPurpose? travelPurpose = default(TravelPurpose?), IList<ReservationValidationMessageModel> validationMessages = default(IList<ReservationValidationMessageModel>), IList<ActionModelReservationActionNotAllowedReservationActionReason> actions = default(IList<ActionModelReservationActionNotAllowedReservationActionReason>), EmbeddedCompanyModel company = default(EmbeddedCompanyModel), string corporateCode = default(string), bool? allFoliosHaveInvoice = default(bool?), CommissionModel commission = default(CommissionModel), string promoCode = default(string))
+        public ReservationModel(string id, string bookingId, ReservationStatus status, EmbeddedPropertyModel property, EmbeddedRatePlanModel ratePlan, EmbeddedUnitGroupModel unitGroup, MonetaryValueModel totalGrossAmount, System.DateTime arrival, System.DateTime departure, System.DateTime created, System.DateTime modified, int adults, ChannelCode channelCode, GuaranteeType guaranteeType, ReservationCancellationFeeModel cancellationFee, ReservationNoShowFeeModel noShowFee, MonetaryValueModel balance, IList<TaxDetailModel> taxDetails, bool hasCityTax, PayableAmountModel payableAmount, string blockId = default(string), string groupName = default(string), System.DateTime? checkInTime = default(System.DateTime?), System.DateTime? checkOutTime = default(System.DateTime?), System.DateTime? cancellationTime = default(System.DateTime?), System.DateTime? noShowTime = default(System.DateTime?), EmbeddedUnitModel unit = default(EmbeddedUnitModel), IList<int?> childrenAges = default(IList<int?>), string comment = default(string), string guestComment = default(string), string externalCode = default(string), string source = default(string), GuestModel primaryGuest = default(GuestModel), IList<GuestModel> additionalGuests = default(IList<GuestModel>), BookerModel booker = default(BookerModel), PaymentAccountModel paymentAccount = default(PaymentAccountModel), IList<TimeSliceModel> timeSlices = default(IList<TimeSliceModel>), IList<ReservationServiceItemModel> services = default(IList<ReservationServiceItemModel>), TravelPurpose? travelPurpose = default(TravelPurpose?), IList<ReservationAssignedUnitModel> assignedUnits = default(IList<ReservationAssignedUnitModel>), IList<ReservationValidationMessageModel> validationMessages = default(IList<ReservationValidationMessageModel>), IList<ActionModelReservationActionNotAllowedReservationActionReason> actions = default(IList<ActionModelReservationActionNotAllowedReservationActionReason>), EmbeddedCompanyModel company = default(EmbeddedCompanyModel), string corporateCode = default(string), bool? allFoliosHaveInvoice = default(bool?), CommissionModel commission = default(CommissionModel), string promoCode = default(string))
         {
             Id = id;
             BookingId = bookingId;
@@ -146,6 +148,7 @@ namespace Traces.ApaleoClients.Booking.Models
             NoShowFee = noShowFee;
             TravelPurpose = travelPurpose;
             Balance = balance;
+            AssignedUnits = assignedUnits;
             ValidationMessages = validationMessages;
             Actions = actions;
             Company = company;
@@ -324,7 +327,7 @@ namespace Traces.ApaleoClients.Booking.Models
 
         /// <summary>
         /// Gets or sets channel code. Possible values include: 'Direct',
-        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
+        /// 'BookingCom', 'Ibe', 'ChannelManager', 'Expedia', 'Homelike', 'Hrs'
         /// </summary>
         [JsonProperty(PropertyName = "channelCode")]
         public ChannelCode ChannelCode { get; set; }
@@ -400,6 +403,12 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </summary>
         [JsonProperty(PropertyName = "balance")]
         public MonetaryValueModel Balance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of units assigned to this reservation
+        /// </summary>
+        [JsonProperty(PropertyName = "assignedUnits")]
+        public IList<ReservationAssignedUnitModel> AssignedUnits { get; set; }
 
         /// <summary>
         /// Gets or sets validation rules are applied to reservations during
@@ -595,9 +604,9 @@ namespace Traces.ApaleoClients.Booking.Models
             {
                 Balance.Validate();
             }
-            if (ValidationMessages != null)
+            if (AssignedUnits != null)
             {
-                foreach (var element3 in ValidationMessages)
+                foreach (var element3 in AssignedUnits)
                 {
                     if (element3 != null)
                     {
@@ -605,13 +614,23 @@ namespace Traces.ApaleoClients.Booking.Models
                     }
                 }
             }
-            if (Actions != null)
+            if (ValidationMessages != null)
             {
-                foreach (var element4 in Actions)
+                foreach (var element4 in ValidationMessages)
                 {
                     if (element4 != null)
                     {
                         element4.Validate();
+                    }
+                }
+            }
+            if (Actions != null)
+            {
+                foreach (var element5 in Actions)
+                {
+                    if (element5 != null)
+                    {
+                        element5.Validate();
                     }
                 }
             }
@@ -621,11 +640,11 @@ namespace Traces.ApaleoClients.Booking.Models
             }
             if (TaxDetails != null)
             {
-                foreach (var element5 in TaxDetails)
+                foreach (var element6 in TaxDetails)
                 {
-                    if (element5 != null)
+                    if (element6 != null)
                     {
-                        element5.Validate();
+                        element6.Validate();
                     }
                 }
             }
