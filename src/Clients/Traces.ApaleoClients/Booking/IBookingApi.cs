@@ -879,7 +879,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='channelCode'>
         /// Channel code, used to filter the rate plans. Possible values
         /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
-        /// 'Expedia', 'Homelike'
+        /// 'Expedia', 'Homelike', 'Hrs'
         /// </param>
         /// <param name='promoCode'>
         /// The promo code associated with a certain special offer
@@ -932,7 +932,7 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='channelCode'>
         /// The channel code. Possible values include: 'Direct', 'BookingCom',
-        /// 'Ibe', 'ChannelManager', 'Expedia', 'Homelike'
+        /// 'Ibe', 'ChannelManager', 'Expedia', 'Homelike', 'Hrs'
         /// </param>
         /// <param name='childrenAges'>
         /// The ages of the children you want offers for
@@ -979,7 +979,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='channelCode'>
         /// The channel code used to filter the services. Possible values
         /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
-        /// 'Expedia', 'Homelike'
+        /// 'Expedia', 'Homelike', 'Hrs'
         /// </param>
         /// <param name='childrenAges'>
         /// The ages of the children you want offers for
@@ -1030,7 +1030,7 @@ namespace Traces.ApaleoClients.Booking
         /// </param>
         /// <param name='channelCode'>
         /// Possible values include: 'Direct', 'BookingCom', 'Ibe',
-        /// 'ChannelManager', 'Expedia', 'Homelike'
+        /// 'ChannelManager', 'Expedia', 'Homelike', 'Hrs'
         /// </param>
         /// <param name='pageNumber'>
         /// Page number, starting from 1 and defaulting to 1. Results in 204 if
@@ -1303,7 +1303,8 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='expand'>
         /// List of all embedded resources that should be expanded in the
         /// response. Possible values are: timeSlices, services, booker,
-        /// actions, company. All other values will be silently ignored.
+        /// actions, company, assignedUnits. All other values will be silently
+        /// ignored.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1377,7 +1378,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='channelCode'>
         /// The channel code used to filter the rate plans. Possible values
         /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
-        /// 'Expedia', 'Homelike'
+        /// 'Expedia', 'Homelike', 'Hrs'
         /// </param>
         /// <param name='promoCode'>
         /// The promo code associated with a certain special offer, like
@@ -1394,13 +1395,16 @@ namespace Traces.ApaleoClients.Booking
         /// restrictions are violated. By default only available offers are
         /// returned
         /// </param>
+        /// <param name='unitGroupIds'>
+        /// The list of unit groups used to filter the offers.
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> BookingReservationsByIdOffersGetWithHttpMessagesAsync(string id, string arrival = default(string), string departure = default(string), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), bool? requote = default(bool?), bool? includeUnavailable = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> BookingReservationsByIdOffersGetWithHttpMessagesAsync(string id, string arrival = default(string), string departure = default(string), int? adults = default(int?), IList<int?> childrenAges = default(IList<int?>), ChannelCode? channelCode = default(ChannelCode?), string promoCode = default(string), bool? requote = default(bool?), bool? includeUnavailable = default(bool?), IList<string> unitGroupIds = default(IList<string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Returns service offers for one specific reservation.
@@ -1416,7 +1420,7 @@ namespace Traces.ApaleoClients.Booking
         /// <param name='channelCode'>
         /// The channel code used to filter the services. Possible values
         /// include: 'Direct', 'BookingCom', 'Ibe', 'ChannelManager',
-        /// 'Expedia', 'Homelike'
+        /// 'Expedia', 'Homelike', 'Hrs'
         /// </param>
         /// <param name='onlyDefaultDates'>
         /// Depending on the postNextDay setting of a service it will by

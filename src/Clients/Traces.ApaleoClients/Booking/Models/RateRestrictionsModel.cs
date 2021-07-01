@@ -99,21 +99,27 @@ namespace Traces.ApaleoClients.Booking.Models
         /// </exception>
         public virtual void Validate()
         {
-            if (MinLengthOfStay > 2147483647)
+            if (MinLengthOfStay != null)
             {
-                throw new ValidationException(ValidationRules.InclusiveMaximum, "MinLengthOfStay", 2147483647);
+                if (MinLengthOfStay > 2147483647)
+                {
+                    throw new ValidationException(ValidationRules.InclusiveMaximum, "MinLengthOfStay", 2147483647);
+                }
+                if (MinLengthOfStay < 1)
+                {
+                    throw new ValidationException(ValidationRules.InclusiveMinimum, "MinLengthOfStay", 1);
+                }
             }
-            if (MinLengthOfStay < 1)
+            if (MaxLengthOfStay != null)
             {
-                throw new ValidationException(ValidationRules.InclusiveMinimum, "MinLengthOfStay", 1);
-            }
-            if (MaxLengthOfStay > 2147483647)
-            {
-                throw new ValidationException(ValidationRules.InclusiveMaximum, "MaxLengthOfStay", 2147483647);
-            }
-            if (MaxLengthOfStay < 1)
-            {
-                throw new ValidationException(ValidationRules.InclusiveMinimum, "MaxLengthOfStay", 1);
+                if (MaxLengthOfStay > 2147483647)
+                {
+                    throw new ValidationException(ValidationRules.InclusiveMaximum, "MaxLengthOfStay", 2147483647);
+                }
+                if (MaxLengthOfStay < 1)
+                {
+                    throw new ValidationException(ValidationRules.InclusiveMinimum, "MaxLengthOfStay", 1);
+                }
             }
         }
     }
